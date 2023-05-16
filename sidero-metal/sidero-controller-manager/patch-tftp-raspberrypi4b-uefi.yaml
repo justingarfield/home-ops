@@ -1,0 +1,29 @@
+---
+###
+# This is a patch file that adds an initContainer to the `sidero-controller-manager/manager`,
+# which will copy custom files into the /tftp/ folder that gets served by sidero.
+###
+spec:
+  template:
+    spec:
+      volumes:
+        - name: tftp-folder
+          emptyDir: {}
+      initContainers:
+        - image: ghcr.io/justingarfield/raspberrypi4b-uefi:v1.4.0-1
+          imagePullPolicy: Always
+          name: tftp-folder-setup
+          command:
+            - cp
+          args:
+            - -r
+            - /tftp
+            - /var/lib/sidero/
+          volumeMounts:
+            - mountPath: /var/lib/sidero/tftp
+              name: tftp-folder
+      containers:
+        - name: manager
+          volumeMounts:
+            - mountPath: /var/lib/sidero/tftp
+              name: tftp-folder

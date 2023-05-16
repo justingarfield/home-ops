@@ -1,0 +1,109 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+---
+version: '3'
+
+vars:
+  FLUX_OUT_DIR: '{{ .DEFAULT_OUTPUT_DIR }}/flux'
+  SOPS_OUT_DIR: '{{ .DEFAULT_OUTPUT_DIR }}/sops'
+
+tasks:
+
+  verify:
+    desc: Verify flux meets the prerequisites
+    cmds:
+      - flux check --pre
+
+  install:
+    desc: Install Flux into your cluster
+    vars:
+      AGE_KEY_FILE: '{{ .AGE_KEY_FILE | default "{{ .SOPS_OUT_DIR }}/{{ .CLUSTER_NAME }}/age.agekey" }}'
+    cmds:
+      - kubectl apply --kustomize {{ .CLUSTER_DIR }}/bootstrap
+      - task: create-sops-age-secret
+        vars: { AGE_KEY_FILE: "{{ .AGE_KEY_FILE }}" }
+      - kubectl apply --kustomize {{ .CLUSTER_DIR }}/flux/flux-system
+      - task: reconcile
+
+  create-sops-age-secret:
+    desc:
+    vars:
+      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
+      AGE_KEY_FILE: '{{ .AGE_KEY_FILE | default "{{ .SOPS_OUT_DIR }}/{{ .CLUSTER_NAME }}/age.agekey" }}'
+    preconditions:
+      - test {{ .CLUSTER_NAME }}
+      - sh: test -f {{ .AGE_KEY_FILE }}
+        msg: Age key file is not found. Did you forget to create it?
+    cmds:
+      - cat "{{ .AGE_KEY_FILE }}" | kubectl -n flux-system create secret generic sops-age --from-file=age.agekey=/dev/stdin
+
+  replace-sops-age-secret:
+    desc:
+    vars:
+      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
+      AGE_KEY_FILE: '{{ .AGE_KEY_FILE | default "{{ .SOPS_OUT_DIR }}/{{ .CLUSTER_NAME }}/age.agekey" }}'
+    preconditions:
+      - test {{ .CLUSTER_NAME }}
+      - sh: test -f "{{ .AGE_KEY_FILE }}"
+        msg: Age key file is not found. Did you forget to create it?
+    cmds:
+      - kubectl -n flux-system delete secret sops-age
+      - task: create-sops-age-secret
+
+  reconcile:
+    desc: Force update Flux to pull in changes from your Git repository
+    cmds:
+      - flux reconcile -n flux-system source git flux-cluster
+      - flux reconcile -n flux-system kustomization flux-cluster
+
+  output-secret:
+    desc:
+    cmds:
+      - task: :_core:ensure-directory-exists
+        vars: { DIRECTORY: "{{ .FLUX_OUT_DIR }}/staging" }
+      - kubectl -n flux-system get secret flux-system -o yaml > {{ .FLUX_OUT_DIR }}/staging/flux-system.yaml
+
+  rotate-key:
+    desc:
+    cmds:
+      - kubectl -n flux-system delete secret flux-system
+      - flux create secret git flux-system --url=ssh://git@github.com/{{ .GITHUB_USERNAME }}/{{ .GITHUB_REPO }}
+
+  bootstrap-flux-cd:
+    desc: Bootstraps Flux CD in a particular cluster
+    vars:
+      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
+      GITHUB_TOKEN: '{{ .GITHUB_TOKEN }}'
+      GITHUB_AUTHOR_EMAIL: '{{ .GITHUB_AUTHOR_EMAIL }}'
+      GITHUB_AUTHOR_NAME: '{{ .GITHUB_AUTHOR_NAME }}'
+      CLUSTER_DOMAIN: '{{ .CLUSTER_DOMAIN }}'
+      GITHUB_USERNAME: '{{ .GITHUB_USERNAME }}'
+      GITHUB_REPO: '{{ .GITHUB_REPO | default .REPOSITORY_REMOTE_ORIGIN_NAME }}' # Override this if you want to store your Flux stuff in another Repository
+    preconditions:
+      - sh: test {{ .CLUSTER_NAME }}
+        msg: CLUSTER_NAME
+      - sh: test {{ .GITHUB_TOKEN }}
+        msg: GITHUB_TOKEN
+      - sh: test {{ .GITHUB_AUTHOR_EMAIL }}
+        msg: GITHUB_AUTHOR_EMAIL
+      - sh: test "{{ .GITHUB_AUTHOR_NAME }}"
+        msg: GITHUB_AUTHOR_NAME
+      - sh: test {{ .CLUSTER_DOMAIN }}
+        msg: CLUSTER_DOMAIN
+      - sh: test {{ .GITHUB_USERNAME }}
+        msg: GITHUB_USERNAME
+      - sh: test {{ .GITHUB_REPO }}
+        msg: GITHUB_REPO
+    cmds:
+      - defer: unset GITHUB_TOKEN
+      - |
+        export GITHUB_TOKEN={{ .GITHUB_TOKEN }}
+        flux bootstrap github \
+          --author-email={{ .GITHUB_AUTHOR_EMAIL }} \
+          --author-name="{{ .GITHUB_AUTHOR_NAME }}" \
+          --branch=main \
+          --cluster-domain={{ .CLUSTER_DOMAIN }} \
+          --commit-message-appendix="[ci skip]" \
+          --owner={{ .GITHUB_USERNAME }} \
+          --path=flux/clusters/{{ .CLUSTER_NAME }} \
+          --personal \
+          --repository={{ .GITHUB_REPO }}

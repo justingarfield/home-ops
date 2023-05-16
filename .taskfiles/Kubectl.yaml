@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+---
+version: '3'
+
+tasks:
+
+  get-all:
+    desc: Gets all resources + CRDS
+    vars:
+      _INSTALLED_CRDS:
+        sh: kubectl get crds | tail -n +2 | awk '{print $1}' | paste -d, -s -
+    cmds:
+      - kubectl get all,{{ ._INSTALLED_CRDS }} {{ .CLI_ARGS }}

@@ -1,0 +1,12 @@
+---
+apiVersion: "cilium.io/v2alpha1"
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: "staging-pool"
+spec:
+  cidrs:
+    - cidr: "192.168.69.1/32"
+    - cidr: "192.168.69.2/32"
+    - cidr: "192.168.69.3/32"
+    - cidr: "192.168.69.4/32"
+    - cidr: "192.168.69.5/32"

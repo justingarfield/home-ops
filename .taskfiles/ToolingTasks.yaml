@@ -1,0 +1,408 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+---
+version: '3'
+
+vars:
+  AGE_VERSION: v1.1.1
+  CILIUM_CLI_VERSION: 0.13.2
+  CFSSL_TOOLKIT_VERSION: 1.6.4
+  CLUSTERCTL_VERSION: v1.4.2
+  FLUX_VERSION: 2.0.0-rc.1
+  GITHUB_CLI_VERSION: 2.27.0
+  HELM_VERSION: v3.11.3
+  KUBEADM_VERSION: v1.27.1
+  KUBECTL_VERSION: v1.27.1
+  PACKER_VERSION: 1.8.6
+  # PRECOMMIT_VERSION: 2.17.0 -- current version on apt is old AF (currently 3.2.2 on releases)...whip-up new install steps for this
+  SOPS_VERSION: v3.7.3
+  TALOSCTL_VERSION: v1.4.0
+  TERRAFORM_VERSION: 1.4.5
+  VAGRANT_VERSION: 2.3.4
+  YQ_VERSION: v4.32.2
+
+  DOWNLOADS_DIRECTORY: $HOME/downloads
+  TOOLING_ARCH: amd64
+  TOOLING_OS:
+    sh: uname -s | tr "[:upper:]" "[:lower:]"
+
+tasks:
+
+  create-downloads-directory:
+    internal: true
+    desc: Creates a $HOME/downloads folder if one does not exist
+    cmds:
+      - mkdir -p $HOME/downloads
+    status:
+      - test -d $HOME/downloads
+
+  install-_all:
+    desc: Install/update ALL tooling
+    cmds:
+      - task: install-age
+      - task: install-cilium-cli
+      - task: install-cfssl-toolkit
+      - task: install-clusterctl
+      - task: install-flux
+      - task: install-github-cli
+      - task: install-helm
+      # - task: install-kubeadm
+      - task: install-kubectl
+      - task: install-packer
+      - task: install-pre-commit
+      - task: install-sops
+      - task: install-talosctl
+      - task: install-terraform
+      - task: install-yq
+
+  install-age:
+    desc: Install age
+    vars:
+      DOWNLOAD_FILENAME: age-{{.AGE_VERSION}}-{{.TOOLING_OS}}-{{.TOOLING_ARCH}}.tar.gz
+      USR_LOCAL_BIN_FILENAME: /usr/local/bin/age-{{.AGE_VERSION}}
+      AGE_URL: https://github.com/FiloSottile/age/releases/download/{{.AGE_VERSION}}/{{.DOWNLOAD_FILENAME}}
+    preconditions:
+      - sh: curl --location --silent --show-error --fail --head {{.AGE_URL}}
+        msg: |
+          age cannot be found at provided URL: {{.AGE_URL}} (it's possible the provider changed their download location for release files)
+    cmds:
+      - task: create-downloads-directory
+      - curl --location --silent --output {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.AGE_URL}}
+      - tar --directory {{.DOWNLOADS_DIRECTORY}} -xzf {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} age/age
+      - sudo install -o root -g root -m 0755 {{.DOWNLOADS_DIRECTORY}}/age/age /usr/local/bin/age-{{.AGE_VERSION}}
+      - sudo ln --force /usr/local/bin/age-{{.AGE_VERSION}} /usr/local/bin/age
+      - rm -Rf {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.DOWNLOADS_DIRECTORY}}/age
+    status:
+      - test -f {{.USR_LOCAL_BIN_FILENAME}}
+
+  install-cilium-cli:
+    desc: Install cilium-cli
+    vars:
+      DOWNLOAD_FILENAME: cilium-{{.TOOLING_OS}}-{{.TOOLING_ARCH}}.tar.gz
+      USR_LOCAL_BIN_FILENAME: /usr/local/bin/cilium-{{.CILIUM_CLI_VERSION}}
+      DOWNLOAD_URL: https://github.com/cilium/cilium-cli/releases/download/v{{.CILIUM_CLI_VERSION}}/{{.DOWNLOAD_FILENAME}}
+    preconditions:
+      - sh: curl --location --silent --show-error --fail --head {{.DOWNLOAD_URL}}
+        msg: |
+          cilium cannot be found at provided URL: {{.DOWNLOAD_URL}} (it's possible the provider changed their download location for release files)
+    cmds:
+      - task: create-downloads-directory
+      - curl --location --silent --output {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.DOWNLOAD_URL}}
+      - tar --directory {{.DOWNLOADS_DIRECTORY}} -xzf {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} cilium
+      - sudo install -o root -g root -m 0755 {{.DOWNLOADS_DIRECTORY}}/cilium /usr/local/bin/cilium-{{.CILIUM_CLI_VERSION}}
+      - sudo ln --force /usr/local/bin/cilium-{{.CILIUM_CLI_VERSION}} /usr/local/bin/cilium
+      - rm -Rf {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.DOWNLOADS_DIRECTORY}}/cilium
+    status:
+      - test -f {{.USR_LOCAL_BIN_FILENAME}}
+
+  install-cfssl-toolkit:
+    desc: Install cfssl-certinfo, cfssljson, and cfssl
+    cmds:
+      # - task: install-cfssl-bundle
+      - task: install-cfssl-certinfo
+      # - task: install-cfssl-newkey
+      # - task: install-cfssl-scan
+      - task: install-cfssl-cfssljson
+      - task: install-cfssl-cfssl
+      - task: install-cfssl-mkbundle
+      # - task: install-cfssl-multirootca
+
+  install-cfssl-certinfo:
+    internal: true
+    desc: Install cfssl-certinfo
+    vars:
+      DOWNLOAD_FILENAME: cfssl-certinfo_{{.CFSSL_TOOLKIT_VERSION}}_{{.TOOLING_OS}}_{{.TOOLING_ARCH}}
+      USR_LOCAL_BIN_FILENAME: /usr/local/bin/cfssl-certinfo-{{.CFSSL_TOOLKIT_VERSION}}
+      DOWNLOAD_URL: https://github.com/cloudflare/cfssl/releases/download/v{{.CFSSL_TOOLKIT_VERSION}}/{{.DOWNLOAD_FILENAME}}
+    preconditions:
+      - sh: curl --location --silent --show-error --fail --head {{.DOWNLOAD_URL}}
+        msg: |
+          cfssl-certinfo cannot be found at provided URL: {{.DOWNLOAD_URL}} (it's possible the provider changed their download location for release files)
+    cmds:
+      - task: create-downloads-directory
+      - curl --location --silent --output {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.DOWNLOAD_URL}}
+      - sudo install -o root -g root -m 0755 {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.USR_LOCAL_BIN_FILENAME}}
+      - sudo ln --force {{.USR_LOCAL_BIN_FILENAME}} /usr/local/bin/cfssl-certinfo
+      - rm -Rf {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}}
+    status:
+      - test -f {{.USR_LOCAL_BIN_FILENAME}}
+
+  install-cfssl-cfssljson:
+    internal: true
+    desc: Install cfssl-cfssljson
+    vars:
+      DOWNLOAD_FILENAME: cfssljson_{{.CFSSL_TOOLKIT_VERSION}}_{{.TOOLING_OS}}_{{.TOOLING_ARCH}}
+      USR_LOCAL_BIN_FILENAME: /usr/local/bin/cfssljson-{{.CFSSL_TOOLKIT_VERSION}}
+      DOWNLOAD_URL: https://github.com/cloudflare/cfssl/releases/download/v{{.CFSSL_TOOLKIT_VERSION}}/{{.DOWNLOAD_FILENAME}}
+    preconditions:
+      - sh: curl --location --silent --show-error --fail --head {{.DOWNLOAD_URL}}
+        msg: |
+          cfssljson cannot be found at provided URL: {{.DOWNLOAD_URL}} (it's possible the provider changed their download location for release files)
+    cmds:
+      - task: create-downloads-directory
+      - curl --location --silent --output {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.DOWNLOAD_URL}}
+      - sudo install -o root -g root -m 0755 {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.USR_LOCAL_BIN_FILENAME}}
+      - sudo ln --force {{.USR_LOCAL_BIN_FILENAME}} /usr/local/bin/cfssljson
+      - rm -Rf {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}}
+    status:
+      - test -f {{.USR_LOCAL_BIN_FILENAME}}
+
+  install-cfssl-cfssl:
+    internal: true
+    desc: Install cfssl-cfssl
+    vars:
+      DOWNLOAD_FILENAME: cfssl_{{.CFSSL_TOOLKIT_VERSION}}_{{.TOOLING_OS}}_{{.TOOLING_ARCH}}
+      USR_LOCAL_BIN_FILENAME: /usr/local/bin/cfssl-{{.CFSSL_TOOLKIT_VERSION}}
+      DOWNLOAD_URL: https://github.com/cloudflare/cfssl/releases/download/v{{.CFSSL_TOOLKIT_VERSION}}/{{.DOWNLOAD_FILENAME}}
+    preconditions:
+      - sh: curl --location --silent --show-error --fail --head {{.DOWNLOAD_URL}}
+        msg: |
+          cfssl cannot be found at provided URL: {{.DOWNLOAD_URL}} (it's possible the provider changed their download location for release files)
+    cmds:
+      - task: create-downloads-directory
+      - curl --location --silent --output {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.DOWNLOAD_URL}}
+      - sudo install -o root -g root -m 0755 {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.USR_LOCAL_BIN_FILENAME}}
+      - sudo ln --force {{.USR_LOCAL_BIN_FILENAME}} /usr/local/bin/cfssl
+      - rm -Rf {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}}
+    status:
+      - test -f {{.USR_LOCAL_BIN_FILENAME}}
+
+  install-cfssl-mkbundle:
+    desc: Install mkbundle
+    vars:
+      DOWNLOAD_FILENAME: mkbundle_{{.CFSSL_TOOLKIT_VERSION}}_{{.TOOLING_OS}}_{{.TOOLING_ARCH}}
+      USR_LOCAL_BIN_FILENAME: /usr/local/bin/mkbundle-{{.CFSSL_TOOLKIT_VERSION}}
+      DOWNLOAD_URL: https://github.com/cloudflare/cfssl/releases/download/v{{.CFSSL_TOOLKIT_VERSION}}/{{.DOWNLOAD_FILENAME}}
+    preconditions:
+      - sh: curl --location --silent --show-error --fail --head {{.DOWNLOAD_URL}}
+        msg: |
+          mkbundle cannot be found at provided URL: {{.DOWNLOAD_URL}} (it's possible the provider changed their download location for release files)
+    cmds:
+      - task: create-downloads-directory
+      - curl --location --silent --output {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.DOWNLOAD_URL}}
+      - sudo install -o root -g root -m 0755 {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.USR_LOCAL_BIN_FILENAME}}
+      - sudo ln --force {{.USR_LOCAL_BIN_FILENAME}} /usr/local/bin/mkbundle
+      - rm -Rf {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}}
+    status:
+      - test -f {{.USR_LOCAL_BIN_FILENAME}}
+
+  install-clusterctl:
+    desc: Install clusterctl
+    vars:
+      DOWNLOAD_FILENAME: clusterctl-{{.TOOLING_OS}}-{{.TOOLING_ARCH}}
+      USR_LOCAL_BIN_FILENAME: /usr/local/bin/clusterctl-{{.CLUSTERCTL_VERSION}}
+      CLUSTERCTL_URL: https://github.com/kubernetes-sigs/cluster-api/releases/download/{{.CLUSTERCTL_VERSION}}/{{.DOWNLOAD_FILENAME}}
+    preconditions:
+      - sh: curl --location --silent --show-error --fail --head {{.CLUSTERCTL_URL}}
+        msg: |
+          clusterctl cannot be found at provided URL: {{.CLUSTERCTL_URL}} (it's possible the provider changed their download location for release files)
+    cmds:
+      - task: create-downloads-directory
+      - curl --location --silent --output {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.CLUSTERCTL_URL}}
+      - sudo install -o root -g root -m 0755 {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} /usr/local/bin/clusterctl-{{.CLUSTERCTL_VERSION}}
+      - sudo ln --force /usr/local/bin/clusterctl-{{.CLUSTERCTL_VERSION}} /usr/local/bin/clusterctl
+      - rm {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}}
+    status:
+      - test -f {{.USR_LOCAL_BIN_FILENAME}}
+
+  install-flux:
+    desc: Install flux
+    vars:
+      DOWNLOAD_FILENAME: flux_{{.FLUX_VERSION}}_{{.TOOLING_OS}}_{{.TOOLING_ARCH}}.tar.gz
+      USR_LOCAL_BIN_FILENAME: /usr/local/bin/flux-{{.FLUX_VERSION}}
+      FLUX_URL: https://github.com/fluxcd/flux2/releases/download/v{{.FLUX_VERSION}}/{{.DOWNLOAD_FILENAME}}
+    preconditions:
+      - sh: curl --location --silent --show-error --fail --head {{.FLUX_URL}}
+        msg: |
+          flux cannot be found at provided URL: {{.FLUX_URL}} (it's possible the provider changed their download location for release files)
+    cmds:
+      - task: create-downloads-directory
+      - curl --location --silent --output {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.FLUX_URL}}
+      - tar --directory {{.DOWNLOADS_DIRECTORY}} -xzf {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} flux
+      - sudo install -o root -g root -m 0755 {{.DOWNLOADS_DIRECTORY}}/flux /usr/local/bin/flux-{{.FLUX_VERSION}}
+      - sudo ln --force /usr/local/bin/flux-{{.FLUX_VERSION}} /usr/local/bin/flux
+      - rm -Rf {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.DOWNLOADS_DIRECTORY}}/flux
+    status:
+      - test -f {{.USR_LOCAL_BIN_FILENAME}}
+
+  install-github-cli:
+    desc: Install github cli
+    vars:
+      DOWNLOAD_FILENAME: gh_{{.GITHUB_CLI_VERSION}}_{{.TOOLING_OS}}_{{.TOOLING_ARCH}}.tar.gz
+      DOWNLOAD_URL: https://github.com/cli/cli/releases/download/v{{.GITHUB_CLI_VERSION}}/{{.DOWNLOAD_FILENAME}}
+      USR_LOCAL_BIN_FILENAME: /usr/local/bin/gh-{{.GITHUB_CLI_VERSION}}
+    preconditions:
+      - sh: curl --location --silent --show-error --fail --head {{.DOWNLOAD_URL}}
+        msg: |
+          gh cannot be found at provided URL: {{.DOWNLOAD_URL}} (it's possible the provider changed their download location for release files)
+    cmds:
+      - task: create-downloads-directory
+      - curl --location --silent --output {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.DOWNLOAD_URL}}
+      - tar --directory {{.DOWNLOADS_DIRECTORY}} -xzf {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} gh_{{.GITHUB_CLI_VERSION}}_{{.TOOLING_OS}}_{{.TOOLING_ARCH}}/bin/gh
+      - sudo install -o root -g root -m 0755 {{.DOWNLOADS_DIRECTORY}}/gh_{{.GITHUB_CLI_VERSION}}_{{.TOOLING_OS}}_{{.TOOLING_ARCH}}/bin/gh /usr/local/bin/gh-{{.GITHUB_CLI_VERSION}}
+      - sudo ln --force /usr/local/bin/gh-{{.GITHUB_CLI_VERSION}} /usr/local/bin/gh
+      - rm -Rf {{.DOWNLOADS_DIRECTORY}}/gh_{{.GITHUB_CLI_VERSION}}_{{.TOOLING_OS}}_{{.TOOLING_ARCH}}
+    status:
+      - test -f {{.USR_LOCAL_BIN_FILENAME}}
+
+  install-helm:
+    desc: Install helm
+    vars:
+      DOWNLOAD_FILENAME: helm-{{.HELM_VERSION}}-{{.TOOLING_OS}}-{{.TOOLING_ARCH}}.tar.gz
+      USR_LOCAL_BIN_FILENAME: /usr/local/bin/helm-{{.HELM_VERSION}}
+      HELM_URL: https://get.helm.sh/{{.DOWNLOAD_FILENAME}}
+    preconditions:
+      - sh: curl --location --silent --show-error --fail --head {{.HELM_URL}}
+        msg: |
+          helm cannot be found at provided URL: {{.HELM_URL}} (it's possible the provider changed their download location for release files)
+    cmds:
+      - task: create-downloads-directory
+      - curl --location --silent --output {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.HELM_URL}}
+      - tar --directory {{.DOWNLOADS_DIRECTORY}} -xzf {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.TOOLING_OS}}-{{.TOOLING_ARCH}}/helm
+      - sudo install -o root -g root -m 0755 {{.DOWNLOADS_DIRECTORY}}/{{.TOOLING_OS}}-{{.TOOLING_ARCH}}/helm /usr/local/bin/helm-{{.HELM_VERSION}}
+      - sudo ln --force /usr/local/bin/helm-{{.HELM_VERSION}} /usr/local/bin/helm
+      - rm -Rf {{.DOWNLOADS_DIRECTORY}}/{{.TOOLING_OS}}-{{.TOOLING_ARCH}} {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}}
+    status:
+      - test -f {{.USR_LOCAL_BIN_FILENAME}}
+
+  install-kubectl:
+    desc: Install kubectl
+    vars:
+      DOWNLOAD_FILENAME: kubectl-{{.TOOLING_OS}}-{{.TOOLING_ARCH}}
+      USR_LOCAL_BIN_FILENAME: /usr/local/bin/kubectl-{{.KUBECTL_VERSION}}
+      KUBECTL_URL: https://dl.k8s.io/release/{{.KUBECTL_VERSION}}/bin/{{.TOOLING_OS}}/{{.TOOLING_ARCH}}/kubectl
+    preconditions:
+      - sh: curl --location --silent --show-error --fail --head {{.KUBECTL_URL}}
+        msg: |
+          kubectl cannot be found at provided URL: {{.KUBECTL_URL}} (it's possible the provider changed their download location for release files)
+    cmds:
+      - task: create-downloads-directory
+      - curl --location --silent --output {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.KUBECTL_URL}}
+      - sudo install -o root -g root -m 0755 {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} /usr/local/bin/kubectl-{{.KUBECTL_VERSION}}
+      - sudo ln --force /usr/local/bin/kubectl-{{.KUBECTL_VERSION}} /usr/local/bin/kubectl
+      - rm {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}}
+    status:
+      - test -f {{.USR_LOCAL_BIN_FILENAME}}
+
+  install-packer:
+    desc: Install packer
+    vars:
+      DOWNLOAD_FILENAME: packer_{{.PACKER_VERSION}}_{{.TOOLING_OS}}_{{.TOOLING_ARCH}}.zip
+      DOWNLOAD_URL: https://releases.hashicorp.com/packer/{{.PACKER_VERSION}}/{{.DOWNLOAD_FILENAME}}
+      USR_LOCAL_BIN_FILENAME: /usr/local/bin/packer-{{.PACKER_VERSION}}
+    preconditions:
+      - sh: curl --location --silent --show-error --fail --head {{.DOWNLOAD_URL}}
+        msg: |
+          packer cannot be found at provided URL: {{.DOWNLOAD_URL}} (it's possible the provider changed their download location for release files)
+    cmds:
+      - task: create-downloads-directory
+      - curl --location --silent --output {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.DOWNLOAD_URL}}
+      - unzip {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} -d {{.DOWNLOADS_DIRECTORY}} packer
+      - sudo install -o root -g root -m 0755 {{.DOWNLOADS_DIRECTORY}}/packer /usr/local/bin/packer-{{.PACKER_VERSION}}
+      - sudo ln --force /usr/local/bin/packer-{{.PACKER_VERSION}} /usr/local/bin/packer
+      - rm {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.DOWNLOADS_DIRECTORY}}/packer
+    status:
+      - test -f {{.USR_LOCAL_BIN_FILENAME}}
+
+  install-pre-commit:
+    desc: Install pre-commit
+    cmds:
+      - sudo apt-get update && sudo apt-get install -y pre-commit
+    status:
+      - which pre-commit
+
+  install-sops:
+    desc: Install sops
+    vars:
+      DOWNLOAD_FILENAME: sops-{{.SOPS_VERSION}}.{{.TOOLING_OS}}.{{.TOOLING_ARCH}}
+      USR_LOCAL_BIN_FILENAME: /usr/local/bin/sops-{{.SOPS_VERSION}}
+      SOPS_URL: https://github.com/mozilla/sops/releases/download/{{.SOPS_VERSION}}/{{.DOWNLOAD_FILENAME}}
+    preconditions:
+      - sh: curl --location --silent --show-error --fail --head {{.SOPS_URL}}
+        msg: |
+          sops cannot be found at provided URL: {{.SOPS_URL}} (it's possible the provider changed their download location for release files)
+    cmds:
+      - task: create-downloads-directory
+      - curl --location --silent --output {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.SOPS_URL}}
+      - sudo install -o root -g root -m 0755 {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} /usr/local/bin/sops-{{.SOPS_VERSION}}
+      - sudo ln --force /usr/local/bin/sops-{{.SOPS_VERSION}} /usr/local/bin/sops
+      - rm {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}}
+    status:
+      - test -f {{.USR_LOCAL_BIN_FILENAME}}
+
+  install-talosctl:
+    desc: Install talosctl
+    vars:
+      DOWNLOAD_FILENAME: talosctl-{{.TOOLING_OS}}-{{.TOOLING_ARCH}}
+      USR_LOCAL_BIN_FILENAME: /usr/local/bin/talosctl-{{.TALOSCTL_VERSION}}
+      TALOSCTL_URL: https://github.com/siderolabs/talos/releases/download/{{.TALOSCTL_VERSION}}/{{.DOWNLOAD_FILENAME}}
+    preconditions:
+      - sh: curl --location --silent --show-error --fail --head {{.TALOSCTL_URL}}
+        msg: |
+          talosctl cannot be found at provided URL: {{.TALOSCTL_URL}} (it's possible the provider changed their download location for release files)
+    cmds:
+      - task: create-downloads-directory
+      - curl --location --silent --output {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.TALOSCTL_URL}}
+      - sudo install -o root -g root -m 0755 {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} /usr/local/bin/talosctl-{{.TALOSCTL_VERSION}}
+      - sudo ln --force /usr/local/bin/talosctl-{{.TALOSCTL_VERSION}} /usr/local/bin/talosctl
+      - rm {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}}
+    status:
+      - test -f {{.USR_LOCAL_BIN_FILENAME}}
+
+  install-terraform:
+    desc: Install terraform
+    vars:
+      DOWNLOAD_FILENAME: terraform_{{.TERRAFORM_VERSION}}_{{.TOOLING_OS}}_{{.TOOLING_ARCH}}.zip
+      DOWNLOAD_URL: https://releases.hashicorp.com/terraform/{{.TERRAFORM_VERSION}}/{{.DOWNLOAD_FILENAME}}
+      USR_LOCAL_BIN_FILENAME: /usr/local/bin/terraform-{{.TERRAFORM_VERSION}}
+    preconditions:
+      - sh: curl --location --silent --show-error --fail --head {{.DOWNLOAD_URL}}
+        msg: |
+          terraform cannot be found at provided URL: {{.DOWNLOAD_URL}} (it's possible the provider changed their download location for release files)
+    cmds:
+      - task: create-downloads-directory
+      - curl --location --silent --output {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.DOWNLOAD_URL}}
+      - unzip {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} -d {{.DOWNLOADS_DIRECTORY}} terraform
+      - sudo install -o root -g root -m 0755 {{.DOWNLOADS_DIRECTORY}}/terraform /usr/local/bin/terraform-{{.TERRAFORM_VERSION}}
+      - sudo ln --force /usr/local/bin/terraform-{{.TERRAFORM_VERSION}} /usr/local/bin/terraform
+      - rm {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.DOWNLOADS_DIRECTORY}}/terraform
+    status:
+      - test -f {{.USR_LOCAL_BIN_FILENAME}}
+
+  install-vagrant:
+    desc: Install vagrant
+    vars:
+      DOWNLOAD_FILENAME: vagrant_{{.VAGRANT_VERSION}}_{{.TOOLING_OS}}_{{.TOOLING_ARCH}}.zip
+      DOWNLOAD_URL: https://releases.hashicorp.com/vagrant/{{.VAGRANT_VERSION}}/{{.DOWNLOAD_FILENAME}}
+      USR_LOCAL_BIN_FILENAME: /usr/local/bin/vagrant-{{.VAGRANT_VERSION}}
+    preconditions:
+      - sh: curl --location --silent --show-error --fail --head {{.DOWNLOAD_URL}}
+        msg: |
+          vagrant cannot be found at provided URL: {{.DOWNLOAD_URL}} (it's possible the provider changed their download location for release files)
+    cmds:
+      - task: create-downloads-directory
+      - curl --location --silent --output {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.DOWNLOAD_URL}}
+      - unzip {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} -d {{.DOWNLOADS_DIRECTORY}} vagrant
+      - sudo install -o root -g root -m 0755 {{.DOWNLOADS_DIRECTORY}}/vagrant /usr/local/bin/vagrant-{{.VAGRANT_VERSION}}
+      - sudo ln --force /usr/local/bin/vagrant-{{.VAGRANT_VERSION}} /usr/local/bin/vagrant
+      - rm {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.DOWNLOADS_DIRECTORY}}/vagrant
+    status:
+      - test -f {{.USR_LOCAL_BIN_FILENAME}}
+
+  install-yq:
+    desc: Install yq
+    vars:
+      DOWNLOAD_FILENAME: yq_{{.TOOLING_OS}}_{{.TOOLING_ARCH}}
+      USR_LOCAL_BIN_FILENAME: /usr/local/bin/yq-{{.YQ_VERSION}}
+      YQ_URL: https://github.com/mikefarah/yq/releases/download/{{.YQ_VERSION}}/{{.DOWNLOAD_FILENAME}}
+    preconditions:
+      - sh: curl --location --silent --show-error --fail --head {{.YQ_URL}}
+        msg: |
+          yq cannot be found at provided URL: {{.YQ_URL}} (it's possible the provider changed their download location for release files)
+    cmds:
+      - task: create-downloads-directory
+      - curl --location --silent --output {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.YQ_URL}}
+      - sudo install -o root -g root -m 0755 {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} /usr/local/bin/yq-{{.YQ_VERSION}}
+      - sudo ln --force /usr/local/bin/yq-{{.YQ_VERSION}} /usr/local/bin/yq
+      - rm {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}}
+    status:
+      - test -f {{.USR_LOCAL_BIN_FILENAME}}

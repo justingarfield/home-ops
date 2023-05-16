@@ -1,0 +1,14 @@
+{
+    "recommendations": [
+        "ms-vscode-remote.remote-wsl",
+        "golang.go",
+        "hashicorp.hcl",
+        "hashicorp.terraform",
+        "ms-vscode.makefile-tools",
+        "msazurermtools.azurerm-vscode-tools",
+        "task.vscode-task",
+        "redhat.vscode-yaml",
+        "davidanson.vscode-markdownlint",
+        "ms-vscode.azurecli"
+    ]
+}

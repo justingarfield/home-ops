@@ -1,0 +1,23 @@
+{
+    "CN": "<CERT_ORGANIZATION> Root Certificate Authority",
+    "key": {
+        "algo": "rsa",
+        "size": 4096
+    },
+    "hosts": [
+        ""
+    ],
+    "ca": {
+        "expiry": "87660h",
+        "pathlen": 2
+    },
+    "names": [
+        {
+            "E":  "<CERT_EMAIL>",
+            "O":  "<CERT_ORGANIZATION>",
+            "L":  "<CERT_LOCATION>",
+            "ST": "<CERT_STATE>",
+            "C":  "<CERT_COUNTRY>"
+        }
+    ]
+}

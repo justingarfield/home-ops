@@ -1,0 +1,115 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+---
+version: '3'
+
+vars:
+  _REPOSITORY_DIR:
+    sh: git rev-parse --show-toplevel
+  REPOSITORY_DIR: '{{ .REPOSITORY_DIR | default "{{ ._REPOSITORY_DIR }}" }}'
+  OUTPUT_DIR: '{{ .OUTPUT_DIR | default "{{ .REPOSITORY_DIR }}/_out" }}'
+
+includes:
+  _core: .taskfiles/_Core.yaml
+  # azure:
+  #  taskfile: .taskfiles/AzureTasks.yaml
+  #  aliases: [az]
+  # docker: .taskfiles/DockerTasks.yaml
+  # flux: .taskfiles/FluxTasks.yaml
+  # kubectl: .taskfiles/Kubectl.yaml
+  pki: .taskfiles/PKITasks.yaml
+  # precommit:
+  #  taskfile: .taskfiles/PreCommitTasks.yaml
+  #  aliases: [pc]
+  # production: .taskfiles/TalosTasks-ProductionCluster.yaml
+  # sops: .taskfiles/SOPSTasks.yaml
+  # staging: .taskfiles/TalosTasks-StagingCluster.yaml
+  # terraform:
+  #  taskfile: .taskfiles/TerraformTasks.yaml
+  #  aliases: [tf]
+  # tooling: .taskfiles/ToolingTasks.yaml
+  # virtualbox:
+  #  taskfile: .taskfiles/VirtualBoxTasks.yaml
+  #  aliases: [vbox]
+
+silent: false
+
+dotenv: ['.env.example.staging', '.env.example.common']
+# dotenv: ['.env.example.production', '.env.example.common']
+
+tasks:
+
+  default:
+    silent: true
+    cmds: ["task -l"]
+
+  generate-base-pki:
+    desc: Generates all of the base PKI files from scratch.
+    vars:
+      CERT_ORGANIZATION: '{{ .CERT_ORGANIZATION | default "Shiny Things Inc." }}'
+      CERT_EMAIL: '{{ .CERT_EMAIL | default "admin@shiny-things.tld" }}'
+      CERT_LOCATION: '{{ .CERT_LOCATION | default "San Francisco" }}'
+      CERT_STATE: '{{ .CERT_STATE | default "CA" }}'
+      CERT_COUNTRY: '{{ .CERT_COUNTRY | default "US" }}'
+    preconditions:
+      - test '{{ .CERT_ORGANIZATION }}'
+      - test '{{ .CERT_EMAIL }}'
+      - test '{{ .CERT_LOCATION }}'
+      - test '{{ .CERT_STATE }}'
+      - test '{{ .CERT_COUNTRY }}'
+    cmds:
+      # Root CA
+      - task: pki:generate-root-ca
+        vars: { CERT_ORGANIZATION: "{{ .CERT_ORGANIZATION }}", CERT_EMAIL: "{{ .CERT_EMAIL }}", CERT_LOCATION: "{{ .CERT_LOCATION }}", CERT_STATE: "{{ .CERT_STATE }}", CERT_COUNTRY: "{{ .CERT_COUNTRY }}" }
+
+      # Sites
+      - task: pki:generate-and-sign-site-intermediate-ca
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "azure" }
+      - task: pki:generate-and-sign-site-intermediate-ca
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "boston" }
+      - task: pki:generate-and-sign-site-intermediate-ca
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "colo" }
+      - task: pki:generate-and-sign-site-intermediate-ca
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "sacramento" }
+
+      # Site-level Functions
+      - task: pki:generate-and-sign-site-function-intermediate-ca
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "azure", FUNCTION: "infrastructure" }
+
+      - task: pki:generate-and-sign-site-function-intermediate-ca
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "boston", FUNCTION: "infrastructure" }
+
+      - task: pki:generate-and-sign-site-function-intermediate-ca
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "colo", FUNCTION: "infrastructure" }
+      - task: pki:generate-and-sign-site-function-intermediate-ca
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "colo", FUNCTION: "vendor-equipment" }
+
+      - task: pki:generate-and-sign-site-function-intermediate-ca
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "sacramento", FUNCTION: "infrastructure" }
+      - task: pki:generate-and-sign-site-function-intermediate-ca
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "sacramento", FUNCTION: "vendor-equipment" }
+
+      # Site-level Kubernetes Clusters
+      - task: pki:generate-and-sign-kubernetes-single-root-cas
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "colo", CLUSTER_NAME: "test" }
+      - task: pki:generate-and-sign-kubernetes-single-root-cas
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "colo", CLUSTER_NAME: "staging" }
+      - task: pki:generate-and-sign-kubernetes-single-root-cas
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "colo", CLUSTER_NAME: "production" }
+
+      # Firewall Web UI
+      - task: pki:generate-server-certificate
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "boston", FUNCTION: "infrastructure", SERVER_NAME: "firewall01", SERVER_IP: "192.168.21.2" }
+      - task: pki:generate-server-certificate
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "boston", FUNCTION: "infrastructure", SERVER_NAME: "firewall02", SERVER_IP: "192.168.21.3" }
+      - task: pki:generate-server-certificate
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "sacramento", FUNCTION: "infrastructure", SERVER_NAME: "firewall01", SERVER_IP: "192.168.22.2" }
+      - task: pki:generate-server-certificate
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "sacramento", FUNCTION: "infrastructure", SERVER_NAME: "firewall02", SERVER_IP: "192.168.22.3" }
+
+      # "Global" Client Cert
+      - task: pki:generate-root-client-certificate
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", CLIENT_NAME: "global.admin" }
+
+      # Azure Tenant Provisioner SP for Terraform
+      - task: pki:generate-site-client-certificate
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", CLIENT_NAME: "tenant.provisioner", SITE_NAME: "azure" }

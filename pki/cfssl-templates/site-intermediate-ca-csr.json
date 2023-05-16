@@ -1,0 +1,19 @@
+{
+    "CN": "<CERT_ORGANIZATION> - <SITE_NAME> Intermediate Certificate Authority",
+    "key": {
+        "algo": "rsa",
+        "size": 4096
+    },
+    "hosts": [
+        ""
+    ],
+    "names": [
+        {
+            "E":  "<CERT_EMAIL>",
+            "O":  "<CERT_ORGANIZATION>",
+            "L":  "<CERT_LOCATION>",
+            "ST": "<CERT_STATE>",
+            "C":  "<CERT_COUNTRY>"
+        }
+    ]
+}
