@@ -45,13 +45,13 @@ tasks:
   generate-base-pki:
     desc: Generates all of the base PKI files from scratch.
     vars:
-      CERT_ORGANIZATION: '{{ .CERT_ORGANIZATION | default "Shiny Things Inc." }}'
+      ORGANIZATION_NAME: '{{ .ORGANIZATION_NAME | default "Shiny Things Inc." }}'
       CERT_EMAIL: '{{ .CERT_EMAIL | default "admin@shiny-things.tld" }}'
       CERT_LOCATION: '{{ .CERT_LOCATION | default "San Francisco" }}'
       CERT_STATE: '{{ .CERT_STATE | default "CA" }}'
       CERT_COUNTRY: '{{ .CERT_COUNTRY | default "US" }}'
     preconditions:
-      - test '{{ .CERT_ORGANIZATION }}'
+      - test '{{ .ORGANIZATION_NAME }}'
       - test '{{ .CERT_EMAIL }}'
       - test '{{ .CERT_LOCATION }}'
       - test '{{ .CERT_STATE }}'
@@ -59,7 +59,7 @@ tasks:
     cmds:
       # Root CA
       - task: pki:generate-root-ca
-        vars: { CERT_ORGANIZATION: "{{ .CERT_ORGANIZATION }}", CERT_EMAIL: "{{ .CERT_EMAIL }}", CERT_LOCATION: "{{ .CERT_LOCATION }}", CERT_STATE: "{{ .CERT_STATE }}", CERT_COUNTRY: "{{ .CERT_COUNTRY }}" }
+        vars: { ORGANIZATION_NAME: "{{ .ORGANIZATION_NAME }}", CERT_EMAIL: "{{ .CERT_EMAIL }}", CERT_LOCATION: "{{ .CERT_LOCATION }}", CERT_STATE: "{{ .CERT_STATE }}", CERT_COUNTRY: "{{ .CERT_COUNTRY }}" }
 
       # Sites
       - task: pki:generate-and-sign-site-intermediate-ca

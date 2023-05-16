@@ -2,16 +2,6 @@
 ---
 version: '3'
 
-vars:
-  _REPOSITORY_DIR:
-    sh: git rev-parse --show-toplevel
-  REPOSITORY_DIR: '{{ .REPOSITORY_DIR | default "{{ ._REPOSITORY_DIR }}" }}'
-  REPOSITORY_REMOTE_ORIGIN_NAME:
-    sh: basename -s .git `git config --get remote.origin.url`
-  REPOSITORY_REMOTE_ORIGIN_URL:
-    sh: git config --get remote.origin.url
-  OUTPUT_DIR: '{{ .OUTPUT_DIR | default "{{ .REPOSITORY_DIR }}/_out" }}'
-
 tasks:
 
   ensure-directory-exists:
