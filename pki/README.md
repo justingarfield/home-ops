@@ -21,7 +21,7 @@ This allows me to share as-much of my workflow with you as possible, but not exp
 | `CERT_COUNTRY` |  |  |
 | `CERT_STATE` |  |  |
 | `CERT_LOCATION` |  |  |
-| `CERT_ORGANIZATION` |  |  |
+| `ORGANIZATION_NAME` |  |  |
 | `SITE_NAME` |  |  |
 | `CERT_DOMAIN` |  |  |
 

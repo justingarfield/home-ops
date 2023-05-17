@@ -12,17 +12,17 @@ tasks:
   generate-secrets-bundle-from-pki-output-folder:
     desc: Generate a secrets bundle for a Talos environment using pre-generated Single Root CA PKI directory.
     vars:
-      CERT_ORGANIZATION: '{{ .CERT_ORGANIZATION }}'
+      ORGANIZATION_NAME: '{{ .ORGANIZATION_NAME }}'
       CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
       K8S_PKI_DIR: '{{ .K8S_PKI_DIR }}'
-      _CLEAN_ORG_NAME: '{{ .CERT_ORGANIZATION | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." "" }}'
+      _CLEAN_ORG_NAME: '{{ .ORGANIZATION_NAME | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." "" }}'
       _CLUSTER_DIR: '{{ .TALOS_DIR }}/{{ .CLUSTER_NAME }}-cluster'
       _SECRETS_BUNDLE_FILENAME: '{{ ._CLUSTER_DIR }}/secrets-bundle.yaml'
       _BOOTSTRAP_TOKEN:
         sh: kubeadm token generate
     preconditions:
-      - sh: test '{{ .CERT_ORGANIZATION }}'
-        msg: 'Please provide a valid CERT_ORGANIZATION'
+      - sh: test '{{ .ORGANIZATION_NAME }}'
+        msg: 'Please provide a valid ORGANIZATION_NAME'
       - sh: test '{{ ._BOOTSTRAP_TOKEN }}'
         msg: 'Issues using kubeadm to generate a bootstrap token _BOOTSTRAP_TOKEN'
       - sh: test '{{ .CLUSTER_NAME }}'
@@ -128,7 +128,9 @@ tasks:
             --set=cgroup.autoMount.enabled=false \
             --set=cgroup.hostRoot=/sys/fs/cgroup \
             --set=k8sServiceHost="{{ .CLUSTER_NAME }}-control-plane.{{ .CLUSTER_DOMAIN }}" \
-            --set=k8sServicePort="{{ .CLUSTER_API_SERVER_PORT }}" > {{ .CLUSTER_DIR }}/cilium.yaml
+            --set=k8sServicePort="{{ .CLUSTER_API_SERVER_PORT }}" > {{ .CLUSTER_DIR }}/cilium.yaml \
+            --set bgp.enabled=true \
+            --set bgp.announce.loadbalancerIP=true
 
       - kubectl apply -f {{ .CLUSTER_DIR }}/cilium.yaml
 

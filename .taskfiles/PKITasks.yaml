@@ -24,15 +24,6 @@ vars:
 
 tasks:
 
-  teehee:
-    cmds:
-      - echo {{.REPOSITORY_DIR}}
-      - echo {{.PKI_SRC_DIR}}
-      - echo {{.PKI_TPL_DIR}}
-      - echo {{.OUTPUT_DIR}}
-      - echo {{.ENVIRONMENT_NAME}}
-      - echo {{.PKI_OUT_DIR}}
-
   generate-root-ca:
     desc: Generates a Root Certificiate Authority (CA) for an Organization.
     vars:

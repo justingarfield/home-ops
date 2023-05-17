@@ -1,5 +1,5 @@
 {
-    "CN": "<CERT_ORGANIZATION> Root Certificate Authority",
+    "CN": "<ORGANIZATION_NAME> Root Certificate Authority",
     "key": {
         "algo": "rsa",
         "size": 4096
@@ -14,7 +14,7 @@
     "names": [
         {
             "E":  "<CERT_EMAIL>",
-            "O":  "<CERT_ORGANIZATION>",
+            "O":  "<ORGANIZATION_NAME>",
             "L":  "<CERT_LOCATION>",
             "ST": "<CERT_STATE>",
             "C":  "<CERT_COUNTRY>"

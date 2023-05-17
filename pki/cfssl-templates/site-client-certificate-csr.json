@@ -12,7 +12,7 @@
             "C":  "<CERT_COUNTRY>",
             "ST": "<CERT_STATE>",
             "L":  "<CERT_LOCATION>",
-            "O":  "<CERT_ORGANIZATION>",
+            "O":  "<ORGANIZATION_NAME>",
             "OU": "<CERT_CN>",
             "E":  "<CERT_EMAIL>"
         }

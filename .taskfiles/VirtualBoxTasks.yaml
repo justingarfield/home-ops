@@ -2,15 +2,6 @@
 ---
 version: '3'
 
-vars:
-  V_BOX_MANAGE_BINARY: VBoxManage
-  BASE_FOLDER: 'C:\{{ .CLUSTER_NAME }}-vms'
-  DEFAULT_DISK_SIZE_IN_MB: 32768 # 32GB
-  DEFAULT_MEMORY_AMOUNT_IN_MB: 4096 # 4GB
-  TALOS_LINUX_ISO: 'C:\Users\jgarf\Downloads\talos-amd64.iso'
-  BRIDGE_ADAPTER: 'ASIX AX88179 USB 3.0 to Gigabit Ethernet Adapter #6'
-  VCPU_COUNT: 4
-
 tasks:
 
   create-vm:
@@ -19,21 +10,33 @@ tasks:
     vars:
       VM_NAME: '{{ .VM_NAME }}'
       CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
+    preconditions:
+      - sh: test '{{ .VM_NAME }}'
+        msg: 'Please provide a valid VM_NAME'
+      - sh: test '{{ .CLUSTER_NAME }}'
+        msg: 'Please provide a valid CLUSTER_NAME'
     cmds:
-      - '"{{ .V_BOX_MANAGE_BINARY }}" createvm --name="{{ .VM_NAME }}" --basefolder="{{ .BASE_FOLDER }}" --groups="/{{ .CLUSTER_NAME }}-cluster" --ostype=Linux_64 --register'
+      - '"{{ .VBOX_MANAGE_BINARY }}" createvm --name="{{ .VM_NAME }}" --basefolder="{{ .VBOX_BASE_FOLDER }}" --groups="/{{ .CLUSTER_NAME }}-cluster" --ostype=Linux_64 --register'
 
   configure-vm:
-    desc: Configures an existing virtual machine for use in a virtualized cluster.
     internal: true
+    desc: Configures an existing virtual machine for use in a virtualized cluster.
     vars:
       VM_NAME: '{{ .VM_NAME }}'
       CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
       MAC_ADDRESS: '{{ .MAC_ADDRESS | default "auto" }}'
+    preconditions:
+      - sh: test '{{ .VM_NAME }}'
+        msg: 'Please provide a valid VM_NAME'
+      - sh: test '{{ .CLUSTER_NAME }}'
+        msg: 'Please provide a valid CLUSTER_NAME'
+      - sh: test '{{ .MAC_ADDRESS }}'
+        msg: 'Please provide a valid MAC_ADDRESS'
     cmds:
       - |
-        "{{ .V_BOX_MANAGE_BINARY }}" modifyvm "{{ .VM_NAME }}" \
-          --memory={{ .DEFAULT_MEMORY_AMOUNT_IN_MB }} \
-          --cpus={{ .VCPU_COUNT }} \
+        "{{ .VBOX_MANAGE_BINARY }}" modifyvm "{{ .VM_NAME }}" \
+          --memory={{ .VBOX_RAM_SIZE_IN_MB }} \
+          --cpus={{ .VBOX_CPU_COUNT }} \
           --firmware=efi64 \
           --rtc-use-utc=on \
           --audio-enabled=off \
@@ -42,7 +45,7 @@ tasks:
           --boot3=none \
           --nic1=bridged \
           --macaddress1="{{ .MAC_ADDRESS }}" \
-          --bridge-adapter1="{{ .BRIDGE_ADAPTER }}" \
+          --bridge-adapter1="{{ .VBOX_BRIDGE_ADAPTER }}" \
           --hpet=on \
           --description="{{ .CLUSTER_NAME }} Cluster Node"
 
@@ -51,42 +54,61 @@ tasks:
     desc: Adds a PIIX4 (IDE) storage controller to an existing virtual machine.
     vars:
       VM_NAME: '{{ .VM_NAME }}'
+    preconditions:
+      - sh: test '{{ .VM_NAME }}'
+        msg: 'Please provide a valid VM_NAME'
     cmds:
-      - '"{{ .V_BOX_MANAGE_BINARY }}" storagectl "{{ .VM_NAME }}" --name="PIIX4 (IDE)" --add=ide --controller=PIIX4 --hostiocache=on'
+      - '"{{ .VBOX_MANAGE_BINARY }}" storagectl "{{ .VM_NAME }}" --name="PIIX4 (IDE)" --add=ide --controller=PIIX4 --hostiocache=on'
 
   add-ahci-storage-controller-to-vm:
     internal: true
     desc: Adds an AHCI (SATA) storage controller to an existing virtual machine.
     vars:
       VM_NAME: '{{ .VM_NAME }}'
+    preconditions:
+      - sh: test '{{ .VM_NAME }}'
+        msg: 'Please provide a valid VM_NAME'
     cmds:
-      - '"{{ .V_BOX_MANAGE_BINARY }}" storagectl "{{ .VM_NAME }}" --name="AHCI (SATA)" --add=sata --controller=IntelAhci --portcount=1'
+      - '"{{ .VBOX_MANAGE_BINARY }}" storagectl "{{ .VM_NAME }}" --name="AHCI (SATA)" --add=sata --controller=IntelAhci --portcount=1'
 
   attach-talos-livecd-to-vm:
     internal: true
     desc: Attaches the Talos Linux ISO Live CD to an existing virtual machine.
     vars:
       VM_NAME: '{{ .VM_NAME }}'
+      VBOX_TALOS_LINUX_ISO: '{{ .VBOX_TALOS_LINUX_ISO }}'
+    preconditions:
+      - sh: test '{{ .VM_NAME }}'
+        msg: 'Please provide a valid VM_NAME'
+      - sh: test '{{ .VBOX_TALOS_LINUX_ISO }}'
+        msg: 'Please provide a valid VBOX_TALOS_LINUX_ISO'
     cmds:
-      - '"{{ .V_BOX_MANAGE_BINARY }}" storageattach "{{ .VM_NAME }}" --storagectl="PIIX4 (IDE)" --port=0 --device=0 --type=dvddrive --medium="{{ .TALOS_LINUX_ISO }}" --tempeject=on'
+      - '"{{ .VBOX_MANAGE_BINARY }}" storageattach "{{ .VM_NAME }}" --storagectl="PIIX4 (IDE)" --port=0 --device=0 --type=dvddrive --medium="{{ .VBOX_TALOS_LINUX_ISO }}" --tempeject=on'
 
   create-virtual-disk-for-vm:
     internal: true
     desc: Creates a new Virtual Disk (in VDI format).
     vars:
       VM_NAME: '{{ .VM_NAME }}'
+    preconditions:
+      - sh: test '{{ .VM_NAME }}'
+        msg: 'Please provide a valid VM_NAME'
     cmds:
-      - '"{{ .V_BOX_MANAGE_BINARY }}" createmedium --filename="{{ .BASE_FOLDER }}\{{ .CLUSTER_NAME }}-cluster\{{ .VM_NAME }}\{{ .VM_NAME }}.vdi" --size={{ .DEFAULT_DISK_SIZE_IN_MB }}'
+      - '"{{ .VBOX_MANAGE_BINARY }}" createmedium --filename="{{ .VBOX_BASE_FOLDER }}\{{ .CLUSTER_NAME }}-cluster\{{ .VM_NAME }}\{{ .VM_NAME }}.vdi" --size={{ .VBOX_HDD_SIZE_IN_MB }}'
 
   attach-virtual-disk-to-vm:
     internal: true
     desc: Attaches a Virtual Disk (.VDI) to an existing virtual machine.
     vars:
       VM_NAME: '{{ .VM_NAME }}'
+    preconditions:
+      - sh: test '{{ .VM_NAME }}'
+        msg: 'Please provide a valid VM_NAME'
     cmds:
-      - '"{{ .V_BOX_MANAGE_BINARY }}" storageattach "{{ .VM_NAME }}" --storagectl="AHCI (SATA)" --port=0 --device=0 --type=hdd --nonrotational=on --medium="{{ .BASE_FOLDER }}\{{ .CLUSTER_NAME }}-cluster\{{ .VM_NAME }}\{{ .VM_NAME }}.vdi"'
+      - '"{{ .VBOX_MANAGE_BINARY }}" storageattach "{{ .VM_NAME }}" --storagectl="AHCI (SATA)" --port=0 --device=0 --type=hdd --nonrotational=on --medium="{{ .VBOX_BASE_FOLDER }}\{{ .CLUSTER_NAME }}-cluster\{{ .VM_NAME }}\{{ .VM_NAME }}.vdi"'
 
   create-cluster-node-vm:
+    internal: true
     desc: Creates and configures all the virtualized resources required for a virtualized cluster node.
     vars:
       CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
@@ -102,7 +124,7 @@ tasks:
       - task: add-ahci-storage-controller-to-vm
         vars: { VM_NAME: "{{ .VM_NAME }}" }
       - task: attach-talos-livecd-to-vm
-        vars: { VM_NAME: "{{ .VM_NAME }}" }
+        vars: { VM_NAME: "{{ .VM_NAME }}", VBOX_TALOS_LINUX_ISO: "{{ .VBOX_TALOS_LINUX_ISO }}" }
       - task: create-virtual-disk-for-vm
         vars: { VM_NAME: "{{ .VM_NAME }}", CLUSTER_NAME: "{{ .CLUSTER_NAME }}" }
       - task: attach-virtual-disk-to-vm
@@ -113,13 +135,19 @@ tasks:
     dsec:
     vars:
       VM_NAME: '{{ .VM_NAME }}'
+    preconditions:
+      - sh: test '{{ .VM_NAME }}'
+        msg: 'Please provide a valid VM_NAME'
     cmds:
-      - '"{{ .V_BOX_MANAGE_BINARY }}" startvm "{{ .VM_NAME }}" --type=gui'
+      - '"{{ .VBOX_MANAGE_BINARY }}" startvm "{{ .VM_NAME }}" --type=gui'
 
-  start-virtualized-cluster:
+  start-cluster:
     desc: Starts the VMs associate with a particular virtualized cluster.
     vars:
-      CLUSTER_NAME: '{{ .CLUSTER_NAME | default "staging" }}'
+      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
+    preconditions:
+      - sh: test '{{ .CLUSTER_NAME }}'
+        msg: 'Please provide a valid CLUSTER_NAME'
     cmds:
       - task: start-vm
         vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp01" }
@@ -138,9 +166,9 @@ tasks:
     vars:
       VM_NAME: '{{ .VM_NAME }}'
     cmds:
-      - '"{{ .V_BOX_MANAGE_BINARY }}" controlvm "{{ .VM_NAME }}" acpipowerbutton'
+      - '"{{ .VBOX_MANAGE_BINARY }}" controlvm "{{ .VM_NAME }}" acpipowerbutton'
 
-  stop-virtualized-cluster:
+  stop-cluster:
     desc: Stops the VMs associate with a particular virtualized cluster.
     vars:
       CLUSTER_NAME: '{{ .CLUSTER_NAME | default "staging" }}'
@@ -156,10 +184,13 @@ tasks:
       - task: stop-vm
         vars: { VM_NAME: "{{ .CLUSTER_NAME }}-wk02" }
 
-  create-virtualized-cluster:
+  create-cluster:
     desc: Builds-out a virtualized Kubernetes 3-node Control Plane / 2-node Worker Plane using Talos Linux.
     vars:
-      CLUSTER_NAME: '{{ .CLUSTER_NAME | default "staging" }}'
+      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
+    preconditions:
+      - sh: test '{{ .CLUSTER_NAME }}'
+        msg: 'Please provide a valid CLUSTER_NAME'
     cmds:
       - task: create-cluster-node-vm
         vars: { CLUSTER_NAME: "{{ .CLUSTER_NAME }}", VM_NAME: "{{ .CLUSTER_NAME }}-cp01", MAC_ADDRESS: "001337133701" }
@@ -172,10 +203,10 @@ tasks:
       - task: create-cluster-node-vm
         vars: { CLUSTER_NAME: "{{ .CLUSTER_NAME }}", VM_NAME: "{{ .CLUSTER_NAME }}-wk02", MAC_ADDRESS: "001337133705" }
 
-  snapshot-virtualized-cluster:
+  snapshot-cluster:
     desc: Snapshots a virtualized Kubernetes 3-node Control Plane / 2-node Worker Plane.
     vars:
-      CLUSTER_NAME: '{{ .CLUSTER_NAME | default "staging" }}'
+      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
       SNAPSHOT_NAME: '{{ .SNAPSHOT_NAME }}'
       SNAPSHOT_DESCRIPTION: '{{ .SNAPSHOT_DESCRIPTION | default "" }}'
     cmds:
