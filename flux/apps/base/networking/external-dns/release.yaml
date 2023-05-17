@@ -35,7 +35,7 @@ spec:
     #  - valueFrom:
     #      secretKeyRef:
     #        name: cluster-secrets
-    #        key: PRIVATE_DOMAIN
+    #        key: PRIVATE_DNS_ZONE
     #        namespace: default
     #        optional: false
     resources:

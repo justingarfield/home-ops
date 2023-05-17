@@ -4,6 +4,6 @@ kind: Kustomization
 namespace: database
 resources:
   # - secret.sops.yaml
-  - helm-release.yaml
-  - cluster.yaml
-  - scheduled-backup.yaml
+  # - release.yaml
+  # - cluster.yaml
+  # - scheduled-backup.yaml

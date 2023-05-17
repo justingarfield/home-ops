@@ -19,9 +19,3 @@ spec:
             subscriptionID: ${CERT_MANAGER_AZURE_SUBSCRIPTION_ID}
             tenantID: ${CERT_MANAGER_AZURE_TENANT_ID}
             resourceGroupName: ${CERT_MANAGER_AZURE_RESOURCE_GROUP_ID}
-            hostedZoneName: ${CERT_MANAGER_AZURE_DNS_ZONE}
-            environment: AzurePublicCloud
-        selector:
-          dnsZones:
-            - ${PUBLIC_DOMAIN}
-            - ${PRIVATE_DOMAIN}

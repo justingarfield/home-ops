@@ -94,11 +94,10 @@ tasks:
     desc: Apply a Machine Config to a particular cluster node
     vars:
       CLUSTER_NAME: "{{.CLUSTER_NAME}}"
-      NODE: "{{.NODE}}"
       NODE_NAME: "{{.NODE_NAME}}"
       CLUSTER_DIR: "{{.TALOS_DIR}}/{{.CLUSTER_NAME}}-cluster"
     cmds:
-      - talosctl apply-config --insecure --nodes {{.NODE}} --file {{.CLUSTER_DIR}}/machine-configs/{{.NODE_NAME}}.yaml
+      - talosctl apply-config --insecure --nodes {{.NODE_NAME}}.{{.CLUSTER_DOMAIN}} --file {{.CLUSTER_DIR}}/machine-configs/{{.NODE_NAME}}.yaml
 
   bootstrap-etcd:
     internal: true
@@ -106,7 +105,7 @@ tasks:
     vars:
       CLUSTER_NAME: "{{.CLUSTER_NAME}}"
     cmds:
-      - talosctl bootstrap --nodes {{.CLUSTER_NAME}}-cp01.{{.CLUSTER_DOMAIN}}
+      - talosctl bootstrap --nodes k8s-cp01.{{.CLUSTER_DOMAIN}}
 
   install-cilium-via-helm:
     internal: true
@@ -127,11 +126,11 @@ tasks:
             --set=securityContext.capabilities.cleanCiliumState="{NET_ADMIN,SYS_ADMIN,SYS_RESOURCE}" \
             --set=cgroup.autoMount.enabled=false \
             --set=cgroup.hostRoot=/sys/fs/cgroup \
-            --set=k8sServiceHost="{{ .CLUSTER_NAME }}-control-plane.{{ .CLUSTER_DOMAIN }}" \
+            --set=k8sServiceHost="control-plane.{{ .CLUSTER_DOMAIN }}" \
             --set=k8sServicePort="{{ .CLUSTER_API_SERVER_PORT }}" > {{ .CLUSTER_DIR }}/cilium.yaml \
             --set bgp.enabled=true \
             --set bgp.announce.loadbalancerIP=true
-
+      - kubectl apply -f {{ .CLUSTER_DIR }}/cilium-bgp-config.yaml
       - kubectl apply -f {{ .CLUSTER_DIR }}/cilium.yaml
 
   machine-shutdown:

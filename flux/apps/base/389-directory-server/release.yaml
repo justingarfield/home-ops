@@ -12,7 +12,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: johanneskastl-389server
-        namespace: flux-system
+        namespace: 389-directory-server
   interval: 5m
   install:
     remediation:

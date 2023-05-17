@@ -94,32 +94,32 @@ spec:
                     cidr: 0.0.0.0/0
               ports:
                 # VPN traffic
-                - port: 501
-                  protocol: TCP
-                - port: 1197
+                # - port: ${PIA_TCP_PORT}
+                #  protocol: TCP
+                - port: ${PIA_UDP_PORT}
                   protocol: UDP
             - to:
                 - namespaceSelector: {}
     DNS: 172.16.1.1
-    clusterName: kubernetes.lesmerises.jgarfield.com
+    clusterName: ${CLUSTER_DOMAIN}
     routed_namespaces:
       - pvr
     settings:
       VPN_INTERFACE: tun0
-      VXLAN_ID: 43
+      VXLAN_ID: ${VXLAN_ID}
       VXLAN_IP_NETWORK: 172.16.1
       VPN_BLOCK_OTHER_TRAFFIC: true
-      VPN_TRAFFIC_PORT: 1197
-      NOT_ROUTED_TO_GATEWAY_CIDRS: "172.16.0.0/12 192.168.68.0/22"
-      VPN_LOCAL_CIDRS: "172.16.0.0/12 192.168.68.0/22"
+      VPN_TRAFFIC_PORT: ${PIA_UDP_PORT}
+      NOT_ROUTED_TO_GATEWAY_CIDRS: "172.16.0.0/12 ${K8S_HOST_NETWORK}"
+      VPN_LOCAL_CIDRS: "172.16.0.0/12 ${K8S_HOST_NETWORK}"
     # publicPorts:
     #  - hostname: qbittorrent
     #    IP: 10
     #    ports:
-    #      - type: tcp
-    #        port: ${SECRET_VPN_FORWARDED_PORT_1}
-    #      - type: tcp
-    #        port: ${SECRET_VPN_FORWARDED_PORT_1}
+    #    - type: udp
+    #      port: ${PIA_FORWARDED_PORT_UDP}
+    #    - type: tcp
+    #      port: ${PIA_FORWARDED_PORT_TCP}
     webhook:
       image:
         repository: ghcr.io/k8s-at-home/gateway-admision-controller

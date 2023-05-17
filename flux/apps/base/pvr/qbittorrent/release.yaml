@@ -45,21 +45,21 @@ spec:
         enabled: true
         ingressClassName: "cilium"
         annotations:
-          auth.home.arpa/enabled: "false"
+          # auth.home.arpa/enabled: "false"
           hajimari.io/icon: "download-network"
           nginx.ingress.kubernetes.io/configuration-snippet: |
             proxy_hide_header "x-webkit-csp";
             proxy_hide_header "content-security-policy";
             proxy_hide_header "X-Frame-Options";
             proxy_set_header Accept-Encoding "";
-            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${PUBLIC_DOMAIN}/css/base/qbittorrent/dracula.css"></head>';
+            sub_filter '</head>' '<link rel="stylesheet" type="text/css" href="https://theme-park.${PUBLIC_DNS_ZONE}/css/base/qbittorrent/dracula.css"></head>';
             sub_filter_once on;
         hosts:
-          - host: &host-release "{{ .Release.Name }}.${PUBLIC_DOMAIN}"
+          - host: &host-release "{{ .Release.Name }}.${PUBLIC_DNS_ZONE}"
             paths:
               - path: /
                 pathType: Prefix
-          - host: &host-custom "qb.${PUBLIC_DOMAIN}"
+          - host: &host-custom "qb.${PUBLIC_DNS_ZONE}"
             paths:
               - path: /
                 pathType: Prefix
@@ -96,12 +96,6 @@ spec:
       config:
         enabled: true
         existingClaim: qbittorrent-config-v1
-      media:
-        enabled: true
-        type: nfs
-        server: "nas01.${SECRET_PRIVATE_DOMAIN}"
-        path: /tank/share
-        mountPath: /media
     resources:
       requests:
         cpu: 10m

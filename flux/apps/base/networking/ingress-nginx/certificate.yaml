@@ -2,14 +2,14 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${PUBLIC_DOMAIN/./-}"
+  name: "${PRIVATE_DNS_ZONE/./-}"
   namespace: networking
 spec:
-  secretName: "${PUBLIC_DOMAIN/./-}-tls"
+  secretName: "${PRIVATE_DNS_ZONE/./-}-tls"
   issuerRef:
     name: letsencrypt-staging
     kind: ClusterIssuer
-  commonName: "${PUBLIC_DOMAIN}"
+  commonName: "${PRIVATE_DNS_ZONE}"
   dnsNames:
-    - "${PUBLIC_DOMAIN}"
-    - "*.${PUBLIC_DOMAIN}"
+    - "${PRIVATE_DNS_ZONE}"
+    - "*.${PRIVATE_DNS_ZONE}"

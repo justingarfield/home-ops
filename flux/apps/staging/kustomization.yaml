@@ -2,14 +2,19 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ../base/podinfo
-  - ../base/node-feature-discovery
-  - ../base/cert-manager
   - private-internet-access-credentials.sops.yaml
-  - ../base/pvr
+  # - ../base/389-directory-server
+  - ../base/cert-manager
+  # - ../base/database
+  # - ../base/media
+  # - ../base/monitoring
+  # - ../base/networking
+  - ../base/node-feature-discovery
   - ../base/pod-gateway
+  #- ../base/podinfo
+  - ../base/pvr
   - ../base/reloader
-  - load-balancer-ip-pool.yaml
   # - ../base/rook-ceph
-patchesStrategicMerge:
-  - podinfo-values.yaml
+  # - ../base/theme-park
+# patchesStrategicMerge:
+  # - podinfo-values.yaml

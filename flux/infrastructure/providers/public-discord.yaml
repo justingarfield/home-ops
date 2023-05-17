@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   type: discord
-  channel: continuous-deployment
+  channel: staging
   suspend: true
   secretRef:
     name: public-discord-webhook-url

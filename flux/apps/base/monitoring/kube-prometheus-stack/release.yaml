@@ -55,7 +55,7 @@ spec:
         annotations:
           hajimari.io/appName: "alertmanager"
         hosts:
-          - &host "alert-manager.${PUBLIC_DOMAIN}"
+          - &host "alert-manager.${PUBLIC_DNS_ZONE}"
         tls:
           - hosts:
               - *host
@@ -141,7 +141,7 @@ spec:
         annotations:
           hajimari.io/enable: "false"
         hosts:
-          - &host "prometheus.${PUBLIC_DOMAIN}"
+          - &host "prometheus.${PUBLIC_DNS_ZONE}"
         tls:
           - hosts:
               - *host

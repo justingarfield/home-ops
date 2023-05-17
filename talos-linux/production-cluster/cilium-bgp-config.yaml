@@ -7,11 +7,11 @@ metadata:
 data:
   config.yaml: |
     peers:
-    - peer-address: 192.168.60.1
+    - peer-address: 192.168.68.1
       peer-asn: 1337
-      my-asn: 60
+      my-asn: 68
     address-pools:
     - name: default
       protocol: bgp
       addresses:
-      - 10.25.0.10-10.25.3.250
+      - 10.68.0.10-10.68.3.250
