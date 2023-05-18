@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   - private-internet-access-credentials.sops.yaml
   # - ../base/389-directory-server
-  # - ../base/cert-manager
+  - ../base/cert-manager
   # - ../base/database
   # - ../base/media
   # - ../base/monitoring
