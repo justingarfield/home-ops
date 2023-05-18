@@ -11,6 +11,6 @@ resources:
 secretGenerator:
   - name: cluster-secrets
     files:
-      - ./flux/config/staging/cluster-secrets.sops.yaml
+      - ../../config/staging/cluster-secrets.sops.yaml
 configurations:
   - kustomizeconfig.yaml
