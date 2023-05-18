@@ -7,6 +7,6 @@ metadata:
 spec:
   type: discord
   channel: staging
-  suspend: true
+  suspend: false
   secretRef:
     name: public-discord-webhook-url
