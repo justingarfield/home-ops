@@ -33,11 +33,13 @@ spec:
       LIDARR__INSTANCE_NAME: Lidarr
       LIDARR__PORT: &port 80
       LIDARR__LOG_LEVEL: info
-    service:
-      main:
-        ports:
-          http:
-            port: *port
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
+      supplementalGroups:
+        - 5600
     persistence:
       config:
         enabled: true
