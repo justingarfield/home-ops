@@ -9,8 +9,8 @@ resources:
   - release.yaml
   - cluster-issuers
 secretGenerator:
-  - name: cluster-secrets
+  - name: cert-manager-secrets
     files:
-      - ../../config/staging/cluster-secrets.sops.yaml
+      - cert-manager-secrets.sops.yaml
 configurations:
   - kustomizeconfig.yaml
