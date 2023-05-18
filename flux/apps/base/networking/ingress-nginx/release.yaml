@@ -27,7 +27,7 @@ spec:
       namespace: cert-manager
   values:
     controller:
-      replicaCount: 3
+      replicaCount: 2
       updateStrategy:
         rollingUpdate:
           maxUnavailable: 1

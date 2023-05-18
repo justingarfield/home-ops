@@ -34,7 +34,7 @@ spec:
     env:
       TZ: "${TIMEZONE}"
       QBITTORRENT__PORT: &port 80
-      QBITTORRENT__BT_PORT: ${SECRET_VPN_FORWARDED_PORT_1}
+      QBITTORRENT__BT_PORT: ${PIA_FORWARDED_PORT_UDP}
     service:
       main:
         ports:
@@ -43,7 +43,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: "cilium"
+        ingressClassName: "nginx"
         annotations:
           # auth.home.arpa/enabled: "false"
           hajimari.io/icon: "download-network"
