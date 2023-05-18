@@ -5,4 +5,4 @@ namespace: networking
 resources:
   - repository.yaml
   - release.yaml
-  - certificate.yaml
+  - default-ssl-certificate.yaml

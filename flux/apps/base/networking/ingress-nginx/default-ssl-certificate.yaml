@@ -2,10 +2,10 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${PRIVATE_DNS_ZONE/./-/./-}"
+  name: "default-ssl-certificate"
   namespace: networking
 spec:
-  secretName: "${PRIVATE_DNS_ZONE/./-/./-}-tls"
+  secretName: "default-ssl-certificate-tls"
   issuerRef:
     name: letsencrypt-staging
     kind: ClusterIssuer
