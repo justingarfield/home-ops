@@ -3,8 +3,8 @@
 version: '3'
 
 vars:
-  FLUX_OUT_DIR: '{{ .DEFAULT_OUTPUT_DIR }}/flux'
-  SOPS_OUT_DIR: '{{ .DEFAULT_OUTPUT_DIR }}/sops'
+  FLUX_OUT_DIR: '{{ .OUTPUT_DIR }}/flux'
+  SOPS_OUT_DIR: '{{ .OUTPUT_DIR }}/sops'
 
 tasks:
 
@@ -16,7 +16,7 @@ tasks:
   install:
     desc: Install Flux into your cluster
     vars:
-      AGE_KEY_FILE: '{{ .AGE_KEY_FILE | default "{{ .SOPS_OUT_DIR }}/{{ .CLUSTER_NAME }}/age.agekey" }}'
+      AGE_KEY_FILE: '{{ .AGE_KEY_FILE | default "{{ .SOPS_OUT_DIR }}/age.agekey" }}'
     cmds:
       - kubectl apply --kustomize {{ .CLUSTER_DIR }}/bootstrap
       - task: create-sops-age-secret
@@ -28,7 +28,7 @@ tasks:
     desc:
     vars:
       CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
-      AGE_KEY_FILE: '{{ .AGE_KEY_FILE | default "{{ .SOPS_OUT_DIR }}/{{ .CLUSTER_NAME }}/age.agekey" }}'
+      AGE_KEY_FILE: '{{ .AGE_KEY_FILE | default "{{ .SOPS_OUT_DIR }}/age.agekey" }}'
     preconditions:
       - test {{ .CLUSTER_NAME }}
       - sh: test -f {{ .AGE_KEY_FILE }}
@@ -40,7 +40,7 @@ tasks:
     desc:
     vars:
       CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
-      AGE_KEY_FILE: '{{ .AGE_KEY_FILE | default "{{ .SOPS_OUT_DIR }}/{{ .CLUSTER_NAME }}/age.agekey" }}'
+      AGE_KEY_FILE: '{{ .AGE_KEY_FILE | default "{{ .SOPS_OUT_DIR }}/age.agekey" }}'
     preconditions:
       - test {{ .CLUSTER_NAME }}
       - sh: test -f "{{ .AGE_KEY_FILE }}"
