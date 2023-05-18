@@ -8,3 +8,9 @@ resources:
   - https://github.com/cert-manager/cert-manager/releases/download/v1.11.0/cert-manager.crds.yaml
   - release.yaml
   - cluster-issuers
+secretGenerator:
+  - name: cluster-secrets
+    files:
+      - ./flux/config/staging/cluster-secrets.sops.yaml
+configurations:
+  - kustomizeconfig.yaml
