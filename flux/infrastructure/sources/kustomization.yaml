@@ -4,8 +4,7 @@ kind: Kustomization
 namespace: flux-system
 resources:
   - angelnu.yaml
+  - bjw-s.yaml
   - external-dns.yaml
-  - jetstack.yaml
-  - johanneskastl-389server.yaml
   - k8s-at-home.yaml
   - sealed-secrets.yaml

@@ -25,16 +25,15 @@ tasks:
       - task: reconcile
 
   create-sops-age-secret:
-    desc:
+    desc: Creates a `sops-age` secret in the `flux-system`` namespace, using the generated Age key file.
     vars:
-      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
-      AGE_KEY_FILE: '{{ .AGE_KEY_FILE | default "{{ .SOPS_OUT_DIR }}/age.agekey" }}'
+      AGE_KEY_DIR: '{{ .AGE_KEY_DIR | default .SOPS_OUT_DIR }}'
+      _AGE_KEY_FILE: '{{ .AGE_KEY_DIR }}/age.agekey'
     preconditions:
-      - test {{ .CLUSTER_NAME }}
-      - sh: test -f {{ .AGE_KEY_FILE }}
-        msg: Age key file is not found. Did you forget to create it?
+      - sh: test -f {{ ._AGE_KEY_FILE }}
+        msg: Age key file is not found. Did you forget to create it? {{ ._AGE_KEY_FILE }}
     cmds:
-      - cat "{{ .AGE_KEY_FILE }}" | kubectl -n flux-system create secret generic sops-age --from-file=age.agekey=/dev/stdin
+      - cat "{{ ._AGE_KEY_FILE }}" | kubectl -n flux-system create secret generic sops-age --from-file=age.agekey=/dev/stdin
 
   replace-sops-age-secret:
     desc:
