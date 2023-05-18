@@ -83,18 +83,13 @@ tasks:
   create-cert-manager-spn:
     desc: Creates a new Service Principal in the current AAD Tenant...
     vars:
-      AZURE_CERT_MANAGER_SP_NAME: '{{ .AZURE_CERT_MANAGER_SP_NAME }}'
-      AZURE_DNS_ZONE_RESOURCE_GROUP: 'the-hive'
-      AZURE_DNS_ZONE: 'poweris.life'
-      ROOT_SUBSCRIPTION_ID: '{{ .ROOT_SUBSCRIPTION_ID }}'
-      DISPLAY_NAME: '{{ .DISPLAY_NAME }}'
-      CERT_FILE: '{{ .CERT_FILE }}'
+      AZURE_CERT_MANAGER_SP_NAME: '{{ .AZURE_CERT_MANAGER_SP_NAME | default "cert-manager" }}'
+      AZURE_DNS_ZONE_RESOURCE_GROUP: '{{ .AZURE_DNS_ZONE_RESOURCE_GROUP }}'
+      PUBLIC_DNS_ZONE: '{{ .PUBLIC_DNS_ZONE }}'
+      PRIVATE_DNS_ZONE: '{{ .PRIVATE_DNS_ZONE }}'
       EXISTING_SPN:
-        sh: az ad sp list --display-name "{{ .TENANT_PROVISIONER_SPN_NAME }}"
+        sh: az ad sp list --display-name "{{ .AZURE_CERT_MANAGER_SP_NAME }}" --output tsv
     preconditions:
-      - test {{ .ROOT_SUBSCRIPTION_ID }}
-      - test {{ .DISPLAY_NAME }}
-      - test -f {{ .CERT_FILE }}
       - test ! {{ .EXISTING_SPN }}
     cmds:
-      -
+      - ./scripts/create-cert-manager-spn.sh "{{ .AZURE_CERT_MANAGER_SP_NAME }}" "{{ .AZURE_DNS_ZONE_RESOURCE_GROUP }}" "{{ .PUBLIC_DNS_ZONE }}" "{{ .PRIVATE_DNS_ZONE }}"
