@@ -16,6 +16,6 @@ resources:
   - ../base/pvr
   - ../base/reloader
   # - ../base/rook-ceph
-  # - ../base/theme-park
+  - ../base/theme-park
 # patchesStrategicMerge:
   # - podinfo-values.yaml
