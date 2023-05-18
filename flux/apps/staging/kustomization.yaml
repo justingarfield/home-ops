@@ -9,7 +9,7 @@ resources:
   # - ../base/database
   # - ../base/media
   # - ../base/monitoring
-  # - ../base/networking
+  - ../base/networking
   - ../base/node-feature-discovery
   - ../base/pod-gateway
   #- ../base/podinfo
