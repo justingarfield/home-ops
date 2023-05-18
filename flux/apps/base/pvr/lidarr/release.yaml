@@ -38,10 +38,6 @@ spec:
         ports:
           http:
             port: *port
-    ingress:
-      main:
-        enabled: true
-        ingressClassName: "nginx"
     persistence:
       config:
         enabled: true

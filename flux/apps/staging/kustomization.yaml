@@ -13,7 +13,7 @@ resources:
   - ../base/node-feature-discovery
   - ../base/pod-gateway
   #- ../base/podinfo
-  - ../base/pvr
+  # - ../base/pvr
   - ../base/reloader
   # - ../base/rook-ceph
   # - ../base/theme-park
