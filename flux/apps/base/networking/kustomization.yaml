@@ -4,5 +4,5 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - echo-server
-  - ingress-nginx
+  # - ingress-nginx
   # - external-dns
