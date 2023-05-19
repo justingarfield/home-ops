@@ -2,9 +2,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - private-internet-access-credentials.sops.yaml
   - cert-manager.sops.yaml
-  - secrets.sops.yaml
+  - cluster-common.sops.yaml
+  - private-internet-access-credentials.sops.yaml
   # - ../base/389-directory-server
   - ../base/cert-manager
   # - ../base/database
@@ -18,5 +18,5 @@ resources:
   # - ../base/reloader
   # - ../base/rook-ceph
   # - ../base/theme-park
-# patchesStrategicMerge:
+  # patchesStrategicMerge:
   # - podinfo-values.yaml

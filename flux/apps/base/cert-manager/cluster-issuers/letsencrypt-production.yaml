@@ -12,10 +12,10 @@ spec:
     solvers:
       - dns01:
           azureDNS:
-            clientID: ${CERT_MANAGER_AZURE_SERVICE_PRINCIPAL_ID}
+            clientID: ${AZURE_DNS_CLIENT_ID}
             clientSecretSecretRef:
-              name: cert-manager-credential
-              key: CERT_MANAGER_AZURE_SP_PASSWORD
-            subscriptionID: ${CERT_MANAGER_AZURE_SUBSCRIPTION_ID}
-            tenantID: ${CERT_MANAGER_AZURE_TENANT_ID}
-            resourceGroupName: ${CERT_MANAGER_AZURE_RESOURCE_GROUP_NAME}
+              name: cert-manager
+              key: AZURE_DNS_CLIENTSECRET_SECRETREF
+            subscriptionID: ${AZURE_DNS_SUBSCRIPTION_ID}
+            tenantID: ${AZURE_DNS_TENANT_ID}
+            resourceGroupName: ${AZURE_DNS_RESOURCE_GROUP_NAME}
