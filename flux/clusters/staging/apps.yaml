@@ -19,5 +19,3 @@ spec:
     substituteFrom:
       - kind: Secret
         name: cluster-common
-      - kind: Secret
-        name: cert-manager
