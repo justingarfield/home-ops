@@ -12,7 +12,7 @@ resources:
   # - ../base/monitoring
   - ../base/networking
   - ../base/node-feature-discovery
-  - ../base/pod-gateway
+  # - ../base/pod-gateway
   #- ../base/podinfo
   - ../base/pvr
   - ../base/reloader
