@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: ./cluster/config
+  path: ./flux/clusters/staging/config
   prune: true
   sourceRef:
     kind: GitRepository
