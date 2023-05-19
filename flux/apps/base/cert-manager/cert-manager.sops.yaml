@@ -4,12 +4,13 @@ metadata:
     name: cert-manager
     namespace: cert-manager
 stringData:
-    AZURE_DNS_CLIENT_ID: ENC[AES256_GCM,data:NQ5sdVZfsvpolixPhUzsYyDllUJeBWxNUxOy8IyQKB6Yrixr,iv:ltAqORN2oiZkW//5PsHje9RH72oAIiRHQ2by0QU9hC8=,tag:pSTeae9tQS/mFJTDaY1a2A==,type:str]
-    AZURE_DNS_CLIENTSECRET_SECRETREF: ENC[AES256_GCM,data:W4vg0fwef51kxLf6m90n1zQVnXL4EMqPlHFpo1h2BZxDpGzK2SeZlQ==,iv:jobXLPaqDgSgsUjtiQNWyOJMGW75rkPGx0e3tRZgRdo=,tag:GAH9en/RvwZL/Gy2uhScFQ==,type:str]
-    AZURE_DNS_SUBSCRIPTION_ID: ENC[AES256_GCM,data:h53A1hh48tjrRIcoX+GdZYlxPpoGZSMHCHauEST5VVRwgrF7,iv:JJchOQvH5R8AhaZAbN9s0zbqljV6+sknYTI08/63/2Q=,tag:wkz0Quq7GItQxjTUs2hEtw==,type:str]
-    AZURE_DNS_TENANT_ID: ENC[AES256_GCM,data:AHt5HAVQaVS9YUbhHcccbIt7vVxcsvT7QWtyah5PBdYOec2Q,iv:gvIPJuvN4Je4NIPr1tykytyzm6DF/x2gTA+JacnUvHg=,tag:L7zdXUWV+TBOkF0BSFw4dA==,type:str]
-    AZURE_DNS_RESOURCE_GROUP_NAME: ENC[AES256_GCM,data:xkHB,iv:VGCY2V3UeRhn3Z8wCdEJRr8TIXv1Q9hCTeWoPPumGlw=,tag:OpPVG2UfNiLch5RJ0j/lGg==,type:str]
-    LETS_ENCRYPT_EMAIL: ENC[AES256_GCM,data:2hXnVqZacRQ9fC1Brlk3Wlkj4/QN+cVy7kT9YAe0TjtV,iv:uFGh0DfORMnLoO4mwXseXpy8QGnecUMIkddKBUwpDOw=,tag:6blAnw/K0mabB35x6ViqSQ==,type:str]
+    AZURE_DNS_CLIENT_ID: ENC[AES256_GCM,data:9lAUNGSV2k3pe0b/Gm4Ig8GeHZfewJJRTnO1WDrK4BqGEO8A,iv:ZInZHMbgkA19PbCj0Te308SQKCgL1fbSlivXSOdqg3w=,tag:fmntd5Xsu4bU9hBuBAT4Gw==,type:str]
+    AZURE_DNS_CLIENTSECRET_SECRETREF: ENC[AES256_GCM,data:VnEV/pe0KcB3gD9H3f24JJNP/MuWLPRoJPXA5f5nwXcBTQO4GTrxpQ==,iv:/Vv+DU7QuFuL087v+jQWRcVzri2p0wjlMiUiOOMLpWg=,tag:qDIGq86+/kEsdY2TviaOkA==,type:str]
+    AZURE_DNS_SUBSCRIPTION_ID: ENC[AES256_GCM,data:Bjdt0ePV1nKcGt3FOXHU0l7gDijBRLS11e2ESnlI9+8y93zP,iv:cslrIrgLEoGtVgJ2riz7zd7WCvXtrPXulU0hBhcMz/c=,tag:T3k1v3RZ2b+tw3vhytApzQ==,type:str]
+    AZURE_DNS_TENANT_ID: ENC[AES256_GCM,data:z27LgWitw7b7wWvt9xJ5LevGnjpmuxlkqpP57to753zoZlsN,iv:v1AT8B7bSxjTccl/qN6+4RisE47UFbSxNJoxr9aOmvw=,tag:+VvfCDyWfNkv05J8V0/nIg==,type:str]
+    AZURE_DNS_RESOURCE_GROUP_NAME: ENC[AES256_GCM,data:Ae25,iv:wzSBe1NeRLQfvN2UKxMu0imSuT9UijqMSGiURtdLHLI=,tag:8udYAnYPlhJC8m+shGxGcg==,type:str]
+    LETS_ENCRYPT_EMAIL: ENC[AES256_GCM,data:35wwHOEHVRlzkzoOTBRzDqzOPsjv9E2Rx7KdJIJPxdOc,iv:JuHRTuySceH4BsS/P6Zu8s8pYfqx/CL5OwVTeJMX8ZI=,tag:5tpCb4KRCGptl2YJxov5Lg==,type:str]
+    OPNSENSE_DNS_SERVER: ENC[AES256_GCM,data:XQ+RzOY6wpWUqLDG,iv:QkvbcxsgxFkNVFKlXLyH9+RGe3pkBC/6H2GMoCG01gs=,tag:hwm4bEYEljeRWtqV+UqOng==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -19,14 +20,14 @@ sops:
         - recipient: age1ntkvvzktwzhmzq9gcygrtpwxu3k8ghx9p0khk7jqjf5hgxklggvsv6zhvz
           enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBOZDl5ZFRMbWdxbEhCSXJY
-            c29MaFBJZVlBUUJTbWRiTml0SDhNelA3Z1F3CkJad3NzS2tacjhzSm5PMGg1ZktW
-            Tmd5VDhuZUs3YlBLMTJqenA1dmdmbFEKLS0tICtLNzVGazRiemltZ3Z6SlZ1Q3Vj
-            RUU5VklYRjhVZVZncXZINHJ1b1JlejAKRapMjyGYKiTMMUt6x1SvKSZIXaeTFMDa
-            5XL5lM/ORL9ANNM22NI9uNl3eZJpQe9jrywziVOJXjTUTPxgoKkhRA==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA4bFBWTGo3RWNpc1V5N0VI
+            eHVyR0lRdDAxRmtBbDYvUW5ySGxmdldrL1U4ClNreUdVNUcwL3NEZzdvdkNSOFRi
+            NTVOQ0l1dVpGMlBIVGFXT2RORVRMVzAKLS0tIEtXMTJhU3J1dFFRRGcwckxuODRt
+            YjE0alU4N3lKSGtBTlg1TVdsSVBPOFEKMGHGq4s9dc32Y2X5a7aKvOJtDPm7njPl
+            TKB5pKdo4DyBfj3kclHmT5wUuja4NhHpqmdojV8nUlTU40yeKi/13A==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-05-19T14:40:30Z"
-    mac: ENC[AES256_GCM,data:z9sqiyyp3oBDyzqdXxyrrJTdD7OClAkUv+VRs1mOKy9j07DXOj34OuHHFS2Kj+WgtGsDw1WfD/G+qnCErL9LOZ5hzmNAIu/CT4eupQ17QFWBnJDlhTL7T+KZEiSSbRyuTVU+dZ4XrZp+MNlIx09NgItO3kCKcQ9+2kKNt24x7xw=,iv:8q6UTFFLUFiSw24sleYlUitiV253j1fWR4xHjXYZlqs=,tag:PWcctjztzwlei1LGyX7j9g==,type:str]
+    lastmodified: "2023-05-19T15:41:38Z"
+    mac: ENC[AES256_GCM,data:T30iJ3HvLmngJkI/pulx3KkOF2Q68pj7Ahf/mZdfSUT8z1WOMnw0cI6jzExEFr6THhS5auRDe3Dx5XOOIn6CZBh0YEl7zTvQSGAluVB3bE1GBLKg+2Qg4XIk+Imm/h6v4mzQn7Ja6RAF+Tf4K6mZdFNnTpp4YwQaTt3oQQa/+Yc=,iv:gSMtATQPSMJHsL0xqEUU4rqyXnaV2qgE7TN3N5tKKeg=,tag:kUGlV9kVUuYKbU7Xi/QaOA==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.7.3
