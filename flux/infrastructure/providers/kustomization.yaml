@@ -6,5 +6,5 @@ namespace: flux-system
 resources:
   - private-discord-webhook-url.sops.yaml
   - private-discord.yaml
-  - public-discord-webhook-url.sops.yaml
-  - public-discord.yaml
+  # - public-discord-webhook-url.sops.yaml
+  # - public-discord.yaml
