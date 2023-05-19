@@ -12,7 +12,8 @@ spec:
   path: ./flux/apps/staging
   prune: true
   dependsOn:
-    - name: core
+    - name: infrastructure
+    - name: config
   decryption:
     provider: sops
     secretRef:

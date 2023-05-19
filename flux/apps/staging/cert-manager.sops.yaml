@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: cert-manager
+    namespace: cert-manager
+stringData:
+    AZURE_DNS_CLIENT_ID: ENC[AES256_GCM,data:z40f7EG5vraa/cr0Vxwq68NW5PdjfSGeAkzjCZSZDwvFEAgD,iv:4MbUrrq+fo0rfS6cvy00QplJSylP9xQUO5uW9MAZDSo=,tag:SyJpmWEr0VxB1DyOtOkhkA==,type:str]
+    AZURE_DNS_CLIENTSECRET_SECRETREF: ENC[AES256_GCM,data:mjnrBZ6mF9C43ZgRI6wX7/ywgMzVuwtKlTescvaplWBso5PxTIxP8w==,iv:WTw37fqxZqfRjU7NXsa1K6FOdP5ETYeRqKoJu1B1PCM=,tag:86e/wRqrWSzls1pjyH6kQA==,type:str]
+    AZURE_DNS_SUBSCRIPTION_ID: ENC[AES256_GCM,data:ygZLqWYNWdG3Qz+zN7Bt27qh84bIQEap+0qMoHaTGB7pgXPt,iv:NlvLPJhLNtvLThtasZw2sZRM/72p1I86Zte3WpBaUGQ=,tag:NFbn/yjdU0UhxGaF7a6lKA==,type:str]
+    AZURE_DNS_TENANT_ID: ENC[AES256_GCM,data:ok+kOS5ulzH7SGD1VKjLAt4rTSK8d6e4nbaHg3SoQn1wGNDD,iv:qIZFOLBZvg/UUSu7mluIpoJDEne4QfJazUDni2cFZq8=,tag:DMt3YAuHg5zs+Kilq9NnKw==,type:str]
+    AZURE_DNS_RESOURCE_GROUP_NAME: ENC[AES256_GCM,data:Ozpr,iv:FFQY0k/rnIaaInZCDC/UAJPavG9o8XRKyQ4YCI55iiQ=,tag:gxWqvhp123+YIKFCptm3lg==,type:str]
+    LETS_ENCRYPT_EMAIL: ENC[AES256_GCM,data:1G57xpwAoueXYPkpyRRpokOf39MNSS4TemXi9j1YDM5W,iv:bIzMCviu+inzlHvOLtG+PTm+tj6Sx+NI991Ct0aqgn4=,tag:hvwi5gQgqJmbs7lzqGbSOg==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1ntkvvzktwzhmzq9gcygrtpwxu3k8ghx9p0khk7jqjf5hgxklggvsv6zhvz
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAzQzZkdzNvd29iVHJtZGhJ
+            UjhxcU5tb1JZTjhYSHdrZTlXaHFHRnFHeXlRCm5kZDhjN2lYUXNaZ3RKb2NCWlRI
+            aHN1clYvemxjVTN0czVNdC8vTUR6YmMKLS0tIEQ1VkJ3N0ZnbHFzekpFUGdlNUJy
+            V0JLMW0zY2JrYjd6azBPNG02dktpakEKdBUhZAxH/eYNOm/mxaNRbEaft3eo7xfE
+            p8RNA9GPzqtWoMoEGxDxmITTz2uhlgDUcE59o2SqgBjne5yf/GvL6g==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-05-19T20:06:13Z"
+    mac: ENC[AES256_GCM,data:ZJhRkU9cWOQa3M3T4xsyLQ0XaZpaIgr7Tg8D25XsueeDYBfNy2YJOcTTlpv0BXGUD78kKDIxJyY6TT5DTTqTEZF8jUCCKCiRmXvcqOPblEQPhAFL8OEnrwfKcqB8iU/54erPcjKLUdQFF9PqSxenZ+Fby6ek75G4EI3S5gKYvLg=,iv:aT6F8PefBUyjNOV1l5eAtzSdlarq/xx/mHhyrdCWhCI=,tag:MKnPuWMkZ/+605AYCxK3yg==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.7.3
