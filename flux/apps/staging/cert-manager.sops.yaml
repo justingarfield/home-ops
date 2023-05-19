@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Secret
 metadata:
     name: cert-manager
-    namespace: cert-manager
+    namespace: apps
 stringData:
     AZURE_DNS_CLIENT_ID: ENC[AES256_GCM,data:ZLW52p7+rjdGzf6DCEySp6Qy0z9XPeJmuQqk84aKyu/moj0b,iv:rAvprnsoMTYtateFe5wODadMmO+cW67PhrrenJ0WnSQ=,tag:xgVTF+gZ/1+5oARCOL/ZiA==,type:str]
     AZURE_DNS_CLIENTSECRET_SECRETREF: ENC[AES256_GCM,data:nITMr60q2gREXvTObd0QRmssjR4youHENw8ZeBxTzLkoy0pXIJadnQ==,iv:FO2Lq7JgKvGG1HUUtrp8huBckkAyOKhpMsndttklal0=,tag:KtxgqqcP7bsX+PdhZVibmg==,type:str]

@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Secret
 metadata:
     name: pod-gateway
-    namespace: pod-gateway
+    namespace: apps
 stringData:
     OPENVPN_USER: ENC[AES256_GCM,data:wEeelyoog6A=,iv:J9KrfLtGy1c90d4rynU4O1hAjxrPdh54NfycyapVknU=,tag:Ajkf1M0v2j4JfJPtANlmHw==,type:str]
     OPENVPN_PASSWORD: ENC[AES256_GCM,data:UnH+S5ozlmQNyw==,iv:PBW36zUIOHPy1OqF2kio/77VjQSdcQF9LBKhI7/I4Rw=,tag:bUxwomcHXhBM7EZcfTJziQ==,type:str]
