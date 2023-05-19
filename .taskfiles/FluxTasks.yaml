@@ -27,7 +27,7 @@ tasks:
   create-namespace:
     desc: Creates a new namespace in the currently active K8s cluster
     vars:
-      NAMESPACE_NAME: '{{ .NAMESPACE_NAME }}'
+      NAMESPACE_NAME: '{{ .NAMESPACE_NAME | default "flux-system" }}'
     preconditions:
       - sh: test {{ .NAMESPACE_NAME }}
         msg: Please provide a valid NAMESPACE_NAME
