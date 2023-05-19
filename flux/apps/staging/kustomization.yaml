@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   - cert-manager.sops.yaml
   - cluster-common.sops.yaml
-  - private-internet-access-credentials.sops.yaml
+  - pod-gateway.sops.yaml
   # - ../base/389-directory-server
   - ../base/cert-manager
   # - ../base/database
