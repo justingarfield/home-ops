@@ -24,6 +24,16 @@ tasks:
       - kubectl apply --kustomize {{ .CLUSTER_DIR }}/flux/flux-system
       - task: reconcile
 
+  create-namespace:
+    desc: Creates a new namespace in the currently active K8s cluster
+    vars:
+      NAMESPACE_NAME: '{{ .NAMESPACE_NAME }}'
+    preconditions:
+      - sh: test {{ .NAMESPACE_NAME }}
+        msg: Please provide a valid NAMESPACE_NAME
+    cmds:
+      - kubectl create namespace {{ .NAMESPACE_NAME }}
+
   create-sops-age-secret:
     desc: Creates a `sops-age` secret in the `flux-system`` namespace, using the generated Age key file.
     vars:
