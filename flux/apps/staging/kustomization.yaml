@@ -8,7 +8,7 @@ resources:
   - namespaces/pod-gateway.yaml
   - pod-gateway.sops.yaml
   # - ../base/389-directory-server
-  # - cert-manager.yaml
+  - cert-manager.yaml
   # - ../base/database
   # - ../base/media
   # - ../base/monitoring
