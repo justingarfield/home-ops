@@ -1,9 +1,0 @@
----
-nameReference:
-  - kind: Secret
-    version: v1
-    fieldSpecs:
-      - path: spec/valuesFrom/extraArgs
-        kind: HelmRelease
-      - path: spec/valuesFrom/podDnsConfig/nameservers
-        kind: HelmRelease
