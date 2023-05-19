@@ -34,7 +34,7 @@ spec:
     #domainFilters:
     #  - valueFrom:
     #      secretKeyRef:
-    #        name: cluster-secrets
+    #        name: staging-secrets
     #        key: PRIVATE_DNS_ZONE
     #        namespace: default
     #        optional: false
