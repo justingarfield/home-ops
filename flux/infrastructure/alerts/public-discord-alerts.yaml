@@ -6,6 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   summary: "staging cluster"
+  suspend: true
   providerRef:
     name: public-discord
   eventSeverity: info
