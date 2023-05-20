@@ -5,13 +5,17 @@ metadata:
   name: public-discord-alerts
   namespace: flux-system
 spec:
-  summary: "staging cluster"
-  suspend: true
+  summary: "${ENVIRONMENT_NAME} Talos Cluster"
   providerRef:
     name: public-discord
-  eventSeverity: info
+  eventSeverity: error
   eventSources:
     - kind: GitRepository
-      name: '*'
+      name: "*"
     - kind: Kustomization
-      name: '*'
+      name: "*"
+    - kind: HelmRepository
+      name: "*"
+    - kind: HelmRelease
+      name: "*"
+  suspend: true
