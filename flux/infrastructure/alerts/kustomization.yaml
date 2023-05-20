@@ -5,4 +5,4 @@ kind: Kustomization
 namespace: flux-system
 resources:
   - private-discord-alerts.yaml
-  # - public-discord-alerts.yaml
+  - public-discord-alerts.yaml
