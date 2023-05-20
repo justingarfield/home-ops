@@ -5,7 +5,7 @@ metadata:
   name: public-discord-alerts
   namespace: flux-system
 spec:
-  summary: "${ENVIRONMENT_NAME} Talos Cluster"
+  summary: "${ENVIRONMENT_NAME} ${CLUSTER_DOMAIN} Talos Cluster"
   providerRef:
     name: public-discord
   eventSeverity: error
