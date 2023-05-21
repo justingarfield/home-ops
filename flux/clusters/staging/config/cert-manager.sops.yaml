@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Secret
 metadata:
     name: cert-manager
-    namespace: cert-manager
+    namespace: flux-system
 stringData:
     AZURE_DNS_CLIENT_ID: ENC[AES256_GCM,data:z40f7EG5vraa/cr0Vxwq68NW5PdjfSGeAkzjCZSZDwvFEAgD,iv:4MbUrrq+fo0rfS6cvy00QplJSylP9xQUO5uW9MAZDSo=,tag:SyJpmWEr0VxB1DyOtOkhkA==,type:str]
     AZURE_DNS_CLIENTSECRET_SECRETREF: ENC[AES256_GCM,data:mjnrBZ6mF9C43ZgRI6wX7/ywgMzVuwtKlTescvaplWBso5PxTIxP8w==,iv:WTw37fqxZqfRjU7NXsa1K6FOdP5ETYeRqKoJu1B1PCM=,tag:86e/wRqrWSzls1pjyH6kQA==,type:str]
