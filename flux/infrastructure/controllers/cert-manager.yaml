@@ -45,14 +45,14 @@ spec:
     webhook:
       enabled: true
     extraArgs:
-      - --dns01-recursive-nameservers=${ENVIRONMENT_NAME}:53
+      - --dns01-recursive-nameservers=${OPNSENSE_DNS_SERVER}:53
       - --dns01-recursive-nameservers-only
     cainjector:
       replicaCount: 1
     podDnsPolicy: "None"
     podDnsConfig:
       nameservers:
-        - "${ENVIRONMENT_NAME}"
+        - "${OPNSENSE_DNS_SERVER}"
     prometheus:
       enabled: false
       servicemonitor:
