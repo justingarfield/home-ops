@@ -1,0 +1,11 @@
+---
+creation_rules:
+  - path_regex: flux/clusters/.*\.sops\.ya?ml
+    encrypted_regex: '((?i)(pass|secret($|[^N])|key|token|^data$|^stringData))'
+    key_groups:
+      - age:
+          - age1ntkvvzktwzhmzq9gcygrtpwxu3k8ghx9p0khk7jqjf5hgxklggvsv6zhvz
+  - path_regex: .*\.sops\.ya?ml
+    key_groups:
+      - age:
+          - age1ntkvvzktwzhmzq9gcygrtpwxu3k8ghx9p0khk7jqjf5hgxklggvsv6zhvz
