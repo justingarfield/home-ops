@@ -5,4 +5,4 @@ kind: Kustomization
 namespace: flux-system
 resources:
   - private-discord.yaml
-  - public-discord.yaml
+  # - public-discord.yaml
