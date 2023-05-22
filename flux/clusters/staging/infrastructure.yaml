@@ -104,10 +104,6 @@ metadata:
   name: infra-controllers
   namespace: flux-system
 spec:
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
   dependsOn:
     - name: infra-secrets
     - name: infra-config
@@ -121,6 +117,10 @@ spec:
   path: ./flux/infrastructure/controllers
   prune: true
   wait: true
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
   postBuild:
     substituteFrom:
       - kind: ConfigMap
