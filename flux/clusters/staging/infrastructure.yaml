@@ -67,6 +67,8 @@ spec:
         name: cluster-settings
       - kind: Secret
         name: cluster-settings
+      - kind: Secret
+        name: cert-manager
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
