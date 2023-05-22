@@ -61,6 +61,12 @@ spec:
   path: ./flux/infrastructure/config
   prune: true
   wait: true
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: cluster-settings
+      - kind: Secret
+        name: cluster-settings
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
