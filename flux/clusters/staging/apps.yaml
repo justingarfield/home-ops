@@ -15,6 +15,7 @@ spec:
   wait: true
   dependsOn:
     - name: infra-controllers
+    - name: infra-other
   decryption:
     provider: sops
     secretRef:
