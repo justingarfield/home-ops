@@ -19,6 +19,10 @@ metadata:
   name: flux-system
   namespace: flux-system
 spec:
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
   interval: 10m0s
   path: ./flux/clusters/staging
   prune: true
