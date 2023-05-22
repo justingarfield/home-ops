@@ -16,6 +16,7 @@ spec:
             clientSecretSecretRef:
               name: cert-manager
               key: AZURE_DNS_CLIENTSECRET_SECRETREF
+              namespace: flux-system
             subscriptionID: ${AZURE_DNS_SUBSCRIPTION_ID}
             tenantID: ${AZURE_DNS_TENANT_ID}
             resourceGroupName: ${AZURE_DNS_RESOURCE_GROUP_NAME}
