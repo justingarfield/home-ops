@@ -14,6 +14,21 @@ spec:
   url: https://kubernetes.github.io/ingress-nginx
   timeout: 3m
 ---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: "default-ssl-certificate"
+  namespace: ingress-nginx
+spec:
+  secretName: "default-ssl-certificate-tls"
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  commonName: "${PRIVATE_DNS_ZONE}"
+  dnsNames:
+    - "${PRIVATE_DNS_ZONE}"
+    - "*.${PRIVATE_DNS_ZONE}"
+---
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
@@ -122,18 +137,3 @@ spec:
                       values:
                         - default-backend
                 topologyKey: kubernetes.io/hostname
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: "default-ssl-certificate"
-  namespace: ingress-nginx
-spec:
-  secretName: "default-ssl-certificate-tls"
-  issuerRef:
-    name: letsencrypt-staging
-    kind: ClusterIssuer
-  commonName: "${PRIVATE_DNS_ZONE}"
-  dnsNames:
-    - "${PRIVATE_DNS_ZONE}"
-    - "*.${PRIVATE_DNS_ZONE}"
