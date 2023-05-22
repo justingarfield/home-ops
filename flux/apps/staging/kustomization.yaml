@@ -3,12 +3,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - namespaces/cert-manager.yaml
-  # - cert-manager.sops.yaml
   # - namespaces/pod-gateway.yaml
-  # - pod-gateway.sops.yaml
   # - ../base/389-directory-server
-  - ../base/cert-manager
   # - ../base/database
   # - ../base/media
   # - ../base/monitoring
@@ -19,6 +15,6 @@ resources:
   # - ../base/pvr
   # - ../base/reloader
   # - ../base/rook-ceph
-  # - ../base/theme-park
+  - ../base/theme-park
   # patchesStrategicMerge:
   # - podinfo-values.yaml
