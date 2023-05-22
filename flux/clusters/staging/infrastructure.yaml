@@ -23,6 +23,27 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: infra-crds
+  namespace: flux-system
+spec:
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+
+  interval: 10m0s
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./flux/clusters/staging/crds
+  prune: true
+  wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: infra-controllers
   namespace: flux-system
 spec:
@@ -30,6 +51,9 @@ spec:
     provider: sops
     secretRef:
       name: sops-age
+  dependsOn:
+    - infra-secrets
+    - infra-crds
   interval: 10m0s
   retryInterval: 1m
   timeout: 5m
