@@ -37,7 +37,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./flux/clusters/staging/crds
+  path: ./flux/infrastructure/crds
   prune: true
   wait: true
 ---
