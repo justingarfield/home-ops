@@ -77,7 +77,7 @@ spec:
         kind: ClusterIssuer
         name: letsencrypt
   postBuild:
-    substitute:
+    substituteFrom:
       - kind: ConfigMap
         name: cluster-settings
         optional: false
