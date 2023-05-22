@@ -74,6 +74,7 @@ spec:
       name: sops-age
   dependsOn:
     - name: infra-secrets
+    - name: infra-config
     - name: infra-crds
   interval: 10m0s
   retryInterval: 1m
