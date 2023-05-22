@@ -22,7 +22,7 @@ metadata:
 spec:
   secretName: "default-ssl-certificate-tls"
   issuerRef:
-    name: letsencrypt-staging
+    name: letsencrypt
     kind: ClusterIssuer
   commonName: "${PRIVATE_DNS_ZONE}"
   dnsNames:
