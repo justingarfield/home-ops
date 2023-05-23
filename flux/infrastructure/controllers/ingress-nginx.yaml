@@ -37,8 +37,8 @@ spec:
         - name: TZ
           value: "${TIMEZONE}"
       service:
-        externalIPs: ["${SVC_NGINX_ADDR}"]
-        # loadBalancerIP: "${SVC_NGINX_ADDR}"
+        externalIPs: ["10.60.0.22"]
+        loadBalancerIP: "10.60.0.22"
         externalTrafficPolicy: "Local"
       publishService:
         enabled: true
