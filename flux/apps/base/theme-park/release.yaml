@@ -50,6 +50,9 @@ spec:
             paths:
               - path: /
                 pathType: Prefix
+                backend:
+                  serviceName: theme-park.default.svc.staging.lesmerises.jgarfield.com
+                  servicePort: 8080
         tls:
           - hosts:
               - *host
