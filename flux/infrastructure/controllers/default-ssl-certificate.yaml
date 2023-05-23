@@ -1,0 +1,15 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: "default-ssl-certificate"
+  namespace: ingress-nginx
+spec:
+  secretName: "default-ssl-certificate-tls"
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+  commonName: "${PRIVATE_DNS_ZONE}"
+  dnsNames:
+    - "${PRIVATE_DNS_ZONE}"
+    - "*.${PRIVATE_DNS_ZONE}"
