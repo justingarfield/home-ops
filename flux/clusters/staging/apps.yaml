@@ -11,7 +11,7 @@ spec:
     secretRef:
       name: sops-age
   dependsOn:
-    - name: cluster-settings
+    - name: cluster-config-maps
     - name: cluster-secrets
     - name: infra-controllers
   interval: 10m0s
