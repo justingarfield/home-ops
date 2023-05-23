@@ -113,6 +113,6 @@ tasks:
           --cluster-domain={{ .CLUSTER_DOMAIN }} \
           --commit-message-appendix="[ci skip]" \
           --owner={{ .GITHUB_USERNAME }} \
-          --path=flux/clusters/{{ .CLUSTER_NAME }} \
+          --path=flux/clusters/{{ .CLUSTER_NAME }}/kustomizations \
           --personal \
           --repository={{ .GITHUB_REPO }}
