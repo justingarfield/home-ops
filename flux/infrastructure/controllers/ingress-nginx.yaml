@@ -66,14 +66,6 @@ spec:
             any: true
       extraArgs:
         default-ssl-certificate: "ingress-nginx/default-ssl-certificate-tls"
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: ingress-nginx
-              app.kubernetes.io/component: controller
       resources:
         requests:
           cpu: 10m
@@ -91,19 +83,3 @@ spec:
           value: ghost
         - name: SHOW_DETAILS
           value: "false"
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              podAffinityTerm:
-                labelSelector:
-                  matchExpressions:
-                    - key: app.kubernetes.io/name
-                      operator: In
-                      values:
-                        - ingress-nginx
-                    - key: app.kubernetes.io/component
-                      operator: In
-                      values:
-                        - default-backend
-                topologyKey: kubernetes.io/hostname
