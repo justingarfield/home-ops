@@ -7,6 +7,16 @@ task vbox:start-cluster
 task talos-prepare-nodes
 
 task talos-bootstrap-nodes
+
+# Wait until you see
+
+```
+[talos] phase labelControlPlane (19/21): done, 1m1.654444159s
+[talos] phase uncordon (20/21): 1 tasks(s)
+[talos] task uncordonNode (1/1): starting
+[talos] retrying error: node not ready
+```
+
 task talos-install-cilium
 
 watch kubectl get nodes
