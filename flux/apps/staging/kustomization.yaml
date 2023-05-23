@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   - namespaces/pod-gateway.yaml
   - namespaces/pvr.yaml
-  - ../base/pod-gateway
+  # - ../base/pod-gateway
   # - ../base/389-directory-server
   # - ../base/database
   # - ../base/media
