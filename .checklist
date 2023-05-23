@@ -9,7 +9,7 @@ task talos-prepare-nodes
 task talos-bootstrap-nodes
 task talos-install-cilium
 
-kubectl get nodes
+watch kubectl get nodes
 
 task flux:create-namespace
 task flux:create-sops-age-secret
