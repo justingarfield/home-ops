@@ -16,7 +16,7 @@ spec:
         namespace: flux-system
       interval: 15m
   install:
-    createNamespace: true
+    createNamespace: false
     remediation:
       retries: 5
   upgrade:
@@ -85,7 +85,7 @@ spec:
       image:
         repository: ghcr.io/tarampampam/error-pages
         tag: 2.16.0
-      replicaCount: 3
+      replicaCount: 2
       extraEnvs:
         - name: TEMPLATE_NAME
           value: ghost
