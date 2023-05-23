@@ -23,6 +23,7 @@ spec:
     remediation:
       retries: 5
   values:
+    namespace: ingress-nginx
     global:
       nameOverride: *app
     controller:
@@ -32,8 +33,8 @@ spec:
         surge: 1
         unavailable: 1
     image:
-      repository: ghcr.io/k8s-at-home/theme-park
-      tag: v1.9.11
+      repository: ghcr.io/onedr0p/theme-park
+      tag: 1.13.7@sha256:13793be3810cbad9305fe86f03e2fa320bf26270d5054e65e3e6044f106f39f0
     service:
       main:
         ports:
