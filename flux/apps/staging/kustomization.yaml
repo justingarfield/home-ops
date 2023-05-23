@@ -4,6 +4,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - namespaces/pod-gateway.yaml
+  - namespaces/pvr.yaml
   - ../base/pod-gateway
   # - ../base/389-directory-server
   # - ../base/database
