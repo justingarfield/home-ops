@@ -15,3 +15,10 @@ tasks:
       - mkdir -p "{{ .OUTPUT_DIR }}/{{ .DIRECTORY }}"
     status:
       - test -d "{{ .OUTPUT_DIR }}/{{ .DIRECTORY }}"
+
+  sleep-for-resource-contention:
+    desc: Does a simple 'sleep' for a particular duration in-seconds (default 5-seconds)
+    vars:
+      SLEEP_DURATION_IN_SECONDS: '{{ .SLEEP_DURATION_IN_SECONDS | default 5 }}'
+    cmds:
+      - sleep {{.SLEEP_DURATION_IN_SECONDS}}

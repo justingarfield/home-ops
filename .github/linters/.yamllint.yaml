@@ -3,8 +3,7 @@ ignore: |
   .terraform/
   .vscode/
   *.sops.*
-  flux/clusters/**/flux-system/gotk-components.yaml
-  flux/clusters/**/flux-system/gotk-sync.yaml
+  flux/clusters/**/kustomizations/flux-system/**
 extends: default
 rules:
   truthy:
