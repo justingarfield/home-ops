@@ -47,13 +47,6 @@ spec:
             paths:
               - path: /
                 pathType: Prefix
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
-      supplementalGroups:
-        - 5600
     persistence:
       config:
         enabled: true
