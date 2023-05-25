@@ -9,13 +9,14 @@ resources:
   - ../base/pod-gateway
   # - ../base/389-directory-server
   # - ../base/database
+  - ../base/hajimari
   # - ../base/media
   # - ../base/monitoring
   # - ../base/networking
   # - ../base/node-feature-discovery
   # - ../base/podinfo
   - ../base/pvr
-  # - ../base/reloader
+  - ../base/reloader
   # - ../base/rook-ceph
   - ../base/theme-park
   # patchesStrategicMerge:
