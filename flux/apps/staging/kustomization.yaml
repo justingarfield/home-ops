@@ -14,7 +14,7 @@ resources:
   # - ../base/networking
   # - ../base/node-feature-discovery
   # - ../base/podinfo
-  # - ../base/pvr
+  - ../base/pvr
   # - ../base/reloader
   # - ../base/rook-ceph
   - ../base/theme-park
