@@ -59,6 +59,8 @@ spec:
       main:
         enabled: true
         ingressClassName: cilium
+        annotations:
+          hajimari.io/icon: "television-box"
         hosts:
           - host: &host "{{ .Release.Name }}.${PUBLIC_DNS_ZONE}"
             paths:

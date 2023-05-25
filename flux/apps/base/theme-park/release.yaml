@@ -43,8 +43,6 @@ spec:
       main:
         enabled: true
         ingressClassName: "cilium"
-        # annotations:
-        #  external-dns.home.arpa/enabled: "true"
         hosts:
           - host: &host "{{ .Release.Name }}.${PUBLIC_DNS_ZONE}"
             paths:

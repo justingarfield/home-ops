@@ -60,6 +60,8 @@ spec:
       main:
         enabled: true
         ingressClassName: cilium
+        annotations:
+          hajimari.io/icon: "cloud-search"
         hosts:
           - host: &host "{{ .Release.Name }}.${PUBLIC_DNS_ZONE}"
             paths:
