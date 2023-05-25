@@ -8,6 +8,7 @@ resources:
   - qbittorrent
   - radarr
   # - radarr-uhd
+  - readarr
   - sonarr
   # - sonarr-uhd
   - overseerr
