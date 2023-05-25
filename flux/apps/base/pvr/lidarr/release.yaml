@@ -32,7 +32,7 @@ spec:
       TZ: "${TIMEZONE}"
       LIDARR__INSTANCE_NAME: Lidarr
       LIDARR__PORT: &port 80
-      LIDARR__LOG_LEVEL: info
+      LIDARR__LOG_LEVEL: debug
     service:
       main:
         ports:
