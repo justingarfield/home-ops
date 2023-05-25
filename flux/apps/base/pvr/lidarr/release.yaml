@@ -33,6 +33,20 @@ spec:
       LIDARR__INSTANCE_NAME: Lidarr
       LIDARR__PORT: &port 80
       LIDARR__LOG_LEVEL: info
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: cilium
+        hosts:
+          - host: &host "{{ .Release.Name }}.${PUBLIC_DNS_ZONE}"
+            paths:
+              - path: /
+                pathType: Prefix
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568
