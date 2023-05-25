@@ -56,10 +56,8 @@ spec:
       main:
         enabled: true
         ingressClassName: cilium
-        annotations:
-          hajimari.io/enable: "false"
         hosts:
-          - host: &host apps.${PUBLIC_DOMAIN}
+          - host: &host apps.${PUBLIC_DNS_ZONE}
             paths:
               - path: /
                 pathType: Prefix
