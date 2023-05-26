@@ -80,16 +80,36 @@ tasks:
       - az role assignment delete --assignee {{ .ASSIGNEE }} --role "User Access Administrator" --scope "/"
       - task: list-user-access-administrators
 
-  create-cert-manager-spn:
-    desc: Creates a new Service Principal in the current AAD Tenant...
+  create-dns-contrib-sp:
+    desc: Creates a new Service Principal with the "DNS Zone Contributor" role, scoped to the PUBLIC_DNS_ZONE and PRIVATE_DNS_ZONE.
     vars:
-      AZURE_CERT_MANAGER_SP_NAME: '{{ .AZURE_CERT_MANAGER_SP_NAME | default "cert-manager" }}'
+      AZURE_DNS_CONTRIB_SP_NAME: '{{ .AZURE_DNS_CONTRIB_SP_NAME }}'
       AZURE_DNS_ZONE_RESOURCE_GROUP: '{{ .AZURE_DNS_ZONE_RESOURCE_GROUP }}'
       PUBLIC_DNS_ZONE: '{{ .PUBLIC_DNS_ZONE }}'
       PRIVATE_DNS_ZONE: '{{ .PRIVATE_DNS_ZONE }}'
       EXISTING_SPN:
-        sh: az ad sp list --display-name "{{ .AZURE_CERT_MANAGER_SP_NAME }}" --output tsv
+        sh: az ad sp list --display-name "{{ .AZURE_DNS_CONTRIB_SP_NAME }}" --output tsv
     preconditions:
       - test ! {{ .EXISTING_SPN }}
     cmds:
-      - ./scripts/create-cert-manager-spn.sh "{{ .AZURE_CERT_MANAGER_SP_NAME }}" "{{ .AZURE_DNS_ZONE_RESOURCE_GROUP }}" "{{ .PUBLIC_DNS_ZONE }}" "{{ .PRIVATE_DNS_ZONE }}"
+      - ./scripts/create-dns-contrib-sp.sh "{{ .AZURE_DNS_CONTRIB_SP_NAME }}" "{{ .AZURE_DNS_ZONE_RESOURCE_GROUP }}" "{{ .PUBLIC_DNS_ZONE }}" "{{ .PRIVATE_DNS_ZONE }}"
+
+  create-cert-manager-sp:
+    desc: Creates a new Service Principal for cert-manager to use.
+    vars:
+      AZURE_DNS_CONTRIB_SP_NAME: '{{ .AZURE_DNS_CONTRIB_SP_NAME | default "cert-manager" }}'
+      AZURE_DNS_ZONE_RESOURCE_GROUP: '{{ .AZURE_DNS_ZONE_RESOURCE_GROUP }}'
+      PUBLIC_DNS_ZONE: '{{ .PUBLIC_DNS_ZONE }}'
+      PRIVATE_DNS_ZONE: '{{ .PRIVATE_DNS_ZONE }}'
+    cmds:
+      - task: create-dns-contrib-sp
+
+  create-external-dns-sp:
+    desc: Creates a new Service Principal for external-dns to use.
+    vars:
+      AZURE_DNS_CONTRIB_SP_NAME: '{{ .AZURE_DNS_CONTRIB_SP_NAME | default "external-dns" }}'
+      AZURE_DNS_ZONE_RESOURCE_GROUP: '{{ .AZURE_DNS_ZONE_RESOURCE_GROUP }}'
+      PUBLIC_DNS_ZONE: '{{ .PUBLIC_DNS_ZONE }}'
+      PRIVATE_DNS_ZONE: '{{ .PRIVATE_DNS_ZONE }}'
+    cmds:
+      - task: create-dns-contrib-sp
