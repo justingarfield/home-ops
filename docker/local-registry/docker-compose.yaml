@@ -3,6 +3,6 @@ version: "3.7"
 
 services:
   local-registry:
-    image: registry:2.8.1
+    image: registry:2.8.2
     ports:
       - "5010:5000"
