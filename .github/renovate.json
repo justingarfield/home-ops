@@ -8,7 +8,7 @@
   ],
   "regexManagers": [
     {
-      "description": "Process Task files",
+      "description": "Process Makefile and .taskfiles directory",
       "fileMatch": [".taskfiles/.+\\.ya?ml$","Makefile"],
       "matchStrings": [
         "# renovate: registryUrl=(?<registryUrl>\\S+) chart=(?<depName>\\S+)\n.*?(?<currentValue>[^-\\s]*)\n",
