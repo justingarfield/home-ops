@@ -5,6 +5,8 @@ version: '3'
 vars:
   TALOS_DIR: '{{ .REPOSITORY_DIR }}/talos-linux'
   CLUSTER_API_SERVER_PORT: '{{ .CLUSTER_API_SERVER_PORT | default 6443 }}'
+
+  # renovate: registryUrl=https://helm.cilium.io/ chart=cilium
   CILIUM_VERSION: '{{ .CILIUM_VERSION | default "v1.14.0-snapshot.2" }}'
 
 tasks:
