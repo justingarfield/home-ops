@@ -8,6 +8,11 @@ Staging is a virtualized cluster running in VirutalBox on my desktop PC where I 
 
 As-such, all scripts and configuration files in this repository have been tokenized where possible (or as far as I was willing to take it depending on context and value).
 
+## Shields.io Status Badgers
+
+![GitHub repo size](https://img.shields.io/github/repo-size/justingarfield/home-ops?style=for-the-badge)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/justingarfield/home-ops?style=for-the-badge)
+
 ## Instructions
 
 This repository assumes it's being run in an [Ubuntu 22.04](https://ubuntu.com/) w/ Bash environment _(or similar. I'm running all of this in Ubuntu 22.04 under Windows Subsystem for Linux)_. Your mileage may vary!
