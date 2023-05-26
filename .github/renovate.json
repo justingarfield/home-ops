@@ -9,7 +9,7 @@
       "fileMatch": [".taskfiles/.+\\.ya?ml$"],
       "matchStrings": [
         "# renovate: registryUrl=(?<registryUrl>\\S+) chart=(?<depName>\\S+)\n.*?(?<currentValue>[^-\\s]*)\n",
-        "# renovate: registryUrl=(?<registryUrl>\\S+) chart=(?<depName>\\S+)\n(?<varName>\\S+): ['\"]{{ .(?P=varName) \\| default ['\"](?<currentValue>[^-\\s]*)['\"] }}['\"]"
+        "# renovate: registryUrl=(?<registryUrl>\\S+) chart=(?<depName>\\S+)\n.*: ['\"]{{ .* \\| default ['\"](?<currentValue>[^-\\s]*)['\"] }}['\"]"
       ],
       "datasourceTemplate": "helm"
     }
