@@ -10,6 +10,9 @@ vars:
   TEST_VERSION: v1.12.0
 
   # renovate: registryUrl=https://helm.cilium.io/ chart=cilium
+  ANOTHER_TEST_VERSION: v1.14.0-snapshot.2
+
+  # renovate: registryUrl=https://helm.cilium.io/ chart=cilium
   CILIUM_VERSION: '{{ .CILIUM_VERSION | default "v1.14.0-snapshot.2" }}'
 
 tasks:
