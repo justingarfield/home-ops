@@ -48,7 +48,7 @@ vars:
   VAGRANT_VERSION: "2.3.4"
 
   # renovate: datasource=github-releases depName=mikefarah/yq
-  YQ_VERSION: "v4.32.2"
+  YQ_VERSION: "v4.34.1"
 
   DOWNLOADS_DIRECTORY: $HOME/downloads
   TOOLING_ARCH: amd64
