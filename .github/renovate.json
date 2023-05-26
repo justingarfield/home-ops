@@ -1,12 +1,15 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+    "config:base",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":enablePreCommit"
   ],
   "regexManagers": [
     {
       "description": "Process Task files",
-      "fileMatch": [".taskfiles/.+\\.ya?ml$"],
+      "fileMatch": [".taskfiles/.+\\.ya?ml$","Makefile"],
       "matchStrings": [
         "# renovate: registryUrl=(?<registryUrl>\\S+) chart=(?<depName>\\S+)\n.*?(?<currentValue>[^-\\s]*)\n",
         "# renovate: registryUrl=(?<registryUrl>\\S+) chart=(?<depName>\\S+)\n.*: ['\"]{{ .* \\| default ['\"](?<currentValue>[^-\\s]*)['\"] }}['\"]",

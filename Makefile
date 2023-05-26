@@ -1,4 +1,6 @@
+# renovate: datasource=github-releases depName=go-task/task
 TASK_VERSION=v3.24.0
+
 TOOLING_ARCH=amd64
 TOOLING_OS=$(shell uname -s | tr "[:upper:]" "[:lower:]")
 DOWNLOADS_FOLDER=$$HOME/downloads
