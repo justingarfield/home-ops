@@ -1,2 +1,3 @@
 *.yaml linguist-detectable
-docs/* linguist-documentation
+./docs/* linguist-documentation
+./terraform/**/*.tf linguist-language=terraform
