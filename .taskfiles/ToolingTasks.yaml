@@ -7,7 +7,7 @@ vars:
   AGE_VERSION: "v1.1.1"
 
   # renovate: datasource=github-releases depName=cilium/cilium-cli
-  CILIUM_CLI_VERSION: "0.13.2"
+  CILIUM_CLI_VERSION: "v0.14.5"
 
   # renovate: datasource=github-releases depName=cloudflare/cfssl
   CFSSL_TOOLKIT_VERSION: "1.6.4"
