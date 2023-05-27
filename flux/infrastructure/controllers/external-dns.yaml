@@ -36,6 +36,7 @@ spec:
       - "${PRIVATE_DNS_ZONE}"
     extraArgs:
       - --exclude-target-net=10.0.0.0/8
+      - --default-targets=174.169.160.189
     resources:
       requests:
         memory: 100Mi
