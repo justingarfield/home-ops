@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: external-dns
-      version: v0.13.4
+      version: 1.12.2
       sourceRef:
         kind: HelmRepository
         name: external-dns
