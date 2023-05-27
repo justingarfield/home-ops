@@ -34,6 +34,8 @@ spec:
     domainFilters:
       - "${PUBLIC_DNS_ZONE}"
       - "${PRIVATE_DNS_ZONE}"
+    extraArgs:
+      - --exclude-target-net=10.0.0.0/8
     resources:
       requests:
         memory: 100Mi
