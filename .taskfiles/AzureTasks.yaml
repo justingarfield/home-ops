@@ -90,6 +90,14 @@ tasks:
       EXISTING_SPN:
         sh: az ad sp list --display-name "{{ .AZURE_DNS_CONTRIB_SP_NAME }}" --output tsv
     preconditions:
+      - sh: test "{{ .AZURE_DNS_CONTRIB_SP_NAME }}"
+        msg: AZURE_DNS_CONTRIB_SP_NAME
+      - sh: test "{{ .AZURE_DNS_ZONE_RESOURCE_GROUP }}"
+        msg: AZURE_DNS_ZONE_RESOURCE_GROUP
+      - sh: test "{{ .PUBLIC_DNS_ZONE }}"
+        msg: PUBLIC_DNS_ZONE
+      - sh: test "{{ .PRIVATE_DNS_ZONE }}"
+        msg: PRIVATE_DNS_ZONE
       - test ! {{ .EXISTING_SPN }}
     cmds:
       - ./scripts/create-dns-contrib-sp.sh "{{ .AZURE_DNS_CONTRIB_SP_NAME }}" "{{ .AZURE_DNS_ZONE_RESOURCE_GROUP }}" "{{ .PUBLIC_DNS_ZONE }}" "{{ .PRIVATE_DNS_ZONE }}"
@@ -113,3 +121,4 @@ tasks:
       PRIVATE_DNS_ZONE: '{{ .PRIVATE_DNS_ZONE }}'
     cmds:
       - task: create-dns-contrib-sp
+        vars: { AZURE_DNS_CONTRIB_SP_NAME: "{{.AZURE_DNS_CONTRIB_SP_NAME}}", AZURE_DNS_ZONE_RESOURCE_GROUP: "{{ .AZURE_DNS_ZONE_RESOURCE_GROUP }}", PUBLIC_DNS_ZONE: "{{.PUBLIC_DNS_ZONE}}", PRIVATE_DNS_ZONE: "{{ .PRIVATE_DNS_ZONE }}" }

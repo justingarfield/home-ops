@@ -4,7 +4,7 @@
 #      https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/azure.md#service-principal
 
 # Choose a name for the service principal that contacts Azure DNS to present the challenge.
-AZURE_CERT_MANAGER_NEW_SP_NAME=$1
+AZURE_DNS_CONTRIB_SP_NAME=$1
 
 # This is the name of the Resource Group that the DNS Zones are located in.
 AZURE_DNS_ZONE_RESOURCE_GROUP=$2
@@ -14,7 +14,7 @@ PUBLIC_DNS_ZONE=$3
 PRIVATE_DNS_ZONE=$4
 
 # Create the Service Principal and capture its important bits o' info
-DNS_SP=$(az ad sp create-for-rbac --name $AZURE_CERT_MANAGER_NEW_SP_NAME --output json)
+DNS_SP=$(az ad sp create-for-rbac --name $AZURE_DNS_CONTRIB_SP_NAME --output json)
 AZURE_CERT_MANAGER_SP_APP_ID=$(echo $DNS_SP | yq -r '.appId')
 AZURE_CERT_MANAGER_SP_PASSWORD=$(echo $DNS_SP | yq -r '.password')
 AZURE_TENANT_ID=$(echo $DNS_SP | yq -r '.tenant')
