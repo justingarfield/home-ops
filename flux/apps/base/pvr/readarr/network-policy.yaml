@@ -9,6 +9,8 @@ spec:
     matchLabels:
       app.kubernetes.io/name: readarr
   ingress:
+    - fromEntities:
+        - ingress
     - fromEndpoints:
         - {}
   egress:
