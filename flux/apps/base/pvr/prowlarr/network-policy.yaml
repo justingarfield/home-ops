@@ -9,7 +9,7 @@ spec:
     - toEntities:
         - cluster
     - toEntities:
-        - world:
+        - world
         - toPorts:
             - ports:
                 - port: "443"
