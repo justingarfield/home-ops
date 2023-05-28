@@ -5,6 +5,18 @@ metadata:
   name: "prowlarr"
   namespace: pvr
 spec:
+  egress:
+    - toEntities:
+        - cluster
+    - toEntities:
+        - world
+      toPorts:
+        - ports:
+            - port: "443"
+          protocol: TCP
+    - toEndpoints:
+        - matchLabels:
+          app.kubernetes.io/name: pod-gateway
   endpointSelector:
     matchLabels:
       app.kubernetes.io/name: prowlarr
@@ -13,11 +25,3 @@ spec:
         - ingress
     - fromEndpoints:
         - {}
-  egress:
-    - toEntities:
-        - cluster # For DNS (udp 53) would rather specify further (e.g. k8s-app: kube-dns...try out at some point)
-    - toEntities:
-        - world # For HTTPS outbound
-    - toEndpoints:
-        - matchLabels:
-            app.kubernetes.io/name: pod-gateway
