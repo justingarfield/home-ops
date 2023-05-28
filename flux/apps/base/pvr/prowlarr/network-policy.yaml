@@ -15,9 +15,9 @@ spec:
         - {}
   egress:
     - toEntities:
-        - cluster
+        - cluster # For DNS (udp 53) would rather specify further (e.g. k8s-app: kube-dns...try out at some point)
     - toEntities:
-        world:
+        - world:
           toPorts:
             - ports:
                 - port: "443"
