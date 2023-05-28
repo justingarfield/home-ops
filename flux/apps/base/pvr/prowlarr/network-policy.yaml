@@ -6,12 +6,17 @@ metadata:
   namespace: pvr
 spec:
   egress:
+    # - toEntities:
+    #     - cluster
     - toEntities:
-        - cluster
-        - world
+        - world:
+            toPorts:
+              ports:
+                - port: "443"
+                  protocol: TCP
     - toEndpoints:
         - matchLabels:
-          app.kubernetes.io/name: pod-gateway
+            app.kubernetes.io/name: pod-gateway
   endpointSelector:
     matchLabels:
       app.kubernetes.io/name: prowlarr
