@@ -6,8 +6,8 @@ metadata:
   namespace: pvr
 spec:
   egress:
-    - toEntities:
-        - cluster
+    # - toEntities:
+    #     - cluster
     - toEntities:
         - world:
             toPorts:
