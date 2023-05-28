@@ -17,3 +17,5 @@ spec:
     - toEndpoints:
         - matchLabels:
             app.kubernetes.io/name: pod-gateway
+        - matchLabels:
+            app.kubernetes.io/name: k8s-app=kube-dns
