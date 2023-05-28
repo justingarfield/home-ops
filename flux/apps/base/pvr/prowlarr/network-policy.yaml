@@ -6,7 +6,7 @@ metadata:
 spec:
   endpointSelector:
     matchLabels:
-      role: app.kubernetes.io/name=lidarr
+      role: app.kubernetes.io/name=prowlarr
   ingress:
     - fromEndpoints:
         - {}
@@ -14,7 +14,3 @@ spec:
     - toEndpoints:
         - matchLabels:
           role: app.kubernetes.io/name=pod-gateway
-        - matchLabels:
-          role: app.kubernetes.io/name=prowlarr
-        - matchLabels:
-          role: app.kubernetes.io/name=qbittorrent
