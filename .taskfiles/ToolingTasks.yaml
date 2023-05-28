@@ -44,6 +44,9 @@ vars:
   # TODO: Need to investigate how to version this properly
   TERRAFORM_VERSION: "1.4.5"
 
+  # renovate: datasource=github-releases depName=cilium/tetragon
+  TETRAGON_VERSION: "v0.9.0"
+
   # TODO: Need to investigate how to version this properly
   VAGRANT_VERSION: "2.3.4"
 
@@ -375,6 +378,26 @@ tasks:
       - sudo install -o root -g root -m 0755 {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} /usr/local/bin/talosctl-{{.TALOSCTL_VERSION}}
       - sudo ln --force /usr/local/bin/talosctl-{{.TALOSCTL_VERSION}} /usr/local/bin/talosctl
       - rm {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}}
+    status:
+      - test -f {{.USR_LOCAL_BIN_FILENAME}}
+
+  install-tetragon:
+    desc: Install tetragon cli
+    vars:
+      DOWNLOAD_FILENAME: tetra-{{.TOOLING_OS}}-{{.TOOLING_ARCH}}.tar.gz
+      DOWNLOAD_URL: https://github.com/cilium/tetragon/releases/download/{{.TETRAGON_VERSION}}/{{.DOWNLOAD_FILENAME}}
+      USR_LOCAL_BIN_FILENAME: /usr/local/bin/tetra-{{.TETRAGON_VERSION}}
+    preconditions:
+      - sh: curl --location --silent --show-error --fail --head {{.DOWNLOAD_URL}}
+        msg: |
+          tetra cannot be found at provided URL: {{.DOWNLOAD_URL}} (it's possible the provider changed their download location for release files)
+    cmds:
+      - task: create-downloads-directory
+      - curl --location --silent --output {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.DOWNLOAD_URL}}
+      - tar --directory {{.DOWNLOADS_DIRECTORY}} -xzf {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} tetra
+      - sudo install -o root -g root -m 0755 {{.DOWNLOADS_DIRECTORY}}/tetra /usr/local/bin/tetra-{{.TETRAGON_VERSION}}
+      - sudo ln --force /usr/local/bin/tetra-{{.TETRAGON_VERSION}} /usr/local/bin/tetra
+      - rm {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.DOWNLOADS_DIRECTORY}}/tetra
     status:
       - test -f {{.USR_LOCAL_BIN_FILENAME}}
 
