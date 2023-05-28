@@ -24,6 +24,9 @@ vars:
   # TODO: Need to investigate how to version this properly vs. get.helm.sh
   HELM_VERSION: "v3.11.3"
 
+  # renovate: datasource=github-releases depName=cilium/hubble
+  HUBBLE_VERSION: "v0.11.5"
+
   KUBEADM_VERSION: "v1.27.1"
 
   # TODO: Need to investigate how to version this properly
@@ -398,6 +401,27 @@ tasks:
       - sudo install -o root -g root -m 0755 {{.DOWNLOADS_DIRECTORY}}/tetra /usr/local/bin/tetra-{{.TETRAGON_VERSION}}
       - sudo ln --force /usr/local/bin/tetra-{{.TETRAGON_VERSION}} /usr/local/bin/tetra
       - rm {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.DOWNLOADS_DIRECTORY}}/tetra
+    status:
+      - test -f {{.USR_LOCAL_BIN_FILENAME}}
+
+  install-hubble:
+    desc: Install hubble cli
+    vars:
+      DOWNLOAD_FILENAME: hubble-{{.TOOLING_OS}}-{{.TOOLING_ARCH}}.tar.gz
+      DOWNLOAD_URL: https://github.com/cilium/hubble/releases/download/{{.HUBBLE_VERSION}}/{{.DOWNLOAD_FILENAME}}
+      USR_LOCAL_BIN_FILENAME: /usr/local/bin/hubble-{{.HUBBLE_VERSION}}
+    preconditions:
+      - sh: curl --location --silent --show-error --fail --head {{.DOWNLOAD_URL}}
+        msg: |
+          hubble cannot be found at provided URL: {{.DOWNLOAD_URL}} (it's possible the provider changed their download location for release files)
+    cmds:
+      - task: create-downloads-directory
+      - curl --location --fail --remote-name-all --silent --output-dir {{.DOWNLOADS_DIRECTORY}} {{.DOWNLOAD_URL}}{,.sha256sum}
+      - (cd {{.DOWNLOADS_DIRECTORY}} && sha256sum --check {{.DOWNLOAD_FILENAME}}.sha256sum)
+      - tar --directory {{.DOWNLOADS_DIRECTORY}} -xzf {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} hubble
+      - sudo install -o root -g root -m 0755 {{.DOWNLOADS_DIRECTORY}}/hubble /usr/local/bin/hubble-{{.HUBBLE_VERSION}}
+      - sudo ln --force /usr/local/bin/hubble-{{.HUBBLE_VERSION}} /usr/local/bin/hubble
+      - rm {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.DOWNLOADS_DIRECTORY}}/hubble {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}}.sha256sum
     status:
       - test -f {{.USR_LOCAL_BIN_FILENAME}}
 

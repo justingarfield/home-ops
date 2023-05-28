@@ -9,6 +9,8 @@ spec:
     matchLabels:
       app.kubernetes.io/name: lidarr
   ingress:
+    - fromEntities:
+        - ingress
     - fromEndpoints:
         - {}
   egress:
