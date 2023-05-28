@@ -7,11 +7,8 @@ metadata:
 spec:
   egress:
     - toEntities:
-        - world:
-            toPorts:
-              ports:
-                - port: "443"
-                  protocol: TCP
+        - cluster
+        - world
     - toEndpoints:
         - matchLabels:
           app.kubernetes.io/name: pod-gateway

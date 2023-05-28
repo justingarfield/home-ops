@@ -23,5 +23,5 @@ spec:
         - matchLabels:
             app.kubernetes.io/name: sonarr
   egress:
-    - toEndpoints:
-        - {}
+    - toEntities:
+        - world
