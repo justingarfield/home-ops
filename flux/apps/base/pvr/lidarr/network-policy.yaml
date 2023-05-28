@@ -14,8 +14,8 @@ spec:
   egress:
     - toEndpoints:
         - matchLabels:
-          app.kubernetes.io/name: pod-gateway
+            app.kubernetes.io/name: pod-gateway
         - matchLabels:
-          app.kubernetes.io/name: prowlarr
+            app.kubernetes.io/name: prowlarr
         - matchLabels:
-          app.kubernetes.io/name: qbittorrent
+            app.kubernetes.io/name: qbittorrent

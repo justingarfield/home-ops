@@ -14,4 +14,4 @@ spec:
   egress:
     - toEndpoints:
         - matchLabels:
-          app.kubernetes.io/name: pod-gateway
+            app.kubernetes.io/name: pod-gateway
