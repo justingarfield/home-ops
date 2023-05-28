@@ -9,12 +9,12 @@ vars:
 tasks:
 
   deploy-demo-application:
-    desc:
+    desc: Deploys the cilium demo application
     cmds:
       - kubectl create -f {{._DEMO_APP_URL}}
 
   cleanup-demo-application:
-    desc:
+    desc: Removes the cilium demo application
     cmds:
       - kubectl delete -f {{._DEMO_APP_URL}}
 
@@ -24,12 +24,12 @@ tasks:
       - kubectl exec -it -n kube-system ds/tetragon -c tetragon -- tetra getevents -o compact
 
   edit-config:
-    desc: Edit the main tetragon-config
+    desc: Edit the main 'tetragon-config' configmap
     cmds:
-      - kubectl edit cm -n kube-system tetragon-config
+      - kubectl edit configmap -n kube-system tetragon-config
 
   deploy-test-pod:
-    desc:
+    desc: Deploys the tetragon 'test-pod' used for capability and namespace change testing.
     cmds:
       - kubectl create ns tetragon-test-pod
       - kubectl label ns tetragon-test-pod pod-security.kubernetes.io/enforce=privileged
@@ -42,7 +42,7 @@ tasks:
         printf "\nTo see pretty events: kubectl logs -n kube-system -l app.kubernetes.io/name=tetragon -c export-stdout -f | tetra getevents -o compact\n\n"
 
   cleanup-deploy-test-pod:
-    desc:
+    desc: Removes the tetragon 'test-pod' used for capability and namespace change testing.
     cmds:
       - kubectl -n tetragon-test-pod delete -f {{._TEST_POD_URL}}
       - kubectl delete ns tetragon-test-pod

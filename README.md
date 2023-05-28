@@ -29,3 +29,5 @@ task
 
 * https://github.com/toboshii/home-ops/tree/main/cluster/flux/flux-system
 * https://github.com/onedr0p/home-ops
+* https://github.com/bjw-s/home-ops
+* https://k8s-at-home.com/

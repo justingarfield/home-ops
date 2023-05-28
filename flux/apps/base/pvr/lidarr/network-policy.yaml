@@ -1,0 +1,18 @@
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "lidarr"
+spec:
+  endpointSelector:
+    matchLabels:
+      role: app.kubernetes.io/name=lidarr
+  ingress:
+    - fromEndpoints:
+        - {}
+  egress:
+    - fromEndpoints:
+        - matchLabels:
+          role: app.kubernetes.io/name=prowlarr
+        - matchLabels:
+          role: app.kubernetes.io/name=pod-gateway
