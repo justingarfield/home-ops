@@ -2,7 +2,8 @@
 apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
-  name: "lidarr"
+  name: lidarr
+  namespace: pvr
 spec:
   endpointSelector:
     matchLabels:

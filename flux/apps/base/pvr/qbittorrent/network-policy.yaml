@@ -3,6 +3,7 @@ apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
   name: "qbittorrent"
+  namespace: pvr
 spec:
   endpointSelector:
     matchLabels:
