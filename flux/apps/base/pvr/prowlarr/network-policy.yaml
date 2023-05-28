@@ -8,11 +8,12 @@ spec:
   egress:
     - toEntities:
         - cluster
+    - toEntities:
         - world:
-          toPorts:
-            ports:
-              - port: "443"
-                protocol: TCP
+            toPorts:
+              ports:
+                - port: "443"
+                  protocol: TCP
     - toEndpoints:
         - matchLabels:
           app.kubernetes.io/name: pod-gateway
