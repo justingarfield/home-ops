@@ -9,6 +9,8 @@ spec:
     matchLabels:
       app.kubernetes.io/name: pod-gateway
   ingress:
+    - fromEntities:
+        - world
     - fromEndpoints:
         - matchLabels:
             app.kubernetes.io/name: lidarr
