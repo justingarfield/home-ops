@@ -10,7 +10,7 @@ spec:
       app.kubernetes.io/name: pod-gateway
   ingress:
     - fromEntities:
-        - world
+        - world # 1197 UDP
     - fromEndpoints:
         - matchLabels:
             app.kubernetes.io/name: lidarr
