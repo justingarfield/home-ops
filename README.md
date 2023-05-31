@@ -14,9 +14,9 @@ As-such, all scripts and configuration files in this repository have been tokeni
 📁 home-ops
 ├─📁 .taskfiles      # This repo uses Taskfiles vs. Makefiles (see https://taskfile.dev)
 ├─📁 assets          # Random assets used in repo documentation / charts / graphs
-├─📁 docker          # Docker Compose files used to spin-up a local Container Registry and Pull-through-caches
+├─📁 docker          # Docker Compose files used for a local Container Registry and Pull-through-caches
 ├─📁 docs            # Folder containing detailed documentation about this repository
-├─📁 flux            # Both staging and production cluster templates used with Flux CD to automatically deploy Kubernetes resources / applications
+├─📁 flux            # Flux CD kutomizations used to automatically deploy Kubernetes resources / applications
 ├─📁 pki             # Holds Profiles and Templates used with cfssl toolkit to generate self-signed PKI
 ├─📁 scripts         # Shell scripts used where just a Taskfile wasn't expressive/scriptable enough
 ├─📁 sidero-metal    # Files from a sidero-metal lab I built, awaiting future physical hardware for a new cluster
