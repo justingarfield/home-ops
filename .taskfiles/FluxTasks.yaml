@@ -116,3 +116,13 @@ tasks:
           --path=flux/clusters/{{ .CLUSTER_NAME }}/kustomizations \
           --personal \
           --repository={{ .GITHUB_REPO }}
+
+  apply-existing-install:
+    desc:
+    cmds:
+      # - kubectl apply --server-side --kustomize ./flux/clusters/staging/bootstrap
+      - task: :sops:decrypt-and-apply-file
+        vars: { FILENAME: "./flux/clusters/staging/bootstrap/age-key.sops.yaml" }
+      - task: :sops:decrypt-and-apply-file
+        vars: { FILENAME: "./flux/clusters/staging/bootstrap/github-deploy-key.sops.yaml" }
+      # - kubectl apply --server-side --kustomize ./flux/clusters/staging/kustomizations/flux-system

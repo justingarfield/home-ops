@@ -62,3 +62,16 @@ tasks:
         msg: Please provide a FILENAME
     cmds:
       - SOPS_AGE_KEY_FILE="{{ .AGE_PRIVATE_KEY }}" sops --decrypt "{{ .FILENAME }}"
+
+  decrypt-and-apply-file:
+    desc: Decrypts a SOPS age-encrypted file and applies it to the currently active kubectl context.
+    vars:
+      AGE_PRIVATE_KEY: '{{.SOPS_OUT_DIR}}/age.agekey'
+      FILENAME: "{{.FILENAME}}"
+    preconditions:
+      - sh: test {{.AGE_PRIVATE_KEY}}
+        msg: Please provide an AGE_PRIVATE_KEY
+      - sh: test {{.FILENAME}}
+        msg: Please provide a FILENAME
+    cmds:
+      - SOPS_AGE_KEY_FILE="{{ .AGE_PRIVATE_KEY }}" sops --decrypt "{{.FILENAME}}" | kubectl apply -f -
