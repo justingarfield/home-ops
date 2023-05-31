@@ -9,4 +9,3 @@ resources:
   - external-dns.yaml
   - jetstack.yaml
   - k8s-at-home.yaml
-  - weave-gitops.yaml
