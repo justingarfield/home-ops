@@ -16,7 +16,6 @@ spec:
         name: jetstack
         namespace: flux-system
   install:
-    createNamespace: false
     remediation:
       retries: 5
   upgrade:

@@ -18,7 +18,6 @@ spec:
   releaseName: *helmReleaseName
   maxHistory: 3
   install:
-    createNamespace: false
     remediation:
       retries: 5
   upgrade:
