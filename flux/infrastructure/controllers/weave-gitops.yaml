@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: weave-gitops
+  name: &helmReleaseName weave-gitops
   namespace: flux-system
 spec:
   interval: 30m
@@ -16,7 +16,7 @@ spec:
         name: weave-gitops
         namespace: flux-system
   maxHistory: 3
-  releaseName: "{{ .Release.Name }}"
+  releaseName: *helmReleaseName
   install:
     remediation:
       retries: 5
@@ -33,7 +33,7 @@ spec:
       annotations:
         hajimari.io/icon: mdi:sawtooth-wave
       hosts:
-        - host: "{{ .Release.Name }}.${PUBLIC_DNS_ZONE}"
+        - host: "{{ *helmReleaseName }}.${PUBLIC_DNS_ZONE}"
           paths:
             - path: /
               pathType: Prefix
