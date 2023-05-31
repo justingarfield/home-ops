@@ -11,3 +11,39 @@ tasks:
         sh: kubectl get crds | tail -n +2 | awk '{print $1}' | paste -d, -s -
     cmds:
       - kubectl get all,{{ ._INSTALLED_CRDS }} {{ .CLI_ARGS }}
+
+  start:
+    desc:
+    cmds:
+      - |
+        kubectl run -i --rm --tty ubuntu --overrides='
+          {
+            "apiVersion": "batch/v1",
+            "spec": {
+              "template": {
+                "spec": {
+                  "containers": [
+                    {
+                      "name": "ubuntu",
+                      "image": "ubuntu:14.04",
+                      "args": [
+                        "bash"
+                      ],
+                      "stdin": true,
+                      "stdinOnce": true,
+                      "tty": true,
+                      "volumeMounts": [{
+                        "mountPath": "/home/store",
+                        "name": "store"
+                      }]
+                    }
+                  ],
+                  "volumes": [{
+                    "name":"store",
+                    "emptyDir":{}
+                  }]
+                }
+              }
+            }
+          }
+          '  --image=ubuntu:14.04 --restart=Never -- bash

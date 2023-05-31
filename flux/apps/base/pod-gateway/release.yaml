@@ -26,6 +26,10 @@ spec:
     - name: cert-manager
       namespace: cert-manager
   values:
+    dnsConfig:
+      options:
+        - name: ndots
+          value: "6"
     image:
       repository: ghcr.io/angelnu/pod-gateway
       tag: v1.8.1@sha256:690b6365728fe9012ad4cdfca38334992664596513dca187d1b93d2025205776

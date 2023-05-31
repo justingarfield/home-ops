@@ -46,3 +46,8 @@ tasks:
     cmds:
       - kubectl -n tetragon-test-pod delete -f {{._TEST_POD_URL}}
       - kubectl delete ns tetragon-test-pod
+
+  show-generic-events:
+    desc:
+    cmds:
+      - kubectl logs -n tetragon -l app.kubernetes.io/name=tetragon -c export-stdout -f | tetra getevents -o compact {{.CLI_ARGS}}

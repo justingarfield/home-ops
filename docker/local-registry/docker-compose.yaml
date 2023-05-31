@@ -6,3 +6,4 @@ services:
     image: registry:2.8.2
     ports:
       - "5010:5000"
+    restart: unless-stopped

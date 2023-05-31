@@ -4,4 +4,5 @@ kind: Kustomization
 resources:
   - cert-manager.yaml
   - external-dns.yaml
+  - local-path-provisioner.yaml
   - tetragon.yaml
