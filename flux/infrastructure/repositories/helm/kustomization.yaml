@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - bjw-s.yaml
   - cilium.yaml
+  - csi-driver-nfs.yaml
   - external-dns.yaml
   - jetstack.yaml
   - k8s-at-home.yaml
