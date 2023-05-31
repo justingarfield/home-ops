@@ -33,7 +33,7 @@ spec:
       annotations:
         hajimari.io/icon: mdi:sawtooth-wave
       hosts:
-        - host: "{{ *helmReleaseName }}.${PUBLIC_DNS_ZONE}"
+        - host: "gitops.${PUBLIC_DNS_ZONE}"
           paths:
             - path: /
               pathType: Prefix
