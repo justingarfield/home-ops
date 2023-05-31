@@ -48,6 +48,6 @@ tasks:
       - kubectl delete ns tetragon-test-pod
 
   show-generic-events:
-    desc:
+    desc: Show the most basic high-level overview of events
     cmds:
       - kubectl logs -n tetragon -l app.kubernetes.io/name=tetragon -c export-stdout -f | tetra getevents -o compact {{.CLI_ARGS}}
