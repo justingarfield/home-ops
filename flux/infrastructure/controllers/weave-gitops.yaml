@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &helmReleaseName weave-gitops
+  name: weave-gitops
   namespace: flux-system
 spec:
   interval: 30m
@@ -16,7 +16,7 @@ spec:
         name: weave-gitops
         namespace: flux-system
   maxHistory: 3
-  releaseName: *helmReleaseName
+  releaseName: "{{ .Release.Name }}"
   install:
     remediation:
       retries: 5
@@ -27,18 +27,13 @@ spec:
     adminUser:
       create: true
       username: admin
-    # oidcSecret:
-    #   create: true
-    #   clientID: weave-gitops
-    #   issuerURL: https://auth.devbu.io
-    #   redirectURL: https://gitops.devbu.io/oauth2/callback
     ingress:
       enabled: true
       className: cilium
       annotations:
         hajimari.io/icon: mdi:sawtooth-wave
       hosts:
-        - host: &host "{{ .Release.Name }}.${PUBLIC_DNS_ZONE}"
+        - host: "{{ .Release.Name }}.${PUBLIC_DNS_ZONE}"
           paths:
             - path: /
               pathType: Prefix
