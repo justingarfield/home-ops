@@ -1,12 +1,10 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: local-path-provisioner
+  name: &helmReleaseName local-path-provisioner
   namespace: kube-system
 spec:
-  interval: 30m
   chart:
     spec:
       chart: ./deploy/chart/local-path-provisioner
@@ -14,17 +12,22 @@ spec:
         kind: GitRepository
         name: local-path-provisioner
         namespace: flux-system
-  maxHistory: 2
   install:
-    createNamespace: true
+    crds: Skip
     remediation:
-      retries: 3
+      # I set this to larger value than upgrade section, as resource
+      # contention may be a little wonky after a fresh cluster boot.
+      retries: 5
+  interval: 30m
+  maxHistory: 3
+  releaseName: *helmReleaseName
   upgrade:
-    cleanupOnFail: true
+    crds: Skip
     remediation:
       retries: 3
-  uninstall:
-    keepHistory: false
+  test:
+    enable: true
+    ignoreFailures: false
   values:
     helperImage:
       repository: public.ecr.aws/docker/library/busybox

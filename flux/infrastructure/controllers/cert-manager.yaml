@@ -2,30 +2,36 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: cert-manager
+  name: &helmReleaseName cert-manager
   namespace: cert-manager
 spec:
-  interval: 15m
   chart:
     spec:
       # renovate: registryUrl=https://charts.jetstack.io/
       chart: cert-manager
-      version: v1.11.0
       sourceRef:
         kind: HelmRepository
         name: jetstack
         namespace: flux-system
+      version: v1.11.0
   install:
+    crds: Skip
     remediation:
+      # I set this to larger value than upgrade section, as resource
+      # contention may be a little wonky after a fresh cluster boot.
       retries: 5
+  interval: 30m
+  maxHistory: 3
+  releaseName: *helmReleaseName
   upgrade:
+    crds: Skip
     remediation:
-      retries: 5
+      retries: 3
+  test:
+    enable: true
+    ignoreFailures: false
   values:
-    namespace: cert-manager
-    installCRDs: false
-    webhook:
-      enabled: true
+    # See: https://artifacthub.io/packages/helm/cert-manager/cert-manager?modal=values
     extraArgs:
       - --dns01-recursive-nameservers=${OPNSENSE_DNS_SERVER}:53
       - --dns01-recursive-nameservers-only
@@ -40,3 +46,5 @@ spec:
       servicemonitor:
         enabled: true
         prometheusInstance: monitoring
+    webhook:
+      enabled: true
