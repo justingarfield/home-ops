@@ -12,38 +12,7 @@ tasks:
     cmds:
       - kubectl get all,{{ ._INSTALLED_CRDS }} {{ .CLI_ARGS }}
 
-  start:
+  get-cert-manager-related:
     desc:
     cmds:
-      - |
-        kubectl run -i --rm --tty ubuntu --overrides='
-          {
-            "apiVersion": "batch/v1",
-            "spec": {
-              "template": {
-                "spec": {
-                  "containers": [
-                    {
-                      "name": "ubuntu",
-                      "image": "ubuntu:14.04",
-                      "args": [
-                        "bash"
-                      ],
-                      "stdin": true,
-                      "stdinOnce": true,
-                      "tty": true,
-                      "volumeMounts": [{
-                        "mountPath": "/home/store",
-                        "name": "store"
-                      }]
-                    }
-                  ],
-                  "volumes": [{
-                    "name":"store",
-                    "emptyDir":{}
-                  }]
-                }
-              }
-            }
-          }
-          '  --image=ubuntu:14.04 --restart=Never -- bash
+      - kubectl get certificaterequests,certificates,challenges,clusterissuers,issuers,orders {{.CLI_ARGS}}
