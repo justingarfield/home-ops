@@ -51,6 +51,7 @@ spec:
         tls:
           - hosts:
               - *host
+            secretName: tls-theme-park
     resources:
       requests:
         cpu: 10m

@@ -59,6 +59,10 @@ spec:
             paths:
               - path: /
                 pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+            secretName: tls-hajimari
     persistence:
       data:
         enabled: true
