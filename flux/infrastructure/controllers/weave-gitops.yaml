@@ -33,10 +33,13 @@ spec:
       annotations:
         hajimari.io/icon: mdi:sawtooth-wave
       hosts:
-        - host: "gitops.${PUBLIC_DNS_ZONE}"
+        - host: &host "gitops.${PUBLIC_DNS_ZONE}"
           paths:
             - path: /
               pathType: Prefix
+      tls:
+        - hosts:
+            - *host
     networkPolicy:
       create: true
     metrics:
