@@ -33,6 +33,7 @@ spec:
       annotations:
         hajimari.io/icon: mdi:sawtooth-wave
         cert-manager.io/issuer: letsencrypt
+        ingress.cilium.io/websocket: enabled
       hosts:
         - host: &host "gitops.${PUBLIC_DNS_ZONE}"
           paths:
