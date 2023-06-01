@@ -73,3 +73,16 @@ spec:
       tolerations:
         - effect: NoSchedule
           operator: Exists
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: cert-manager-webhook-egress-host
+  namespace: cert-manager-webhook-egress-host
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: webhook
+  egress:
+    - toEntities:
+        - host
