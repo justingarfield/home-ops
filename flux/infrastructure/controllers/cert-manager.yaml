@@ -39,6 +39,8 @@ spec:
       - --dns01-recursive-nameservers-only
     cainjector:
       replicaCount: 1
+    nodeSelector:
+      node-role.kubernetes.io/control-plane:
     podDnsPolicy: "None"
     podDnsConfig:
       nameservers:
@@ -48,6 +50,9 @@ spec:
       servicemonitor:
         enabled: true
         prometheusInstance: monitoring
+    tolerations:
+      - effect: NoSchedule
+        operator: Exists
     webhook:
       enabled: true
       networkPolicy:
