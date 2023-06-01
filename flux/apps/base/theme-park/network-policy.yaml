@@ -9,10 +9,16 @@ spec:
     matchLabels:
       app.kubernetes.io/name: theme-park
   ingress:
+    - fromServices:
+        - {}
     - fromEntities:
-        - ingress
+        - {}
     - fromEndpoints:
         - {}
   egress:
+    - toServices:
+        - {}
+    - toEntities:
+        - {}
     - toEndpoints:
         - {}
