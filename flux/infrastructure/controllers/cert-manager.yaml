@@ -86,3 +86,4 @@ spec:
   egress:
     - toEntities:
         - host
+        - kube-apiserver
