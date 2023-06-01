@@ -3,7 +3,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - authelia.yaml
-  - cert-manager.yaml
+  # - cert-manager.yaml
   - csi-driver-nfs.yaml
   - external-dns.yaml
   # - local-path-provisioner.yaml
