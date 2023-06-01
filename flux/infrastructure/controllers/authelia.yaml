@@ -47,6 +47,11 @@ spec:
         rules:
           - domain: "*.${PUBLIC_DNS_ZONE}"
             policy: one_factor
+      authentication_backend:
+        ldap:
+          enabled: false
+        file:
+          enabled: true
       storage:
         local:
           enabled: true
