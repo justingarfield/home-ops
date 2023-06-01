@@ -120,9 +120,9 @@ tasks:
   apply-existing-install:
     desc:
     cmds:
-      # - kubectl apply --server-side --kustomize ./flux/clusters/staging/bootstrap
+      - kubectl apply --server-side --kustomize ./flux/clusters/staging/bootstrap
       - task: :sops:decrypt-and-apply-file
         vars: { FILENAME: "./flux/clusters/staging/bootstrap/age-key.sops.yaml" }
       - task: :sops:decrypt-and-apply-file
         vars: { FILENAME: "./flux/clusters/staging/bootstrap/github-deploy-key.sops.yaml" }
-      # - kubectl apply --server-side --kustomize ./flux/clusters/staging/kustomizations/flux-system
+      - kubectl apply --server-side --kustomize ./flux/clusters/staging/kustomizations/flux-system

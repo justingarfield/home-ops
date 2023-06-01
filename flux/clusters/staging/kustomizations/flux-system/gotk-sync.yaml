@@ -6,7 +6,12 @@ metadata:
   name: flux-system
   namespace: flux-system
 spec:
-  interval: 1m0s
+  ignore: |
+    # exclude all
+    /*
+    # include flux directory
+    !/flux
+  interval: 30m
   ref:
     branch: main
   secretRef:
