@@ -32,7 +32,7 @@ spec:
       className: cilium
       annotations:
         hajimari.io/icon: mdi:sawtooth-wave
-        cert-manager.io/clusterIssuer: letsencrypt
+        cert-manager.io/cluster-issuer: letsencrypt
       hosts:
         - host: &host "gitops.${PUBLIC_DNS_ZONE}"
           paths:
