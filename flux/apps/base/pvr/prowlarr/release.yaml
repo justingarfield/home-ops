@@ -62,11 +62,16 @@ spec:
         ingressClassName: cilium
         annotations:
           hajimari.io/icon: "cloud-search"
+          cert-manager.io/cluster-issuer: letsencrypt
         hosts:
           - host: &host "{{ .Release.Name }}.${PUBLIC_DNS_ZONE}"
             paths:
               - path: /
                 pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+            secretName: tls-prowlarr
     persistence:
       config:
         enabled: true

@@ -43,6 +43,8 @@ spec:
       main:
         enabled: true
         ingressClassName: cilium
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt
         hosts:
           - host: &host "{{ .Release.Name }}.${PUBLIC_DNS_ZONE}"
             paths:
@@ -51,3 +53,4 @@ spec:
         tls:
           - hosts:
               - *host
+            secretName: tls-overseerr

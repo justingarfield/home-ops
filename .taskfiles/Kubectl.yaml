@@ -15,4 +15,4 @@ tasks:
   get-cert-manager-related:
     desc:
     cmds:
-      - kubectl get certificaterequests,certificates,challenges,clusterissuers,issuers,orders {{.CLI_ARGS}}
+      - kubectl get clusterissuers,issuers,certificaterequests,challenges,orders,certificates {{.CLI_ARGS}}
