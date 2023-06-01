@@ -31,15 +31,15 @@ spec:
     enable: true
     ignoreFailures: false
   values:
-    rbac:
-      enabled: true
+    # rbac:
+    #  enabled: true
     domain: ${PUBLIC_DNS_ZONE}
-    ingress:
-      enabled: true
-      className: cilium # not sure if this is supported yet
-      annotations:
-        kubernetes.io/ingress.class: cilium
-        cert-manager.io/cluster-issuer: letsencrypt
-      tls:
-        enabled: true
-        secret: tls-authelia
+    # ingress:
+    #   enabled: true
+    #   className: cilium # not sure if this is supported yet
+    #   annotations:
+    #     kubernetes.io/ingress.class: cilium
+    #     cert-manager.io/cluster-issuer: letsencrypt
+    #   tls:
+    #    enabled: true
+    #    secret: tls-authelia
