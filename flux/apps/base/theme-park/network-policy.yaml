@@ -3,7 +3,7 @@ apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
   name: theme-park
-  namespace: default
+  namespace: theme-park
 spec:
   endpointSelector:
     matchLabels:
