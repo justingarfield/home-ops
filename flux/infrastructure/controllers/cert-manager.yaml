@@ -85,5 +85,4 @@ spec:
       app.kubernetes.io/name: webhook
   egress:
     - toEntities:
-        - host
         - kube-apiserver
