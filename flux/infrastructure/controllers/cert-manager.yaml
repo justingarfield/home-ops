@@ -84,5 +84,9 @@ spec:
     matchLabels:
       app.kubernetes.io/name: webhook
   egress:
+    - toPorts:
+        - ports:
+            - port: "6443"
+              protocol: "TCP"
     - toEntities:
         - kube-apiserver
