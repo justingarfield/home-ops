@@ -56,3 +56,18 @@ spec:
       name: weave-gitops
       valuesKey: adminPassword
       targetPath: adminUser.passwordHash
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: weave-gitops-egress
+  namespace: weave-gitops
+spec:
+  endpointSelector:
+    matchLabels:
+      # app.kubernetes.io/name: weave-gitops
+      role: you-never-gonna-get-this-la-la-la-la-la-la
+  egress:
+    - {}
+  ingress:
+    - {}
