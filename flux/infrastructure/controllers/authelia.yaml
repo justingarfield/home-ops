@@ -31,18 +31,18 @@ spec:
     enable: true
     ignoreFailures: false
   values:
+    # rbac:
+    #  enabled: true
+    domain: ${PUBLIC_DNS_ZONE}
+    # ingress:
+    #   enabled: true
+    #   className: cilium
+    #   annotations:
+    #     cert-manager.io/cluster-issuer: letsencrypt
+    #   tls:
+    #    enabled: true
+    #    secret: tls-authelia
     configMap:
-      # rbac:
-      #  enabled: true
-      domain: ${PUBLIC_DNS_ZONE}
-      # ingress:
-      #   enabled: true
-      #   className: cilium
-      #   annotations:
-      #     cert-manager.io/cluster-issuer: letsencrypt
-      #   tls:
-      #    enabled: true
-      #    secret: tls-authelia
       access_control:
         rules:
           - domain: "*.${PUBLIC_DNS_ZONE}"
@@ -52,12 +52,12 @@ spec:
           enabled: false
         file:
           enabled: true
+      session:
+        redis:
+          enabled: false
       storage:
         local:
           enabled: true
           path: /config/db.sqlite3
         postgres:
-          enabled: false
-      session:
-        redis:
           enabled: false
