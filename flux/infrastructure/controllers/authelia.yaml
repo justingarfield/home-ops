@@ -31,28 +31,28 @@ spec:
     enable: true
     ignoreFailures: false
   values:
-    # rbac:
-    #  enabled: true
-    domain: ${PUBLIC_DNS_ZONE}
-    # ingress:
-    #   enabled: true
-    #   className: cilium # not sure if this is supported yet
-    #   annotations:
-    #     kubernetes.io/ingress.class: cilium
-    #     cert-manager.io/cluster-issuer: letsencrypt
-    #   tls:
-    #    enabled: true
-    #    secret: tls-authelia
-    access_control:
-      rules:
-        - domain: "*.${PUBLIC_DNS_ZONE}"
-          policy: one_factor
-    storage:
-      local:
-        enabled: true
-        path: /config/db.sqlite3
-      postgres:
-        enabled: false
-    session:
-      redis:
-        enabled: false
+    configMap:
+      # rbac:
+      #  enabled: true
+      domain: ${PUBLIC_DNS_ZONE}
+      # ingress:
+      #   enabled: true
+      #   className: cilium
+      #   annotations:
+      #     cert-manager.io/cluster-issuer: letsencrypt
+      #   tls:
+      #    enabled: true
+      #    secret: tls-authelia
+      access_control:
+        rules:
+          - domain: "*.${PUBLIC_DNS_ZONE}"
+            policy: one_factor
+      storage:
+        local:
+          enabled: true
+          path: /config/db.sqlite3
+        postgres:
+          enabled: false
+      session:
+        redis:
+          enabled: false
