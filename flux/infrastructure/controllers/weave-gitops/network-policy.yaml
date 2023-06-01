@@ -1,0 +1,20 @@
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: weave-gitops
+  namespace: weave-gitops
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: weave-gitops
+  egress:
+    - toPorts:
+        - ports:
+            - port: "6443"
+              protocol: "TCP"
+    - toEntities:
+        - kube-apiserver
+  ingress:
+    - fromEntities:
+        - ingress
