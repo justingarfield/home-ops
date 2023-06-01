@@ -43,3 +43,14 @@ spec:
     #   tls:
     #    enabled: true
     #    secret: tls-authelia
+    rules:
+      - domain: "*.${PUBLIC_DNS_ZONE}"
+        policy: one_factor
+    storage:
+      local:
+        enabled: true
+        path: /config/db.sqlite3
+      postgres:
+        enabled: false
+    redis:
+      enabled: false
