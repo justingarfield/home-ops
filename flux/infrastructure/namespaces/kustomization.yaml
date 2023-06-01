@@ -7,3 +7,4 @@ resources:
   - csi-driver-nfs.yaml
   - external-dns.yaml
   - tetragon.yaml
+  - weave-gitops.yaml
