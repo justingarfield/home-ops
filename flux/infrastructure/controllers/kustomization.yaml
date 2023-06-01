@@ -8,4 +8,4 @@ resources:
   - external-dns.yaml
   # - local-path-provisioner.yaml
   - tetragon.yaml
-  # - weave-gitops.yaml
+  - weave-gitops.yaml
