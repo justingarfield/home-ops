@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   - cert-manager
   - weave-gitops
-  - authelia.yaml
+  # - authelia.yaml
   - csi-driver-nfs.yaml
   - external-dns.yaml
   # - local-path-provisioner.yaml

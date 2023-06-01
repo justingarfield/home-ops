@@ -53,5 +53,6 @@ spec:
         path: /config/db.sqlite3
       postgres:
         enabled: false
-    redis:
-      enabled: false
+    session:
+      redis:
+        enabled: false
