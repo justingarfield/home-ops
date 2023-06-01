@@ -52,6 +52,9 @@ spec:
           enabled: false
         file:
           enabled: true
+      notifier:
+        smtp:
+          enabled: false
       session:
         redis:
           enabled: false
