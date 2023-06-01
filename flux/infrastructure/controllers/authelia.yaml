@@ -53,6 +53,9 @@ spec:
         file:
           enabled: true
       notifier:
+        filesystem:
+          enabled: true
+          filename: /config/notification.txt
         smtp:
           enabled: false
       session:
