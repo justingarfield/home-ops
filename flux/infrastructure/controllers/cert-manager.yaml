@@ -7,13 +7,13 @@ metadata:
 spec:
   chart:
     spec:
-      # renovate: registryUrl=https://charts.jetstack.io/
+      # renovate: registryUrl=https://artifacthub.io/
       chart: cert-manager
       sourceRef:
         kind: HelmRepository
-        name: jetstack
+        name: artifacthub
         namespace: flux-system
-      version: v1.11.0
+      version: v1.12.1
   install:
     crds: Skip
     remediation:
@@ -39,8 +39,6 @@ spec:
       - --dns01-recursive-nameservers-only
     cainjector:
       replicaCount: 1
-    networkPolicy:
-      enabled: true
     podDnsPolicy: "None"
     podDnsConfig:
       nameservers:
@@ -52,3 +50,5 @@ spec:
         prometheusInstance: monitoring
     webhook:
       enabled: true
+      networkPolicy:
+        enabled: true
