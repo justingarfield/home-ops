@@ -39,13 +39,13 @@ spec:
       - --dns01-recursive-nameservers-only
     cainjector:
       nodeSelector:
-        node-role.kubernetes.io/control-plane:
+        node-role.kubernetes.io/control-plane: ""
       tolerations:
         - effect: NoSchedule
           operator: Exists
       replicaCount: 1
     nodeSelector:
-      node-role.kubernetes.io/control-plane:
+      node-role.kubernetes.io/control-plane: ""
     podDnsPolicy: "None"
     podDnsConfig:
       nameservers:
@@ -57,7 +57,7 @@ spec:
         prometheusInstance: monitoring
     startupapicheck:
       nodeSelector:
-        node-role.kubernetes.io/control-plane:
+        node-role.kubernetes.io/control-plane: ""
       tolerations:
         - effect: NoSchedule
           operator: Exists
@@ -69,7 +69,7 @@ spec:
       networkPolicy:
         enabled: true
       nodeSelector:
-        node-role.kubernetes.io/control-plane:
+        node-role.kubernetes.io/control-plane: ""
       tolerations:
         - effect: NoSchedule
           operator: Exists
