@@ -42,8 +42,6 @@ spec:
         - hosts:
             - *host
           secretName: tls-weave-gitops
-    # networkPolicy:
-    #   create: true
     metrics:
       enabled: true
     rbac:
@@ -65,9 +63,12 @@ metadata:
 spec:
   endpointSelector:
     matchLabels:
-      # app.kubernetes.io/name: weave-gitops
-      role: you-never-gonna-get-this-la-la-la-la-la-la
+      app.kubernetes.io/name: weave-gitops
   egress:
-    - {}
+    - toEndpoints:
+        - matchLabels:
+            role: ermaghered
   ingress:
-    - {}
+    - fromEndpoints:
+        - matchLabels:
+            role: ermaghered
