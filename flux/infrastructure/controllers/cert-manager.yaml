@@ -38,6 +38,11 @@ spec:
       - --dns01-recursive-nameservers=${OPNSENSE_DNS_SERVER}:53
       - --dns01-recursive-nameservers-only
     cainjector:
+      nodeSelector:
+        node-role.kubernetes.io/control-plane:
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
       replicaCount: 1
     nodeSelector:
       node-role.kubernetes.io/control-plane:
@@ -50,6 +55,12 @@ spec:
       servicemonitor:
         enabled: true
         prometheusInstance: monitoring
+    startupapicheck:
+      nodeSelector:
+        node-role.kubernetes.io/control-plane:
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
     tolerations:
       - effect: NoSchedule
         operator: Exists
@@ -57,3 +68,8 @@ spec:
       enabled: true
       networkPolicy:
         enabled: true
+      nodeSelector:
+        node-role.kubernetes.io/control-plane:
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
