@@ -6,5 +6,6 @@ resources:
   - cert-manager.yaml
   - csi-driver-nfs.yaml
   - external-dns.yaml
+  - lldap.yaml
   - tetragon.yaml
   - weave-gitops.yaml

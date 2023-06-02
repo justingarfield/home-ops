@@ -7,5 +7,6 @@ resources:
   - authelia.yaml
   - csi-driver-nfs.yaml
   - external-dns.yaml
+  - lldap.yaml
   # - local-path-provisioner.yaml
   - tetragon.yaml
