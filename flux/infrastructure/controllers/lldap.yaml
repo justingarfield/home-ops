@@ -35,7 +35,7 @@ spec:
       LLDAP_LDAP_BASE_DN: dc=staging,dc=jgarfield,dc=com
     envFrom:
       - secretRef:
-          name: lldap-secret
+          name: lldap
     service:
       main:
         ports:
