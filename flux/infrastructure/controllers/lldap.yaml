@@ -31,10 +31,8 @@ spec:
       tag: latest-alpine@sha256:a6a8215f8bb286ae9ce6e4f6ef303a543094a954d0091da9a62aee2b391ed023
     env:
       TZ: ${TIMEZONE}
-      LLDAP_HTTP_PORT: &http-port 80
       LLDAP_HTTP_URL: https://lldap.${PUBLIC_DNS_ZONE}
-      LLDAP_LDAP_PORT: &ldap-port 389
-      LLDAP_LDAP_BASE_DN: dc=home,dc=arpa
+      LLDAP_LDAP_BASE_DN: dc=staging,dc=jgarfield,dc=com
     envFrom:
       - secretRef:
           name: lldap-secret
@@ -42,10 +40,10 @@ spec:
       main:
         ports:
           http:
-            port: *http-port
+            port: 17170
           ldap:
             enabled: true
-            port: *ldap-port
+            port: 3890
     ingress:
       main:
         enabled: true
