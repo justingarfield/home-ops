@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tetragon
+  labels:
+    # tetragon uses "securityContext: { privileged: true }" as it needs to
+    # deep-inspect things happening inside the kernel
+    pod-security.kubernetes.io/enforce: privileged

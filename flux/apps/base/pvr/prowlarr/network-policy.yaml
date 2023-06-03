@@ -1,0 +1,22 @@
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "prowlarr"
+  namespace: pvr
+spec:
+  egress:
+    - toEntities:
+        - cluster
+        - world
+    - toEndpoints:
+        - matchLabels:
+            app.kubernetes.io/name: pod-gateway
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: prowlarr
+  ingress:
+    - fromEntities:
+        - ingress
+    - fromEndpoints:
+        - {}

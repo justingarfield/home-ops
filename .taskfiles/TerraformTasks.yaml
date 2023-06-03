@@ -1,0 +1,35 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+---
+version: '3'
+
+vars:
+  TERRAFORM_DIR: '{{ .REPOSITORY_DIR }}/terraform'
+
+tasks:
+
+  init-configuration:
+    desc: Initializes a particular Terraform Configuration directory (used when starting on a fresh clone).
+    vars:
+      CONFIGURATION_NAME: '{{ .CONFIGURATION_NAME | default .CLI_ARGS }}'
+    cmds:
+      - terraform -chdir="{{ .TERRAFORM_DIR }}/{{ .CONFIGURATION_NAME }}" init -upgrade
+
+  generate-plan:
+    desc: Generates a plan for a particular Terraform Configuration directory.
+    vars:
+      CONFIGURATION_NAME: '{{ .CONFIGURATION_NAME | default .CLI_ARGS }}'
+    preconditions:
+      - test -d "{{ .TERRAFORM_DIR }}"
+    cmds:
+      - task: :_core:ensure-directory-exists
+        vars: { DIRECTORY: "{{ .OUT_DIR }}/terraform" }
+      - terraform -chdir="{{ .TERRAFORM_DIR }}/{{ .CONFIGURATION_NAME }}" plan -out="{{ .OUT_DIR }}/terraform/{{ .CONFIGURATION_NAME }}.tfplan"
+
+  apply-plan:
+    desc: Applies a pre-generated plan for a particular Terraform Configuration directory.
+    vars:
+      CONFIGURATION_NAME: '{{ .CONFIGURATION_NAME | default .CLI_ARGS }}'
+    preconditions:
+      - test -f "{{ .OUT_DIR }}/terraform/{{ .CONFIGURATION_NAME }}.tfplan"
+    cmds:
+      - terraform -chdir="{{ .TERRAFORM_DIR }}/{{ .CONFIGURATION_NAME }}" apply -parallelism=1 "{{ .OUT_DIR }}/terraform/{{ .CONFIGURATION_NAME }}.tfplan"

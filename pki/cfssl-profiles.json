@@ -1,0 +1,65 @@
+{
+    "signing": {
+        "default": {
+            "expiry": "8766h"
+        },
+        "profiles": {
+            "site-intermediate-ca": {
+                "usages": [
+                    "signing",
+                    "key encipherment",
+                    "cert sign",
+                    "crl sign"
+                ],
+                "expiry": "35064h",
+                "ca_constraint": {
+                    "is_ca": true,
+                    "max_path_len": 1
+                }
+            },
+            "site-function-intermediate-ca": {
+                "usages": [
+                    "signing",
+                    "key encipherment",
+                    "cert sign",
+                    "crl sign"
+                ],
+                "expiry": "35064h",
+                "ca_constraint": {
+                    "is_ca": true,
+                    "max_path_len": 0,
+                    "max_path_len_zero": true
+                }
+            },
+            "peer": {
+                "usages": [
+                    "signing",
+                    "digital signature",
+                    "key encipherment",
+                    "client auth",
+                    "server auth"
+                ],
+                "expiry": "17532h"
+            },
+            "server": {
+                "usages": [
+                    "signing",
+                    "key encipherment",
+                    "server auth",
+                    "cert sign",
+                    "crl sign"
+                ],
+                "expiry": "17532h"
+            },
+            "client": {
+                "usages": [
+                    "signing",
+                    "key encipherment",
+                    "client auth",
+                    "email protection"
+                ],
+                "expiry": "8766h"
+            }
+        }
+    }
+}
