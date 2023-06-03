@@ -1,0 +1,124 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+---
+version: '3'
+
+vars:
+  TENANT_PROVISIONER_SPN_NAME: 'Tenant Provisioner'
+
+tasks:
+
+  list-subscriptions:
+    desc: Get a list of subscriptions for the logged in account.
+    cmds:
+      - az account list --output table
+
+  list-app-registrations:
+    desc: Get a list of registered applications in the current AAD Tenant.
+    cmds:
+      - az ad app list --output table
+
+  create-tenant-provisioner-spn:
+    desc: Creates a new Service Principal in the current AAD Tenant, using the provided Client Certificate as credentials.
+    vars:
+      ROOT_SUBSCRIPTION_ID: '{{ .ROOT_SUBSCRIPTION_ID }}'
+      DISPLAY_NAME: '{{ .DISPLAY_NAME }}'
+      CERT_FILE: '{{ .CERT_FILE }}'
+      EXISTING_SPN:
+        sh: az ad sp list --display-name "{{ .TENANT_PROVISIONER_SPN_NAME }}"
+    preconditions:
+      - test {{ .ROOT_SUBSCRIPTION_ID }}
+      - test {{ .DISPLAY_NAME }}
+      - test -f {{ .CERT_FILE }}
+      - test ! {{ .EXISTING_SPN }}
+    cmds:
+      - |
+        az ad sp create-for-rbac \
+          --role "Contributor" \
+          --scopes "/subscriptions/{{ .ROOT_SUBSCRIPTION_ID }}" \
+          --display-name "{{ .DISPLAY_NAME }}" \
+          --cert @"{{ .CERT_FILE }}"
+
+  get-service-principal-details:
+    desc:
+    vars:
+      DISPLAY_NAME: '{{ .DISPLAY_NAME | default .CLI_ARGS }}'
+    cmds:
+      - az ad sp list --display-name {{ .DISPLAY_NAME }}
+
+  list-service-principals:
+    desc:
+    cmds:
+      - az ad sp list --output table
+
+  # #--- Elevated User Access Administrator related
+  #     https://learn.microsoft.com/en-us/azure/role-based-access-control/elevate-access-global-admin#azure-cli
+
+  list-user-access-administrators:
+    desc:
+    cmds:
+      - az role assignment list --role "User Access Administrator" --scope "/" --output table
+
+  elevate-user-access-administrator-role:
+    desc:
+    cmds:
+      - az rest --method post --url "/providers/Microsoft.Authorization/elevateAccess?api-version=2016-07-01"
+      - task: list-user-access-administrators
+
+  assign-user-access-administrator-role:
+    desc:
+    vars:
+      ASSIGNEE: '{{ .ASSIGNEE | default .CLI_ARGS }}'
+    cmds:
+      - az role assignment create --assignee {{ .ASSIGNEE }} --role "User Access Administrator" --scope "/"
+      - task: list-user-access-administrators
+
+  remove-user-access-administrator-role:
+    desc:
+    vars:
+      ASSIGNEE: '{{ .ASSIGNEE | default .CLI_ARGS }}'
+    cmds:
+      - az role assignment delete --assignee {{ .ASSIGNEE }} --role "User Access Administrator" --scope "/"
+      - task: list-user-access-administrators
+
+  create-dns-contrib-sp:
+    desc: Creates a new Service Principal with the "DNS Zone Contributor" role, scoped to the PUBLIC_DNS_ZONE and PRIVATE_DNS_ZONE.
+    vars:
+      AZURE_DNS_CONTRIB_SP_NAME: '{{ .AZURE_DNS_CONTRIB_SP_NAME }}'
+      AZURE_DNS_ZONE_RESOURCE_GROUP: '{{ .AZURE_DNS_ZONE_RESOURCE_GROUP }}'
+      PUBLIC_DNS_ZONE: '{{ .PUBLIC_DNS_ZONE }}'
+      PRIVATE_DNS_ZONE: '{{ .PRIVATE_DNS_ZONE }}'
+      EXISTING_SPN:
+        sh: az ad sp list --display-name "{{ .AZURE_DNS_CONTRIB_SP_NAME }}" --output tsv
+    preconditions:
+      - sh: test "{{ .AZURE_DNS_CONTRIB_SP_NAME }}"
+        msg: AZURE_DNS_CONTRIB_SP_NAME
+      - sh: test "{{ .AZURE_DNS_ZONE_RESOURCE_GROUP }}"
+        msg: AZURE_DNS_ZONE_RESOURCE_GROUP
+      - sh: test "{{ .PUBLIC_DNS_ZONE }}"
+        msg: PUBLIC_DNS_ZONE
+      - sh: test "{{ .PRIVATE_DNS_ZONE }}"
+        msg: PRIVATE_DNS_ZONE
+      - test ! {{ .EXISTING_SPN }}
+    cmds:
+      - ./scripts/create-dns-contrib-sp.sh "{{ .AZURE_DNS_CONTRIB_SP_NAME }}" "{{ .AZURE_DNS_ZONE_RESOURCE_GROUP }}" "{{ .PUBLIC_DNS_ZONE }}" "{{ .PRIVATE_DNS_ZONE }}"
+
+  create-cert-manager-sp:
+    desc: Creates a new Service Principal for cert-manager to use.
+    vars:
+      AZURE_DNS_CONTRIB_SP_NAME: '{{ .AZURE_DNS_CONTRIB_SP_NAME | default "cert-manager" }}'
+      AZURE_DNS_ZONE_RESOURCE_GROUP: '{{ .AZURE_DNS_ZONE_RESOURCE_GROUP }}'
+      PUBLIC_DNS_ZONE: '{{ .PUBLIC_DNS_ZONE }}'
+      PRIVATE_DNS_ZONE: '{{ .PRIVATE_DNS_ZONE }}'
+    cmds:
+      - task: create-dns-contrib-sp
+
+  create-external-dns-sp:
+    desc: Creates a new Service Principal for external-dns to use.
+    vars:
+      AZURE_DNS_CONTRIB_SP_NAME: '{{ .AZURE_DNS_CONTRIB_SP_NAME | default "external-dns" }}'
+      AZURE_DNS_ZONE_RESOURCE_GROUP: '{{ .AZURE_DNS_ZONE_RESOURCE_GROUP }}'
+      PUBLIC_DNS_ZONE: '{{ .PUBLIC_DNS_ZONE }}'
+      PRIVATE_DNS_ZONE: '{{ .PRIVATE_DNS_ZONE }}'
+    cmds:
+      - task: create-dns-contrib-sp
+        vars: { AZURE_DNS_CONTRIB_SP_NAME: "{{.AZURE_DNS_CONTRIB_SP_NAME}}", AZURE_DNS_ZONE_RESOURCE_GROUP: "{{ .AZURE_DNS_ZONE_RESOURCE_GROUP }}", PUBLIC_DNS_ZONE: "{{.PUBLIC_DNS_ZONE}}", PRIVATE_DNS_ZONE: "{{ .PRIVATE_DNS_ZONE }}" }

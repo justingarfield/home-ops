@@ -1,0 +1,23 @@
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: readarr
+  namespace: pvr
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: readarr
+  ingress:
+    - fromEntities:
+        - ingress
+    - fromEndpoints:
+        - {}
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            app.kubernetes.io/name: pod-gateway
+        - matchLabels:
+            app.kubernetes.io/name: prowlarr
+        - matchLabels:
+            app.kubernetes.io/name: qbittorrent

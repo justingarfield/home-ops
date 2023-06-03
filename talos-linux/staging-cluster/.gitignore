@@ -1,0 +1,21 @@
+# This file is here as a place-holder to show what files would actually exist here.
+# These files can't be committed to a public repo due to sensitive keys and secrets residing in them.
+machine-configs/k8s-cp01.yaml
+machine-configs/k8s-cp02.yaml
+machine-configs/k8s-cp03.yaml
+machine-configs/k8s-wk01.yaml
+machine-configs/k8s-wk02.yaml
+
+machine-patches/all-nodes.patch
+machine-patches/k8s-cp01.patch
+machine-patches/k8s-cp02.patch
+machine-patches/k8s-cp03.patch
+machine-patches/k8s-wk01.patch
+machine-patches/k8s-wk02.patch
+
+machine-templates/controlplane.yaml
+machine-templates/worker.yaml
+
+cilium.yaml
+secrets-bundle.yaml
+talosconfig

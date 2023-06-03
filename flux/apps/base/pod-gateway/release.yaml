@@ -1,0 +1,133 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: pod-gateway
+  namespace: pod-gateway
+spec:
+  interval: 1m
+  chart:
+    spec:
+      chart: pod-gateway
+      version: 5.6.2
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home
+        namespace: flux-system
+      interval: 60m
+  install:
+    createNamespace: false
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  dependsOn:
+    - name: cert-manager
+      namespace: cert-manager
+  values:
+    dnsConfig:
+      options:
+        - name: ndots
+          value: "6"
+    image:
+      repository: ghcr.io/angelnu/pod-gateway
+      tag: v1.8.1@sha256:690b6365728fe9012ad4cdfca38334992664596513dca187d1b93d2025205776
+    addons:
+      netshoot:
+        enabled: true
+      vpn:
+        enabled: true
+        type: gluetun
+        gluetun:
+          image:
+            repository: docker.io/qmcgaw/gluetun
+            tag: v3.30.0
+        securityContext:
+          capabilities:
+            add: ["NET_ADMIN"]
+        env:
+          - name: VPN_SERVICE_PROVIDER
+            value: "private internet access"
+          - name: OPENVPN_USER
+            valueFrom:
+              secretKeyRef:
+                name: pod-gateway
+                key: OPENVPN_USER
+          - name: OPENVPN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: pod-gateway
+                key: OPENVPN_PASSWORD
+          - name: SERVER_REGIONS
+            value: "US East"
+          - name: BLOCK_SURVEILLANCE
+            value: "on"
+          - name: BLOCK_ADS
+            value: "on"
+          - name: DNS_KEEP_NAMESERVER
+            value: "off"
+          - name: DOT
+            value: "on"
+          - name: DOT_CACHING
+            value: "on"
+          - name: OPENVPN_IPV6
+            value: "off"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            memory: 1024Mi
+        # livenessProbe:
+        #  exec:
+        #    command:
+        #      - sh
+        #      - -c
+        #      - curl -s https://am.i.mullvad.net/connected | grep -q "are connected"
+        #  initialDelaySeconds: 30
+        #  periodSeconds: 60
+        #  failureThreshold: 1
+        networkPolicy:
+          enabled: true
+          egress:
+            - to:
+                - ipBlock:
+                    cidr: 0.0.0.0/0
+              ports:
+                # VPN traffic
+                # - port: ${PIA_TCP_PORT}
+                #  protocol: TCP
+                - port: ${PIA_UDP_PORT}
+                  protocol: UDP
+            - to:
+                - namespaceSelector: {}
+    DNS: 172.16.1.1
+    clusterName: ${CLUSTER_DOMAIN}
+    routed_namespaces:
+      - pvr
+    settings:
+      VPN_INTERFACE: tun0
+      VXLAN_ID: ${VXLAN_ID}
+      VXLAN_IP_NETWORK: 172.16.1
+      VPN_BLOCK_OTHER_TRAFFIC: true
+      VPN_TRAFFIC_PORT: ${PIA_UDP_PORT}
+      NOT_ROUTED_TO_GATEWAY_CIDRS: "172.16.0.0/12 ${K8S_HOST_NETWORK}"
+      VPN_LOCAL_CIDRS: "172.16.0.0/12 ${K8S_HOST_NETWORK}"
+    # publicPorts:
+    #  - hostname: qbittorrent
+    #    IP: 10
+    #    ports:
+    #    - type: udp
+    #      port: ${PIA_FORWARDED_PORT_UDP}
+    #    - type: tcp
+    #      port: ${PIA_FORWARDED_PORT_TCP}
+    webhook:
+      image:
+        repository: ghcr.io/angelnu/gateway-admision-controller
+        tag: v3.9.0@sha256:4e169da5af107a9c6c784d3e03c89da07fad45f18358ab5b7177662df12d955a
+      gatewayDefault: false
+      gatewayLabel: setGateway
+      gatewayAnnotation: setGateway
+      namespaceSelector:
+        label: "vpn-routed-gateway"

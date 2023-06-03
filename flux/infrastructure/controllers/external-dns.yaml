@@ -1,0 +1,63 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &helmReleaseName external-dns
+  namespace: external-dns
+spec:
+  chart:
+    spec:
+      # renovate: registryUrl=https://kubernetes-sigs.github.io/external-dns
+      chart: external-dns
+      sourceRef:
+        kind: HelmRepository
+        name: external-dns
+        namespace: flux-system
+      version: 1.12.2
+  install:
+    crds: Skip
+    remediation:
+      # I set this to larger value than upgrade section, as resource
+      # contention may be a little wonky after a fresh cluster boot.
+      retries: 5
+  interval: 30m
+  maxHistory: 3
+  releaseName: *helmReleaseName
+  upgrade:
+    crds: Skip
+    remediation:
+      retries: 3
+  test:
+    enable: true
+    ignoreFailures: false
+  values:
+    # See: https://github.com/kubernetes-sigs/external-dns/blob/master/charts/external-dns/values.yaml
+    interval: 5m
+    logLevel: info
+    provider: azure
+    policy: sync
+    sources:
+      - ingress
+    txtPrefix: "externaldns-"
+    txtOwnerId: "externaldns"
+    domainFilters:
+      - "${PUBLIC_DNS_ZONE}"
+      - "${PRIVATE_DNS_ZONE}"
+    extraArgs:
+      - --exclude-target-net=10.0.0.0/8
+      - --default-targets=174.169.160.189
+    resources:
+      requests:
+        memory: 100Mi
+        cpu: 25m
+      limits:
+        memory: 250Mi
+    extraVolumeMounts:
+      - name: external-dns-config-file
+        mountPath: "/etc/kubernetes"
+        readOnly: true
+    extraVolumes:
+      - name: external-dns-config-file
+        secret:
+          secretName: external-dns-config-file
+          optional: false

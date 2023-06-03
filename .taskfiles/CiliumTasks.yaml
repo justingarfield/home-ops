@@ -1,0 +1,10 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+tasks:
+
+  apply-opnsense-bgp-label-to-all-nodes:
+    desc: Applies a 'bgp-peering-policy' label with a value of 'opnsense' to all cluster nodes
+    cmds:
+      - kubectl label nodes --all bgp-peering-policy=opnsense

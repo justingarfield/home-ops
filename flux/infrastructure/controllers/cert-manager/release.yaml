@@ -1,0 +1,75 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &helmReleaseName cert-manager
+  namespace: cert-manager
+spec:
+  chart:
+    spec:
+      # renovate: registryUrl=https://artifacthub.io/
+      chart: cert-manager
+      sourceRef:
+        kind: HelmRepository
+        name: jetstack
+        namespace: flux-system
+      version: v1.12.1
+  install:
+    crds: Skip
+    remediation:
+      # I set this to larger value than upgrade section, as resource
+      # contention may be a little wonky after a fresh cluster boot.
+      retries: 5
+  interval: 30m
+  maxHistory: 3
+  releaseName: *helmReleaseName
+  upgrade:
+    crds: Skip
+    remediation:
+      retries: 3
+  test:
+    enable: true
+    ignoreFailures: false
+  values:
+    # See: https://artifacthub.io/packages/helm/cert-manager/cert-manager?modal=values
+    extraArgs:
+      # https://docs.cilium.io/en/v1.13/network/servicemesh/tls-termination/#create-tls-certificate-and-private-key
+      - --feature-gates=ExperimentalGatewayAPISupport=true
+      - --dns01-recursive-nameservers=${OPNSENSE_DNS_SERVER}:53
+      - --dns01-recursive-nameservers-only
+    cainjector:
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: ""
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+      replicaCount: 1
+    nodeSelector:
+      node-role.kubernetes.io/control-plane: ""
+    podDnsPolicy: "None"
+    podDnsConfig:
+      nameservers:
+        - "${OPNSENSE_DNS_SERVER}"
+    prometheus:
+      enabled: false
+      servicemonitor:
+        enabled: true
+        prometheusInstance: monitoring
+    startupapicheck:
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: ""
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+    tolerations:
+      - effect: NoSchedule
+        operator: Exists
+    webhook:
+      enabled: true
+      networkPolicy:
+        enabled: true
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: ""
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists

@@ -1,0 +1,53 @@
+digraph G {
+
+    subgraph cluster_existing {
+        label = "Existing Resources"
+
+        "Tenant Root Group" -> "Pay-As-You-Go\nSubscription"
+        "Tenant Provisioner SPN"
+        "MCA Billing Account"
+        "Pay-As-You-Go\nSubscription" -> "MCA Billing Account"
+    }
+
+    subgraph cluster_azure_provisioning {
+        label = "Azure Provisioning"
+
+        "Tenant Root Group" -> "Tenant Provisioning\nResource Group"
+        "Tenant Provisioning\nResource Group" -> "Tenant Provisioning\nStorage Account"
+        "Tenant Provisioning\nStorage Account" -> "Terraform State Files\nStorage Container"
+
+        "Tenant Root Group" -> "Infrastructure Management Group"
+        "Tenant Root Group" -> "Labs Management Group"
+        "Tenant Root Group" -> "Other Management Group"
+
+        "Infrastructure Management Group" -> "Infrastructure Mgmt Group to\nSubscription Mapping"
+        "Labs Management Group" -> "Labs Mgmt Group to\nSubscription Mapping"
+        "Other Management Group" -> "Other Mgmt Group to\nSubscription Mapping"
+
+        "Infrastructure Mgmt Group to\nSubscription Mapping" -> "Infrastructure Subscription"
+        "Labs Mgmt Group to\nSubscription Mapping" -> "Labs Subscription"
+        "Other Mgmt Group to\nSubscription Mapping" -> "Other Subscription"
+
+        "Infrastructure Subscription" -> "Infrastructure Resource Group"
+        "Labs Subscription" -> "Labs Resource Group"
+        "Other Subscription" -> "Other Resource Group"
+
+        "Infrastructure Resource Group" -> "Hub Virtual Network"
+
+        "Labs Resource Group" -> "Labs Virtual Network"
+        "Other Resource Group" -> "Other Virtual Network"
+    }
+
+    subgraph cluster_azure_dns {
+        label = "Azure DNS"
+
+        "Infrastructure Resource Group" -> "PUBLIC_DOMAIN\nDNS Zone"
+    }
+
+    subgraph cluster_azure_policy {
+        label = "Azure Policies"
+
+        "Tenant Provisioning\nResource Group" -> "Home Ops\nPolicy Initiative"
+    }
+
+}

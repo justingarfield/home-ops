@@ -1,0 +1,35 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pia-gateway
+  labels:
+    pod-security.kubernetes.io/enforce: privileged
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pia-gateway
+  namespace: pia-gateway
+spec:
+  securityContext:
+    sysctls:
+      - name: net.ipv6.conf.all.disable_ipv6
+        value: "1"
+      - name: net.ipv6.conf.default.disable_ipv6
+        value: "1"
+      - name: net.ipv4.conf.all.src_valid_mark
+        value: "1"
+  containers:
+    - name: pia-gateway
+      image: ghcr.io/justingarfield/pia-gateway:dev@sha256:15b316669791d52f40b284049a6cc53f734c1fb935bf1b7ca894b0e24e354d3e
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: ["ALL"]
+          add: ["NET_ADMIN"]
+        procMount: Default
+        runAsNonRoot: false
+        runAsUser: 0
+        seccompProfile:
+          type: RuntimeDefault
