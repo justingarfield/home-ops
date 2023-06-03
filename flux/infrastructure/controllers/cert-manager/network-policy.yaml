@@ -2,7 +2,7 @@
 apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
-  name: cert-manager-webhook-egress-host
+  name: cert-manager-webhook
   namespace: cert-manager
 spec:
   endpointSelector:

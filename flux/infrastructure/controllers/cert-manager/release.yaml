@@ -66,8 +66,6 @@ spec:
         operator: Exists
     webhook:
       enabled: true
-      networkPolicy:
-        enabled: true
       nodeSelector:
         node-role.kubernetes.io/control-plane: ""
       tolerations:
