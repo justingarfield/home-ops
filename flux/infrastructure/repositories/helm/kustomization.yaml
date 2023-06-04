@@ -10,4 +10,4 @@ resources:
   - external-dns.yaml
   - jetstack.yaml
   - k8s-at-home.yaml
-  - piraeus.yaml
+  # - piraeus.yaml - pending resolution to https://github.com/siderolabs/extensions/pull/103

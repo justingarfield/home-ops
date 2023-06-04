@@ -9,4 +9,5 @@ resources:
   - external-dns.yaml
   - lldap.yaml
   # - local-path-provisioner.yaml
+  # - piraeus.yaml - pending resolution to https://github.com/siderolabs/extensions/pull/103
   - tetragon.yaml

@@ -7,6 +7,6 @@ resources:
   - csi-driver-nfs.yaml
   - external-dns.yaml
   - lldap.yaml
-  - piraeus.yaml
+  # - piraeus.yaml - pending resolution to https://github.com/siderolabs/extensions/pull/103
   - tetragon.yaml
   - weave-gitops.yaml
