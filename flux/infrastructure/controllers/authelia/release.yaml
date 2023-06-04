@@ -31,47 +31,69 @@ spec:
     enable: true
     ignoreFailures: false
   values:
-    configMap:
-      enabled: false
+    # Normally I alphabatize all properties under here, but this chart was massive,
+    # so I stuck with their values.yaml file order to not lose my sanity.
+    image:
+      registry: ghcr.io
+      repository: authelia/authelia
+      tag: 4.37.5@sha256:25fc5423238b6f3a1fc967fda3f6a9212846aeb4a720327ef61c8ccff52dbbe2
+    rbac:
+      enabled: true
     domain: "${PUBLIC_DNS_ZONE}"
-    enableServiceLinks: "false"
-    env:
-      AUTHELIA_THEME: "dark"
-      AUTHELIA_DEFAULT_REDIRECTION_URL: "https://auth.${PUBLIC_DOMAIN}"
-      AUTHELIA_DEFAULT_2FA_METHOD: "totp"
-      AUTHELIA_LOG_LEVEL: "info"
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_URL: "ldap://lldap.lldap.svc.${CLUSTER_DOMAIN}:389"
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ADDITIONAL_USERS_DN: "ou=people"
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_USERS_FILTER: "(&({username_attribute}={input})(objectClass=person))"
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ADDITIONAL_GROUPS_DN: "ou=groups"
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_GROUPS_FILTER: "(member={dn})"
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_GROUP_NAME_ATTRIBUTE: "cn"
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_USERNAME_ATTRIBUTE: "uid"
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_MAIL_ATTRIBUTE: "mail"
-      AUTHELIA_AUTHENTICATION_BACKEND_LDAP_DISPLAY_NAME_ATTRIBUTE: "displayName"
-      AUTHELIA_SESSION_DOMAIN: "${PUBLIC_DOMAIN}"
-      AUTHELIA_TOTP_ISSUER: "${PUBLIC_DOMAIN}"
-      AUTHELIA_DUO_API_DISABLE: "true"
-      AUTHELIA_NTP_ADDRESS: "${NTP_SERVER_IP}"
-      AUTHELIA_STORAGE_LOCAL_PATH: "/config/db.sqlite3"
-      AUTHELIA_NOTIFIER_SMTP_PORT: "587"
-      AUTHELIA_NOTIFIER_SMTP_SENDER: "Authelia <authelia@${PUBLIC_DOMAIN}>"
-      # AUTHELIA_SERVER_PORT: &port 9091
-      AUTHELIA_WEBAUTHN_DISABLE: "true"
-      AUTHELIA_PASSWORD_POLICY_ZXCVBN_ENABLED: "true"
-    envFrom:
-      - secretRef:
-          name: "authelia"
     ingress:
       enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt
+      certManager: true
       className: cilium
-    persistence:
-      config:
-        enabled: true
-        type: configMap
-        name: authelia-configmap
-        subPath: configuration.yaml
-        mountPath: /configuration.yaml
-        readOnly: false
-    rbac:
-      enabled: "true"
+      tls:
+        secret: tls-authelia
+    pod:
+      annotations:
+        secret.reloader.stakater.com/reload: authelia
+      env:
+        - name: TZ
+          value: ${TIMEZONE}
+    configMap:
+      default_redirection_url: "https://auth.${PUBLIC_DOMAIN}"
+      access_control:
+        default_policy: two_factor
+        default_2fa_method: totp
+        theme: dark
+        webauthn:
+          disable: true
+        ntp:
+          address: "${NTP_SERVER_IP}"
+        authentication_backend:
+          ldap:
+            implementation: custom
+            url: ldap://lldap.lldap.svc.${CLUSTER_DOMAIN}:389
+            base_dn: "${AUTHELIA_AUTHENTICATION_BACKEND_LDAP_BASE_DN}"
+            username_attribute: "uid"
+            additional_users_dn: "ou=people"
+            users_filter: "(&({username_attribute}={input})(objectClass=person))"
+            additional_groups_dn: "ou=groups"
+            groups_filter: "(member={dn})"
+            group_name_attribute: "cn"
+            mail_attribute: "mail"
+            display_name_attribute: "displayName"
+            user: "${AUTHELIA_AUTHENTICATION_BACKEND_LDAP_USER}"
+        password_policy:
+          zxcvbn:
+            enabled: true
+            min_score: 3
+        access_control:
+          secret:
+            enabled: true
+        session:
+          redis:
+            enabled: false
+        storage:
+          local:
+            enabled: true
+          postgres:
+            enabled: false
+        notifier:
+          smtp:
+            port: 587
+            sender: "Authelia <authelia@${PUBLIC_DOMAIN}>"
