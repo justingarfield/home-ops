@@ -97,3 +97,5 @@ spec:
           smtp:
             port: 587
             sender: "Authelia <authelia@${PUBLIC_DOMAIN}>"
+        secret:
+          existingSecret: "authelia"
