@@ -66,7 +66,7 @@ spec:
       authentication_backend:
         ldap:
           implementation: custom
-          url: ldap://lldap.lldap.svc.${CLUSTER_DOMAIN}:389
+          url: ldap://lldap.lldap.svc.${CLUSTER_DOMAIN}:3890
           base_dn: "dc=staging,dc=jgarfield,dc=com"
           username_attribute: "uid"
           additional_users_dn: "ou=people"
