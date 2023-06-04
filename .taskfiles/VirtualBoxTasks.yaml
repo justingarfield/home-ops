@@ -130,6 +130,20 @@ tasks:
       - task: attach-virtual-disk-to-vm
         vars: { VM_NAME: "{{ .VM_NAME }}", CLUSTER_NAME: "{{ .CLUSTER_NAME }}" }
 
+  delete-vm:
+    internal: true
+    desc: Deletes an existing virtual machine.
+    vars:
+      VM_NAME: '{{ .VM_NAME }}'
+      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
+    preconditions:
+      - sh: test '{{ .VM_NAME }}'
+        msg: 'Please provide a valid VM_NAME'
+      - sh: test '{{ .CLUSTER_NAME }}'
+        msg: 'Please provide a valid CLUSTER_NAME'
+    cmds:
+      - '"{{ .VBOX_MANAGE_BINARY }}" unregistervm "{{ .VM_NAME }}" --delete'
+
   start-vm:
     internal: true
     dsec:
@@ -182,6 +196,22 @@ tasks:
       - task: stop-vm
         vars: { VM_NAME: "{{ .CLUSTER_NAME }}-wk01" }
       - task: stop-vm
+        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-wk02" }
+
+  delete-cluster:
+    desc: Deletes the VMs associate with a particular virtualized cluster.
+    vars:
+      CLUSTER_NAME: '{{ .CLUSTER_NAME | default "staging" }}'
+    cmds:
+      - task: delete-vm
+        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp01" }
+      - task: delete-vm
+        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp02" }
+      - task: delete-vm
+        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp03" }
+      - task: delete-vm
+        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-wk01" }
+      - task: delete-vm
         vars: { VM_NAME: "{{ .CLUSTER_NAME }}-wk02" }
 
   create-cluster:

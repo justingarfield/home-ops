@@ -1,0 +1,40 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &helmReleaseName piraeus
+  namespace: piraeus
+spec:
+  chart:
+    spec:
+      # renovate: registryUrl=https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts
+      chart: piraeus
+      sourceRef:
+        kind: HelmRepository
+        name: piraeus
+        namespace: flux-system
+      version: v2.0.0
+  install:
+    crds: Skip
+    remediation:
+      # I set this to larger value than upgrade section, as resource
+      # contention may be a little wonky after a fresh cluster boot.
+      retries: 5
+  interval: 30m
+  maxHistory: 3
+  releaseName: *helmReleaseName
+  upgrade:
+    crds: Skip
+    remediation:
+      retries: 3
+  test:
+    enable: true
+    ignoreFailures: false
+  values:
+    operator:
+      controller:
+        dbConnectionURL: k8s
+      satelliteSet:
+        kernelModuleInjectionMode: None # Deprecated, but necessary!
+    etcd:
+      enabled: false

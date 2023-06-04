@@ -7,7 +7,7 @@ configMapGenerator:
   - name: authelia-configmap
     namespace: authelia
     files:
-      - ./config/configuration.yaml
+      - configuration.yaml
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
