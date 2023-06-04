@@ -56,45 +56,44 @@ spec:
           value: ${TIMEZONE}
     configMap:
       default_redirection_url: "https://auth.${PUBLIC_DOMAIN}"
+      default_policy: two_factor
+      default_2fa_method: totp
+      theme: dark
+      webauthn:
+        disable: true
+      ntp:
+        address: "${NTP_SERVER_IP}"
+      authentication_backend:
+        ldap:
+          implementation: custom
+          url: ldap://lldap.lldap.svc.${CLUSTER_DOMAIN}:389
+          base_dn: "${AUTHELIA_AUTHENTICATION_BACKEND_LDAP_BASE_DN}"
+          username_attribute: "uid"
+          additional_users_dn: "ou=people"
+          users_filter: "(&({username_attribute}={input})(objectClass=person))"
+          additional_groups_dn: "ou=groups"
+          groups_filter: "(member={dn})"
+          group_name_attribute: "cn"
+          mail_attribute: "mail"
+          display_name_attribute: "displayName"
+          user: "${AUTHELIA_AUTHENTICATION_BACKEND_LDAP_USER}"
+      password_policy:
+        zxcvbn:
+          enabled: true
+          min_score: 3
       access_control:
-        default_policy: two_factor
-        default_2fa_method: totp
-        theme: dark
-        webauthn:
-          disable: true
-        ntp:
-          address: "${NTP_SERVER_IP}"
-        authentication_backend:
-          ldap:
-            implementation: custom
-            url: ldap://lldap.lldap.svc.${CLUSTER_DOMAIN}:389
-            base_dn: "${AUTHELIA_AUTHENTICATION_BACKEND_LDAP_BASE_DN}"
-            username_attribute: "uid"
-            additional_users_dn: "ou=people"
-            users_filter: "(&({username_attribute}={input})(objectClass=person))"
-            additional_groups_dn: "ou=groups"
-            groups_filter: "(member={dn})"
-            group_name_attribute: "cn"
-            mail_attribute: "mail"
-            display_name_attribute: "displayName"
-            user: "${AUTHELIA_AUTHENTICATION_BACKEND_LDAP_USER}"
-        password_policy:
-          zxcvbn:
-            enabled: true
-            min_score: 3
-        access_control:
-          networks:
-            - name: private
-              networks: ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
-        session:
-          redis:
-            enabled: false
-        storage:
-          local:
-            enabled: true
-          postgres:
-            enabled: false
-        notifier:
-          smtp:
-            port: 587
-            sender: "Authelia <authelia@${PUBLIC_DOMAIN}>"
+        networks:
+          - name: private
+            networks: ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+      session:
+        redis:
+          enabled: false
+      storage:
+        local:
+          enabled: true
+        postgres:
+          enabled: false
+      notifier:
+        smtp:
+          port: 587
+          sender: "Authelia <authelia@${PUBLIC_DOMAIN}>"
