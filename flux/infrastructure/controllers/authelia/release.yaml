@@ -55,7 +55,7 @@ spec:
         - name: TZ
           value: ${TIMEZONE}
     configMap:
-      default_redirection_url: "https://auth.${PUBLIC_DOMAIN}"
+      default_redirection_url: "https://auth.${PUBLIC_DNS_ZONE}"
       default_policy: two_factor
       default_2fa_method: totp
       theme: dark
@@ -82,9 +82,12 @@ spec:
           enabled: true
           min_score: 3
       access_control:
-        networks:
-          - name: private
-            networks: ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+        secret:
+          enabled: true
+          existingSecret: "authelia"
+        # networks:
+        #   - name: private
+        #     networks: ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
       session:
         redis:
           enabled: false
@@ -96,4 +99,8 @@ spec:
       notifier:
         smtp:
           port: 587
-          sender: "Authelia <authelia@${PUBLIC_DOMAIN}>"
+          sender: "Authelia <authelia@${PUBLIC_DNS_ZONE}>"
+      secret:
+        existingSecret: "authelia"
+      certificates:
+        existingSecret: "authelia"
