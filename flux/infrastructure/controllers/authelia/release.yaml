@@ -85,6 +85,7 @@ spec:
         access_control:
           secret:
             enabled: true
+            existingSecret: "authelia"
         session:
           redis:
             enabled: false
