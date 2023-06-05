@@ -1,0 +1,18 @@
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: hajimari
+  namespace: hajimari
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: hajimari
+  egress:
+    - toEntities:
+        - world
+        - host
+        - kube-apiserver
+  ingress:
+    - fromEntities:
+        - host
