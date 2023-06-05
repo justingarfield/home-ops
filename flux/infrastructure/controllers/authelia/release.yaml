@@ -66,7 +66,7 @@ spec:
       webauthn:
         disable: true
       ntp:
-        address: "${NTP_SERVER_IP}"
+        address: "${NTP_SERVER_IP}:123"
       authentication_backend:
         ldap:
           implementation: custom
@@ -80,7 +80,7 @@ spec:
           group_name_attribute: "cn"
           mail_attribute: "mail"
           display_name_attribute: "displayName"
-          user: "admin"
+          user: "cn=admin,ou=people,${AUTHELIA_AUTHENTICATION_BACKEND_LDAP_BASE_DN}"
       password_policy:
         zxcvbn:
           enabled: true
