@@ -98,6 +98,7 @@ spec:
           enabled: false
       notifier:
         smtp:
+          enabledSecret: true
           host: "${AUTHELIA_NOTIFIER_SMTP_HOST}"
           port: 587
           username: "${AUTHELIA_NOTIFIER_SMTP_USERNAME}"
