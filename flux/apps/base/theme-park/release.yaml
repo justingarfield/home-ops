@@ -39,6 +39,8 @@ spec:
         ports:
           http:
             port: 8080
+    serviceAccount:
+      create: true
     ingress:
       main:
         enabled: true
