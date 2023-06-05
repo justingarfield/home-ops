@@ -10,7 +10,11 @@ spec:
       app.kubernetes.io/name: theme-park
   egress:
     - toEntities:
-        - {}
+        - world
+        - host
+        - kube-apiserver
   ingress:
     - fromEntities:
-        - {}
+        - world
+        - host
+        - kube-apiserver
