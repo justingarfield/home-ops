@@ -1,9 +1,0 @@
----
-apiVersion: source.toolkit.fluxcd.io/v1beta2
-kind: HelmRepository
-metadata:
-  name: johanneskastl-389server
-  namespace: 389-directory-server
-spec:
-  interval: 1h
-  url: https://johanneskastl.github.io/389server-helm-chart/

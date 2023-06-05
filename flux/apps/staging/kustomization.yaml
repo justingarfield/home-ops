@@ -8,17 +8,10 @@ resources:
   - namespaces/theme-park.yaml
   # - secrets/pod-gateway.sops.yaml
   # - ../base/pod-gateway
-  # - ../base/389-directory-server
   # - ../base/database
   - ../base/hajimari
   # - ../base/media
   # - ../base/monitoring
   # - ../base/networking
-  # - ../base/node-feature-discovery
-  # - ../base/podinfo
-  - ../base/pvr
-  - ../base/reloader
-  # - ../base/rook-ceph
+  # - ../base/pvr
   - ../base/theme-park
-  # patchesStrategicMerge:
-  # - podinfo-values.yaml
