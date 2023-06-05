@@ -53,7 +53,9 @@ spec:
         secret.reloader.stakater.com/reload: authelia
       env:
         - name: TZ
-          value: ${TIMEZONE}
+          value: "${TIMEZONE}"
+        - name: AUTHELIA_NOTIFIER_SMTP_PASSWORD
+          value: "${AUTHELIA_NOTIFIER_SMTP_PASSWORD}"
     configMap:
       default_redirection_url: "https://auth.${PUBLIC_DNS_ZONE}"
       default_policy: two_factor
@@ -67,7 +69,7 @@ spec:
         ldap:
           implementation: custom
           url: ldap://lldap.lldap.svc.${CLUSTER_DOMAIN}:3890
-          base_dn: "dc=staging,dc=jgarfield,dc=com"
+          base_dn: "${AUTHELIA_AUTHENTICATION_BACKEND_LDAP_BASE_DN}"
           username_attribute: "uid"
           additional_users_dn: "ou=people"
           users_filter: "(&({username_attribute}={input})(objectClass=person))"
@@ -76,7 +78,7 @@ spec:
           group_name_attribute: "cn"
           mail_attribute: "mail"
           display_name_attribute: "displayName"
-          user: "uid=admin,ou=people,dc=staging,dc=jgarfield,dc=com"
+          user: "${AUTHELIA_AUTHENTICATION_BACKEND_LDAP_USER}"
       password_policy:
         zxcvbn:
           enabled: true
@@ -99,7 +101,9 @@ spec:
           enabled: false
       notifier:
         smtp:
+          host: "${AUTHELIA_NOTIFIER_SMTP_HOST}"
           port: 587
+          username: "${AUTHELIA_NOTIFIER_SMTP_USERNAME}"
           sender: "Authelia <authelia@${PUBLIC_DNS_ZONE}>"
       # secret:
       #  existingSecret: "authelia"

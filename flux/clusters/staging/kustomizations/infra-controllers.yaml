@@ -25,6 +25,9 @@ spec:
       - kind: Secret
         name: cluster-secrets
         optional: false
+      - kind: Secret
+        name: authelia
+        optional: false
   prune: true
   retryInterval: 1m
   sourceRef:
