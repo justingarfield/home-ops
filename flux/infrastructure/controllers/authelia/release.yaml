@@ -44,7 +44,6 @@ spec:
       enabled: true
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt
-      certManager: true
       className: cilium
       tls:
         secret: tls-authelia
