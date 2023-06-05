@@ -16,6 +16,4 @@ spec:
   ingress:
     - fromEntities:
         - ingress
-        - world
         - host
-        - kube-apiserver
