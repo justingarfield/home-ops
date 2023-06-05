@@ -8,6 +8,9 @@ spec:
   endpointSelector:
     matchLabels:
       app.kubernetes.io/name: theme-park
+  egress:
+    - toEntities:
+        - {}
   ingress:
     - fromEntities:
-        - ingress
+        - {}
