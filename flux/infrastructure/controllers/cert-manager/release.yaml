@@ -34,7 +34,7 @@ spec:
     # See: https://artifacthub.io/packages/helm/cert-manager/cert-manager?modal=values
     extraArgs:
       # https://docs.cilium.io/en/v1.13/network/servicemesh/tls-termination/#create-tls-certificate-and-private-key
-      - --feature-gates=ExperimentalGatewayAPISupport=true
+      # - --feature-gates=ExperimentalGatewayAPISupport=true
       - --dns01-recursive-nameservers=${OPNSENSE_DNS_SERVER}:53
       - --dns01-recursive-nameservers-only
     cainjector:
