@@ -27,10 +27,10 @@ vars:
   # renovate: datasource=github-releases depName=cilium/hubble
   HUBBLE_VERSION: "v0.11.5"
 
-  KUBEADM_VERSION: "v1.27.1"
+  KUBEADM_VERSION: "v1.27.2"
 
   # TODO: Need to investigate how to version this properly
-  KUBECTL_VERSION: "v1.27.1"
+  KUBECTL_VERSION: "v1.27.2"
 
   # TODO: Need to investigate how to version this properly
   PACKER_VERSION: "1.8.6"

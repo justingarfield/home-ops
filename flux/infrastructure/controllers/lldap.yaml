@@ -32,7 +32,7 @@ spec:
     env:
       TZ: ${TIMEZONE}
       LLDAP_HTTP_URL: https://lldap.${PUBLIC_DNS_ZONE}
-      LLDAP_LDAP_BASE_DN: dc=staging,dc=jgarfield,dc=com
+      LLDAP_LDAP_BASE_DN: "${AUTHELIA_AUTHENTICATION_BACKEND_LDAP_BASE_DN}"
     envFrom:
       - secretRef:
           name: lldap

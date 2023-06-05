@@ -171,8 +171,6 @@ tasks:
         vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp03" }
       - task: start-vm
         vars: { VM_NAME: "{{ .CLUSTER_NAME }}-wk01" }
-      - task: start-vm
-        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-wk02" }
 
   stop-vm:
     internal: true
@@ -195,8 +193,6 @@ tasks:
         vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp03" }
       - task: stop-vm
         vars: { VM_NAME: "{{ .CLUSTER_NAME }}-wk01" }
-      - task: stop-vm
-        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-wk02" }
 
   delete-cluster:
     desc: Deletes the VMs associate with a particular virtualized cluster.
@@ -211,8 +207,6 @@ tasks:
         vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp03" }
       - task: delete-vm
         vars: { VM_NAME: "{{ .CLUSTER_NAME }}-wk01" }
-      - task: delete-vm
-        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-wk02" }
 
   create-cluster:
     desc: Builds-out a virtualized Kubernetes 3-node Control Plane / 2-node Worker Plane using Talos Linux.
@@ -230,8 +224,6 @@ tasks:
         vars: { CLUSTER_NAME: "{{ .CLUSTER_NAME }}", VM_NAME: "{{ .CLUSTER_NAME }}-cp03", MAC_ADDRESS: "001337133703" }
       - task: create-cluster-node-vm
         vars: { CLUSTER_NAME: "{{ .CLUSTER_NAME }}", VM_NAME: "{{ .CLUSTER_NAME }}-wk01", MAC_ADDRESS: "001337133704" }
-      - task: create-cluster-node-vm
-        vars: { CLUSTER_NAME: "{{ .CLUSTER_NAME }}", VM_NAME: "{{ .CLUSTER_NAME }}-wk02", MAC_ADDRESS: "001337133705" }
 
   snapshot-cluster:
     desc: Snapshots a virtualized Kubernetes 3-node Control Plane / 2-node Worker Plane.
@@ -248,5 +240,3 @@ tasks:
         vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp03", SNAPSHOT_NAME: "{{ .SNAPSHOT_NAME }}", SNAPSHOT_DESCRIPTION: "{{ .SNAPSHOT_DESCRIPTION }}" }
       - task: snapshot-vm
         vars: { VM_NAME: "{{ .CLUSTER_NAME }}-wk01", SNAPSHOT_NAME: "{{ .SNAPSHOT_NAME }}", SNAPSHOT_DESCRIPTION: "{{ .SNAPSHOT_DESCRIPTION }}" }
-      - task: snapshot-vm
-        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-wk02", SNAPSHOT_NAME: "{{ .SNAPSHOT_NAME }}", SNAPSHOT_DESCRIPTION: "{{ .SNAPSHOT_DESCRIPTION }}" }

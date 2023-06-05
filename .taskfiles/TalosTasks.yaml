@@ -7,7 +7,7 @@ vars:
   CLUSTER_API_SERVER_PORT: '{{ .CLUSTER_API_SERVER_PORT | default 6443 }}'
 
   # renovate: registryUrl=https://helm.cilium.io/ chart=cilium
-  CILIUM_VERSION: '{{ .CILIUM_VERSION | default "v1.14.0-snapshot.2" }}'
+  CILIUM_VERSION: '{{ .CILIUM_VERSION | default "v1.14.0-snapshot.3" }}'
 
 tasks:
 
@@ -62,10 +62,10 @@ tasks:
           --with-secrets {{ ._SECRETS_BUNDLE_FILENAME }} \
           --additional-sans {{ ._CONTROL_PLANE_HOSTNAME }},{{ .CLUSTER_LOAD_BALANCER_IP }} \
           --dns-domain staging.lesmerises.jgarfield.com \
-          --install-image ghcr.io/siderolabs/installer:v1.4.0 \
-          --kubernetes-version 1.27.1 \
+          --install-image ghcr.io/siderolabs/installer:v1.4.5 \
+          --kubernetes-version 1.27.2 \
           --registry-mirror docker.io=http://pull-through-cache.lesmerises.jgarfield.com:5003,gcr.io=http://pull-through-cache.lesmerises.jgarfield.com:5001,ghcr.io=http://pull-through-cache.lesmerises.jgarfield.com:5000,registry.k8s.io=http://pull-through-cache.lesmerises.jgarfield.com:5002 \
-          --talos-version v1.4.0 \
+          --talos-version v1.4.5 \
           --version v1alpha1 \
           --with-cluster-discovery=false \
           --with-docs=false \
@@ -134,18 +134,6 @@ tasks:
             --set ingressController.loadbalancerMode=shared \
             --set hubble.relay.enabled=true \
             --set hubble.ui.enabled=true \
-            --set hubble.peerService.clusterDomain="{{ .CLUSTER_DOMAIN }}" \
-            --set gatewayAPI.enabled=true
-
+            --set hubble.peerService.clusterDomain="{{ .CLUSTER_DOMAIN }}"
       - kubectl apply -f {{ .CLUSTER_DIR }}/cilium.yaml
-
-  machine-shutdown:
-    internal: true
-    desc: Apply a Machine Config to a particular cluster node
-    vars:
-      CLUSTER_NAME: "{{.CLUSTER_NAME}}"
-      NODE: "{{.NODE}}"
-      NODE_NAME: "{{.NODE_NAME}}"
-      CLUSTER_DIR: "{{.TALOS_DIR}}/{{.CLUSTER_NAME}}-cluster"
-    cmds:
-      - talosctl apply-config --insecure --nodes {{.NODE}} --file {{.CLUSTER_DIR}}/machine-configs/{{.NODE_NAME}}.yaml
+      # --set gatewayAPI.enabled=true
