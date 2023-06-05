@@ -80,13 +80,9 @@ spec:
           enabled: true
           min_score: 3
       access_control:
-        # secret:
-        #   enabled: true
-        #   existingSecret: "authelia"
-        default_policy: deny
-        networks:
-          - name: private
-            networks: ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+        secret:
+          enabled: true
+          existingSecret: "authelia"
       session:
         redis:
           enabled: false
