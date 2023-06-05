@@ -4,11 +4,11 @@ kind: Kustomization
 resources:
   - authelia
   - cert-manager
-  - reloader
   - weave-gitops
   - csi-driver-nfs.yaml
   - external-dns.yaml
   - lldap.yaml
   # - local-path-provisioner.yaml
   # - piraeus.yaml - pending resolution to https://github.com/siderolabs/extensions/pull/103
+  # - reloader.yaml
   - tetragon.yaml
