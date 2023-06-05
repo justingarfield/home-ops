@@ -80,7 +80,7 @@ spec:
           group_name_attribute: "cn"
           mail_attribute: "mail"
           display_name_attribute: "displayName"
-          user: "uid=admin,${AUTHELIA_AUTHENTICATION_BACKEND_LDAP_BASE_DN}"
+          user: "uid=admin,ou=people,${AUTHELIA_AUTHENTICATION_BACKEND_LDAP_BASE_DN}"
       password_policy:
         zxcvbn:
           enabled: true
