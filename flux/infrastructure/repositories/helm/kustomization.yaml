@@ -11,3 +11,4 @@ resources:
   - jetstack.yaml
   - k8s-at-home.yaml
   # - piraeus.yaml - pending resolution to https://github.com/siderolabs/extensions/pull/103
+  - stakater.yaml
