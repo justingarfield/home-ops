@@ -56,8 +56,8 @@ spec:
           value: "${TIMEZONE}"
         - name: AUTHELIA_NOTIFIER_SMTP_PASSWORD
           value: "${AUTHELIA_NOTIFIER_SMTP_PASSWORD}"
-        - name: LDAP_PASSWORD
-          value: "${AUTHELIA_LDAP_PASSWORD}"
+        - name: AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD
+          value: "${AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD}"
     configMap:
       default_redirection_url: "https://auth.${PUBLIC_DNS_ZONE}"
       default_policy: two_factor
