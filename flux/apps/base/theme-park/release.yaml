@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &helmReleaseName theme-park
+  name: theme-park
   namespace: theme-park
 spec:
   interval: 15m
@@ -23,8 +23,6 @@ spec:
     remediation:
       retries: 3
   values:
-    global:
-      nameOverride: *helmReleaseName
     controller:
       replicas: 1
       strategy: RollingUpdate
@@ -56,9 +54,3 @@ spec:
           - hosts:
               - *host
             secretName: tls-theme-park
-    resources:
-      requests:
-        cpu: 10m
-        memory: 50Mi
-      limits:
-        memory: 150Mi
