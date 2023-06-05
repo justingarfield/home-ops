@@ -71,7 +71,7 @@ spec:
         ldap:
           implementation: custom
           url: ldap://lldap.lldap.svc.${CLUSTER_DOMAIN}:3890
-          base_dn: "${AUTHELIA_AUTHENTICATION_BACKEND_LDAP_BASE_DN}"
+          base_dn: "${LDAP_BASE_DN}"
           username_attribute: "uid"
           additional_users_dn: "ou=people"
           users_filter: "(&({username_attribute}={input})(objectClass=person))"
@@ -80,7 +80,7 @@ spec:
           group_name_attribute: "cn"
           mail_attribute: "mail"
           display_name_attribute: "displayName"
-          user: "uid=authelia,ou=people,${AUTHELIA_AUTHENTICATION_BACKEND_LDAP_BASE_DN}"
+          user: "uid=authelia,ou=people,${LDAP_BASE_DN}"
       password_policy:
         zxcvbn:
           enabled: true
