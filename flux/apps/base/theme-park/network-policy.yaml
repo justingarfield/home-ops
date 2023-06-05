@@ -11,8 +11,3 @@ spec:
   ingress:
     - fromEntities:
         - ingress
-    - fromEndpoints:
-        - {}
-  egress:
-    - toEndpoints:
-        - {}
