@@ -2,20 +2,20 @@
 apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
-  name: lidarr
+  name: overseerr
   namespace: pvr
 spec:
   endpointSelector:
     matchLabels:
-      app.kubernetes.io/name: lidarr
+      app.kubernetes.io/name: overseerr
   ingress:
     - fromEntities:
         - ingress
   egress:
     - toEndpoints:
         - matchLabels:
-            app.kubernetes.io/name: pod-gateway
+            app.kubernetes.io/name: sonarr
         - matchLabels:
-            app.kubernetes.io/name: prowlarr
+            app.kubernetes.io/name: radarr
         - matchLabels:
-            app.kubernetes.io/name: qbittorrent
+            app.kubernetes.io/name: plex-media-server

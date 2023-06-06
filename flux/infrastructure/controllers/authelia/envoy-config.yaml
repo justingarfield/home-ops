@@ -1,0 +1,37 @@
+---
+# See: https://www.authelia.com/integration/kubernetes/istio/
+#      https://www.envoyproxy.io/docs/envoy/v1.26.2/configuration/http/http_filters/ext_authz_filter#config-http-filters-ext-authz
+#      https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/filters/http/ext_authz/v3/ext_authz.proto.html#extensions-filters-http-ext-authz-v3-extauthz
+#      https://istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/#MeshConfig-ExtensionProvider-EnvoyExternalAuthorizationHttpProvider
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideEnvoyConfig
+metadata:
+  name: envoy-ext-authz-http
+spec:
+  resources:
+    - "@type": type.googleapis.com/envoy.extensions.filters.http.ext_authz.v3.ExtAuthz
+      name: envoy-ext-authz-http
+      http_service:
+        server_uri: authelia.authelia.svc.${CLUSTER_DOMAIN}
+        pathPrefix: '/api/verify/'
+        port: 80
+        includeRequestHeadersInCheck:
+          - accept
+          - cookie
+          - proxy-authorization
+        headersToUpstreamOnAllow:
+          - 'authorization'
+          - 'proxy-authorization'
+          - 'remote-*'
+          - 'authelia-*'
+        includeAdditionalHeadersInCheck:
+          X-Authelia-URL: 'https://auth.${PUBLIC_DNS_ZONE}/'
+          X-Forwarded-Method: '%REQ(:METHOD)%'
+          X-Forwarded-Proto: '%REQ(:SCHEME)%'
+          X-Forwarded-Host: '%REQ(:AUTHORITY)%'
+          X-Forwarded-URI: '%REQ(:PATH)%'
+          X-Forwarded-For: '%DOWNSTREAM_REMOTE_ADDRESS_WITHOUT_PORT%'
+        headersToDownstreamOnDeny:
+          - set-cookie
+        headersToDownstreamOnAllow:
+          - set-cookie

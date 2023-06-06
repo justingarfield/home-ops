@@ -15,21 +15,17 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 2
+  maxHistory: 3
   install:
-    createNamespace: false
     remediation:
-      retries: 3
+      retries: 5
   upgrade:
-    cleanupOnFail: true
     remediation:
       retries: 3
-  uninstall:
-    keepHistory: false
   values:
     image:
       repository: ghcr.io/sct/overseerr
-      tag: 1.32.5
+      tag: 1.32.5@sha256:90f1cad1c21912a4d24e281599ef90d0fa51a8c30dd5ddab643b6345b6bcee92
     env:
       TZ: America/New_York
       LOG_LEVEL: "info"
