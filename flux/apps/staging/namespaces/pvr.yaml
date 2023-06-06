@@ -5,3 +5,8 @@ metadata:
   name: pvr
   labels:
     routed-gateway: "true"
+    # Need to do this until VPN charts(s) can be run w/o privs
+    # Due to sidecar injection. May want to look at how Cilium
+    # Mesh got rid of sidecars.
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/enforce-version: latest
