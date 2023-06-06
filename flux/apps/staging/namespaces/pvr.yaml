@@ -4,4 +4,4 @@ kind: Namespace
 metadata:
   name: pvr
   labels:
-    vpn-routed-gateway: "true"
+    routed-gateway: "true"
