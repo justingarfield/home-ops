@@ -5,12 +5,12 @@ kind: Kustomization
 resources:
   - namespaces
   - secrets/pod-gateway.sops.yaml
-  - ../base/pod-gateway
+  # - ../base/pod-gateway
   # - ../base/database
   - ../base/hajimari
   - ../base/kubernetes-schemas
   # - ../base/media
   # - ../base/monitoring
   # - ../base/networking
-  - ../base/pvr
+  # - ../base/pvr
   - ../base/theme-park
