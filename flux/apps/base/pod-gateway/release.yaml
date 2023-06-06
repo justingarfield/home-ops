@@ -63,7 +63,7 @@ spec:
           drop: ["ALL"]
           add:
             - NET_ADMIN
-          # - SYS_MODULE
+            - SYS_ADMIN
       networkPolicy:
         enabled: false
     clusterName: ${CLUSTER_DOMAIN}
