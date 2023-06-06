@@ -21,7 +21,7 @@ spec:
       retries: 5
   upgrade:
     remediation:
-      retries: 5
+      retries: 3
   dependsOn:
     - name: cert-manager
       namespace: cert-manager
@@ -88,20 +88,6 @@ spec:
         #  initialDelaySeconds: 30
         #  periodSeconds: 60
         #  failureThreshold: 1
-        networkPolicy:
-          enabled: true
-          egress:
-            - to:
-                - ipBlock:
-                    cidr: 0.0.0.0/0
-              ports:
-                # VPN traffic
-                # - port: ${PIA_TCP_PORT}
-                #  protocol: TCP
-                - port: ${PIA_UDP_PORT}
-                  protocol: UDP
-            - to:
-                - namespaceSelector: {}
     DNS: 172.16.1.1
     clusterName: ${CLUSTER_DOMAIN}
     routed_namespaces:
