@@ -15,3 +15,7 @@ spec:
               protocol: "UDP"
     - toEntities:
         - world
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            app.kubernetes.io/name: lidarr
