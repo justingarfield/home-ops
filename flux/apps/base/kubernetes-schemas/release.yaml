@@ -1,0 +1,58 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: kubernetes-schemas
+  namespace: kubernetes-schemas
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    controller:
+      replicas: 1
+      strategy: RollingUpdate
+    image:
+      repository: ghcr.io/onedr0p/kubernetes-schemas
+      tag: latest@sha256:4af1b4642027bcb0a1b35e52f757b6c089de8877deeb71037e2339e99bbffd1f
+    service:
+      main:
+        ports:
+          http:
+            port: 8080
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: cilium
+        annotations:
+          hajimari.io/icon: mdi:code-json
+          cert-manager.io/cluster-issuer: letsencrypt
+        hosts:
+          - host: &host "{{ .Release.Name }}.${PUBLIC_DNS_ZONE}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+            secretName: tls-kubernetes-schemas
+    resources:
+      requests:
+        cpu: 10m
+        memory: 50Mi
+      limits:
+        memory: 100Mi

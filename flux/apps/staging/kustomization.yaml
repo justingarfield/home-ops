@@ -8,6 +8,7 @@ resources:
   - ../base/pod-gateway
   # - ../base/database
   - ../base/hajimari
+  - ../base/kubernetes-schemas
   # - ../base/media
   # - ../base/monitoring
   # - ../base/networking
