@@ -72,6 +72,7 @@ spec:
     routed_namespaces:
       - pvr
     settings:
+      K8S_DNS_IPS: 10.96.0.10
       # -- If using a VPN, interface name created by it
       VPN_INTERFACE: tun0
       # -- Prevent non VPN traffic to leave the gateway
