@@ -11,4 +11,4 @@ resources:
   # - readarr
   # - sonarr
   # - sonarr-uhd
-  - overseerr
+  # - overseerr
