@@ -56,10 +56,10 @@ spec:
         envFrom:
           - secretRef:
               name: pod-gateway
-
+      networkPolicy:
+        enabled: false
     routed_namespaces:
       - pvr
-
     settings:
       # -- If using a VPN, interface name created by it
       VPN_INTERFACE: tun0
