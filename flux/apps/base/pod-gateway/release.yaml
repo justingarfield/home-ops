@@ -5,12 +5,12 @@ metadata:
   name: pod-gateway
   namespace: pod-gateway
 spec:
-  interval: 5m
+  interval: 30s
   chart:
     spec:
       chart: pod-gateway
       version: 6.5.1
-      interval: 15m
+      interval: 1h
       sourceRef:
         kind: HelmRepository
         name: angelnu-helm-charts
