@@ -6,3 +6,4 @@ resources:
   - repository.yaml
   - network-policy.yaml
   - release.yaml
+  - patch-settings.yaml
