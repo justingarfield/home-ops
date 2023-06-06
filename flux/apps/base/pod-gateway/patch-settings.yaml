@@ -1,0 +1,40 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: pod-gateway
+  namespace: pod-gateway
+spec:
+  patches:
+    - patch: |-
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: not-used
+        spec:
+          template:
+            metadata:
+              annotations:
+                cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+      target:
+        kind: ConfigMap
+        labelSelector: "app.kubernetes.io/part-of=my-app"
+    - patch: |
+        - op: add
+          path: /spec/template/spec/securityContext
+          value:
+            runAsUser: 10000
+            fsGroup: 1337
+        - op: add
+          path: /spec/template/spec/containers/0/securityContext
+          value:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
+      target:
+        kind: ConfigMap
+        name: pod-gateway
+        namespace: pod-gateway
