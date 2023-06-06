@@ -28,20 +28,6 @@ spec:
         add:
           - NET_ADMIN
           - NET_RAW
-    initContainers:
-      - command: ["/bin/sh", "-c"]
-        args: ["ip route add 10.96.0.10/12 via 10.244.0.1 dev eth0"]
-        image: ghcr.io/angelnu/pod-gateway:v1.8.1
-        imagePullPolicy: IfNotPresent
-        name: gateway-preinit
-        resources: {}
-        securityContext:
-          capabilities:
-            add:
-              - NET_ADMIN
-              - NET_RAW
-          runAsNonRoot: false
-          runAsUser: 0
     webhook:
       image:
         repository: ghcr.io/angelnu/gateway-admision-controller
@@ -85,6 +71,7 @@ spec:
               - SYS_ADMIN
       networkPolicy:
         enabled: false
+    DNSPolicy: ClusterFirst
     clusterName: ${CLUSTER_DOMAIN}
     routed_namespaces:
       - pvr
