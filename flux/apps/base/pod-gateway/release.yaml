@@ -58,6 +58,7 @@ spec:
               name: pod-gateway
       networkPolicy:
         enabled: false
+    clusterName: ${CLUSTER_DOMAIN}
     routed_namespaces:
       - pvr
     settings:
