@@ -12,6 +12,8 @@ spec:
     - fromEntities:
         - ingress
   egress:
+    - toEntities:
+        - host
     - toEndpoints:
         - matchLabels:
             app.kubernetes.io/name: pod-gateway
