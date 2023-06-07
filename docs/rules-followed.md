@@ -7,3 +7,6 @@
 * Use Azure Policy to...
     * Only allow resources to be created / accessed in the US where possible
     * Set a monthly spend budget of $100
+
+* https://www.openanalytics.eu/blog/2021/02/23/kustomize-best-practices/
+* https://giters.com/CariZa/kustomize-practice
