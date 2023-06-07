@@ -19,7 +19,7 @@ spec:
   values:
     image:
       repository: ghcr.io/justingarfield/pod-gateway
-      tag: dev@sha256:17dc9a3922e0bb65f2c2c030f4dee9ecba858188c4272e8a9870b90f70e0878b
+      tag: dev@sha256:b653e3fb2058f82f5edba6157e28585af18251e3c7ef8a45a1691ef7124f1634
     env:
       name: POD_IP
       valueFrom:
