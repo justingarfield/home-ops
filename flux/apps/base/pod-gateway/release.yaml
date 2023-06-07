@@ -19,7 +19,12 @@ spec:
   values:
     image:
       repository: ghcr.io/justingarfield/pod-gateway
-      tag: dev@sha256:4447c4eb4e95011a5a2bb5664827ab16cd078df734b6cd2eea7f873f64b061ce
+      tag: dev@sha256:17dc9a3922e0bb65f2c2c030f4dee9ecba858188c4272e8a9870b90f70e0878b
+    env:
+      name: POD_IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.podIP
     securityContext:
       runAsUser: 0
       privileged: true
@@ -76,6 +81,7 @@ spec:
     routed_namespaces:
       - pvr
     settings:
+      NOT_ROUTED_TO_GATEWAY_CIDRS: "10.96.0.0/12"
       # -- If using a VPN, interface name created by it
       VPN_INTERFACE: tun0
       # -- Prevent non VPN traffic to leave the gateway
