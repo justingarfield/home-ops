@@ -19,12 +19,7 @@ spec:
   values:
     image:
       repository: ghcr.io/justingarfield/pod-gateway
-      tag: dev@sha256:28bf5931b8c91d6172e2ae0600140ae02758bf44b88ef1fcdf1201d621c23327
-    env:
-      name: POD_IP
-      valueFrom:
-        fieldRef:
-          fieldPath: status.podIP
+      tag: dev@sha256:e6d3eeb2bde67aa473558869336c3ddacc2f3f6d5acc3aa7e07a2f669ba4544e
     securityContext:
       runAsUser: 0
       privileged: true
@@ -33,6 +28,7 @@ spec:
         add:
           - NET_ADMIN
           - NET_RAW
+          - SYS_ADMIN
     webhook:
       image:
         repository: ghcr.io/angelnu/gateway-admision-controller
@@ -73,6 +69,7 @@ spec:
             drop: ["ALL"]
             add:
               - NET_ADMIN
+              - NET_RAW
               - SYS_ADMIN
       networkPolicy:
         enabled: false
