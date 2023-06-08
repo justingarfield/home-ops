@@ -3,7 +3,7 @@ apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
   name: lidarr
-  namespace: pvr
+  namespace: lidarr
 spec:
   endpointSelector:
     matchLabels:
@@ -14,6 +14,26 @@ spec:
   egress:
     - toEntities:
         - host
+    - toEndpoints:
+        - matchLabels:
+            app.kubernetes.io/name: pod-gateway
+        - matchLabels:
+            app.kubernetes.io/name: prowlarr
+        - matchLabels:
+            app.kubernetes.io/name: qbittorrent
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: lidarr2
+  namespace: pvr
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: lidarr
+  egress:
+    - toEntities:
+        - world
     - toEndpoints:
         - matchLabels:
             app.kubernetes.io/name: pod-gateway
