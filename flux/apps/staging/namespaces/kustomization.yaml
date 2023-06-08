@@ -5,3 +5,4 @@ resources:
   - pod-gateway.yaml
   - pvr.yaml
   - theme-park.yaml
+  - lidarr.yaml
