@@ -18,8 +18,8 @@ spec:
   # See https://github.com/angelnu/helm-charts/blob/main/charts/apps/pod-gatewa/values.yaml
   values:
     image:
-      repository: ghcr.io/angelnu/pod-gateway
-      tag: v1.8.1@sha256:690b6365728fe9012ad4cdfca38334992664596513dca187d1b93d2025205776
+      repository: ghcr.io/justingarfield/pod-gateway
+      tag: dev@sha256:521822aaf20643472b6c4e50b9bd2976a910e4b2b1245fc2885cc148f45ad3f7
     securityContext:
       runAsUser: 0
       privileged: true
@@ -79,4 +79,3 @@ spec:
       - pvr
     settings:
       VPN_TRAFFIC_PORT: ${PIA_UDP_PORT}
-      VPN_LOCAL_CIDRS: "10.96.0.0/12"
