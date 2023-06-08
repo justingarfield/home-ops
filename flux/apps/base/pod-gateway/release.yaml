@@ -18,8 +18,8 @@ spec:
   # See https://github.com/angelnu/helm-charts/blob/main/charts/apps/pod-gatewa/values.yaml
   values:
     image:
-      repository: ghcr.io/justingarfield/pod-gateway
-      tag: dev@sha256:ca4dc42c7061ef6ff7559af50637d6a40204af797da5c4a1e5f11f56fee09bdf
+      repository: ghcr.io/angelnu/pod-gateway
+      tag: v3.9.0@sha256:4e169da5af107a9c6c784d3e03c89da07fad45f18358ab5b7177662df12d955a
     securityContext:
       runAsUser: 0
       privileged: true
@@ -78,12 +78,5 @@ spec:
     routed_namespaces:
       - pvr
     settings:
-      NOT_ROUTED_TO_GATEWAY_CIDRS: "10.96.0.0/12"
-      # -- If using a VPN, interface name created by it
-      VPN_INTERFACE: tun0
-      # -- Prevent non VPN traffic to leave the gateway
-      VPN_BLOCK_OTHER_TRAFFIC: true
-      # -- If VPN_BLOCK_OTHER_TRAFFIC is true, allow VPN traffic over this port
       VPN_TRAFFIC_PORT: ${PIA_UDP_PORT}
-      # -- Traffic to these IPs will be send through the K8S gateway
-      VPN_LOCAL_CIDRS: "10.0.0.0/8 192.168.0.0/16"
+      DNS_LOCAL_CIDRS: "${CLUSTER_DOMAIN}"
