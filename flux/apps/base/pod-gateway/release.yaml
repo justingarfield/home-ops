@@ -19,7 +19,7 @@ spec:
   values:
     image:
       repository: ghcr.io/justingarfield/pod-gateway
-      tag: dev@sha256:1655f13f62e8841e4d3c1e97ce5ed5934d440035ada55fc346b4add0509ce3c2
+      tag: dev@sha256:ca4dc42c7061ef6ff7559af50637d6a40204af797da5c4a1e5f11f56fee09bdf
     securityContext:
       runAsUser: 0
       privileged: true
