@@ -79,4 +79,4 @@ spec:
       - pvr
     settings:
       VPN_TRAFFIC_PORT: ${PIA_UDP_PORT}
-      DNS_LOCAL_CIDRS: "${CLUSTER_DOMAIN}"
+      VPN_LOCAL_CIDRS: "10.96.0.0/12"
