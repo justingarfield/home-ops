@@ -25,7 +25,7 @@ vars:
   HELM_VERSION: "v3.11.3"
 
   # renovate: datasource=github-releases depName=cilium/hubble
-  HUBBLE_VERSION: "v0.11.5"
+  HUBBLE_VERSION: "v0.11.6"
 
   KUBEADM_VERSION: "v1.27.2"
 
