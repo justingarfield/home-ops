@@ -7,7 +7,7 @@ tasks:
   start-pull-through-caches:
     desc: Starts container registry pull-through cache containers using Docker.
     cmds:
-      - docker compose --file docker/pull-through-caches/docker-compose.yaml --detach up
+      - docker compose --file docker/pull-through-caches/docker-compose.yaml up --detach
 
   stop-pull-through-caches:
     desc: Stops container registry pull-through cache containers using Docker.
@@ -17,7 +17,7 @@ tasks:
   start-local-registry:
     desc: Starts container registry pull-through cache containers using Docker.
     cmds:
-      - docker compose --file docker/local-registry/docker-compose.yaml --detach up
+      - docker compose --file docker/local-registry/docker-compose.yaml up --detach
 
   stop-local-registry:
     desc: Stops container registry pull-through cache containers using Docker.
