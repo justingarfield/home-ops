@@ -65,8 +65,8 @@ spec:
               - SYS_ADMIN
       networkPolicy:
         enabled: false
-    # DNSPolicy: ClusterFirst
-    # clusterName: ${CLUSTER_DOMAIN}
+    DNSPolicy: ClusterFirst
+    clusterName: ${CLUSTER_DOMAIN}
     routed_namespaces:
       - pvr
     settings:
