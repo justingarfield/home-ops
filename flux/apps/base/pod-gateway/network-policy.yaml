@@ -31,3 +31,7 @@ spec:
         - ports:
             - port: "8472"
               protocol: "UDP"
+    - icmps:
+        - fields:
+            - type: 8
+              family: IPv4
