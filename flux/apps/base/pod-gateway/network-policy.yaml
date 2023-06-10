@@ -26,8 +26,10 @@ spec:
     matchLabels:
       app.kubernetes.io/name: pod-gateway
   egress:
-    - toEntities:
-        - core-dns
+    - toEndpoints:
+        - matchLabels:
+            "k8s:io.kubernetes.pod.namespace": kube-system
+            "k8s:k8s-app": kube-dns
     - toPorts:
         - ports:
             - port: "53"
@@ -46,6 +48,12 @@ spec:
     - toEndpoints:
         - matchLabels:
             app.kubernetes.io/name: lidarr
+        - matchLabels:
+            app.kubernetes.io/name: radarr
+        - matchLabels:
+            app.kubernetes.io/name: readarr
+        - matchLabels:
+            app.kubernetes.io/name: sonarr
     - toPorts:
         - ports:
             - port: "8472"
@@ -54,6 +62,12 @@ spec:
     - fromEndpoints:
         - matchLabels:
             app.kubernetes.io/name: lidarr
+        - matchLabels:
+            app.kubernetes.io/name: radarr
+        - matchLabels:
+            app.kubernetes.io/name: readarr
+        - matchLabels:
+            app.kubernetes.io/name: sonarr
     - toPorts:
         - ports:
             - port: "8472"
