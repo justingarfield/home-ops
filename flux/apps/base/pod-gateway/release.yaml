@@ -47,18 +47,6 @@ spec:
             value: "private internet access"
           - name: SERVER_REGIONS
             value: "US East"
-          - name: BLOCK_SURVEILLANCE
-            value: "on"
-          - name: BLOCK_ADS
-            value: "on"
-          - name: DNS_KEEP_NAMESERVER
-            value: "off"
-          - name: DOT
-            value: "on"
-          - name: DOT_CACHING
-            value: "on"
-          - name: OPENVPN_IPV6
-            value: "off"
         envFrom:
           - secretRef:
               name: pod-gateway
