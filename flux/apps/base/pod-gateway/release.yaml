@@ -79,3 +79,5 @@ spec:
       - pvr
     settings:
       VPN_TRAFFIC_PORT: ${PIA_UDP_PORT}
+      VPN_LOCAL_CIDRS: ["10.96.0.0/12", "10.244.0.0/16"]
+      DNS_LOCAL_CIDRS: "staging.lesmerises.jgarfield.com"
