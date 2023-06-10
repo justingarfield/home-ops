@@ -42,7 +42,7 @@ spec:
           - name: OPENVPN_PROTOCOL
             value: "udp"
           - name: FIREWALL
-            value: "on"
+            value: "off"
           - name: DOT
             value: "off"
         envFrom:
