@@ -42,15 +42,17 @@ spec:
           - name: OPENVPN_PROTOCOL
             value: "udp"
           - name: FIREWALL
-            value: "off"
+            value: "on"
           - name: DOT
             value: "off"
         envFrom:
           - secretRef:
               name: pod-gateway
         securityContext:
+          # Gluetun Won't run on-top of Talos / Cilium w/o this atm
           privileged: true
       networkPolicy:
+        # Using my own Cilium-based Network Policies
         enabled: false
     clusterName: "${CLUSTER_DOMAIN}"
     DNSPolicy: "None"
