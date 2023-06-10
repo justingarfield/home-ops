@@ -2,7 +2,7 @@
 apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
-  name: pod-gateway
+  name: pod-gateway-openvpn
   namespace: pod-gateway
 spec:
   endpointSelector:
@@ -14,6 +14,23 @@ spec:
     - toPorts:
         - ports:
             - port: "1197"
+              protocol: "UDP"
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: pod-gateway-cluster-dns
+  namespace: pod-gateway
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: pod-gateway
+  egress:
+    - toEntities:
+        - core-dns
+    - toPorts:
+        - ports:
+            - port: "53"
               protocol: "UDP"
 ---
 apiVersion: "cilium.io/v2"
