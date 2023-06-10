@@ -2,12 +2,12 @@
 apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
-  name: radarr
+  name: sonarr-uhd
   namespace: pvr
 spec:
   endpointSelector:
     matchLabels:
-      app.kubernetes.io/name: radarr
+      app.kubernetes.io/name: sonarr-uhd
   egress:
     - toEntities:
         - all

@@ -8,14 +8,9 @@ spec:
   endpointSelector:
     matchLabels:
       app.kubernetes.io/name: overseerr
+  egress:
+    - toEntities:
+        - all
   ingress:
     - fromEntities:
-        - ingress
-  egress:
-    - toEndpoints:
-        - matchLabels:
-            app.kubernetes.io/name: sonarr
-        - matchLabels:
-            app.kubernetes.io/name: radarr
-        - matchLabels:
-            app.kubernetes.io/name: plex-media-server
+        - all
