@@ -16,3 +16,8 @@ tasks:
     desc:
     cmds:
       - kubectl get clusterissuers,issuers,certificaterequests,challenges,orders,certificates {{.CLI_ARGS}}
+
+  purge-old-replicasets:
+    desc: Deletes ALL ReplicaSets which have 0 DESIRED, CURRENT, and READY status across ALL namespaces
+    cmds:
+      - kubectl get rs -A -o wide | tail -n +2 | awk '{if ($3 + $4 + $5 == 0) print "kubectl delete rs -n "$1, $2 }' | sh
