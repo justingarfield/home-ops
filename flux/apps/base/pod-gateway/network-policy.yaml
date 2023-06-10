@@ -2,22 +2,6 @@
 apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
-  name: pod-gateway
-  namespace: pod-gateway
-spec:
-  endpointSelector:
-    matchLabels:
-      app.kubernetes.io/name: pod-gateway
-  egress:
-    - toEntities:
-        - all
-  ingress:
-    - fromEntities:
-        - all
----
-apiVersion: "cilium.io/v2"
-kind: CiliumNetworkPolicy
-metadata:
   name: pod-gateway-vxlan
   namespace: pod-gateway
 spec:
