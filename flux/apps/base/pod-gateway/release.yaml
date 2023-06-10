@@ -60,10 +60,11 @@ spec:
       networkPolicy:
         enabled: false
     clusterName: "${CLUSTER_DOMAIN}"
+    DNSPolicy: "None"
     routed_namespaces:
       - pvr
     settings:
       VPN_TRAFFIC_PORT: ${PIA_UDP_PORT}
       VPN_LOCAL_CIDRS: "10.96.0.0/12 10.244.0.0/16 172.16.0.0/12 192.168.0.0/16"
       DNS_LOCAL_CIDRS:
-      NOT_ROUTED_TO_GATEWAY_CIDRS: "172.16.0.0/12 10.96.0.0/12 10.244.0.0/16 192.168.0.0/16"
+      NOT_ROUTED_TO_GATEWAY_CIDRS: "10.96.0.0/12 10.244.0.0/16 172.16.0.0/12 192.168.0.0/16"
