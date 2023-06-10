@@ -18,8 +18,8 @@ spec:
   # See https://github.com/angelnu/helm-charts/blob/main/charts/apps/pod-gatewa/values.yaml
   values:
     image:
-      repository: ghcr.io/justingarfield/pod-gateway
-      tag: dev@sha256:f9bba82939928b7b8db20b27e728f1dbf96bcce6643e2a7492a20192e38ad595
+      repository: ghcr.io/angelnu/pod-gateway
+      tag: v1.8.1@sha256:690b6365728fe9012ad4cdfca38334992664596513dca187d1b93d2025205776
     securityContext:
       runAsUser: 0
       privileged: true
@@ -34,6 +34,7 @@ spec:
         repository: ghcr.io/angelnu/gateway-admision-controller
         tag: v3.9.0@sha256:4e169da5af107a9c6c784d3e03c89da07fad45f18358ab5b7177662df12d955a
         pullPolicy: Always
+      gatewayDefault: true
     addons:
       vpn:
         enabled: true
@@ -47,6 +48,10 @@ spec:
             value: "private internet access"
           - name: SERVER_REGIONS
             value: "US East"
+          - name: VPN_TYPE
+            value: "openvpn"
+          - name: OPENVPN_PROTOCOL
+            value: "udp"
           - name: FIREWALL
             value: "off"
           - name: DOT
@@ -65,9 +70,11 @@ spec:
               - SYS_ADMIN
       networkPolicy:
         enabled: false
-    DNSPolicy: ClusterFirst
-    clusterName: ${CLUSTER_DOMAIN}
+    DNSPolicy: None
+    clusterName: "${CLUSTER_DOMAIN}"
     routed_namespaces:
       - pvr
     settings:
       VPN_TRAFFIC_PORT: ${PIA_UDP_PORT}
+      VPN_LOCAL_CIDRS: "10.96.0.0/12 10.244.0.0/16 192.168.0.0/16"
+      DNS_LOCAL_CIDRS:
