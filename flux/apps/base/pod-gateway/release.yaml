@@ -49,6 +49,7 @@ spec:
           - secretRef:
               name: pod-gateway
         securityContext:
+          privileged: true
           capabilities:
             drop: ["ALL"]
             add:
