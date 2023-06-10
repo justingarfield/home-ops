@@ -49,10 +49,14 @@ spec:
           - secretRef:
               name: pod-gateway
         securityContext:
+          runAsUser: 0
+          privileged: true
           capabilities:
             drop: ["ALL"]
             add:
               - NET_ADMIN
+              - NET_RAW
+              - SYS_ADMIN
       networkPolicy:
         enabled: false
     clusterName: "${CLUSTER_DOMAIN}"
