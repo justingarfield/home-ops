@@ -165,10 +165,13 @@ tasks:
     cmds:
       - task: start-vm
         vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp01" }
+      - task: _core:sleep-for-resource-contention
       - task: start-vm
         vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp02" }
+      - task: _core:sleep-for-resource-contention
       - task: start-vm
         vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp03" }
+      - task: _core:sleep-for-resource-contention
       - task: start-vm
         vars: { VM_NAME: "{{ .CLUSTER_NAME }}-wk01" }
 
