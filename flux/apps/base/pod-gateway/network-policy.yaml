@@ -9,30 +9,24 @@ spec:
     matchLabels:
       app.kubernetes.io/name: pod-gateway
   egress:
-    - toPorts:
-        - ports:
-            - port: "1197"
-              protocol: "UDP"
     - toEntities:
-        - world
+        - all
   ingress:
-    - fromEndpoints:
-        - matchLabels:
-            app.kubernetes.io/name: lidarr
+    - fromEntities:
+        - all
 ---
 apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
-  name: pod-gateway2
-  namespace: pod-gateway
+  name: allt3hthings
+  namespace: pvr
 spec:
   endpointSelector:
     matchLabels:
-      app.kubernetes.io/name: pod-gateway
+      app.kubernetes.io/name: lidarr
   egress:
-    - toPorts:
-        - ports:
-            - port: "53"
-              protocol: "UDP"
     - toEntities:
-        - host
+        - all
+  ingress:
+    - fromEntities:
+        - all
