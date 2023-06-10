@@ -14,3 +14,21 @@ spec:
   ingress:
     - fromEntities:
         - all
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: pod-gateway-vxlan
+  namespace: pod-gateway
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: pod-gateway
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            app.kubernetes.io/name: lidarr
+    - toPorts:
+        - ports:
+            - port: "8472"
+              protocol: "UDP"
