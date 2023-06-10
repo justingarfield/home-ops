@@ -50,11 +50,6 @@ spec:
               name: pod-gateway
         securityContext:
           privileged: true
-          capabilities:
-            drop: ["ALL"]
-            add:
-              - NET_ADMIN
-              - SYS_ADMIN
       networkPolicy:
         enabled: false
     clusterName: "${CLUSTER_DOMAIN}"
