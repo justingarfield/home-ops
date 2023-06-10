@@ -146,14 +146,14 @@ tasks:
 
   start-vm:
     internal: true
-    dsec:
+    desc:
     vars:
       VM_NAME: '{{ .VM_NAME }}'
     preconditions:
       - sh: test '{{ .VM_NAME }}'
         msg: 'Please provide a valid VM_NAME'
     cmds:
-      - '"{{ .VBOX_MANAGE_BINARY }}" startvm "{{ .VM_NAME }}" --type=gui'
+      - '"{{ .VBOX_MANAGE_BINARY }}" startvm "{{ .VM_NAME }}" --type=gui || true'
 
   start-cluster:
     desc: Starts the VMs associate with a particular virtualized cluster.
@@ -165,19 +165,19 @@ tasks:
     cmds:
       - task: start-vm
         vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp01" }
-      - task: _core:sleep-for-resource-contention
+      - task: :_core:sleep-for-resource-contention
       - task: start-vm
         vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp02" }
-      - task: _core:sleep-for-resource-contention
+      - task: :_core:sleep-for-resource-contention
       - task: start-vm
         vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp03" }
-      - task: _core:sleep-for-resource-contention
+      - task: :_core:sleep-for-resource-contention
       - task: start-vm
         vars: { VM_NAME: "{{ .CLUSTER_NAME }}-wk01" }
 
   stop-vm:
     internal: true
-    dsec:
+    desc:
     vars:
       VM_NAME: '{{ .VM_NAME }}'
     cmds:
