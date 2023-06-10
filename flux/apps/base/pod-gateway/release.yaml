@@ -47,6 +47,10 @@ spec:
             value: "private internet access"
           - name: SERVER_REGIONS
             value: "US East"
+          - name: FIREWALL
+            value: "off"
+          - name: DOT
+            value: "off"
         envFrom:
           - secretRef:
               name: pod-gateway
