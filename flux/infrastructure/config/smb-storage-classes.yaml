@@ -21,23 +21,6 @@ mountOptions:
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: smb-ro
-provisioner: smb.csi.k8s.io
-parameters:
-  source: "//nas.staging.lesmerises.jgarfield.com/k8s-staging"
-  csi.storage.k8s.io/node-stage-secret-name: "smbcreds-ro"
-  csi.storage.k8s.io/node-stage-secret-namespace: "csi-driver-smb"
-reclaimPolicy: Retain
-volumeBindingMode: Immediate
-mountOptions:
-  - dir_mode=0444
-  - file_mode=0444
-  - uid=1001
-  - gid=1001
----
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
   name: smb-media-ro
 provisioner: smb.csi.k8s.io
 parameters:
