@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-pvc
+spec:
+  accessModes:
+    - ReadOnlyMany
+  volumeMode: Filesystem
+  storageClassName: smb-media-ro
+  volumeName: media-pv
+  resources:
+    requests:
+      # This doesn't really matter since it's Read-only
+      storage: 1Mi

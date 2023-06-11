@@ -13,3 +13,5 @@ resources:
   - sonarr
   - sonarr-uhd
   - overseerr
+  - media-pv.yaml
+  - media-pvc.yaml

@@ -74,7 +74,6 @@ spec:
         type: emptyDir
       media:
         enabled: true
-        type: custom
-        storageClass: smb-media-ro
-        mountPath: /media
-        accessModes: ["ReadOnly"]
+        type: pvc
+        readOnly: true
+        existingClaim: media-pvc
