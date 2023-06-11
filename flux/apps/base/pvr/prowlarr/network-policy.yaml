@@ -2,15 +2,12 @@
 apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
-  name: prowlarr
+  name: prowlarr-health
   namespace: pvr
 spec:
   endpointSelector:
     matchLabels:
       app.kubernetes.io/name: prowlarr
-  egress:
-    - toEntities:
-        - all
   ingress:
     - fromEntities:
         - health
@@ -18,3 +15,21 @@ spec:
         - ports:
             - port: "9696"
               protocol: "TCP"
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: prowlarr-vxlan
+  namespace: pvr
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: prowlarr
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            app.kubernetes.io/name: pod-gateway
+    - toPorts:
+        - ports:
+            - port: "8472"
+              protocol: "UDP"
