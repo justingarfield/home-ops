@@ -33,3 +33,20 @@ spec:
         - ports:
             - port: "8472"
               protocol: "UDP"
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: prowlarr-cilium-ingress
+  namespace: pvr
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: prowlarr
+  ingress:
+    - fromEntities:
+        - ingress
+    - toPorts:
+        - ports:
+            - port: "9696"
+              protocol: "TCP"
