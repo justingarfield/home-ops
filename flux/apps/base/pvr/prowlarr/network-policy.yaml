@@ -45,6 +45,7 @@ spec:
       app.kubernetes.io/name: prowlarr
   ingress:
     - fromEntities:
+        - host
         - ingress
     - toPorts:
         - ports:
