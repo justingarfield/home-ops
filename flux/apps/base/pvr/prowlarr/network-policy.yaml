@@ -13,4 +13,8 @@ spec:
         - all
   ingress:
     - fromEntities:
-        - all
+        - health
+    - toPorts:
+        - ports:
+            - port: "9696"
+              protocol: "TCP"
