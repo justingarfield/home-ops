@@ -48,7 +48,3 @@ spec:
     - fromEntities:
         - host
         - ingress
-    - toPorts:
-        - ports:
-            - port: "9696"
-              protocol: "TCP"
