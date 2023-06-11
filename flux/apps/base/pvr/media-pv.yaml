@@ -3,6 +3,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: media-pv
+  namespace: pvr
 spec:
   capacity:
     storage: 1Mi
