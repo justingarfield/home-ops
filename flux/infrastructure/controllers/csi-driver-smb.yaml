@@ -35,3 +35,8 @@ spec:
     controller:
       replicas: 2
       runOnControlPlane: true
+    securityContext:
+      capabilities:
+        drop: ["ALL"]
+        add:
+          - SYS_ADMIN
