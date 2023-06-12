@@ -75,9 +75,11 @@ spec:
     persistence:
       config:
         enabled: true
-        type: emptyDir
+        type: pvc
+        readOnly: false
+        existingClaim: radarr-config-pvc
       media:
         enabled: true
         type: pvc
-        readOnly: true
-        existingClaim: media-pvc
+        readOnly: false
+        existingClaim: radarr-media-pvc
