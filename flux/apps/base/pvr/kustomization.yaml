@@ -6,12 +6,10 @@ resources:
   - lidarr
   - prowlarr
   - qbittorrent
-  - radarr
+  # - radarr
   # - radarr-uhd
-  - readarr
+  # - readarr
   # - recyclarr
-  - sonarr
+  # - sonarr
   # - sonarr-uhd
   - overseerr
-  - media-pv.yaml
-  - media-pvc.yaml
