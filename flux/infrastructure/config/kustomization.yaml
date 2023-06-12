@@ -6,4 +6,4 @@ resources:
   - cilium.yaml
   - cluster-issuers.yaml
   # - nfs-storage-classes.yaml
-  - smb-storage-classes.yaml
+  # - smb-storage-classes.yaml
