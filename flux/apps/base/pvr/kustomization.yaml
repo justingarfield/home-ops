@@ -3,7 +3,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - lidarr
+  # - lidarr
   - prowlarr
   - qbittorrent
   - radarr
@@ -13,5 +13,5 @@ resources:
   - sonarr
   - sonarr-uhd
   - overseerr
-  - media-pv.yaml
-  - media-pvc.yaml
+  # - media-pv.yaml
+  # - media-pvc.yaml

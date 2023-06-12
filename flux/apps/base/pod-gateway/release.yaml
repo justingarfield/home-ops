@@ -57,7 +57,7 @@ spec:
         # Using my own Cilium-based Network Policies
         enabled: false
     clusterName: "${CLUSTER_DOMAIN}"
-    # Needed to get CoreDNS listed in /etc/resolv.conf for NAS DNS lookup when mounting SMB share
+    # Needed to get CoreDNS IP listed in /etc/resolv.conf for NAS DNS lookup when mounting SMB share
     DNSPolicy: ClusterFirst
     routed_namespaces:
       - pvr
