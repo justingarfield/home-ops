@@ -10,4 +10,4 @@ machine:
       - net.ipv6.conf.default.disable_ipv6
       - net.ipv4.conf.all.src_valid_mark
   nodeLabels:
-    node-role.kubernetes.io/worker: ""
+    node-role.kubernetes.io/worker:

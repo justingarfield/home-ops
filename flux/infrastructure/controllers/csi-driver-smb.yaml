@@ -43,6 +43,7 @@ spec:
         # non-privileged sidecar containers cannot access unix domain socket
         # created by privileged CSI driver container.
         privileged: true
+        runAsUser: 0
         capabilities:
           drop: ["ALL"]
           add:
@@ -54,6 +55,7 @@ spec:
       # non-privileged sidecar containers cannot access unix domain socket
       # created by privileged CSI driver container.
       privileged: true
+      runAsUser: 0
       capabilities:
         drop: ["ALL"]
         add:
