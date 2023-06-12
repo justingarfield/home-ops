@@ -38,7 +38,16 @@ spec:
       dnsPolicy: ClusterFirst
     linux:
       dnsPolicy: ClusterFirst
+      securityContext:
+        # This is necessary only for systems with SELinux, where
+        # non-privileged sidecar containers cannot access unix domain socket
+        # created by privileged CSI driver container.
+        privileged: true
     securityContext:
+      # This is necessary only for systems with SELinux, where
+      # non-privileged sidecar containers cannot access unix domain socket
+      # created by privileged CSI driver container.
+      privileged: true
       capabilities:
         drop: ["ALL"]
         add:
