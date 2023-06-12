@@ -37,6 +37,7 @@ spec:
       runOnControlPlane: false
       nodeSelector:
         node-role.kubernetes.io/worker: ""
+    dnsPolicy: ClusterFirst
     linux:
       securityContext:
         # This is necessary only for systems with SELinux, where
