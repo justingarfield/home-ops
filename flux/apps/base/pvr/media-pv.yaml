@@ -25,7 +25,7 @@ spec:
     readOnly: true
     volumeHandle: smb-media-ro
     volumeAttributes:
-      source: "//nas.staging.lesmerises.jgarfield.com/Media"
+      source: "//nas.lesmerises.jgarfield.com/Media"
     nodeStageSecretRef:
       name: smbcreds-ro
       namespace: csi-driver-smb
