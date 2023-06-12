@@ -14,5 +14,3 @@ resources:
   # - piraeus.yaml - pending resolution to https://github.com/siderolabs/extensions/pull/103
   # - reloader.yaml
   - tetragon.yaml
-patchesStrategicMerge:
-  - ./patches/addons.yaml
