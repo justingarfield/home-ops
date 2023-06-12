@@ -72,6 +72,8 @@ tasks:
           --with-examples=false \
           --config-patch='[{"op": "remove", "path": "/machine/certSANs"}]' \
           --config-patch @{{ ._CLUSTER_DIR }}/machine-patches/all-nodes.patch \
+          --config-patch-control-plane @{{ ._CLUSTER_DIR }}/machine-patches/cp-nodes.patch \
+          --config-patch-worker @{{ ._CLUSTER_DIR }}/machine-patches/worker-nodes.patch \
           --output {{ ._MACHINE_TEMPLATES_DIR }}
       - mv {{ ._MACHINE_TEMPLATES_DIR }}/talosconfig {{ ._CLUSTER_DIR }}
 

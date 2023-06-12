@@ -35,9 +35,9 @@ spec:
     controller:
       replicas: 1
       runOnControlPlane: false
-      # dnsPolicy: ClusterFirst
+      nodeSelector:
+        node-role.kubernetes.io/worker: ""
     linux:
-      # dnsPolicy: ClusterFirst
       securityContext:
         # This is necessary only for systems with SELinux, where
         # non-privileged sidecar containers cannot access unix domain socket
@@ -47,6 +47,8 @@ spec:
           drop: ["ALL"]
           add:
             - SYS_ADMIN
+      nodeSelector:
+        node-role.kubernetes.io/worker: ""
     securityContext:
       # This is necessary only for systems with SELinux, where
       # non-privileged sidecar containers cannot access unix domain socket
