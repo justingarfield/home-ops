@@ -35,6 +35,7 @@ spec:
     controller:
       replicas: 2
       runOnControlPlane: true
+      dnsPolicy: ClusterFirst
     securityContext:
       capabilities:
         drop: ["ALL"]

@@ -9,12 +9,12 @@ tasks:
     internal: true
     vars:
       DIRECTORY: '{{ .DIRECTORY | replace "./{{ .OUTPUT_DIR }}" "" | replace .OUTPUT_DIR "" }}'
-    preconditions:
-      - test "{{ .OUTPUT_DIR }}/{{ .DIRECTORY }}"
+    #preconditions:
+    #  - test "{{ .OUTPUT_DIR }}/{{ .DIRECTORY }}"
     cmds:
       - mkdir -p "{{ .OUTPUT_DIR }}/{{ .DIRECTORY }}"
-    status:
-      - test -d "{{ .OUTPUT_DIR }}/{{ .DIRECTORY }}"
+    #status:
+    #  - test -d "{{ .OUTPUT_DIR }}/{{ .DIRECTORY }}"
 
   sleep-for-resource-contention:
     desc: Does a simple 'sleep' for a particular duration in-seconds (default 5-seconds)
