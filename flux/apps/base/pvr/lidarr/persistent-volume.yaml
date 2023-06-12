@@ -20,6 +20,7 @@ spec:
     - mfsymlinks
     - cache=strict
     - noserverino
+    - nobrl
   csi:
     driver: smb.csi.k8s.io
     readOnly: false
