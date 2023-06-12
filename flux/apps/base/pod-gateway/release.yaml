@@ -57,12 +57,11 @@ spec:
         # Using my own Cilium-based Network Policies
         enabled: false
     clusterName: "${CLUSTER_DOMAIN}"
-    DNSPolicy: ClusterFirst
+    # DNSPolicy: ClusterFirst
     routed_namespaces:
       - pvr
     settings:
       # Don't forget to allow this on your firewall(s)!
       VPN_TRAFFIC_PORT: ${PIA_UDP_PORT}
       VPN_LOCAL_CIDRS: "10.96.0.0/12 10.244.0.0/16 172.16.0.0/12 192.168.0.0/16"
-      DNS_LOCAL_CIDRS: "staging.lesmerises.jgarfield.com"
       NOT_ROUTED_TO_GATEWAY_CIDRS: "10.96.0.0/12 10.244.0.0/16 172.16.0.0/12 192.168.0.0/16"
