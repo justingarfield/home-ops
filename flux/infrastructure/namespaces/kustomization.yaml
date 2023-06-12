@@ -6,7 +6,7 @@ resources:
   - authelia.yaml
   - cert-manager.yaml
   # - csi-driver-nfs.yaml
-  # - csi-driver-smb.yaml
+  - csi-driver-smb.yaml
   - external-dns.yaml
   - lldap.yaml
   # - piraeus.yaml - pending resolution to https://github.com/siderolabs/extensions/pull/103
