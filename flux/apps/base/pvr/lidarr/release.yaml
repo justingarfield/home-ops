@@ -64,7 +64,7 @@ spec:
         enabled: true
         type: emptyDir
       media:
-        enabled: false
+        enabled: true
         type: pvc
         readOnly: true
         existingClaim: media-pvc
