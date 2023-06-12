@@ -1,0 +1,21 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: readarr-smb
+provisioner: smb.csi.k8s.io
+parameters:
+  source: "//nas.lesmerises.jgarfield.com"
+  csi.storage.k8s.io/node-stage-secret-name: "smbcreds-readarr"
+  csi.storage.k8s.io/node-stage-secret-namespace: "pvr"
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+mountOptions:
+  - dir_mode=0777
+  - file_mode=0777
+  - uid=568
+  - gid=568
+  - noperm
+  - mfsymlinks
+  - cache=strict
+  - noserverino

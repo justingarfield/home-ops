@@ -6,6 +6,9 @@ resources:
   - namespaces
   - secrets/pod-gateway.sops.yaml
   - secrets/smbcreds-lidarr.sops.yaml
+  - secrets/smbcreds-radarr.sops.yaml
+  - secrets/smbcreds-readarr.sops.yaml
+  - secrets/smbcreds-sonarr.sops.yaml
   - ../base/pod-gateway
   # - ../base/database
   - ../base/hajimari

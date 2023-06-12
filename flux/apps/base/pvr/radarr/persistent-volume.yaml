@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: lidarr-config-pv
+  name: radarr-config-pv
   namespace: pvr
 spec:
   capacity:
@@ -10,7 +10,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: lidarr-smb
+  storageClassName: radarr-smb
   mountOptions:
     - dir_mode=0777
     - file_mode=0777
@@ -25,17 +25,17 @@ spec:
   csi:
     driver: smb.csi.k8s.io
     readOnly: false
-    volumeHandle: lidarr-config-pv
+    volumeHandle: radarr-config-pv
     volumeAttributes:
-      source: "//nas.lesmerises.jgarfield.com/k8s-staging/lidarr"
+      source: "//nas.lesmerises.jgarfield.com/k8s-staging/radarr"
     nodeStageSecretRef:
-      name: smbcreds-lidarr
+      name: smbcreds-radarr
       namespace: pvr
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: lidarr-media-pv
+  name: radarr-media-pv
   namespace: pvr
 spec:
   capacity:
@@ -43,7 +43,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: lidarr-smb
+  storageClassName: radarr-smb
   mountOptions:
     - dir_mode=0777
     - file_mode=0777
@@ -56,9 +56,9 @@ spec:
   csi:
     driver: smb.csi.k8s.io
     readOnly: false
-    volumeHandle: lidarr-media-pv
+    volumeHandle: radarr-media-pv
     volumeAttributes:
       source: "//nas.lesmerises.jgarfield.com/Media/Music"
     nodeStageSecretRef:
-      name: smbcreds-lidarr
+      name: smbcreds-radarr
       namespace: pvr
