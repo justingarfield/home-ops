@@ -1,0 +1,62 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: lidarr-config-pv
+  namespace: pvr
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: lidarr-smb
+  mountOptions:
+    - dir_mode=0777
+    - file_mode=0777
+    - uid=568
+    - gid=568
+    - noperm
+    - mfsymlinks
+    - cache=strict
+    - noserverino
+  csi:
+    driver: smb.csi.k8s.io
+    readOnly: false
+    volumeHandle: lidarr-config-pv
+    volumeAttributes:
+      source: "//nas.lesmerises.jgarfield.com/k8s-staging/lidarr"
+    nodeStageSecretRef:
+      name: smbcreds-lidarr
+      namespace: pvr
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: lidarr-media-pv
+  namespace: pvr
+spec:
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: lidarr-smb
+  mountOptions:
+    - dir_mode=0777
+    - file_mode=0777
+    - uid=568
+    - gid=568
+    - noperm
+    - mfsymlinks
+    - cache=strict
+    - noserverino
+  csi:
+    driver: smb.csi.k8s.io
+    readOnly: false
+    volumeHandle: lidarr-media-pv
+    volumeAttributes:
+      source: "//nas.lesmerises.jgarfield.com/Media/Music"
+    nodeStageSecretRef:
+      name: smbcreds-lidarr
+      namespace: pvr
