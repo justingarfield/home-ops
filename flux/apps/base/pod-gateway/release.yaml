@@ -57,7 +57,7 @@ spec:
         # Using my own Cilium-based Network Policies
         enabled: false
     clusterName: "${CLUSTER_DOMAIN}"
-    # DNSPolicy: ClusterFirst
+    DNSPolicy: ClusterFirst
     routed_namespaces:
       - pvr
     settings:
