@@ -72,3 +72,12 @@ spec:
           - hosts:
               - *host
             secretName: tls-radarr
+    persistence:
+      config:
+        enabled: true
+        type: emptyDir
+      media:
+        enabled: true
+        type: pvc
+        readOnly: true
+        existingClaim: media-pvc

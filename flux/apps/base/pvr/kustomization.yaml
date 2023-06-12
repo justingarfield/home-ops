@@ -7,11 +7,11 @@ resources:
   - prowlarr
   - qbittorrent
   - radarr
-  - radarr-uhd
+  # - radarr-uhd
   - readarr
   # - recyclarr
   - sonarr
-  - sonarr-uhd
+  # - sonarr-uhd
   - overseerr
   - media-pv.yaml
   - media-pvc.yaml

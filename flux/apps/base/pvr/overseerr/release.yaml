@@ -50,3 +50,12 @@ spec:
           - hosts:
               - *host
             secretName: tls-overseerr
+    persistence:
+      config:
+        enabled: true
+        type: emptyDir
+      media:
+        enabled: true
+        type: pvc
+        readOnly: true
+        existingClaim: media-pvc
