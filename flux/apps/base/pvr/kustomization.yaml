@@ -6,7 +6,7 @@ resources:
   - lidarr
   - prowlarr
   - qbittorrent
-  # - radarr
+  - radarr
   # - radarr-uhd
   # - readarr
   # - recyclarr
