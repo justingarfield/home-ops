@@ -153,7 +153,7 @@ tasks:
       - sh: test '{{ .VM_NAME }}'
         msg: 'Please provide a valid VM_NAME'
     cmds:
-      - '"{{ .VBOX_MANAGE_BINARY }}" startvm "{{ .VM_NAME }}" --type=gui || true'
+      - '"{{ .VBOX_MANAGE_BINARY }}" startvm "{{ .VM_NAME }}" --type=headless || true'
 
   start-cluster:
     desc: Starts the VMs associate with a particular virtualized cluster.
