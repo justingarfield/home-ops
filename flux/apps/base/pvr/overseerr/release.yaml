@@ -55,4 +55,5 @@ spec:
         enabled: true
         type: pvc
         readOnly: false
+        mountPath: /app/config
         existingClaim: overseerr-config-pvc
