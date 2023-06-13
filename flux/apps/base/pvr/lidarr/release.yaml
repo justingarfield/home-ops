@@ -28,8 +28,6 @@ spec:
   values:
     global:
       nameOverride: *app
-    labels:
-      setGateway: true
     image:
       repository: ghcr.io/onedr0p/lidarr
       tag: 1.1.4.3027@sha256:d7e06edaee3b2227a0dcbf170a95d26595b0d10655d5e084c45b859f175a0672
