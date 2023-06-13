@@ -58,7 +58,7 @@ spec:
     readOnly: false
     volumeHandle: readarr-media-pv
     volumeAttributes:
-      source: "//nas.lesmerises.jgarfield.com/Media/Music"
+      source: "//nas.lesmerises.jgarfield.com/Media/Books"
     nodeStageSecretRef:
       name: smbcreds-readarr
       namespace: pvr
