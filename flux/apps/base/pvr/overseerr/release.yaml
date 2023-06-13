@@ -53,9 +53,6 @@ spec:
     persistence:
       config:
         enabled: true
-        type: emptyDir
-      media:
-        enabled: true
         type: pvc
-        readOnly: true
-        existingClaim: media-pvc
+        readOnly: false
+        existingClaim: overseerr-config-pvc

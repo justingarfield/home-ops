@@ -3,6 +3,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  # - config-pvc.yaml
-  # - network-policy.yaml
+  - storage-class.yaml
+  - persistent-volume.yaml
+  - persistent-volume-claim.yaml
+  - network-policies.yaml
   - release.yaml

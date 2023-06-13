@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: overseerr-config-pv
+  namespace: pvr
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: overseerr-smb
+  mountOptions:
+    - dir_mode=0777
+    - file_mode=0777
+    - uid=568
+    - gid=568
+    - noperm
+    - mfsymlinks
+    - cache=strict
+    - noserverino
+    # This is a temporary stop-gap until I get Postgres running
+    - nobrl
+  csi:
+    driver: smb.csi.k8s.io
+    readOnly: false
+    volumeHandle: overseerr-config-pv
+    volumeAttributes:
+      source: "//nas.lesmerises.jgarfield.com/k8s-staging/overseerr"
+    nodeStageSecretRef:
+      name: smbcreds-overseerr
+      namespace: pvr

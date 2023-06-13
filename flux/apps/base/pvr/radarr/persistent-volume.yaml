@@ -58,7 +58,7 @@ spec:
     readOnly: false
     volumeHandle: radarr-media-pv
     volumeAttributes:
-      source: "//nas.lesmerises.jgarfield.com/Media/Music"
+      source: "//nas.lesmerises.jgarfield.com/Media/Movies"
     nodeStageSecretRef:
       name: smbcreds-radarr
       namespace: pvr
