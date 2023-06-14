@@ -31,34 +31,3 @@ spec:
     nodeStageSecretRef:
       name: smbcreds-prowlarr
       namespace: pvr
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: prowlarr-media-pv
-  namespace: pvr
-spec:
-  capacity:
-    storage: 1Ti
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: prowlarr-smb
-  mountOptions:
-    - dir_mode=0777
-    - file_mode=0777
-    - uid=568
-    - gid=568
-    - noperm
-    - mfsymlinks
-    - cache=strict
-    - noserverino
-  csi:
-    driver: smb.csi.k8s.io
-    readOnly: false
-    volumeHandle: prowlarr-media-pv
-    volumeAttributes:
-      source: "//nas.lesmerises.jgarfield.com/Media/Music"
-    nodeStageSecretRef:
-      name: smbcreds-prowlarr
-      namespace: pvr
