@@ -75,4 +75,6 @@ spec:
     persistence:
       config:
         enabled: true
-        type: emptyDir
+        type: pvc
+        readOnly: false
+        existingClaim: prowlarr-config-pvc

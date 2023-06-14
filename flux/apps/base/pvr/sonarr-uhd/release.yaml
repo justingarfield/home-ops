@@ -71,3 +71,14 @@ spec:
           - hosts:
               - *host
             secretName: tls-sonarr
+    persistence:
+      config:
+        enabled: true
+        type: pvc
+        readOnly: false
+        existingClaim: sonarr-uhd-config-pvc
+      media:
+        enabled: true
+        type: pvc
+        readOnly: false
+        existingClaim: sonarr-uhd-media-pvc

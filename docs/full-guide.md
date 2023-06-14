@@ -33,3 +33,15 @@ sudo mv /home/microk8s/k8s-etcd-intermediate-ca.key /etc/kubernetes/pki/etcd/ca.
 sudo mv /home/microk8s/k8s-front-proxy-intermediate-ca.crt /etc/kubernetes/pki/front-proxy-ca.crt
 sudo mv /home/microk8s/k8s-front-proxy-intermediate-ca.key /etc/kubernetes/pki/front-proxy-ca.key
 ```
+
+
+## ARRRRRR setup
+
+* Configure qBittorrent
+  *
+  *
+
+* Configure FlareSolverr in Prowlarr
+  * Name: `FlareSolverr`
+  * Tags: `<none yet>`
+  * Host: `http://flaresolverr.pvr.svc.<cluster domain>:8191/`
