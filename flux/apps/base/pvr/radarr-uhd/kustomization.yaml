@@ -6,5 +6,5 @@ resources:
   - storage-class.yaml
   - persistent-volume.yaml
   - persistent-volume-claim.yaml
-  - network-policies.yaml
+  # - network-policies.yaml
   - release.yaml

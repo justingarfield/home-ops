@@ -9,8 +9,8 @@ resources:
   - prowlarr
   - qbittorrent
   - radarr
-  - radarr-uhd
+  # - radarr-uhd
   - readarr
   # - recyclarr
   - sonarr
-  - sonarr-uhd
+  # - sonarr-uhd
