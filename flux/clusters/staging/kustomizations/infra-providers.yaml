@@ -8,7 +8,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-secrets
-  interval: 1m0s
+  interval: 30m0s
   path: ./flux/infrastructure/providers
   prune: true
   retryInterval: 1m

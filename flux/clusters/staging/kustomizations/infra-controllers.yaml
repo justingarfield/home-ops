@@ -11,7 +11,7 @@ spec:
     - name: cluster-secrets
     - name: infra-crds
     - name: infra-repositories
-  interval: 10m0s
+  interval: 30m0s
   path: ./flux/infrastructure/controllers
   decryption:
     provider: sops
