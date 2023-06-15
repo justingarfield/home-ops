@@ -138,5 +138,4 @@ tasks:
             --set hubble.ui.enabled=true \
             --set hubble.peerService.clusterDomain="{{ .CLUSTER_DOMAIN }}" \
             --set tunnelPort=6669
-      - kubectl label nodes k8s-wk01 node-role.kubernetes.io/worker=
       - kubectl apply -f {{ .CLUSTER_DIR }}/cilium.yaml

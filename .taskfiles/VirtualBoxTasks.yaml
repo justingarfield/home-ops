@@ -47,6 +47,8 @@ tasks:
           --macaddress1="{{ .MAC_ADDRESS }}" \
           --bridge-adapter1="{{ .VBOX_BRIDGE_ADAPTER }}" \
           --hpet=on \
+          --vram=32 \
+          --graphicscontroller=vmsvga \
           --description="{{ .CLUSTER_NAME }} Cluster Node"
 
   add-piix4-storage-controller-to-vm:
@@ -58,7 +60,7 @@ tasks:
       - sh: test '{{ .VM_NAME }}'
         msg: 'Please provide a valid VM_NAME'
     cmds:
-      - '"{{ .VBOX_MANAGE_BINARY }}" storagectl "{{ .VM_NAME }}" --name="PIIX4 (IDE)" --add=ide --controller=PIIX4 --hostiocache=on'
+      - '"{{ .VBOX_MANAGE_BINARY }}" storagectl "{{ .VM_NAME }}" --name="PIIX4 (IDE)" --add=ide --controller=PIIX4'
 
   add-ahci-storage-controller-to-vm:
     internal: true
@@ -69,7 +71,7 @@ tasks:
       - sh: test '{{ .VM_NAME }}'
         msg: 'Please provide a valid VM_NAME'
     cmds:
-      - '"{{ .VBOX_MANAGE_BINARY }}" storagectl "{{ .VM_NAME }}" --name="AHCI (SATA)" --add=sata --controller=IntelAhci --portcount=1'
+      - '"{{ .VBOX_MANAGE_BINARY }}" storagectl "{{ .VM_NAME }}" --name="AHCI (SATA)" --add=sata --controller=IntelAhci --portcount=1 --hostiocache=on'
 
   attach-talos-livecd-to-vm:
     internal: true
@@ -142,7 +144,7 @@ tasks:
       - sh: test '{{ .CLUSTER_NAME }}'
         msg: 'Please provide a valid CLUSTER_NAME'
     cmds:
-      - '"{{ .VBOX_MANAGE_BINARY }}" unregistervm "{{ .VM_NAME }}" --delete'
+      - '"{{ .VBOX_MANAGE_BINARY }}" unregistervm "{{ .VM_NAME }}" --delete || true'
 
   start-vm:
     internal: true
@@ -181,7 +183,7 @@ tasks:
     vars:
       VM_NAME: '{{ .VM_NAME }}'
     cmds:
-      - '"{{ .VBOX_MANAGE_BINARY }}" controlvm "{{ .VM_NAME }}" acpipowerbutton'
+      - '"{{ .VBOX_MANAGE_BINARY }}" controlvm "{{ .VM_NAME }}" acpipowerbutton || true'
 
   stop-cluster:
     desc: Stops the VMs associate with a particular virtualized cluster.
