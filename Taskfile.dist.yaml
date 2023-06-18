@@ -33,14 +33,14 @@ includes:
 
 silent: false
 
-dotenv: ['.env.example.staging', '.env.example.common']
-# dotenv: ['.env.example.production', '.env.example.common']
+dotenv: [ .env.example.staging, .env.example.common ]
+# dotenv: [ .env.example.production, .env.example.common ]
 
 tasks:
 
   default:
     silent: true
-    cmds: ["task -l"]
+    cmds: [ task -l ]
 
   generate-base-pki:
     desc: Generates all of the base PKI files from scratch.
@@ -63,53 +63,53 @@ tasks:
 
       # Sites
       - task: pki:generate-and-sign-site-intermediate-ca
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "azure" }
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: azure }
       - task: pki:generate-and-sign-site-intermediate-ca
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "boston" }
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: boston }
       - task: pki:generate-and-sign-site-intermediate-ca
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "colo" }
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: colo }
       - task: pki:generate-and-sign-site-intermediate-ca
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "sacramento" }
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: sacramento }
 
       # Site-level Functions
       - task: pki:generate-and-sign-site-function-intermediate-ca
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "azure", FUNCTION: "infrastructure" }
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: azure, FUNCTION: infrastructure }
 
       - task: pki:generate-and-sign-site-function-intermediate-ca
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "boston", FUNCTION: "infrastructure" }
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: boston, FUNCTION: infrastructure }
 
       - task: pki:generate-and-sign-site-function-intermediate-ca
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "colo", FUNCTION: "infrastructure" }
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: colo, FUNCTION: infrastructure }
       - task: pki:generate-and-sign-site-function-intermediate-ca
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "colo", FUNCTION: "vendor-equipment" }
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: colo, FUNCTION: vendor-equipment }
 
       - task: pki:generate-and-sign-site-function-intermediate-ca
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "sacramento", FUNCTION: "infrastructure" }
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: sacramento, FUNCTION: infrastructure }
       - task: pki:generate-and-sign-site-function-intermediate-ca
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "sacramento", FUNCTION: "vendor-equipment" }
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: sacramento, FUNCTION: vendor-equipment }
 
       # Site-level Kubernetes Clusters
       - task: pki:generate-and-sign-kubernetes-single-root-cas
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "colo", CLUSTER_NAME: "test" }
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: colo, CLUSTER_NAME: test }
       - task: pki:generate-and-sign-kubernetes-single-root-cas
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "colo", CLUSTER_NAME: "staging" }
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: colo, CLUSTER_NAME: staging }
       - task: pki:generate-and-sign-kubernetes-single-root-cas
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "colo", CLUSTER_NAME: "production" }
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: colo, CLUSTER_NAME: production }
 
       # Firewall Web UI
       - task: pki:generate-server-certificate
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "boston", FUNCTION: "infrastructure", SERVER_NAME: "firewall01", SERVER_IP: "192.168.21.2" }
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: boston, FUNCTION: infrastructure, SERVER_NAME: firewall01, SERVER_IP: 192.168.21.2 }
       - task: pki:generate-server-certificate
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "boston", FUNCTION: "infrastructure", SERVER_NAME: "firewall02", SERVER_IP: "192.168.21.3" }
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: boston, FUNCTION: infrastructure, SERVER_NAME: firewall02, SERVER_IP: 192.168.21.3 }
       - task: pki:generate-server-certificate
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "sacramento", FUNCTION: "infrastructure", SERVER_NAME: "firewall01", SERVER_IP: "192.168.22.2" }
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: sacramento, FUNCTION: infrastructure, SERVER_NAME: firewall01, SERVER_IP: 192.168.22.2 }
       - task: pki:generate-server-certificate
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: "sacramento", FUNCTION: "infrastructure", SERVER_NAME: "firewall02", SERVER_IP: "192.168.22.3" }
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: sacramento, FUNCTION: infrastructure, SERVER_NAME: firewall02, SERVER_IP: 192.168.22.3 }
 
       # "Global" Client Cert
       - task: pki:generate-root-client-certificate
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", CLIENT_NAME: "global.admin" }
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", CLIENT_NAME: global.admin }
 
       # Azure Tenant Provisioner SP for Terraform
       - task: pki:generate-site-client-certificate
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", CLIENT_NAME: "tenant.provisioner", SITE_NAME: "azure" }
+        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", CLIENT_NAME: tenant.provisioner, SITE_NAME: azure }

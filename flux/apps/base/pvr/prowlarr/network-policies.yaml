@@ -1,5 +1,5 @@
 ---
-apiVersion: "cilium.io/v2"
+apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
   name: prowlarr-health
@@ -15,9 +15,9 @@ spec:
     - toPorts:
         - ports:
             - port: "9696"
-              protocol: "TCP"
+              protocol: TCP
 ---
-apiVersion: "cilium.io/v2"
+apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
   name: prowlarr-vxlan
@@ -33,9 +33,9 @@ spec:
     - toPorts:
         - ports:
             - port: "8472"
-              protocol: "UDP"
+              protocol: UDP
 ---
-apiVersion: "cilium.io/v2"
+apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
   name: prowlarr-cilium-ingress

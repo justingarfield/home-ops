@@ -46,7 +46,7 @@ spec:
         privileged: true
         runAsUser: 0
         capabilities:
-          drop: ["ALL"]
+          drop: [ ALL ]
           add:
             - SYS_ADMIN
       nodeSelector:
@@ -58,6 +58,6 @@ spec:
       privileged: true
       runAsUser: 0
       capabilities:
-        drop: ["ALL"]
+        drop: [ ALL ]
         add:
           - SYS_ADMIN

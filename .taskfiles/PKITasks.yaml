@@ -40,15 +40,15 @@ tasks:
       _CA_CSR_FILENAME: '{{ .PKI_TPL_DIR }}/root-ca-csr.json'
     preconditions:
       - sh: test '{{ .ORGANIZATION_NAME }}'
-        msg: 'Please provide a valid ORGANIZATION_NAME'
+        msg: Please provide a valid ORGANIZATION_NAME
       - sh: test '{{ .CERT_EMAIL }}'
-        msg: 'Please provide a valid CERT_EMAIL'
+        msg: Please provide a valid CERT_EMAIL
       - sh: test '{{ .CERT_LOCATION }}'
-        msg: 'Please provide a valid CERT_LOCATION'
+        msg: Please provide a valid CERT_LOCATION
       - sh: test '{{ .CERT_STATE }}'
-        msg: 'Please provide a valid CERT_STATE'
+        msg: Please provide a valid CERT_STATE
       - sh: test '{{ .CERT_COUNTRY }}'
-        msg: 'Please provide a valid CERT_COUNTRY'
+        msg: Please provide a valid CERT_COUNTRY
     cmds:
       - task: :_core:ensure-directory-exists
         vars: { DIRECTORY: '{{ ._OUTPUT_FILENAME | dir }}' }
@@ -136,17 +136,17 @@ tasks:
       CERT_COUNTRY: '{{ .CERT_COUNTRY }}'
     preconditions:
       - sh: test '{{ .ORGANIZATION_NAME }}'
-        msg: 'Please provide a valid ORGANIZATION_NAME'
+        msg: Please provide a valid ORGANIZATION_NAME
       - sh: test '{{ .SITE_NAME }}'
-        msg: 'Please provide a valid SITE_NAME'
+        msg: Please provide a valid SITE_NAME
       - sh: test '{{ .CERT_EMAIL }}'
-        msg: 'Please provide a valid CERT_EMAIL'
+        msg: Please provide a valid CERT_EMAIL
       - sh: test '{{ .CERT_LOCATION }}'
-        msg: 'Please provide a valid CERT_LOCATION'
+        msg: Please provide a valid CERT_LOCATION
       - sh: test '{{ .CERT_STATE }}'
-        msg: 'Please provide a valid CERT_STATE'
+        msg: Please provide a valid CERT_STATE
       - sh: test '{{ .CERT_COUNTRY }}'
-        msg: 'Please provide a valid CERT_COUNTRY'
+        msg: Please provide a valid CERT_COUNTRY
     cmds:
       - task: generate-site-intermediate-ca
         vars: { ORGANIZATION_NAME: "{{ .ORGANIZATION_NAME }}", CERT_EMAIL: "{{ .CERT_EMAIL }}", CERT_LOCATION: "{{ .CERT_LOCATION }}", CERT_STATE: "{{ .CERT_STATE }}", CERT_COUNTRY: "{{ .CERT_COUNTRY }}", SITE_NAME: "{{ .SITE_NAME }}" }
@@ -256,26 +256,26 @@ tasks:
       CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
     preconditions:
       - sh: test '{{ .ORGANIZATION_NAME }}'
-        msg: 'Please provide a valid ORGANIZATION_NAME'
+        msg: Please provide a valid ORGANIZATION_NAME
       - sh: test '{{ .SITE_NAME }}'
-        msg: 'Please provide a valid SITE_NAME'
+        msg: Please provide a valid SITE_NAME
       - sh: test '{{ .CERT_EMAIL }}'
-        msg: 'Please provide a valid CERT_EMAIL'
+        msg: Please provide a valid CERT_EMAIL
       - sh: test '{{ .CERT_LOCATION }}'
-        msg: 'Please provide a valid CERT_LOCATION'
+        msg: Please provide a valid CERT_LOCATION
       - sh: test '{{ .CERT_STATE }}'
-        msg: 'Please provide a valid CERT_STATE'
+        msg: Please provide a valid CERT_STATE
       - sh: test '{{ .CERT_COUNTRY }}'
-        msg: 'Please provide a valid CERT_COUNTRY'
+        msg: Please provide a valid CERT_COUNTRY
       - sh: test '{{ .CLUSTER_NAME }}'
-        msg: 'Please provide a valid CLUSTER_NAME'
+        msg: Please provide a valid CLUSTER_NAME
     cmds:
       - task: generate-and-sign-kubernetes-intermediate-ca
-        vars: { ORGANIZATION_NAME: "{{ .ORGANIZATION_NAME }}", SITE_NAME: "{{ .SITE_NAME }}", CERT_EMAIL: "{{ .CERT_EMAIL }}", CERT_LOCATION: "{{ .CERT_LOCATION }}", CERT_STATE: "{{ .CERT_STATE }}", CERT_COUNTRY: "{{ .CERT_COUNTRY }}", CLUSTER_NAME: "{{ .CLUSTER_NAME }}", CERT_FILENAME: "ca", CERT_CN: "kubernetes-ca" }
+        vars: { ORGANIZATION_NAME: "{{ .ORGANIZATION_NAME }}", SITE_NAME: "{{ .SITE_NAME }}", CERT_EMAIL: "{{ .CERT_EMAIL }}", CERT_LOCATION: "{{ .CERT_LOCATION }}", CERT_STATE: "{{ .CERT_STATE }}", CERT_COUNTRY: "{{ .CERT_COUNTRY }}", CLUSTER_NAME: "{{ .CLUSTER_NAME }}", CERT_FILENAME: ca, CERT_CN: kubernetes-ca }
       - task: generate-and-sign-kubernetes-intermediate-ca
-        vars: { ORGANIZATION_NAME: "{{ .ORGANIZATION_NAME }}", SITE_NAME: "{{ .SITE_NAME }}", CERT_EMAIL: "{{ .CERT_EMAIL }}", CERT_LOCATION: "{{ .CERT_LOCATION }}", CERT_STATE: "{{ .CERT_STATE }}", CERT_COUNTRY: "{{ .CERT_COUNTRY }}", CLUSTER_NAME: "{{ .CLUSTER_NAME }}", CERT_FILENAME: "etcd/ca", CERT_CN: "etcd-ca" }
+        vars: { ORGANIZATION_NAME: "{{ .ORGANIZATION_NAME }}", SITE_NAME: "{{ .SITE_NAME }}", CERT_EMAIL: "{{ .CERT_EMAIL }}", CERT_LOCATION: "{{ .CERT_LOCATION }}", CERT_STATE: "{{ .CERT_STATE }}", CERT_COUNTRY: "{{ .CERT_COUNTRY }}", CLUSTER_NAME: "{{ .CLUSTER_NAME }}", CERT_FILENAME: etcd/ca, CERT_CN: etcd-ca }
       - task: generate-and-sign-kubernetes-intermediate-ca
-        vars: { ORGANIZATION_NAME: "{{ .ORGANIZATION_NAME }}", SITE_NAME: "{{ .SITE_NAME }}", CERT_EMAIL: "{{ .CERT_EMAIL }}", CERT_LOCATION: "{{ .CERT_LOCATION }}", CERT_STATE: "{{ .CERT_STATE }}", CERT_COUNTRY: "{{ .CERT_COUNTRY }}", CLUSTER_NAME: "{{ .CLUSTER_NAME }}", CERT_FILENAME: "front-proxy-ca", CERT_CN: "kubernetes-front-proxy-ca" }
+        vars: { ORGANIZATION_NAME: "{{ .ORGANIZATION_NAME }}", SITE_NAME: "{{ .SITE_NAME }}", CERT_EMAIL: "{{ .CERT_EMAIL }}", CERT_LOCATION: "{{ .CERT_LOCATION }}", CERT_STATE: "{{ .CERT_STATE }}", CERT_COUNTRY: "{{ .CERT_COUNTRY }}", CLUSTER_NAME: "{{ .CLUSTER_NAME }}", CERT_FILENAME: front-proxy-ca, CERT_CN: kubernetes-front-proxy-ca }
       - task: generate-service-account-key
         vars: { ORGANIZATION_NAME: "{{ .ORGANIZATION_NAME }}", SITE_NAME: "{{ .SITE_NAME }}" }
 
@@ -297,15 +297,15 @@ tasks:
       _PRIVATE_KEY_FILENAME: '{{ ._SERVER_OUTPUT_FILENAME }}-key.pem'
     preconditions:
       - sh: test '{{ .ORGANIZATION_NAME }}'
-        msg: 'Please provide a valid ORGANIZATION_NAME'
+        msg: Please provide a valid ORGANIZATION_NAME
       - sh: test '{{ .SITE_NAME }}'
-        msg: 'Please provide a valid SITE_NAME'
+        msg: Please provide a valid SITE_NAME
       - sh: test '{{ .CERT_CN }}'
-        msg: 'Please provide a valid CERT_CN'
+        msg: Please provide a valid CERT_CN
       - sh: test '{{ .SERVER_NAME }}'
-        msg: 'Please provide a valid SERVER_NAME'
+        msg: Please provide a valid SERVER_NAME
       - sh: test '{{ .SERVER_IP }}'
-        msg: 'Please provide a valid SERVER_IP'
+        msg: Please provide a valid SERVER_IP
     cmds:
       - task: :_core:ensure-directory-exists
         vars: { DIRECTORY: "{{ ._SERVER_OUTPUT_FILENAME | dir }}" }
@@ -339,9 +339,9 @@ tasks:
       _PRIVATE_KEY_FILENAME: '{{ ._CLIENT_OUTPUT_FILENAME }}-key.pem'
     preconditions:
       - sh: test '{{ .ORGANIZATION_NAME }}'
-        msg: 'Please provide a valid ORGANIZATION_NAME'
+        msg: Please provide a valid ORGANIZATION_NAME
       - sh: test '{{ .CERT_CN }}'
-        msg: 'Please provide a valid CERT_CN'
+        msg: Please provide a valid CERT_CN
     cmds:
       - task: :_core:ensure-directory-exists
         vars: { DIRECTORY: "{{ ._CLIENT_OUTPUT_FILENAME | dir }}" }
@@ -376,11 +376,11 @@ tasks:
       _PRIVATE_KEY_FILENAME: '{{ ._CLIENT_OUTPUT_FILENAME }}-key.pem'
     preconditions:
       - sh: test '{{ .ORGANIZATION_NAME }}'
-        msg: 'Please provide a valid ORGANIZATION_NAME'
+        msg: Please provide a valid ORGANIZATION_NAME
       - sh: test '{{ .CERT_CN }}'
-        msg: 'Please provide a valid CERT_CN'
+        msg: Please provide a valid CERT_CN
       - sh: test '{{ .SITE_NAME }}'
-        msg: 'Please provide a valid SITE_NAME'
+        msg: Please provide a valid SITE_NAME
     cmds:
       - task: :_core:ensure-directory-exists
         vars: { DIRECTORY: "{{ ._CLIENT_OUTPUT_FILENAME | dir }}" }

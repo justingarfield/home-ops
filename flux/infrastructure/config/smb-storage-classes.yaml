@@ -5,11 +5,11 @@ metadata:
   name: smb-rw
 provisioner: smb.csi.k8s.io
 parameters:
-  source: "//nas.lesmerises.jgarfield.com/k8s-staging"
-  csi.storage.k8s.io/provisioner-secret-name: "smbcreds-rw"
-  csi.storage.k8s.io/provisioner-secret-namespace: "csi-driver-smb"
-  csi.storage.k8s.io/node-stage-secret-name: "smbcreds-rw"
-  csi.storage.k8s.io/node-stage-secret-namespace: "csi-driver-smb"
+  source: //nas.lesmerises.jgarfield.com/k8s-staging
+  csi.storage.k8s.io/provisioner-secret-name: smbcreds-rw
+  csi.storage.k8s.io/provisioner-secret-namespace: csi-driver-smb
+  csi.storage.k8s.io/node-stage-secret-name: smbcreds-rw
+  csi.storage.k8s.io/node-stage-secret-namespace: csi-driver-smb
 reclaimPolicy: Delete  # available values: Delete, Retain
 volumeBindingMode: Immediate
 mountOptions:
@@ -24,9 +24,9 @@ metadata:
   name: smb-ro
 provisioner: smb.csi.k8s.io
 parameters:
-  source: "//nas.lesmerises.jgarfield.com/k8s-staging"
-  csi.storage.k8s.io/node-stage-secret-name: "smbcreds-ro"
-  csi.storage.k8s.io/node-stage-secret-namespace: "csi-driver-smb"
+  source: //nas.lesmerises.jgarfield.com/k8s-staging
+  csi.storage.k8s.io/node-stage-secret-name: smbcreds-ro
+  csi.storage.k8s.io/node-stage-secret-namespace: csi-driver-smb
 reclaimPolicy: Retain
 volumeBindingMode: Immediate
 mountOptions:
@@ -41,9 +41,9 @@ metadata:
   name: smb-media-ro
 provisioner: smb.csi.k8s.io
 parameters:
-  source: "//nas.lesmerises.jgarfield.com/Media"
-  csi.storage.k8s.io/node-stage-secret-name: "smbcreds-ro"
-  csi.storage.k8s.io/node-stage-secret-namespace: "csi-driver-smb"
+  source: //nas.lesmerises.jgarfield.com/Media
+  csi.storage.k8s.io/node-stage-secret-name: smbcreds-ro
+  csi.storage.k8s.io/node-stage-secret-namespace: csi-driver-smb
 reclaimPolicy: Retain
 volumeBindingMode: Immediate
 mountOptions:

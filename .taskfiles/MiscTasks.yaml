@@ -5,7 +5,7 @@ version: '3'
 tasks:
 
   flush-git-repo:
-    desc:
+    desc: Blows-away all commit history (use for major restart or SNAFU e-brake)
     cmds:
       - git checkout --orphan latest_branch
       - git add -A

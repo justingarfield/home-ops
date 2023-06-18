@@ -26,7 +26,7 @@ spec:
       repository: ghcr.io/onedr0p/readarr-nightly
       tag: 0.1.6.1865@sha256:47447a8a89bb2e02aac590e561fabeee70b1a199f4eb28fe0c10e0db13f5ee84
     env:
-      TZ: "${TIMEZONE}"
+      TZ: ${TIMEZONE}
       READARR__INSTANCE_NAME: Readarr
       READARR__PORT: &port 8787
       READARR__LOG_LEVEL: info
@@ -40,7 +40,7 @@ spec:
         enabled: true
         ingressClassName: cilium
         annotations:
-          hajimari.io/icon: "bookshelf"
+          hajimari.io/icon: bookshelf
           cert-manager.io/cluster-issuer: letsencrypt
         hosts:
           - host: &host "{{ .Release.Name }}.${PUBLIC_DNS_ZONE}"

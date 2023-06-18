@@ -32,7 +32,7 @@ spec:
       repository: ghcr.io/onedr0p/lidarr
       tag: 1.1.4.3027@sha256:d7e06edaee3b2227a0dcbf170a95d26595b0d10655d5e084c45b859f175a0672
     env:
-      TZ: "${TIMEZONE}"
+      TZ: ${TIMEZONE}
       LIDARR__INSTANCE_NAME: Lidarr
       LIDARR__PORT: &port 8686
       LIDARR__LOG_LEVEL: info
@@ -46,7 +46,7 @@ spec:
         enabled: true
         ingressClassName: cilium
         annotations:
-          hajimari.io/icon: "music-box"
+          hajimari.io/icon: music-box
           cert-manager.io/cluster-issuer: letsencrypt
         hosts:
           - host: &host "{{ .Release.Name }}.${PUBLIC_DNS_ZONE}"

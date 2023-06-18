@@ -42,7 +42,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: "cilium"
+        ingressClassName: cilium
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt
         hosts:

@@ -13,7 +13,7 @@ tasks:
       - kubectl get all,{{ ._INSTALLED_CRDS }} {{ .CLI_ARGS }}
 
   get-cert-manager-related:
-    desc:
+    desc: Retrieves cert-manager related resources for troubleshooting TLS certificates.
     cmds:
       - kubectl get clusterissuers,issuers,certificaterequests,challenges,orders,certificates {{.CLI_ARGS}}
 
@@ -23,6 +23,6 @@ tasks:
       - kubectl get rs -A -o wide | tail -n +2 | awk '{if ($3 + $4 + $5 == 0) print "kubectl delete rs -n "$1, $2 }' | sh
 
   purge-completed-and-unknown:
-    desc:
+    desc: Deletes ALL 'ContainerStatusUnknown' and 'Completed' pods in the current cluster context.
     cmds:
       - kubectl get pods -A | tail -n +2 | awk '{if ($4 ~ /^(ContainerStatusUnknown|Completed)$/) print "kubectl delete pod -n "$1, $2 }' | sh

@@ -1,5 +1,759 @@
 {
     "files.associations": {
         "*.patch": "yaml"
+    },
+    "linter.linters": {
+
+        "brakeman": {
+            "capabilities": [],
+            "command": [
+                [
+                    "$isBundler",
+                    "bundle",
+                    "exec"
+                ],
+                "brakeman",
+                "--format",
+                "json",
+                "--no-progress",
+                "--quiet",
+                "--absolute-paths",
+                [
+                    "$config",
+                    "--config-file",
+                    "$config"
+                ],
+                "$rootDir"
+            ],
+            "configFiles": [
+                "brakeman.yml",
+                "config/brakeman.yml",
+                ".brakeman/config.yml"
+            ],
+            "enabled": true,
+            "languages": [
+                "ruby",
+                "ruby-puma",
+                "ruby-bundler",
+                "ruby-test",
+                "erb"
+            ],
+            "name": "brakeman",
+            "url": "https://brakemanscanner.org/",
+            "when": [
+                "$isRails"
+            ]
+        },
+        "cargo-clippy": {
+            "capabilities": [
+                "fix-inline",
+                "ignore-file"
+            ],
+            "command": [
+                "cargo-clippy",
+                "$file",
+                "--no-deps",
+                "--message-format",
+                "json",
+                [
+                    "$config",
+                    "--config",
+                    "$config"
+                ]
+            ],
+            "configFiles": [
+                "clippy.toml",
+                ".clippy.toml"
+            ],
+            "enabled": true,
+            "languages": [
+                "rust"
+            ],
+            "name": "cargo-clippy",
+            "url": "https://doc.rust-lang.org/clippy/"
+        },
+        "credo": {
+            "capabilities": [
+                "ignore-line",
+                "ignore-file"
+            ],
+            "command": [
+                "mix",
+                "credo",
+                "--format",
+                "json",
+                "--read-from-stdin",
+                "--all-priorities",
+                "$file"
+            ],
+            "configFiles": [],
+            "enabled": true,
+            "languages": [
+                "elixir"
+            ],
+            "name": "credo",
+            "url": "https://hexdocs.pm/credo/"
+        },
+        "dart": {
+            "capabilities": [],
+            "command": [
+                "dart",
+                "analyze",
+                "$file"
+            ],
+            "configFiles": [],
+            "enabled": true,
+            "languages": [
+                "dart"
+            ],
+            "name": "dart",
+            "url": "https://dart.dev/tools/linter-rules"
+        },
+        "erb_lint": {
+            "capabilities": [],
+            "command": [
+                [
+                    "$isBundler",
+                    "bundle",
+                    "exec"
+                ],
+                "erblint",
+                [
+                    "$config",
+                    "--config",
+                    "$config"
+                ],
+                "--format",
+                "json",
+                "$file"
+            ],
+            "configFiles": [
+                ".erb-lint.yml"
+            ],
+            "enabled": true,
+            "languages": [
+                "erb"
+            ],
+            "name": "erb_lint",
+            "url": "https://github.com/Shopify/erb-lint"
+        },
+        "eslint": {
+            "capabilities": [
+                "ignore-line",
+                "ignore-file",
+                "fix-one",
+                "fix-all",
+                "fix-inline"
+            ],
+            "command": [
+                "eslint",
+                "--format",
+                "json",
+                [
+                    "$config",
+                    "--config",
+                    "$config"
+                ],
+                [
+                    "$debug",
+                    "--loglevel",
+                    "debug",
+                    "--debug"
+                ],
+                [
+                    "$fixAll",
+                    "--fix-dry-run"
+                ],
+                [
+                    "$fixOne",
+                    "--fix-dry-run"
+                ],
+                "--stdin-filename",
+                "$file",
+                "--stdin"
+            ],
+            "configFiles": [
+                ".eslintrc.js",
+                ".eslintrc.cjs",
+                ".eslintrc.yaml",
+                ".eslintrc.yml",
+                ".eslintrc.json",
+                ".eslintrc"
+            ],
+            "enabled": true,
+            "languages": [
+                "javascript",
+                "jsx",
+                "typescript",
+                "typescriptreact"
+            ],
+            "name": "eslint",
+            "url": "https://eslint.org"
+        },
+        "gherkin-lint": {
+            "capabilities": [],
+            "command": [
+                "gherkin-lint",
+                [
+                    "$config",
+                    "--config",
+                    "$config"
+                ],
+                "--format",
+                "json",
+                "$file"
+            ],
+            "configFiles": [
+                ".gherkin-lintrc"
+            ],
+            "enabled": true,
+            "languages": [
+                "cucumber"
+            ],
+            "name": "gherkin-lint",
+            "url": "https://github.com/vsiakka/gherkin-lint"
+        },
+        "hadolint": {
+            "capabilities": [
+                "ignore-line"
+            ],
+            "command": [
+                "hadolint",
+                "--format",
+                "json",
+                [
+                    "$config",
+                    "--config",
+                    "$config"
+                ],
+                "-"
+            ],
+            "configFiles": [
+                ".hadolint.yml",
+                ".hadolint.yaml"
+            ],
+            "enabled": true,
+            "languages": [
+                "dockerfile"
+            ],
+            "name": "hadolint",
+            "url": "https://github.com/hadolint/hadolint"
+        },
+        "language-tool": {
+            "capabilities": [],
+            "command": [
+                "languagetool",
+                "--json",
+                "--autoDetect"
+            ],
+            "configFiles": [],
+            "enabled": true,
+            "languages": [
+                "markdown",
+                "html",
+                "plaintext"
+            ],
+            "name": "language-tool",
+            "url": "https://github.com/languagetool-org/languagetool"
+        },
+        "luacheck": {
+            "capabilities": [],
+            "command": [
+                "luacheck",
+                "--formatter",
+                "plain",
+                "--codes",
+                "--ranges",
+                [
+                    "$config",
+                    "--config",
+                    "$config"
+                ],
+                "-"
+            ],
+            "configFiles": [
+                ".luacheckrc"
+            ],
+            "enabled": true,
+            "languages": [
+                "lua"
+            ],
+            "name": "luacheck",
+            "url": "https://luacheck.readthedocs.io/en/stable/"
+        },
+        "markdownlint": {
+            "capabilities": [
+                "fix-inline"
+            ],
+            "command": [
+                "markdownlint",
+                "--json",
+                [
+                    "$fixAll",
+                    "--fix"
+                ],
+                [
+                    "$config",
+                    "--config",
+                    "$config"
+                ],
+                "--stdin"
+            ],
+            "configFiles": [
+                ".markdownlint.json",
+                ".markdownlint.yaml",
+                ".markdownlint.yml",
+                ".markdownlintrc"
+            ],
+            "enabled": true,
+            "languages": [
+                "markdown"
+            ],
+            "name": "markdownlint",
+            "url": "https://github.com/DavidAnson/markdownlint"
+        },
+        "php-code-sniffer": {
+            "capabilities": [],
+            "command": [
+                "phpcs",
+                "--report",
+                "json",
+                [
+                    "$config",
+                    "--standard",
+                    "$config"
+                ],
+                [
+                    "!$config",
+                    "--standard",
+                    "PSR12"
+                ],
+                "--stdin-path",
+                "$file",
+                "-q",
+                "-"
+            ],
+            "configFiles": [
+                ".phpcs.xml",
+                "phpcs.xml",
+                ".phpcs.xml.dist",
+                "phpcs.xml.dist"
+            ],
+            "enabled": true,
+            "languages": [
+                "php"
+            ],
+            "name": "php-code-sniffer",
+            "url": "https://github.com/squizlabs/PHP_CodeSniffer"
+        },
+        "proselint": {
+            "capabilities": [
+                "fix-inline"
+            ],
+            "command": [
+                "proselint",
+                "--json",
+                [
+                    "$config",
+                    "--config",
+                    "$config"
+                ],
+                "-"
+            ],
+            "configFiles": [
+                ".proselintrc"
+            ],
+            "enabled": true,
+            "languages": [
+                "markdown",
+                "html",
+                "plaintext"
+            ],
+            "name": "proselint",
+            "url": "https://github.com/amperser/proselint/"
+        },
+        "pylint": {
+            "capabilities": [
+                "ignore-file"
+            ],
+            "command": [
+                "pylint",
+                "--from-stdin",
+                "--output-format",
+                "json",
+                [
+                    "$config",
+                    "--rcfile",
+                    "$config"
+                ],
+                "$file"
+            ],
+            "configFiles": [
+                ".pylintrc"
+            ],
+            "enabled": true,
+            "languages": [
+                "python"
+            ],
+            "name": "pylint",
+            "url": "https://www.pylint.org"
+        },
+        "reek": {
+            "capabilities": [
+                "ignore-line"
+            ],
+            "command": [
+                "reek",
+                "--format",
+                "json",
+                "--no-progress",
+                [
+                    "$config",
+                    "--config",
+                    "$config"
+                ],
+                "--stdin-filename",
+                "$file"
+            ],
+            "configFiles": [
+                ".reek.yml"
+            ],
+            "enabled": true,
+            "languages": [
+                "ruby",
+                "ruby-test",
+                "ruby-puma",
+                "ruby-bundler"
+            ],
+            "name": "reek",
+            "url": "https://github.com/troessner/reek"
+        },
+        "rubocop": {
+            "capabilities": [
+                "ignore-eol",
+                "fix-category",
+                "fix-all"
+            ],
+            "command": [
+                [
+                    "$isBundler",
+                    "bundle",
+                    "exec"
+                ],
+                "rubocop",
+                [
+                    "$lint",
+                    "--format",
+                    "json",
+                    "--extra-details"
+                ],
+                [
+                    "$config",
+                    "--config",
+                    "$config"
+                ],
+                [
+                    "$debug",
+                    "--debug"
+                ],
+                [
+                    "$fixAll",
+                    "--auto-correct-all",
+                    "--stderr"
+                ],
+                [
+                    "$fixCategory",
+                    "--auto-correct-all",
+                    "--only",
+                    "$code",
+                    "--stderr"
+                ],
+                "--stdin",
+                "$file"
+            ],
+            "configFiles": [
+                ".rubocop.yml"
+            ],
+            "enabled": true,
+            "languages": [
+                "ruby",
+                "ruby-test",
+                "ruby-puma",
+                "ruby-bundler"
+            ],
+            "name": "rubocop",
+            "url": "https://rubocop.org"
+        },
+        "ruby": {
+            "capabilities": [],
+            "command": [
+                "ruby",
+                "-c",
+                "-w"
+            ],
+            "configFiles": [],
+            "enabled": true,
+            "languages": [
+                "ruby",
+                "ruby-test",
+                "ruby-puma",
+                "ruby-bundler"
+            ],
+            "name": "ruby",
+            "url": "https://www.ruby-lang.org"
+        },
+        "shellcheck": {
+            "args": {
+                "$zsh": {
+                    "extensions": [
+                        ".zsh"
+                    ],
+                    "shebangs": [
+                        "/bin/zsh",
+                        "/usr/bin/zsh",
+                        "/usr/local/bin/zsh",
+                        "/usr/bin/env zsh"
+                    ]
+                }
+            },
+            "capabilities": [],
+            "command": [
+                "shellcheck",
+                "--format",
+                "json",
+                "--enable",
+                "all",
+                "-"
+            ],
+            "configFiles": [],
+            "enabled": true,
+            "languages": [
+                "shellscript",
+                "bash"
+            ],
+            "name": "shellcheck",
+            "url": "https://github.com/koalaman/shellcheck",
+            "when": [
+                "!$zsh"
+            ]
+        },
+        "sqlfluff": {
+            "args": {
+                "$mysql": {
+                    "languages": [
+                        "mysql"
+                    ]
+                },
+                "$postgres": {
+                    "languages": [
+                        "postgres"
+                    ]
+                }
+            },
+            "capabilities": [
+                "fix-all",
+                "ignore-eol"
+            ],
+            "command": [
+                "sqlfluff",
+                [
+                    "$lint",
+                    "lint",
+                    "--format",
+                    "json"
+                ],
+                [
+                    "$fixAll",
+                    "fix"
+                ],
+                [
+                    "$postgres",
+                    "--dialect",
+                    "postgres"
+                ],
+                [
+                    "$mysql",
+                    "--dialect",
+                    "mysql"
+                ],
+                "-"
+            ],
+            "configFiles": [
+                ".sqlfluff"
+            ],
+            "enabled": true,
+            "languages": [
+                "mysql",
+                "postgres",
+                "jinja-sql"
+            ],
+            "name": "sqlfluff",
+            "url": "https://docs.sqlfluff.com/en/stable/index.html"
+        },
+        "stylelint": {
+            "capabilities": [
+                "fix-all"
+            ],
+            "command": [
+                "stylelint",
+                "--formatter",
+                "json",
+                [
+                    "$fixAll",
+                    "--fix"
+                ],
+                [
+                    "$config",
+                    "--config",
+                    "$config"
+                ],
+                "--stdin-filename",
+                "$file",
+                "--stdin"
+            ],
+            "configFiles": [
+                "stylelint.config.js",
+                ".stylelintrc.json",
+                ".stylelintrc.yml",
+                ".stylelintrc.yaml",
+                ".stylelintrc.js"
+            ],
+            "enabled": true,
+            "languages": [
+                "css",
+                "css-in-js",
+                "html",
+                "less",
+                "markdown",
+                "sass",
+                "scss",
+                "sugarss"
+            ],
+            "name": "stylelint",
+            "url": "https://stylelint.io"
+        },
+        "swiftlint": {
+            "capabilities": [
+                "ignore-line",
+                "ignore-file"
+            ],
+            "command": [
+                "swiftlint",
+                "--use-stdin",
+                "--reporter",
+                "json",
+                [
+                    "$fixAll",
+                    "--fix",
+                    "--format"
+                ],
+                [
+                    "$config",
+                    "--config",
+                    "$config"
+                ]
+            ],
+            "configFiles": [
+                ".swiftlint.yml",
+                ".swiftlint.yaml"
+            ],
+            "enabled": true,
+            "languages": [
+                "swift"
+            ],
+            "name": "swiftlint",
+            "url": "https://realm.github.io/SwiftLint/"
+        },
+        "textlint": {
+            "capabilities": [
+                "fix-inline"
+            ],
+            "command": [
+                "textlint",
+                "--format",
+                "json",
+                [
+                    "$debug",
+                    "--debug"
+                ],
+                [
+                    "$config",
+                    "--config",
+                    "$config"
+                ],
+                "--stdin",
+                "--stdin-filename",
+                "$file"
+            ],
+            "configFiles": [
+                ".textlintrc",
+                ".textlintrc.js",
+                ".textlintrc.json",
+                ".textlintrc.yaml",
+                ".textlintrc.yml"
+            ],
+            "enabled": true,
+            "languages": [
+                "markdown",
+                "plaintext",
+                "html"
+            ],
+            "name": "textlint",
+            "url": "https://textlint.github.io"
+        },
+        "vale": {
+            "capabilities": [],
+            "command": [
+                "vale",
+                "--output",
+                "JSON",
+                [
+                    "$config",
+                    "--config",
+                    "$config"
+                ],
+                "--ext",
+                "$extension"
+            ],
+            "configFiles": [
+                ".vale.ini"
+            ],
+            "enabled": true,
+            "languages": [
+                "markdown",
+                "plaintext",
+                "html"
+            ],
+            "name": "vale",
+            "url": "https://github.com/errata-ai/vale"
+        },
+        "yamllint": {
+            "capabilities": [
+                "ignore-line"
+            ],
+            "command": [
+                "yamllint",
+                "--format",
+                "parsable",
+                [
+                    "$config",
+                    "--config-file",
+                    "$config"
+                ],
+                "-"
+            ],
+            "configFiles": [
+                ".ci/.yamllint",
+                ".yamllint.yml",
+                ".yamllint.yaml",
+                ".yamllint"
+            ],
+            "enabled": true,
+            "languages": [
+                "yaml"
+            ],
+            "name": "yamllint",
+            "url": "https://github.com/adrienverge/yamllint"
+        }
     }
 }

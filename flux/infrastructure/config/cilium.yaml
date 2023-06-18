@@ -1,12 +1,12 @@
 ---
-apiVersion: "cilium.io/v2alpha1"
+apiVersion: cilium.io/v2alpha1
 kind: CiliumBGPPeeringPolicy
 metadata:
-  name: "${CILIUM_BGP_PEERING_POLICY_NAME}"
+  name: ${CILIUM_BGP_PEERING_POLICY_NAME}
 spec:
   nodeSelector:
     matchLabels:
-      bgp-peering-policy: "${CILIUM_BGP_PEERING_POLICY_NAME}"
+      bgp-peering-policy: ${CILIUM_BGP_PEERING_POLICY_NAME}
   virtualRouters:
     - localASN: ${CILIUM_BGP_PEERING_POLICY_LOCAL_ASN}
       # I want my pods behind an Ingress / API Gateway.
@@ -17,12 +17,12 @@ spec:
       serviceSelector:
         matchExpressions:
           # This might change as I evolve the configurations over-time
-          - {key: somekey, operator: NotIn, values: ['never-used-value']}
+          - { key: somekey, operator: NotIn, values: [ never-used-value ] }
 ---
-apiVersion: "cilium.io/v2alpha1"
+apiVersion: cilium.io/v2alpha1
 kind: CiliumLoadBalancerIPPool
 metadata:
-  name: "${CILIUM_LOAD_BALANCER_IP_POOL_NAME}"
+  name: ${CILIUM_LOAD_BALANCER_IP_POOL_NAME}
 spec:
   cidrs:
-    - cidr: "${CILIUM_LOAD_BALANCER_IP_POOL_CIDR}"
+    - cidr: ${CILIUM_LOAD_BALANCER_IP_POOL_CIDR}

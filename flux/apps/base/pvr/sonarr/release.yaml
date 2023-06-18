@@ -60,7 +60,7 @@ spec:
         enabled: true
         ingressClassName: cilium
         annotations:
-          hajimari.io/icon: "television-box"
+          hajimari.io/icon: television-box
           cert-manager.io/cluster-issuer: letsencrypt
         hosts:
           - host: &host "{{ .Release.Name }}.${PUBLIC_DNS_ZONE}"

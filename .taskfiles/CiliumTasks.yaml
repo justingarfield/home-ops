@@ -10,11 +10,11 @@ tasks:
       - kubectl label nodes --all bgp-peering-policy=opnsense
 
   status-verbose:
-    desc:
+    desc: Uses the cilium binary in the DS for a verbose status
     cmds:
       - kubectl exec ds/cilium -n kube-system -- cilium status verbose
 
   get-endpoint-list:
-    desc: Uses the cilium binary in the daemonset to query the endpoints list
+    desc: Uses the cilium binary in the DS to query the endpoints list
     cmds:
       - kubectl -n kube-system exec ds/cilium -- cilium endpoint list

@@ -1,5 +1,5 @@
 ---
-apiVersion: "cilium.io/v2"
+apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
   name: cert-manager-webhook
@@ -12,13 +12,13 @@ spec:
     - toPorts:
         - ports:
             - port: "10250"
-              protocol: "TCP"
+              protocol: TCP
     - fromEntities:
         - kube-apiserver
   egress:
     - toPorts:
         - ports:
             - port: "6443"
-              protocol: "TCP"
+              protocol: TCP
     - toEntities:
         - kube-apiserver

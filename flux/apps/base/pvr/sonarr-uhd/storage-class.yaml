@@ -5,9 +5,9 @@ metadata:
   name: sonarr-uhd-smb
 provisioner: smb.csi.k8s.io
 parameters:
-  source: "//nas.lesmerises.jgarfield.com"
-  csi.storage.k8s.io/node-stage-secret-name: "smbcreds-sonarr-uhd"
-  csi.storage.k8s.io/node-stage-secret-namespace: "pvr"
+  source: //nas.lesmerises.jgarfield.com
+  csi.storage.k8s.io/node-stage-secret-name: smbcreds-sonarr-uhd
+  csi.storage.k8s.io/node-stage-secret-namespace: pvr
 reclaimPolicy: Retain
 volumeBindingMode: Immediate
 mountOptions:

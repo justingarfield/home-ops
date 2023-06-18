@@ -13,19 +13,19 @@ spec:
       name: envoy-ext-authz-http
       http_service:
         server_uri: authelia.authelia.svc.${CLUSTER_DOMAIN}
-        pathPrefix: '/api/verify/'
+        pathPrefix: /api/verify/
         port: 80
         includeRequestHeadersInCheck:
           - accept
           - cookie
           - proxy-authorization
         headersToUpstreamOnAllow:
-          - 'authorization'
-          - 'proxy-authorization'
-          - 'remote-*'
-          - 'authelia-*'
+          - authorization
+          - proxy-authorization
+          - remote-*
+          - authelia-*
         includeAdditionalHeadersInCheck:
-          X-Authelia-URL: 'https://auth.${PUBLIC_DNS_ZONE}/'
+          X-Authelia-URL: https://auth.${PUBLIC_DNS_ZONE}/
           X-Forwarded-Method: '%REQ(:METHOD)%'
           X-Forwarded-Proto: '%REQ(:SCHEME)%'
           X-Forwarded-Host: '%REQ(:AUTHORITY)%'

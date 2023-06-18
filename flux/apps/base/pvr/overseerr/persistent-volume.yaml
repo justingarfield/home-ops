@@ -27,7 +27,7 @@ spec:
     readOnly: false
     volumeHandle: overseerr-config-pv
     volumeAttributes:
-      source: "//nas.lesmerises.jgarfield.com/k8s-staging/overseerr"
+      source: //nas.lesmerises.jgarfield.com/k8s-staging/overseerr
     nodeStageSecretRef:
       name: smbcreds-overseerr
       namespace: pvr

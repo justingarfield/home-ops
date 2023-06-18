@@ -10,7 +10,7 @@ metadata:
   name: rpi-arm64-v1.4.0
 spec:
   kernel:
-    url: "https://github.com/talos-systems/talos/releases/download/v1.4.0/vmlinuz-arm64"
+    url: https://github.com/talos-systems/talos/releases/download/v1.4.0/vmlinuz-arm64
     args:
       - initrd=initramfs.xz
       - slab_nomerge
@@ -21,4 +21,4 @@ spec:
       - talos.platform=metal
       # - sysctl.kernel.kexec_load_disabled=0
   initrd:
-    url: "https://github.com/talos-systems/talos/releases/download/v1.4.0/initramfs-arm64.xz"
+    url: https://github.com/talos-systems/talos/releases/download/v1.4.0/initramfs-arm64.xz

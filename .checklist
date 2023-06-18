@@ -2,7 +2,7 @@ task generate-pki
 task talos-prepare-configs
 
 task vbox:create-cluster
-task vbox:start-cluster
+task vbox:start-first-cp-node
 
 task talos-prepare-nodes
 
@@ -20,6 +20,8 @@ task talos-bootstrap-nodes
 task talos-install-cilium
 
 watch kubectl get nodes
+
+kubectl label nodes k8s-wk01 node-role.kubernetes.io/worker=
 
 task flux:create-namespace
 task flux:create-sops-age-secret

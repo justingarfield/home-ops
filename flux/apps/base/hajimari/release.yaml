@@ -30,7 +30,7 @@ spec:
     env:
       TZ: ${TIMEZONE}
     hajimari:
-      title: "Welcome! What're ya buyin'?!"
+      title: Welcome! What're ya buyin'?!
       darkTheme: tron
       alwaysTargetBlank: true
       showGreeting: true

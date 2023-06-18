@@ -1,9 +1,9 @@
 ---
-version: "3.7"
-
 services:
   local-registry:
     image: registry:2.8.2
     ports:
-      - "5010:5000"
+      - 5010:5000
     restart: unless-stopped
+
+version: "3.7"

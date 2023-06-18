@@ -3,7 +3,7 @@
 version: '3'
 
 vars:
-  TENANT_PROVISIONER_SPN_NAME: 'Tenant Provisioner'
+  TENANT_PROVISIONER_SPN_NAME: Tenant Provisioner
 
 tasks:
 
@@ -39,14 +39,14 @@ tasks:
           --cert @"{{ .CERT_FILE }}"
 
   get-service-principal-details:
-    desc:
+    desc: Retrieves details for a particular Service Principal in the current tenant
     vars:
       DISPLAY_NAME: '{{ .DISPLAY_NAME | default .CLI_ARGS }}'
     cmds:
       - az ad sp list --display-name {{ .DISPLAY_NAME }}
 
   list-service-principals:
-    desc:
+    desc: Lists all Service Principals for the current tenant
     cmds:
       - az ad sp list --output table
 
@@ -54,18 +54,18 @@ tasks:
   #     https://learn.microsoft.com/en-us/azure/role-based-access-control/elevate-access-global-admin#azure-cli
 
   list-user-access-administrators:
-    desc:
+    desc: Lists all User Access Administrators for the current tenant
     cmds:
       - az role assignment list --role "User Access Administrator" --scope "/" --output table
 
   elevate-user-access-administrator-role:
-    desc:
+    desc: Elevate your access to User Access Administrators
     cmds:
       - az rest --method post --url "/providers/Microsoft.Authorization/elevateAccess?api-version=2016-07-01"
       - task: list-user-access-administrators
 
   assign-user-access-administrator-role:
-    desc:
+    desc: Assign User Access Administrator to a particular assignee
     vars:
       ASSIGNEE: '{{ .ASSIGNEE | default .CLI_ARGS }}'
     cmds:
@@ -73,7 +73,7 @@ tasks:
       - task: list-user-access-administrators
 
   remove-user-access-administrator-role:
-    desc:
+    desc: Remove User Access Administrator from a particular assignee
     vars:
       ASSIGNEE: '{{ .ASSIGNEE | default .CLI_ARGS }}'
     cmds:

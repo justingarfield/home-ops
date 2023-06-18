@@ -46,7 +46,7 @@ tasks:
       - cat "{{ ._AGE_KEY_FILE }}" | kubectl -n flux-system create secret generic sops-age --from-file=age.agekey=/dev/stdin
 
   replace-sops-age-secret:
-    desc:
+    desc: Replace the currently existing Age SOPS Key in the cluster
     vars:
       CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
       AGE_KEY_FILE: '{{ .AGE_KEY_FILE | default "{{ .SOPS_OUT_DIR }}/age.agekey" }}'
@@ -65,14 +65,14 @@ tasks:
       - flux reconcile -n flux-system kustomization flux-system
 
   output-secret:
-    desc:
+    desc: Output the flux-system secret
     cmds:
       - task: :_core:ensure-directory-exists
         vars: { DIRECTORY: "{{ .FLUX_OUT_DIR }}/staging" }
       - kubectl -n flux-system get secret flux-system -o yaml > {{ .FLUX_OUT_DIR }}/staging/flux-system.yaml
 
   rotate-key:
-    desc:
+    desc: TODO-NEED TO IMPLEMENT THIS
     cmds:
       - kubectl -n flux-system delete secret flux-system
       - flux create secret git flux-system --url=ssh://git@github.com/{{ .GITHUB_USERNAME }}/{{ .GITHUB_REPO }}
@@ -118,11 +118,11 @@ tasks:
           --repository={{ .GITHUB_REPO }}
 
   apply-existing-install:
-    desc:
+    desc: Applies an existing flux install from a repo using SOPS age keys
     cmds:
       - kubectl apply --server-side --kustomize ./flux/clusters/staging/bootstrap
       - task: :sops:decrypt-and-apply-file
-        vars: { FILENAME: "./flux/clusters/staging/bootstrap/age-key.sops.yaml" }
+        vars: { FILENAME: ./flux/clusters/staging/bootstrap/age-key.sops.yaml }
       - task: :sops:decrypt-and-apply-file
-        vars: { FILENAME: "./flux/clusters/staging/bootstrap/github-deploy-key.sops.yaml" }
+        vars: { FILENAME: ./flux/clusters/staging/bootstrap/github-deploy-key.sops.yaml }
       - kubectl apply --server-side --kustomize ./flux/clusters/staging/kustomizations/flux-system

@@ -38,11 +38,11 @@ spec:
     policy: sync
     sources:
       - ingress
-    txtPrefix: "externaldns-"
-    txtOwnerId: "externaldns"
+    txtPrefix: externaldns-
+    txtOwnerId: externaldns
     domainFilters:
-      - "${PUBLIC_DNS_ZONE}"
-      - "${PRIVATE_DNS_ZONE}"
+      - ${PUBLIC_DNS_ZONE}
+      - ${PRIVATE_DNS_ZONE}
     extraArgs:
       - --exclude-target-net=10.0.0.0/8
       - --default-targets=174.169.160.189
@@ -54,7 +54,7 @@ spec:
         memory: 250Mi
     extraVolumeMounts:
       - name: external-dns-config-file
-        mountPath: "/etc/kubernetes"
+        mountPath: /etc/kubernetes
         readOnly: true
     extraVolumes:
       - name: external-dns-config-file

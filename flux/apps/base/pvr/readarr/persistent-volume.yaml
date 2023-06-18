@@ -27,7 +27,7 @@ spec:
     readOnly: false
     volumeHandle: readarr-config-pv
     volumeAttributes:
-      source: "//nas.lesmerises.jgarfield.com/k8s-staging/readarr"
+      source: //nas.lesmerises.jgarfield.com/k8s-staging/readarr
     nodeStageSecretRef:
       name: smbcreds-readarr
       namespace: pvr
@@ -58,7 +58,7 @@ spec:
     readOnly: false
     volumeHandle: readarr-media-pv
     volumeAttributes:
-      source: "//nas.lesmerises.jgarfield.com/Media/Books"
+      source: //nas.lesmerises.jgarfield.com/Media/Books
     nodeStageSecretRef:
       name: smbcreds-readarr
       namespace: pvr

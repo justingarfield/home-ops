@@ -30,10 +30,10 @@ spec:
       createPrometheusRules: true
     ingress:
       dashboard:
-        ingressClassName: "nginx"
+        ingressClassName: cilium
         host:
           name: &host "rook.${PRIVATE_DNS_ZONE}"
-          path: "/"
+          path: /
         tls:
           - hosts:
               - *host
@@ -56,64 +56,64 @@ spec:
         config:
           osdsPerDevice: "1"
         nodes:
-          - name: "k8s-worker01"
+          - name: k8s-worker01
             devices:
-              - name: "/dev/disk/by-id/nvme-SHGP31-1000GM-2_AS0AN94711030AU4H"
-          - name: "k8s-worker02"
+              - name: /dev/disk/by-id/nvme-SHGP31-1000GM-2_AS0AN94711030AU4H
+          - name: k8s-worker02
             devices:
-              - name: "/dev/disk/by-id/nvme-SHGP31-1000GM-2_AS0AN94711030AU4V"
-          - name: "k8s-worker03"
+              - name: /dev/disk/by-id/nvme-SHGP31-1000GM-2_AS0AN94711030AU4V
+          - name: k8s-worker03
             devices:
-              - name: "/dev/disk/by-id/nvme-SHGP31-1000GM-2_AS0AN94711030AU20"
+              - name: /dev/disk/by-id/nvme-SHGP31-1000GM-2_AS0AN94711030AU20
       resources:
         mgr:
           limits:
-            memory: "1Gi"
+            memory: 1Gi
           requests:
-            cpu: "500m"
-            memory: "512Mi"
+            cpu: 500m
+            memory: 512Mi
         mon:
           limits:
-            memory: "2Gi"
+            memory: 2Gi
           requests:
-            cpu: "1000m"
-            memory: "1Gi"
+            cpu: 1000m
+            memory: 1Gi
         osd:
           limits:
-            memory: "4Gi"
+            memory: 4Gi
           requests:
-            cpu: "1000m"
-            memory: "4Gi"
+            cpu: 1000m
+            memory: 4Gi
         prepareosd:
           limits:
-            memory: "400Mi"
+            memory: 400Mi
           requests:
-            cpu: "500m"
-            memory: "50Mi"
+            cpu: 500m
+            memory: 50Mi
         mgr-sidecar:
           limits:
-            memory: "100Mi"
+            memory: 100Mi
           requests:
-            cpu: "100m"
-            memory: "40Mi"
+            cpu: 100m
+            memory: 40Mi
         crashcollector:
           limits:
-            memory: "60Mi"
+            memory: 60Mi
           requests:
-            cpu: "100m"
-            memory: "60Mi"
+            cpu: 100m
+            memory: 60Mi
         logcollector:
           limits:
-            memory: "1Gi"
+            memory: 1Gi
           requests:
-            cpu: "100m"
-            memory: "100Mi"
+            cpu: 100m
+            memory: 100Mi
         cleanup:
           limits:
-            memory: "1Gi"
+            memory: 1Gi
           requests:
-            cpu: "500m"
-            memory: "100Mi"
+            cpu: 500m
+            memory: 100Mi
     cephBlockPoolsVolumeSnapshotClass:
       enabled: true
       name: csi-rbdplugin-snapclass

@@ -74,9 +74,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: "nginx"
-        # annotations:
-        #  external-dns.home.arpa/enabled: "true"
+        ingressClassName: cilium
         hosts:
           - host: &host "echo-server.${PUBLIC_DNS_ZONE}"
             paths:

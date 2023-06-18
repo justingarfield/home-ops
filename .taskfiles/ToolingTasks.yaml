@@ -4,57 +4,59 @@ version: '3'
 
 vars:
   # renovate: datasource=github-releases depName=FiloSottile/age
-  AGE_VERSION: "v1.1.1"
+  AGE_VERSION: v1.1.1
 
   # renovate: datasource=github-releases depName=cilium/cilium-cli
-  CILIUM_CLI_VERSION: "v0.14.6"
+  CILIUM_CLI_VERSION: v0.14.6
 
   # renovate: datasource=github-releases depName=cloudflare/cfssl
-  CFSSL_TOOLKIT_VERSION: "1.6.4"
+  CFSSL_TOOLKIT_VERSION: 1.6.4
 
   # renovate: datasource=github-releases depName=kubernetes-sigs/cluster-api
-  CLUSTERCTL_VERSION: "v1.4.2"
+  CLUSTERCTL_VERSION: v1.4.2
 
   # renovate: datasource=github-releases depName=fluxcd/flux2
-  FLUX_VERSION: "2.0.0-rc.1"
+  FLUX_VERSION: 2.0.0-rc.1
 
   # renovate: datasource=github-releases depName=cli/cli
-  GITHUB_CLI_VERSION: "v2.30.0"
+  GITHUB_CLI_VERSION: v2.30.0
 
   # TODO: Need to investigate how to version this properly vs. get.helm.sh
-  HELM_VERSION: "v3.11.3"
+  HELM_VERSION: v3.11.3
 
   # renovate: datasource=github-releases depName=cilium/hubble
-  HUBBLE_VERSION: "v0.11.5"
+  HUBBLE_VERSION: v0.11.5
 
-  KUBEADM_VERSION: "v1.27.2"
-
-  # TODO: Need to investigate how to version this properly
-  KUBECTL_VERSION: "v1.27.2"
+  KUBEADM_VERSION: v1.27.2
 
   # TODO: Need to investigate how to version this properly
-  PACKER_VERSION: "1.8.6"
+  KUBECTL_VERSION: v1.27.2
 
   # TODO: Need to investigate how to version this properly
-  PRECOMMIT_VERSION: "2.17.0" # current version on apt is old AF (currently 3.2.2 on releases)...whip-up new install steps for this
+  PACKER_VERSION: 1.8.6
+
+  # TODO: Need to investigate how to version this properly
+  PRECOMMIT_VERSION: 2.17.0 # current version on apt is old AF (currently 3.2.2 on releases)...whip-up new install steps for this
 
   # renovate: datasource=github-releases depName=mozilla/sops
-  SOPS_VERSION: "v3.7.3"
+  SOPS_VERSION: v3.7.3
 
   # renovate: datasource=github-releases depName=siderolabs/talos
-  TALOSCTL_VERSION: "v1.4.5"
+  TALOSCTL_VERSION: v1.4.5
 
   # TODO: Need to investigate how to version this properly
-  TERRAFORM_VERSION: "1.4.5"
+  TERRAFORM_VERSION: 1.4.5
 
   # renovate: datasource=github-releases depName=cilium/tetragon
-  TETRAGON_VERSION: "v0.9.0"
+  TETRAGON_VERSION: v0.9.0
 
   # TODO: Need to investigate how to version this properly
-  VAGRANT_VERSION: "2.3.4"
+  VAGRANT_VERSION: 2.3.4
+
+  YAMLLINT_VERSION: v1.32.0
 
   # renovate: datasource=github-releases depName=mikefarah/yq
-  YQ_VERSION: "v4.34.1"
+  YQ_VERSION: v4.34.1
 
   DOWNLOADS_DIRECTORY: $HOME/downloads
   TOOLING_ARCH: amd64
@@ -483,3 +485,8 @@ tasks:
       - rm {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}}
     status:
       - test -f {{.USR_LOCAL_BIN_FILENAME}}
+
+  install-yamllint:
+    desc: Install yamllint
+    cmds:
+      - pip install --user yamllint=={{.YAMLLINT_VERSION}}

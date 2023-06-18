@@ -8,7 +8,7 @@ spec:
     spec:
       volumes:
         - name: tftp-folder
-          emptyDir: {}
+          emptyDir: { }
       initContainers:
         - image: ghcr.io/justingarfield/raspberrypi4b-uefi:v1.4.0-1
           imagePullPolicy: Always

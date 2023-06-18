@@ -34,13 +34,13 @@ spec:
             tag: v3.34.3@sha256:55f6c5b9cd2646b7d3f95c48f2d35e9e01fefa5d927f8636392e104f6d86639b
         env:
           - name: VPN_SERVICE_PROVIDER
-            value: "private internet access"
+            value: private internet access
           - name: SERVER_REGIONS
-            value: "US East"
+            value: US East
           - name: VPN_TYPE
-            value: "openvpn"
+            value: openvpn
           - name: OPENVPN_PROTOCOL
-            value: "udp"
+            value: udp
           # Currently need this in K8s to hit Cluster DNS for lookup
           - name: FIREWALL
             value: "off"
@@ -56,7 +56,7 @@ spec:
       networkPolicy:
         # Using my own Cilium-based Network Policies
         enabled: false
-    clusterName: "${CLUSTER_DOMAIN}"
+    clusterName: ${CLUSTER_DOMAIN}
     # Needed to get CoreDNS IP listed in /etc/resolv.conf for NAS DNS lookup when mounting SMB share
     DNSPolicy: ClusterFirst
     routed_namespaces:
@@ -64,5 +64,5 @@ spec:
     settings:
       # Don't forget to allow this on your firewall(s)!
       VPN_TRAFFIC_PORT: ${PIA_UDP_PORT}
-      VPN_LOCAL_CIDRS: "10.96.0.0/12 10.244.0.0/16 172.16.0.0/12 192.168.0.0/16"
-      NOT_ROUTED_TO_GATEWAY_CIDRS: "10.96.0.0/12 10.244.0.0/16 172.16.0.0/12 192.168.0.0/16"
+      VPN_LOCAL_CIDRS: 10.96.0.0/12 10.244.0.0/16 172.16.0.0/12 192.168.0.0/16
+      NOT_ROUTED_TO_GATEWAY_CIDRS: 10.96.0.0/12 10.244.0.0/16 172.16.0.0/12 192.168.0.0/16

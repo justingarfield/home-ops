@@ -28,7 +28,7 @@ spec:
       tag: 1.32.5@sha256:90f1cad1c21912a4d24e281599ef90d0fa51a8c30dd5ddab643b6345b6bcee92
     env:
       TZ: America/New_York
-      LOG_LEVEL: "info"
+      LOG_LEVEL: info
       PORT: &port 5055
     service:
       main:

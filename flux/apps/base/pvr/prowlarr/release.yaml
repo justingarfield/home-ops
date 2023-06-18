@@ -61,7 +61,7 @@ spec:
         enabled: true
         ingressClassName: cilium
         annotations:
-          hajimari.io/icon: "cloud-search"
+          hajimari.io/icon: cloud-search
           cert-manager.io/cluster-issuer: letsencrypt
         hosts:
           - host: &host "{{ .Release.Name }}.${PUBLIC_DNS_ZONE}"

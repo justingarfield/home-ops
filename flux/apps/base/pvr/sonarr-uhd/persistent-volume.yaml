@@ -27,7 +27,7 @@ spec:
     readOnly: false
     volumeHandle: sonarr-uhd-config-pv
     volumeAttributes:
-      source: "//nas.lesmerises.jgarfield.com/k8s-staging/sonarr-uhd"
+      source: //nas.lesmerises.jgarfield.com/k8s-staging/sonarr-uhd
     nodeStageSecretRef:
       name: smbcreds-sonarr-uhd
       namespace: pvr
@@ -58,7 +58,7 @@ spec:
     readOnly: false
     volumeHandle: sonarr-uhd-media-pv
     volumeAttributes:
-      source: "//nas.lesmerises.jgarfield.com/Media/Television"
+      source: //nas.lesmerises.jgarfield.com/Media/Television
     nodeStageSecretRef:
       name: smbcreds-sonarr-uhd
       namespace: pvr

@@ -1,5 +1,5 @@
 ---
-apiVersion: "cilium.io/v2"
+apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
   name: pod-gateway-openvpn
@@ -14,9 +14,9 @@ spec:
     - toPorts:
         - ports:
             - port: "1197"
-              protocol: "UDP"
+              protocol: UDP
 ---
-apiVersion: "cilium.io/v2"
+apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
   name: pod-gateway-cluster-dns
@@ -33,9 +33,9 @@ spec:
     - toPorts:
         - ports:
             - port: "53"
-              protocol: "UDP"
+              protocol: UDP
 ---
-apiVersion: "cilium.io/v2"
+apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
   name: pod-gateway-vxlan
@@ -67,7 +67,7 @@ spec:
     - toPorts:
         - ports:
             - port: "8472"
-              protocol: "UDP"
+              protocol: UDP
   ingress:
     - fromEndpoints:
         - matchLabels:
@@ -91,7 +91,7 @@ spec:
     - toPorts:
         - ports:
             - port: "8472"
-              protocol: "UDP"
+              protocol: UDP
     - icmps:
         - fields:
             - type: 8

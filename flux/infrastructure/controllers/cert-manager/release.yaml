@@ -46,10 +46,10 @@ spec:
       replicaCount: 1
     nodeSelector:
       node-role.kubernetes.io/control-plane: ""
-    podDnsPolicy: "None"
+    podDnsPolicy: None
     podDnsConfig:
       nameservers:
-        - "${OPNSENSE_DNS_SERVER}"
+        - ${OPNSENSE_DNS_SERVER}
     prometheus:
       enabled: false
       servicemonitor:

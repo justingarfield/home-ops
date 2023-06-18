@@ -33,7 +33,7 @@ spec:
     env:
       TZ: America/New_York
       QBITTORRENT__PORT: &port 8080
-      QBITTORRENT__BT_PORT: &port-bt ${PIA_FORWARDED_PORT_UDP}
+      QBITTORRENT__BT_PORT: ${PIA_FORWARDED_PORT_UDP}
     service:
       main:
         ports:
@@ -44,7 +44,7 @@ spec:
         enabled: true
         ingressClassName: cilium
         annotations:
-          hajimari.io/icon: "download-network"
+          hajimari.io/icon: download-network
           cert-manager.io/cluster-issuer: letsencrypt
         hosts:
           - host: &host "{{ .Release.Name }}.${PUBLIC_DNS_ZONE}"

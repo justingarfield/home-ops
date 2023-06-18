@@ -24,15 +24,15 @@ tasks:
         sh: kubeadm token generate
     preconditions:
       - sh: test '{{ .ORGANIZATION_NAME }}'
-        msg: 'Please provide a valid ORGANIZATION_NAME'
+        msg: Please provide a valid ORGANIZATION_NAME
       - sh: test '{{ ._BOOTSTRAP_TOKEN }}'
-        msg: 'Issues using kubeadm to generate a bootstrap token _BOOTSTRAP_TOKEN'
+        msg: Issues using kubeadm to generate a bootstrap token _BOOTSTRAP_TOKEN
       - sh: test '{{ .CLUSTER_NAME }}'
-        msg: 'Please provide a valid CLUSTER_NAME'
+        msg: Please provide a valid CLUSTER_NAME
       - sh: test '{{ .K8S_PKI_DIR }}'
-        msg: 'Please provide a valid K8S_PKI_DIR'
+        msg: Please provide a valid K8S_PKI_DIR
       - sh: test -d {{ .K8S_PKI_DIR }}
-        msg: 'Please provide a valid K8S_PKI_DIR {{ .K8S_PKI_DIR }}'
+        msg: Please provide a valid K8S_PKI_DIR {{ .K8S_PKI_DIR }}
     cmds:
       - task: :_core:ensure-directory-exists
         vars: { DIRECTORY: '{{ ._SECRETS_BUNDLE_FILENAME | dir }}' }
@@ -50,7 +50,7 @@ tasks:
       _CLUSTER_DIR: "{{ .TALOS_DIR }}/{{ .CLUSTER_NAME }}-cluster"
       _SECRETS_BUNDLE_FILENAME: "{{ ._CLUSTER_DIR }}/secrets-bundle.yaml"
       _MACHINE_TEMPLATES_DIR: "{{ ._CLUSTER_DIR }}/machine-templates"
-      _CONTROL_PLANE_HOSTNAME: "control-plane"
+      _CONTROL_PLANE_HOSTNAME: control-plane
     preconditions:
       - test {{ .CLUSTER_NAME }}
       - test {{ .CLUSTER_LOAD_BALANCER_IP }}

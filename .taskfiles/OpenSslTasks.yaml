@@ -9,8 +9,8 @@ tasks:
   DER-to-PEM:
     desc: Convert a DER file (.crt .cer .der) to PEM
     aliases:
-      - "CRT-to-PEM"
-      - "CER-to-PEM"
+      - CRT-to-PEM
+      - CER-to-PEM
     cmds:
       - openssl x509 -inform der -in certificate.cer -out certificate.pem
 
@@ -22,16 +22,16 @@ tasks:
   PKCS12-to-PEM:
     desc: Convert a PKCS#12 file (.pfx .p12) containing a private key and certificates to PEM
     aliases:
-      - "PFX-to-PEM"
-      - "P12-to-PEM"
+      - PFX-to-PEM
+      - P12-to-PEM
     cmds:
       - openssl pkcs12 -in keyStore.pfx -out keyStore.pem -nodes # You can add -nocerts to only output the private key or add -nokeys to only output the certificates.
 
   PEM-to-PKCS12:
     desc: Convert a PEM certificate file and a private key to PKCS#12 (.pfx .p12)
     aliases:
-      - "PEM-to-PFX"
-      - "PEM-to-P12"
+      - PEM-to-PFX
+      - PEM-to-P12
     cmds:
       - openssl pkcs12 -export -out certificate.pfx -inkey privateKey.key -in certificate.crt -certfile CACert.crt
 

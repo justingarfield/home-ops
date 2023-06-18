@@ -5,7 +5,7 @@ metadata:
   name: private-discord-alerts
   namespace: flux-system
 spec:
-  summary: "${ENVIRONMENT_NAME} Talos Cluster"
+  summary: ${ENVIRONMENT_NAME} Talos Cluster
   providerRef:
     name: private-discord
   eventSeverity: info
