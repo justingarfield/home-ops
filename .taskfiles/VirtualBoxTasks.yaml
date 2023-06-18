@@ -26,6 +26,7 @@ tasks:
       VM_NAME: '{{ .VM_NAME }}'
       CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
       MAC_ADDRESS: '{{ .MAC_ADDRESS | default "auto" }}'
+      VBOX_BRIDGE_ADAPTER: '{{ .VBOX_BRIDGE_ADAPTER }}'
     preconditions:
       - sh: test '{{ .VM_NAME }}'
         msg: Please provide a valid VM_NAME
@@ -33,6 +34,8 @@ tasks:
         msg: Please provide a valid CLUSTER_NAME
       - sh: test '{{ .MAC_ADDRESS }}'
         msg: Please provide a valid MAC_ADDRESS
+      - sh: test '{{ .VBOX_BRIDGE_ADAPTER }}'
+        msg: Please provide a valid VBOX_BRIDGE_ADAPTER
     cmds:
       - |
         "{{ .VBOX_MANAGE_BINARY }}" modifyvm "{{ .VM_NAME }}" \
@@ -120,11 +123,12 @@ tasks:
       VM_NAME: '{{ .VM_NAME }}'
       MAC_ADDRESS: '{{ .MAC_ADDRESS }}'
       BASE_FOLDER: '{{.BASE_FOLDER}}'
+      VBOX_BRIDGE_ADAPTER: '{{ .VBOX_BRIDGE_ADAPTER }}'
     cmds:
       - task: create-vm
         vars: { VM_NAME: "{{ .VM_NAME }}", CLUSTER_NAME: "{{ .CLUSTER_NAME }}", BASE_FOLDER: "{{.BASE_FOLDER}}" }
       - task: configure-vm
-        vars: { VM_NAME: "{{ .VM_NAME }}", CLUSTER_NAME: "{{ .CLUSTER_NAME }}", MAC_ADDRESS: "{{ .MAC_ADDRESS }}" }
+        vars: { VM_NAME: "{{ .VM_NAME }}", CLUSTER_NAME: "{{ .CLUSTER_NAME }}", MAC_ADDRESS: "{{ .MAC_ADDRESS }}", VBOX_BRIDGE_ADAPTER: '{{ .VBOX_BRIDGE_ADAPTER }}' }
       - task: add-piix4-storage-controller-to-vm
         vars: { VM_NAME: "{{ .VM_NAME }}" }
       - task: add-ahci-storage-controller-to-vm
@@ -229,13 +233,13 @@ tasks:
         msg: Please provide a valid CLUSTER_NAME
     cmds:
       - task: create-cluster-node-vm
-        vars: { CLUSTER_NAME: "{{ .CLUSTER_NAME }}", VM_NAME: "{{ .CLUSTER_NAME }}-cp01", MAC_ADDRESS: "001337133701", BASE_FOLDER: "{{.VBOX_CP_FOLDER}}" }
+        vars: { CLUSTER_NAME: "{{ .CLUSTER_NAME }}", VM_NAME: "{{ .CLUSTER_NAME }}-cp01", MAC_ADDRESS: "001337133701", BASE_FOLDER: "{{.VBOX_CP_FOLDER}}", VBOX_BRIDGE_ADAPTER: '{{ .VBOX_BRIDGE_ADAPTER_1 }}' }
       - task: create-cluster-node-vm
-        vars: { CLUSTER_NAME: "{{ .CLUSTER_NAME }}", VM_NAME: "{{ .CLUSTER_NAME }}-cp02", MAC_ADDRESS: "001337133702", BASE_FOLDER: "{{.VBOX_CP_FOLDER}}" }
+        vars: { CLUSTER_NAME: "{{ .CLUSTER_NAME }}", VM_NAME: "{{ .CLUSTER_NAME }}-cp02", MAC_ADDRESS: "001337133702", BASE_FOLDER: "{{.VBOX_CP_FOLDER}}", VBOX_BRIDGE_ADAPTER: '{{ .VBOX_BRIDGE_ADAPTER_2 }}' }
       - task: create-cluster-node-vm
-        vars: { CLUSTER_NAME: "{{ .CLUSTER_NAME }}", VM_NAME: "{{ .CLUSTER_NAME }}-cp03", MAC_ADDRESS: "001337133703", BASE_FOLDER: "{{.VBOX_CP_FOLDER}}" }
+        vars: { CLUSTER_NAME: "{{ .CLUSTER_NAME }}", VM_NAME: "{{ .CLUSTER_NAME }}-cp03", MAC_ADDRESS: "001337133703", BASE_FOLDER: "{{.VBOX_CP_FOLDER}}", VBOX_BRIDGE_ADAPTER: '{{ .VBOX_BRIDGE_ADAPTER_3 }}' }
       - task: create-cluster-node-vm
-        vars: { CLUSTER_NAME: "{{ .CLUSTER_NAME }}", VM_NAME: "{{ .CLUSTER_NAME }}-wk01", MAC_ADDRESS: "001337133704", BASE_FOLDER: "{{.VBOX_WK_FOLDER}}" }
+        vars: { CLUSTER_NAME: "{{ .CLUSTER_NAME }}", VM_NAME: "{{ .CLUSTER_NAME }}-wk01", MAC_ADDRESS: "001337133704", BASE_FOLDER: "{{.VBOX_WK_FOLDER}}", VBOX_BRIDGE_ADAPTER: '{{ .VBOX_BRIDGE_ADAPTER_4 }}' }
 
   snapshot-cluster:
     desc: Snapshots a virtualized Kubernetes 3-node Control Plane / 2-node Worker Plane.
