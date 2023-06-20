@@ -17,7 +17,7 @@ tasks:
       - sh: test '{{ .CLUSTER_NAME }}'
         msg: Please provide a valid CLUSTER_NAME
     cmds:
-      - '"{{ .VBOX_MANAGE_BINARY }}" createvm --name="{{ .VM_NAME }}" --basefolder="{{.BASE_FOLDER}}" --groups="/{{ .CLUSTER_NAME }}-cluster" --ostype=Linux_64 --register'
+      - '"{{ .VBOX_MANAGE_BINARY }}" createvm --name="{{ .VM_NAME }}" --basefolder="{{.BASE_FOLDER}}" --groups="/{{ .CLUSTER_NAME }}-cluster" --ostype=Linux_64 --register 1>/dev/null'
 
   configure-vm:
     internal: true
@@ -53,7 +53,8 @@ tasks:
           --hpet=on \
           --vram=20 \
           --graphicscontroller=vmsvga \
-          --description="{{ .CLUSTER_NAME }} Cluster Node"
+          --description="{{ .CLUSTER_NAME }} Cluster Node" \
+          1>/dev/null
 
   add-piix4-storage-controller-to-vm:
     internal: true
@@ -101,7 +102,7 @@ tasks:
       - sh: test '{{ .VM_NAME }}'
         msg: Please provide a valid VM_NAME
     cmds:
-      - '"{{ .VBOX_MANAGE_BINARY }}" createmedium --filename="{{ .BASE_FOLDER }}\{{ .CLUSTER_NAME }}-cluster\{{ .VM_NAME }}\{{ .VM_NAME }}.vdi" --size={{ .VBOX_HDD_SIZE_IN_MB }}'
+      - '"{{ .VBOX_MANAGE_BINARY }}" createmedium --filename="{{ .BASE_FOLDER }}\{{ .CLUSTER_NAME }}-cluster\{{ .VM_NAME }}\{{ .VM_NAME }}.vdi" --size={{ .VBOX_HDD_SIZE_IN_MB }} 1>/dev/null'
 
   attach-virtual-disk-to-vm:
     internal: true
@@ -116,7 +117,6 @@ tasks:
       - '"{{ .VBOX_MANAGE_BINARY }}" storageattach "{{ .VM_NAME }}" --storagectl="AHCI (SATA)" --port=0 --device=0 --type=hdd --nonrotational=on --medium="{{ .BASE_FOLDER }}\{{ .CLUSTER_NAME }}-cluster\{{ .VM_NAME }}\{{ .VM_NAME }}.vdi"'
 
   create-cluster-node-vm:
-    internal: true
     desc: Creates and configures all the virtualized resources required for a virtualized cluster node.
     vars:
       CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
@@ -163,13 +163,7 @@ tasks:
       - sh: test '{{ .VM_NAME }}'
         msg: Please provide a valid VM_NAME
     cmds:
-      - '"{{ .VBOX_MANAGE_BINARY }}" startvm "{{ .VM_NAME }}" --type=headless || true'
-
-  start-first-cp-node:
-    cmds:
-      - task: start-vm
-        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp01" }
-      - ./scripts/wait-for-talos-boot.sh
+      - '"{{ .VBOX_MANAGE_BINARY }}" startvm "{{ .VM_NAME }}" --type=headless 1>/dev/null || true'
 
   start-cluster:
     desc: Starts the VMs associate with a particular virtualized cluster.

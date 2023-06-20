@@ -99,43 +99,14 @@ tasks:
       NODE_NAME: "{{.NODE_NAME}}"
       CLUSTER_DIR: "{{.TALOS_DIR}}/{{.CLUSTER_NAME}}-cluster"
     cmds:
+      - printf "[home-ops] Applying Talos machine-config to {{.NODE_NAME}}\n"
       - talosctl apply-config --insecure --nodes {{.NODE_NAME}}.{{.CLUSTER_DOMAIN}} --file {{.CLUSTER_DIR}}/machine-configs/{{.NODE_NAME}}.yaml
+      - printf "[home-ops] Applied Talos machine-config to {{.NODE_NAME}}\n"
 
   bootstrap-etcd:
-    internal: true
+    internal: false
     desc: Bootstraps etcd on a particular cluster's '-cp01' node
     vars:
       CLUSTER_NAME: "{{.CLUSTER_NAME}}"
     cmds:
       - talosctl bootstrap --nodes k8s-cp01.{{.CLUSTER_DOMAIN}}
-
-  install-cilium-via-helm:
-    internal: true
-    desc: Installs the Cilium CNI for a particular cluster
-    vars:
-      CLUSTER_NAME: "{{.CLUSTER_NAME}}"
-      CLUSTER_DIR: "{{.TALOS_DIR}}/{{.CLUSTER_NAME}}-cluster"
-    cmds:
-      - helm repo update
-      - |
-        helm template \
-            cilium \
-            cilium/cilium \
-            --version {{ .CILIUM_VERSION }} \
-            --namespace kube-system \
-            --set ipam.mode=kubernetes \
-            --set kubeProxyReplacement=strict \
-            --set securityContext.capabilities.ciliumAgent="{CHOWN,KILL,NET_ADMIN,NET_RAW,IPC_LOCK,SYS_ADMIN,SYS_RESOURCE,DAC_OVERRIDE,FOWNER,SETGID,SETUID}" \
-            --set securityContext.capabilities.cleanCiliumState="{NET_ADMIN,SYS_ADMIN,SYS_RESOURCE}" \
-            --set cgroup.autoMount.enabled=false \
-            --set cgroup.hostRoot=/sys/fs/cgroup \
-            --set k8sServiceHost="control-plane.{{ .CLUSTER_DOMAIN }}" \
-            --set k8sServicePort="{{ .CLUSTER_API_SERVER_PORT }}" > {{ .CLUSTER_DIR }}/cilium.yaml \
-            --set bgpControlPlane.enabled=true \
-            --set ingressController.enabled=true \
-            --set ingressController.loadbalancerMode=shared \
-            --set hubble.relay.enabled=true \
-            --set hubble.ui.enabled=true \
-            --set hubble.peerService.clusterDomain="{{ .CLUSTER_DOMAIN }}" \
-            --set tunnelPort=6669
-      - kubectl apply -f {{ .CLUSTER_DIR }}/cilium.yaml
