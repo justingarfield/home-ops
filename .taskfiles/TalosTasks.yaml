@@ -61,10 +61,10 @@ tasks:
         talosctl gen config {{ .CLUSTER_NAME }}-cluster https://{{ ._CONTROL_PLANE_HOSTNAME }}.{{ .CLUSTER_DOMAIN }}:{{ .CLUSTER_API_SERVER_PORT }} \
           --with-secrets {{ ._SECRETS_BUNDLE_FILENAME }} \
           --additional-sans {{ ._CONTROL_PLANE_HOSTNAME }},{{ .CLUSTER_LOAD_BALANCER_IP }} \
-          --dns-domain staging.lesmerises.jgarfield.com \
+          --dns-domain staging.home.arpa \
           --install-image ghcr.io/siderolabs/installer:v1.4.5 \
           --kubernetes-version 1.27.2 \
-          --registry-mirror docker.io=http://pull-through-cache.lesmerises.jgarfield.com:5003,gcr.io=http://pull-through-cache.lesmerises.jgarfield.com:5001,ghcr.io=http://pull-through-cache.lesmerises.jgarfield.com:5000,registry.k8s.io=http://pull-through-cache.lesmerises.jgarfield.com:5002 \
+          --registry-mirror docker.io=http://pull-through-cache.home.arpa:5003,gcr.io=http://pull-through-cache.home.arpa:5001,ghcr.io=http://pull-through-cache.home.arpa:5000,registry.k8s.io=http://pull-through-cache.home.arpa:5002 \
           --talos-version v1.4.5 \
           --version v1alpha1 \
           --with-cluster-discovery=false \
@@ -73,7 +73,7 @@ tasks:
           --config-patch='[{"op": "remove", "path": "/machine/certSANs"}]' \
           --config-patch @{{ ._CLUSTER_DIR }}/machine-patches/all-nodes.patch \
           --config-patch-control-plane @{{ ._CLUSTER_DIR }}/machine-patches/cp-nodes.patch \
-          --config-patch-worker @{{ ._CLUSTER_DIR }}/machine-patches/worker-nodes.patch \
+          --config-patch-worker @{{ ._CLUSTER_DIR }}/machine-patches/wk-nodes.patch \
           --output {{ ._MACHINE_TEMPLATES_DIR }}
       - mv {{ ._MACHINE_TEMPLATES_DIR }}/talosconfig {{ ._CLUSTER_DIR }}
 

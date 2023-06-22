@@ -27,7 +27,7 @@ spec:
     readOnly: false
     volumeHandle: prowlarr-config-pv
     volumeAttributes:
-      source: //nas.lesmerises.jgarfield.com/k8s-staging/prowlarr
+      source: //nas.home.arpa/k8s-staging/prowlarr
     nodeStageSecretRef:
       name: smbcreds-prowlarr
       namespace: pvr

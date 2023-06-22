@@ -5,7 +5,7 @@ metadata:
   name: nfs-nas-staging
 provisioner: nfs.csi.k8s.io
 parameters:
-  server: nas.staging.lesmerises.jgarfield.com
+  server: nas.staging.home.arpa
   share: /k8s-staging
 reclaimPolicy: Delete
 volumeBindingMode: Immediate

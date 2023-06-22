@@ -27,7 +27,7 @@ spec:
     readOnly: false
     volumeHandle: lidarr-config-pv
     volumeAttributes:
-      source: //nas.lesmerises.jgarfield.com/k8s-staging/lidarr
+      source: //nas.home.arpa/k8s-staging/lidarr
     nodeStageSecretRef:
       name: smbcreds-lidarr
       namespace: pvr
@@ -58,7 +58,7 @@ spec:
     readOnly: false
     volumeHandle: lidarr-media-pv
     volumeAttributes:
-      source: //nas.lesmerises.jgarfield.com/Media/Music
+      source: //nas.home.arpa/Media/Music
     nodeStageSecretRef:
       name: smbcreds-lidarr
       namespace: pvr

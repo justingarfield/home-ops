@@ -5,7 +5,7 @@ metadata:
   name: sonarr-smb
 provisioner: smb.csi.k8s.io
 parameters:
-  source: //nas.lesmerises.jgarfield.com
+  source: //nas.home.arpa
   csi.storage.k8s.io/node-stage-secret-name: smbcreds-sonarr
   csi.storage.k8s.io/node-stage-secret-namespace: pvr
 reclaimPolicy: Retain

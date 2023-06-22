@@ -6,7 +6,7 @@ tasks:
 
   generate-talos-cp-configs:
     talosctl gen config sidero-metal https://${SIDERO_ENDPOINT}:6443/ \
-      --additional-sans=sidero-metal,sidero-metal.kubernetes.lesmerises.jgarfield.com \
+      --additional-sans=sidero-metal,sidero-metal.staging.home.arpa \
       --config-patch-control-plane @./talos-linux/patch-sidero-controlplane-config.yaml \
       --with-docs=false \
       --with-examples=false \

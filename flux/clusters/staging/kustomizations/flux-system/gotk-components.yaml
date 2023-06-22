@@ -7554,7 +7554,7 @@ spec:
     spec:
       containers:
       - args:
-        - --events-addr=http://notification-controller.flux-system.svc.staging.lesmerises.jgarfield.com./
+        - --events-addr=http://notification-controller.flux-system.svc.staging.home.arpa./
         - --watch-all-namespaces=true
         - --log-level=info
         - --log-encoding=json
@@ -7637,7 +7637,7 @@ spec:
     spec:
       containers:
       - args:
-        - --events-addr=http://notification-controller.flux-system.svc.staging.lesmerises.jgarfield.com./
+        - --events-addr=http://notification-controller.flux-system.svc.staging.home.arpa./
         - --watch-all-namespaces=true
         - --log-level=info
         - --log-encoding=json
@@ -7810,13 +7810,13 @@ spec:
     spec:
       containers:
       - args:
-        - --events-addr=http://notification-controller.flux-system.svc.staging.lesmerises.jgarfield.com./
+        - --events-addr=http://notification-controller.flux-system.svc.staging.home.arpa./
         - --watch-all-namespaces=true
         - --log-level=info
         - --log-encoding=json
         - --enable-leader-election
         - --storage-path=/data
-        - --storage-adv-addr=source-controller.$(RUNTIME_NAMESPACE).svc.staging.lesmerises.jgarfield.com.
+        - --storage-adv-addr=source-controller.$(RUNTIME_NAMESPACE).svc.staging.home.arpa.
         env:
         - name: RUNTIME_NAMESPACE
           valueFrom:

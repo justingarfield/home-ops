@@ -27,7 +27,7 @@ spec:
     readOnly: false
     volumeHandle: radarr-config-pv
     volumeAttributes:
-      source: //nas.lesmerises.jgarfield.com/k8s-staging/radarr
+      source: //nas.home.arpa/k8s-staging/radarr
     nodeStageSecretRef:
       name: smbcreds-radarr
       namespace: pvr
@@ -58,7 +58,7 @@ spec:
     readOnly: false
     volumeHandle: radarr-media-pv
     volumeAttributes:
-      source: //nas.lesmerises.jgarfield.com/Media/Movies
+      source: //nas.home.arpa/Media/Movies
     nodeStageSecretRef:
       name: smbcreds-radarr
       namespace: pvr
