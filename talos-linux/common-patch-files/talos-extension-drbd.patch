@@ -1,0 +1,12 @@
+---
+# yaml-language-server: $schema=https://talos.dev/v1.4/schemas/v1alpha1_config.schema.json
+machine:
+  install:
+    extensions:
+      - image: ghcr.io/siderolabs/drbd:9.2.2-v1.4.4
+  kernel:
+    modules:
+      - name: drbd
+        parameters:
+          - usermode_helper=disabled
+      - name: drbd_transport_tcp

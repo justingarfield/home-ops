@@ -2,8 +2,6 @@
 # See: https://yamllint.readthedocs.io/en/stable/configuration.html#default-configuration
 extends: default
 
-# Ignore seems to be broken right now for the Extension right now, but CLI
-# side still works. https://github.com/adrienverge/yamllint/issues/542
 ignore: |
   # Random output assets
   **/_old/**

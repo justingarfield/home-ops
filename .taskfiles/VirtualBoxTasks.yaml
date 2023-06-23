@@ -206,23 +206,6 @@ tasks:
     cmds:
       - '"{{ .VBOX_MANAGE_BINARY }}" startvm "{{ .VM_NAME }}" --type=headless 1>/dev/null || true'
 
-  start-cluster:
-    desc: Starts the VMs associate with a particular virtualized cluster.
-    vars:
-      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
-    preconditions:
-      - sh: test '{{ .CLUSTER_NAME }}'
-        msg: Please provide a valid CLUSTER_NAME
-    cmds:
-      - task: start-vm
-        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp02" }
-      - task: :_core:sleep-for-resource-contention
-      - task: start-vm
-        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp03" }
-      - task: :_core:sleep-for-resource-contention
-      - task: start-vm
-        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-wk01" }
-
   stop-vm:
     internal: true
     desc: Pushes the power button for a particular VM

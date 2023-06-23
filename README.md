@@ -12,6 +12,7 @@ As-such, all scripts and configuration files in this repository have been tokeni
 
 ```sh
 📁 home-ops
+├─📁 .ci             # Continuous Integration (CI) tooling configurations
 ├─📁 .taskfiles      # This repo uses Taskfiles vs. Makefiles (see https://taskfile.dev)
 ├─📁 assets          # Random assets used in repo documentation / charts / graphs
 ├─📁 docker          # Docker Compose files used for a local Container Registry and Pull-through-caches

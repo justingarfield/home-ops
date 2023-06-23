@@ -1,5 +1,5 @@
-# yaml-language-server: $schema=https://taskfile.dev/schema.json
 ---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: '3'
 
 tasks:
@@ -8,29 +8,25 @@ tasks:
     desc: Creates a directory (and any sub-directories) if needed.
     internal: true
     vars:
-      DIRECTORY: '{{ .DIRECTORY | replace "./{{ .OUTPUT_DIR }}" "" | replace .OUTPUT_DIR "" }}'
+      DIRECTORY: '{{.DIRECTORY | replace "./{{.OUTPUT_DIR}}" "" | replace .OUTPUT_DIR ""}}'
     preconditions:
-      - test "{{ .OUTPUT_DIR }}/{{ .DIRECTORY }}"
+      - test "{{.OUTPUT_DIR}}/{{.DIRECTORY}}"
     cmds:
-      - mkdir -p "{{ .OUTPUT_DIR }}/{{ .DIRECTORY }}"
+      - mkdir -p "{{ .OUTPUT_DIR }}/{{.DIRECTORY}}"
     status:
-      - test -d "{{ .OUTPUT_DIR }}/{{ .DIRECTORY }}"
-
-  sleep-for-resource-contention:
-    desc: Does a simple 'sleep' for a particular duration in-seconds (default 5-seconds)
-    vars:
-      SLEEP_DURATION_IN_SECONDS: '{{ .SLEEP_DURATION_IN_SECONDS | default 5 }}'
-    cmds:
-      - sleep {{.SLEEP_DURATION_IN_SECONDS}}
+      - test -d "{{.OUTPUT_DIR}}/{{.DIRECTORY}}"
 
   message:
     desc: Displays a message to the end-user running the Task.
+    internal: true
     preconditions:
       - test "{{ .MESSAGE }}"
     cmds:
       - printf '[home-ops] {{ .MESSAGE }}\n'
 
   display-banner:
+    desc: Displays a fun looking banner of the repository's name
+    internal: true
     cmds:
       - echo -e \
           "\n\n"

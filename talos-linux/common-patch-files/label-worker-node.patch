@@ -1,8 +1,5 @@
 ---
 # yaml-language-server: $schema=https://talos.dev/v1.4/schemas/v1alpha1_config.schema.json
-version: v1alpha1
-persist: true
 machine:
   nodeLabels:
-    # Allow Cilium to apply BGP Policies
-    bgp-peering-policy: opnsense
+    node-role.kubernetes.io/worker: "true"

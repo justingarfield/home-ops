@@ -7,11 +7,6 @@ vars:
 
 tasks:
 
-  apply-opnsense-bgp-label-to-all-nodes:
-    desc: Applies a 'bgp-peering-policy' label with a value of 'opnsense' to all cluster nodes
-    cmds:
-      - kubectl label nodes --all bgp-peering-policy=opnsense
-
   status-verbose:
     desc: Uses the cilium binary in the DS for a verbose status
     cmds:
@@ -23,16 +18,17 @@ tasks:
       - kubectl -n kube-system exec ds/cilium -- cilium endpoint list
 
   install-via-helm:
-    internal: false
+    internal: true
     desc: Installs the Cilium CNI for a particular cluster
     vars:
       CLUSTER_NAME: "{{.CLUSTER_NAME}}"
       CLUSTER_DIR: "{{.TALOS_DIR}}/{{.CLUSTER_NAME}}-cluster"
     cmds:
-      - printf "[home-ops] Updating Helm repositories...\n"
+      - task: :_core:message
+        vars: { MESSAGE: Updating Helm repositories... }
       - helm repo update 1>/dev/null
-
-      - printf "[home-ops] Generating Cilium manifest using Helm template...\n"
+      - task: :_core:message
+        vars: { MESSAGE: Generating Cilium manifest using Helm template... }
       - |
         helm template \
             cilium \
@@ -54,6 +50,8 @@ tasks:
             --set hubble.ui.enabled=true \
             --set hubble.peerService.clusterDomain="{{ .CLUSTER_DOMAIN }}" \
             --set tunnelPort=6669
-
-      - printf "[home-ops] Applying Cilium manifest to {{.CLUSTER_NAME}} cluster...\n"
+      - task: :_core:message
+        vars: { MESSAGE: Applying Cilium manifest to .CLUSTER_NAME cluster... }
       - kubectl apply -f {{ .CLUSTER_DIR }}/cilium.yaml 1>/dev/null
+      - task: :_core:message
+        vars: { MESSAGE: Cilium manifest applied to .CLUSTER_NAME cluster }

@@ -1,10 +1,6 @@
 ---
 # yaml-language-server: $schema=https://talos.dev/v1.4/schemas/v1alpha1_config.schema.json
-version: v1alpha1
-persist: true
 machine:
-  disks:
-    - device: /dev/sdb
   kubelet:
     extraConfig:
       allowedUnsafeSysctls:
@@ -12,7 +8,3 @@ machine:
         - net.ipv6.conf.all.disable_ipv6
         - net.ipv6.conf.default.disable_ipv6
         - net.ipv4.conf.all.src_valid_mark
-
-# Setting this using kubectl directly, as Talos isn't picking it up atm
-# nodeLabels:
-#   node-role.kubernetes.io/worker: ""
