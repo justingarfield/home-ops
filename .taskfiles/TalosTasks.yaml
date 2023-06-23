@@ -78,6 +78,51 @@ tasks:
           --output {{ ._MACHINE_TEMPLATES_DIR }}
       - mv {{ ._MACHINE_TEMPLATES_DIR }}/talosconfig {{ ._CLUSTER_DIR }}
 
+  gen-config:
+    desc: Generate Machine Templates for a particular cluster
+    vars:
+      CLUSTER_NAME: "{{ .CLUSTER_NAME }}"
+      CLUSTER_LOAD_BALANCER_IP: "{{ .CLUSTER_LOAD_BALANCER_IP }}"
+      _CLUSTER_DIR: "{{ .TALOS_DIR }}/{{ .CLUSTER_NAME }}-cluster"
+      _SECRETS_BUNDLE_FILENAME: "{{ ._CLUSTER_DIR }}/secrets-bundle.yaml"
+      _MACHINE_TEMPLATES_DIR: "{{ ._CLUSTER_DIR }}/machine-templates"
+      _CONTROL_PLANE_HOSTNAME: control-plane
+    preconditions:
+      - test {{ .CLUSTER_NAME }}
+      - test {{ .CLUSTER_LOAD_BALANCER_IP }}
+      - test -d {{ ._CLUSTER_DIR }}
+      - test -f {{ ._SECRETS_BUNDLE_FILENAME }}
+    cmds:
+      - |
+        talosctl gen config {{.CLUSTER_NAME}} https://{{._CONTROL_PLANE_HOSTNAME}}.{{.CLUSTER_DOMAIN}}:{{.CLUSTER_API_SERVER_PORT}} \
+          --with-secrets {{._SECRETS_BUNDLE_FILENAME}} \
+          --additional-sans {{._CONTROL_PLANE_HOSTNAME}},{{.CLUSTER_LOAD_BALANCER_IP}} \
+          --dns-domain cluster.home.arpa \
+          --install-image ghcr.io/siderolabs/installer:v1.4.5 \
+          --kubernetes-version 1.27.2 \
+          --registry-mirror docker.io=http://pull-through-cache.home.arpa:5003,gcr.io=http://pull-through-cache.home.arpa:5001,ghcr.io=http://pull-through-cache.home.arpa:5000,registry.k8s.io=http://pull-through-cache.home.arpa:5002 \
+          --talos-version v1.4.5 \
+          --version v1alpha1 \
+          --with-cluster-discovery=false \
+          --with-docs=false \
+          --with-examples=false \
+          --force \
+          --config-patch='[{"op": "remove", "path": "/machine/certSANs"}]' \
+          --config-patch-control-plane @{{ .TALOS_DIR }}/cilium-opnsense-bgp-peering-policy.patch \
+          --config-patch-control-plane @{{ .TALOS_DIR }}/disable-cni-and-kube-proxy.patch \
+          --config-patch-worker @{{ .TALOS_DIR }}/disk-sdb.patch \
+          --config-patch-worker @{{ .TALOS_DIR }}/disk-sdc.patch \
+          --config-patch-worker @{{ .TALOS_DIR }}/disk-nvme0n1.patch \
+          --config-patch-worker @{{ .TALOS_DIR }}/disk-nvme1n1.patch \
+          --config-patch-worker @{{ .TALOS_DIR }}/kubelet-unsafe-sysctls.patch \
+          --config-patch-worker @{{ .TALOS_DIR }}/label-worker-node.patch \
+          --config-patch @{{ .TALOS_DIR }}/machine-cert-sans.patch \
+          --config-patch='[{"op": "add", "path": "/machine/certSANs/-", "value": "{{.CLUSTER_LOAD_BALANCER_IP}}" }]' \
+          --config-patch @{{ .TALOS_DIR }}/system-disk-encryption.patch \
+          --config-patch='[{"op": "replace", "path": "/machine/systemDiskEncryption/ephemeral/keys", "value": [{ "static": { "passphrase": "{{.EPHEMERAL_PASSPHRASE}}" }, "slot": 0 }] }]' \
+          --output {{ ._MACHINE_TEMPLATES_DIR }}
+      - mv {{ ._MACHINE_TEMPLATES_DIR }}/talosconfig {{ ._CLUSTER_DIR }}
+
   generate-machine-config:
     internal: true
     desc: (no longer used) Generate individual Machine Configs for a particular cluster node

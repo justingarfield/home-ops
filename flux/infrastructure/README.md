@@ -14,7 +14,7 @@ This should always be run / complete / reconciled before 'Apps' loads, as Apps w
 📁 infrastructure
 ├─📁 alerts            # alerts are used to send flux-related notifications to Discord, Slack, etc.
 ├─📁 config            # configuration resources that are used by the infrastructure controllers
-├─📁 controllers       # the actual infrastructure controller helmrelease definitions / confgiurations
+├─📁 controllers       # the actual infrastructure controller helmrelease definitions / configurations
 ├─📁 crds              # crds that are required by the controllers under here
 ├─📁 namespaces        # namespaces created before any of these resources (allows security labels to be applied)
 ├─📁 providers         # providers are used by alerts as the "mechanism" to send their notifications

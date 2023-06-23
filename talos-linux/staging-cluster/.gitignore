@@ -1,9 +1,3 @@
-# This file is here as a place-holder to show what files would actually exist here.
-# These files can't be committed to a public repo due to sensitive keys and secrets residing in them.
-machine-patches/all-nodes.patch
-
-machine-patches/systemDiskEncryption.patch
-
 machine-templates/controlplane.yaml
 machine-templates/worker.yaml
 
