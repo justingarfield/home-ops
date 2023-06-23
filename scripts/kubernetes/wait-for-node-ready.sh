@@ -5,7 +5,7 @@
 # status of 'Ready'.
 
 ### Usage
-# This script expects to be passed a Kubernetes node's hostname as the only argument
+# This script expects to be passed any Kubernetes node's hostname as the only argument
 # e.g: ./scripts/kubernetes/wait-for-node-ready.sh k8s-cp02
 
 ### Configurable bits
@@ -29,9 +29,12 @@ while [ $attempt -le $retries ]; do
         printf "[home-ops] Node $1 is not queryable. Waiting ${sleep_time}-seconds before re-trying...\n"
         /usr/bin/sleep ${sleep_time}s
     else
+        printf "[home-ops] Node $1 is now 'Ready'\n"
+        exit 0
         break
     fi
     ((attempt=attempt+1))
 done
 
-echo "[home-ops] Node $1 is now 'Ready'."
+# Ran out of retry attempts
+exit 1
