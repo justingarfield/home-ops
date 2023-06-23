@@ -1,0 +1,64 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app readarr
+  namespace: pvr
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    createNamespace: false
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    image:
+      repository: ghcr.io/onedr0p/readarr-nightly
+      tag: 0.1.6.1865@sha256:47447a8a89bb2e02aac590e561fabeee70b1a199f4eb28fe0c10e0db13f5ee84
+    env:
+      TZ: ${TIMEZONE}
+      READARR__INSTANCE_NAME: Readarr
+      READARR__PORT: &port 8787
+      READARR__LOG_LEVEL: info
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: cilium
+        annotations:
+          hajimari.io/icon: bookshelf
+          cert-manager.io/cluster-issuer: letsencrypt
+        hosts:
+          - host: &host "{{ .Release.Name }}.${PUBLIC_DNS_ZONE}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+            secretName: tls-readarr
+    persistence:
+      config:
+        enabled: true
+        type: pvc
+        readOnly: false
+        existingClaim: readarr-config-pvc
+      media:
+        enabled: true
+        type: pvc
+        readOnly: false
+        existingClaim: readarr-media-pvc

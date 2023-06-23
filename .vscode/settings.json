@@ -1,0 +1,178 @@
+{
+    "files.associations": {
+        "*.patch": "yaml"
+    },
+    "linter.linters": {
+        "language-tool": {
+            "capabilities": [],
+            "command": [
+                "languagetool",
+                "--json",
+                "--autoDetect"
+            ],
+            "configFiles": [],
+            "enabled": true,
+            "languages": [
+                "markdown",
+                "html",
+                "plaintext"
+            ],
+            "name": "language-tool",
+            "url": "https://github.com/languagetool-org/languagetool"
+        },
+        "markdownlint": {
+            "capabilities": [
+                "fix-inline"
+            ],
+            "command": [
+                "markdownlint",
+                "--json",
+                [
+                    "$fixAll",
+                    "--fix"
+                ],
+                [
+                    "$config",
+                    "--config",
+                    "$config"
+                ],
+                "--stdin"
+            ],
+            "configFiles": [
+                ".markdownlint.json",
+                ".markdownlint.yaml",
+                ".markdownlint.yml",
+                ".markdownlintrc"
+            ],
+            "enabled": true,
+            "languages": [
+                "markdown"
+            ],
+            "name": "markdownlint",
+            "url": "https://github.com/DavidAnson/markdownlint"
+        },
+        "shellcheck": {
+            "args": {
+                "$zsh": {
+                    "extensions": [
+                        ".zsh"
+                    ],
+                    "shebangs": [
+                        "/bin/zsh",
+                        "/usr/bin/zsh",
+                        "/usr/local/bin/zsh",
+                        "/usr/bin/env zsh"
+                    ]
+                }
+            },
+            "capabilities": [],
+            "command": [
+                "shellcheck",
+                "--format",
+                "json",
+                "--enable",
+                "all",
+                "-"
+            ],
+            "configFiles": [],
+            "enabled": true,
+            "languages": [
+                "shellscript",
+                "bash"
+            ],
+            "name": "shellcheck",
+            "url": "https://github.com/koalaman/shellcheck",
+            "when": [
+                "!$zsh"
+            ]
+        },
+        "textlint": {
+            "capabilities": [
+                "fix-inline"
+            ],
+            "command": [
+                "textlint",
+                "--format",
+                "json",
+                [
+                    "$debug",
+                    "--debug"
+                ],
+                [
+                    "$config",
+                    "--config",
+                    "$config"
+                ],
+                "--stdin",
+                "--stdin-filename",
+                "$file"
+            ],
+            "configFiles": [
+                ".textlintrc",
+                ".textlintrc.js",
+                ".textlintrc.json",
+                ".textlintrc.yaml",
+                ".textlintrc.yml"
+            ],
+            "enabled": true,
+            "languages": [
+                "markdown",
+                "plaintext",
+                "html"
+            ],
+            "name": "textlint",
+            "url": "https://textlint.github.io"
+        },
+        "vale": {
+            "capabilities": [],
+            "command": [
+                "vale",
+                "--output",
+                "JSON",
+                [
+                    "$config",
+                    "--config",
+                    "$config"
+                ],
+                "--ext",
+                "$extension"
+            ],
+            "configFiles": [
+                ".vale.ini"
+            ],
+            "enabled": true,
+            "languages": [
+                "markdown",
+                "plaintext",
+                "html"
+            ],
+            "name": "vale",
+            "url": "https://github.com/errata-ai/vale"
+        },
+        "yamllint": {
+            "capabilities": [
+                "ignore-line"
+            ],
+            "command": [
+                "yamllint",
+                "--format",
+                "parsable",
+                [
+                    "$config",
+                    "--config-file",
+                    "$config"
+                ],
+                "-"
+            ],
+            "configFiles": [
+                ".ci/.yamllint"
+            ],
+            "enabled": true,
+            "languages": [
+                "yaml"
+            ],
+            "name": "yamllint",
+            "url": "https://github.com/adrienverge/yamllint"
+        }
+    }
+}

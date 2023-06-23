@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prowlarr-config-pvc
+  namespace: pvr
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: prowlarr-smb
+  volumeName: prowlarr-config-pv
+  resources:
+    requests:
+      storage: 10Gi

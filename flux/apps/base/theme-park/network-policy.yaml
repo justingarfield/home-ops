@@ -1,0 +1,19 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: theme-park
+  namespace: theme-park
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: theme-park
+  egress:
+    - toEntities:
+        - world
+        - host
+        - kube-apiserver
+  ingress:
+    - fromEntities:
+        - ingress
+        - host

@@ -1,0 +1,16 @@
+{
+    "recommendations": [
+        "ms-vscode-remote.remote-wsl",
+        "hashicorp.hcl",
+        "hashicorp.terraform",
+        "ms-vscode.makefile-tools",
+        "msazurermtools.azurerm-vscode-tools",
+        "ms-azuretools.vscode-docker",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "task.vscode-task",
+        "redhat.vscode-yaml",
+        "davidanson.vscode-markdownlint",
+        "ms-vscode.azurecli",
+        "weaveworks.vscode-gitops-tools"
+    ]
+}

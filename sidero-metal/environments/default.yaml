@@ -1,0 +1,15 @@
+---
+###
+# This is a patch file for the existing "default" Environment provided by Sidero.
+#
+# It updates the Talos Release version for `vmlinuz` and `initramfs` to v1.3.6
+###
+apiVersion: metal.sidero.dev/v1alpha1
+kind: Environment
+metadata:
+  name: default
+spec:
+  kernel:
+    url: https://github.com/talos-systems/talos/releases/download/v1.4.0/vmlinuz-amd64
+  initrd:
+    url: https://github.com/talos-systems/talos/releases/download/v1.4.0/initramfs-amd64.xz

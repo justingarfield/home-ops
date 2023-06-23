@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+---
+version: '3'
+
+tasks:
+
+  flush-git-repo:
+    desc: Blows-away all commit history (use for major restart or SNAFU e-brake)
+    cmds:
+      - git checkout --orphan latest_branch
+      - git add -A
+      - git commit -am "Initial commit"
+      - git branch -D main
+      - git branch -m main
+      - git push -f origin main

@@ -1,0 +1,12 @@
+---
+###
+# This is a new Sidero Server for one of the Pi 4 Control Plane nodes.
+#
+# Pretty much just a simple patch to accept the server.
+###
+apiVersion: metal.sidero.dev/v1alpha1
+kind: Server
+metadata:
+  name: 00d03114-0000-0000-0000-e45f012f2599
+spec:
+  accepted: true

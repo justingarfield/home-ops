@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+---
+version: '3'
+
+tasks:
+
+  test-api-token:
+    desc: Tests to see if the provided API_KEY is valid.
+    vars:
+      API_KEY: '{{.API_KEY}}'
+    cmds:
+      - 'curl "https://api.cloudflare.com/client/v4/user/tokens/verify" -H "Authorization: Bearer {{.API_KEY}}"'
+
+  scan-dns-records:
+    desc: Asks Cloudflare to scan DNS records for a particular un-verified ZONE_IDENTIFIER.
+    vars:
+      ZONE_IDENTIFIER: '{{.ZONE_IDENTIFIER}}'
+      API_KEY: '{{.API_KEY}}'
+    cmds:
+      - |
+        curl --request POST \
+             --url https://api.cloudflare.com/client/v4/zones/{{.ZONE_IDENTIFIER}}/dns_records/scan \
+             --header 'Content-Type: application/json' \
+             --header 'Authorization: Bearer {{.API_KEY}}'

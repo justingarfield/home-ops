@@ -1,0 +1,126 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+---
+version: '3'
+
+vars:
+  TALOS_DIR: '{{ .REPOSITORY_DIR }}/talos-linux'
+  CLUSTER_API_SERVER_PORT: '{{ .CLUSTER_API_SERVER_PORT | default 6443 }}'
+
+  # renovate: registryUrl=https://helm.cilium.io/ chart=cilium
+  CILIUM_VERSION: '{{ .CILIUM_VERSION | default "v1.14.0-snapshot.3" }}'
+
+tasks:
+
+  generate-secrets-bundle-from-pki-output-folder:
+    desc: Generate a secrets bundle for a Talos environment using pre-generated Single Root CA PKI directory.
+    vars:
+      ORGANIZATION_NAME: '{{ .ORGANIZATION_NAME }}'
+      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
+      K8S_PKI_DIR: '{{ .K8S_PKI_DIR }}'
+      _CLEAN_ORG_NAME: '{{ .ORGANIZATION_NAME | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." "" }}'
+      _CLUSTER_DIR: '{{ .TALOS_DIR }}/{{ .CLUSTER_NAME }}-cluster'
+      _SECRETS_BUNDLE_FILENAME: '{{ ._CLUSTER_DIR }}/secrets-bundle.yaml'
+      _BOOTSTRAP_TOKEN:
+        sh: kubeadm token generate
+    preconditions:
+      - sh: test '{{ .ORGANIZATION_NAME }}'
+        msg: Please provide a valid ORGANIZATION_NAME
+      - sh: test '{{ ._BOOTSTRAP_TOKEN }}'
+        msg: Issues using kubeadm to generate a bootstrap token _BOOTSTRAP_TOKEN
+      - sh: test '{{ .CLUSTER_NAME }}'
+        msg: Please provide a valid CLUSTER_NAME
+      - sh: test '{{ .K8S_PKI_DIR }}'
+        msg: Please provide a valid K8S_PKI_DIR
+      - sh: test -d {{ .K8S_PKI_DIR }}
+        msg: Please provide a valid K8S_PKI_DIR {{ .K8S_PKI_DIR }}
+    cmds:
+      - task: :_core:ensure-directory-exists
+        vars: { DIRECTORY: '{{ ._SECRETS_BUNDLE_FILENAME | dir }}' }
+      - talosctl gen secrets --from-kubernetes-pki "{{ .K8S_PKI_DIR }}" --kubernetes-bootstrap-token {{ ._BOOTSTRAP_TOKEN }} --output-file "{{ ._SECRETS_BUNDLE_FILENAME }}"
+    sources:
+      - '{{ .K8S_PKI_DIR }}'
+    generates:
+      - '{{ ._SECRETS_BUNDLE_FILENAME }}'
+
+  generate-machine-templates:
+    desc: Generate Machine Templates for a particular cluster
+    vars:
+      CLUSTER_NAME: "{{ .CLUSTER_NAME }}"
+      CLUSTER_LOAD_BALANCER_IP: "{{ .CLUSTER_LOAD_BALANCER_IP }}"
+      _CLUSTER_DIR: "{{ .TALOS_DIR }}/{{ .CLUSTER_NAME }}-cluster"
+      _SECRETS_BUNDLE_FILENAME: "{{ ._CLUSTER_DIR }}/secrets-bundle.yaml"
+      _MACHINE_TEMPLATES_DIR: "{{ ._CLUSTER_DIR }}/machine-templates"
+      _CONTROL_PLANE_HOSTNAME: control-plane
+    preconditions:
+      - test {{ .CLUSTER_NAME }}
+      - test {{ .CLUSTER_LOAD_BALANCER_IP }}
+      - test -d {{ ._CLUSTER_DIR }}
+      - test -f {{ ._SECRETS_BUNDLE_FILENAME }}
+    cmds:
+      - |
+        talosctl gen config {{ .CLUSTER_NAME }}-cluster https://{{ ._CONTROL_PLANE_HOSTNAME }}.{{ .CLUSTER_DOMAIN }}:{{ .CLUSTER_API_SERVER_PORT }} \
+          --with-secrets {{ ._SECRETS_BUNDLE_FILENAME }} \
+          --additional-sans {{ ._CONTROL_PLANE_HOSTNAME }},{{ .CLUSTER_LOAD_BALANCER_IP }} \
+          --dns-domain staging.home.arpa \
+          --install-image ghcr.io/siderolabs/installer:v1.4.5 \
+          --kubernetes-version 1.27.2 \
+          --registry-mirror docker.io=http://pull-through-cache.home.arpa:5003,gcr.io=http://pull-through-cache.home.arpa:5001,ghcr.io=http://pull-through-cache.home.arpa:5000,registry.k8s.io=http://pull-through-cache.home.arpa:5002 \
+          --talos-version v1.4.5 \
+          --version v1alpha1 \
+          --with-cluster-discovery=false \
+          --with-docs=false \
+          --with-examples=false \
+          --config-patch='[{"op": "remove", "path": "/machine/certSANs"}]' \
+          --config-patch @{{ ._CLUSTER_DIR }}/machine-patches/all-nodes.patch \
+          --config-patch @{{ ._CLUSTER_DIR }}/machine-patches/systemDiskEncryption.patch \
+          --config-patch-control-plane @{{ ._CLUSTER_DIR }}/machine-patches/cp-nodes.patch \
+          --config-patch-worker @{{ ._CLUSTER_DIR }}/machine-patches/wk-nodes.patch \
+          --output {{ ._MACHINE_TEMPLATES_DIR }}
+      - mv {{ ._MACHINE_TEMPLATES_DIR }}/talosconfig {{ ._CLUSTER_DIR }}
+
+  generate-machine-config:
+    internal: true
+    desc: (no longer used) Generate individual Machine Configs for a particular cluster node
+    vars:
+      CLUSTER_NAME: "{{.CLUSTER_NAME}}"
+      CLUSTER_DIR: "{{.TALOS_DIR}}/{{.CLUSTER_NAME}}-cluster"
+      NODE_TYPE: "{{.NODE_TYPE}}"
+      NODE_NAME: "{{.NODE_NAME}}"
+    cmds:
+      - |
+        talosctl machineconfig patch {{.CLUSTER_DIR}}/machine-templates/{{.NODE_TYPE}}.yaml \
+          --patch @{{.CLUSTER_DIR}}/machine-patches/{{.NODE_NAME}}.patch \
+          --output {{.CLUSTER_DIR}}/machine-configs/{{.NODE_NAME}}.yaml
+
+  apply-machine-config:
+    internal: true
+    desc: (no longer used) Apply a node-specific Machine Config to a particular cluster node
+    vars:
+      CLUSTER_NAME: "{{.CLUSTER_NAME}}"
+      NODE_NAME: "{{.NODE_NAME}}"
+      CLUSTER_DIR: "{{.TALOS_DIR}}/{{.CLUSTER_NAME}}-cluster"
+    cmds:
+      - printf "[home-ops] Applying Talos machine-config to {{.NODE_NAME}}\n"
+      - talosctl apply-config --insecure --nodes {{.NODE_NAME}}.{{.CLUSTER_DOMAIN}} --file {{.CLUSTER_DIR}}/machine-configs/{{.NODE_NAME}}.yaml
+      - printf "[home-ops] Applied Talos machine-config to {{.NODE_NAME}}\n"
+
+  apply-machine-template:
+    internal: true
+    desc: Apply a machine-template to a particular cluster node
+    vars:
+      CLUSTER_NAME: "{{.CLUSTER_NAME}}"
+      NODE_NAME: "{{.NODE_NAME}}"
+      NODE_TYPE: "{{.NODE_TYPE}}"
+      CLUSTER_DIR: "{{.TALOS_DIR}}/{{.CLUSTER_NAME}}-cluster"
+    cmds:
+      - printf "[home-ops] Applying Talos machine-template to {{.NODE_TYPE}} node {{.NODE_NAME}}\n"
+      - talosctl apply-config --insecure --nodes {{.NODE_NAME}}.{{.CLUSTER_DOMAIN}} --file {{.CLUSTER_DIR}}/machine-templates/{{.NODE_TYPE}}.yaml
+      - printf "[home-ops] Applied Talos machine-template to {{.NODE_TYPE}} node {{.NODE_NAME}}\n"
+
+  bootstrap-etcd:
+    internal: false
+    desc: Bootstraps etcd on a particular cluster's '-cp01' node
+    vars:
+      CLUSTER_NAME: "{{.CLUSTER_NAME}}"
+    cmds:
+      - talosctl bootstrap --nodes k8s-cp01.{{.CLUSTER_DOMAIN}}

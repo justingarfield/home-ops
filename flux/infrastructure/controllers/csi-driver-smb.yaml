@@ -1,0 +1,63 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &helmReleaseName csi-driver-smb
+  namespace: csi-driver-smb
+spec:
+  chart:
+    spec:
+      # renovate: registryUrl=https://raw.githubusercontent.com/kubernetes-csi/csi-driver-smb/master/charts
+      chart: csi-driver-smb
+      sourceRef:
+        kind: HelmRepository
+        name: csi-driver-smb
+        namespace: flux-system
+      version: v1.11.0
+  install:
+    crds: Skip
+    remediation:
+      # I set this to larger value than upgrade section, as resource
+      # contention may be a little wonky after a fresh cluster boot.
+      retries: 5
+  interval: 30m
+  maxHistory: 3
+  releaseName: *helmReleaseName
+  upgrade:
+    crds: Skip
+    remediation:
+      retries: 3
+  test:
+    enable: true
+    ignoreFailures: false
+  values:
+    # See: https://github.com/kubernetes-csi/csi-driver-smb/blob/master/charts/v4.2.0/csi-driver-smb/values.yaml
+    controller:
+      replicas: 1
+      runOnControlPlane: false
+      nodeSelector:
+        node-role.kubernetes.io/worker: ""
+    dnsPolicy: ClusterFirst
+    linux:
+      securityContext:
+        # This is necessary only for systems with SELinux, where
+        # non-privileged sidecar containers cannot access unix domain socket
+        # created by privileged CSI driver container.
+        privileged: true
+        runAsUser: 0
+        capabilities:
+          drop: [ ALL ]
+          add:
+            - SYS_ADMIN
+      nodeSelector:
+        node-role.kubernetes.io/worker: ""
+    securityContext:
+      # This is necessary only for systems with SELinux, where
+      # non-privileged sidecar containers cannot access unix domain socket
+      # created by privileged CSI driver container.
+      privileged: true
+      runAsUser: 0
+      capabilities:
+        drop: [ ALL ]
+        add:
+          - SYS_ADMIN

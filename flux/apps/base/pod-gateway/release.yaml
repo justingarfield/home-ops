@@ -1,0 +1,68 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: pod-gateway
+  namespace: pod-gateway
+spec:
+  chart:
+    spec:
+      chart: pod-gateway
+      version: 6.5.1
+      interval: 1h
+      sourceRef:
+        kind: HelmRepository
+        name: angelnu-helm-charts
+        namespace: flux-system
+  interval: 30m
+  # See https://github.com/angelnu/helm-charts/blob/main/charts/apps/pod-gateway/values.yaml
+  values:
+    image:
+      repository: ghcr.io/angelnu/pod-gateway
+      tag: v1.8.1@sha256:690b6365728fe9012ad4cdfca38334992664596513dca187d1b93d2025205776
+    webhook:
+      image:
+        repository: ghcr.io/angelnu/gateway-admision-controller
+        tag: v3.9.0@sha256:4e169da5af107a9c6c784d3e03c89da07fad45f18358ab5b7177662df12d955a
+    addons:
+      vpn:
+        enabled: true
+        type: gluetun
+        gluetun:
+          image:
+            repository: docker.io/qmcgaw/gluetun
+            tag: v3.34.3@sha256:55f6c5b9cd2646b7d3f95c48f2d35e9e01fefa5d927f8636392e104f6d86639b
+        env:
+          - name: VPN_SERVICE_PROVIDER
+            value: private internet access
+          - name: SERVER_REGIONS
+            value: US East
+          - name: VPN_TYPE
+            value: openvpn
+          - name: OPENVPN_PROTOCOL
+            value: udp
+          # Currently need this in K8s to hit Cluster DNS for lookup
+          - name: FIREWALL
+            value: "off"
+          # Currently need this in K8s to hit Cluster DNS for lookup
+          - name: DOT
+            value: "off"
+        envFrom:
+          - secretRef:
+              name: pod-gateway
+        securityContext:
+          # Gluetun Won't run on-top of Talos / Cilium w/o this atm
+          privileged: true
+      networkPolicy:
+        # Using my own Cilium-based Network Policies
+        enabled: false
+    clusterName: ${CLUSTER_DOMAIN}
+    # Needed to get CoreDNS IP listed in /etc/resolv.conf for NAS DNS lookup when mounting SMB share
+    DNSPolicy: ClusterFirst
+    routed_namespaces:
+      - pvr
+    settings:
+      # Don't forget to allow this on your firewall(s)!
+      VPN_TRAFFIC_PORT: ${PIA_UDP_PORT}
+      VPN_LOCAL_CIDRS: 10.96.0.0/12 10.244.0.0/16 172.16.0.0/12 192.168.0.0/16
+      NOT_ROUTED_TO_GATEWAY_CIDRS: 10.96.0.0/12 10.244.0.0/16 172.16.0.0/12 192.168.0.0/16

@@ -1,0 +1,293 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+---
+version: '3'
+
+tasks:
+
+  create-vm:
+    internal: true
+    desc: Creates a new Linux-based virtual machine for a virtualized cluster.
+    vars:
+      VM_NAME: '{{ .VM_NAME }}'
+      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
+      BASE_FOLDER: '{{.BASE_FOLDER}}'
+    preconditions:
+      - sh: test '{{ .VM_NAME }}'
+        msg: Please provide a valid VM_NAME
+      - sh: test '{{ .CLUSTER_NAME }}'
+        msg: Please provide a valid CLUSTER_NAME
+    cmds:
+      - '"{{ .VBOX_MANAGE_BINARY }}" createvm --name="{{ .VM_NAME }}" --basefolder="{{.BASE_FOLDER}}" --groups="/{{ .CLUSTER_NAME }}-cluster" --ostype=Linux_64 --register 1>/dev/null'
+
+  configure-vm:
+    internal: true
+    desc: Configures an existing virtual machine for use in a virtualized cluster.
+    vars:
+      VM_NAME: '{{ .VM_NAME }}'
+      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
+      MAC_ADDRESS: '{{ .MAC_ADDRESS | default "auto" }}'
+      VBOX_BRIDGE_ADAPTER: '{{ .VBOX_BRIDGE_ADAPTER }}'
+      RAM_SIZE_IN_MB: '{{ .RAM_SIZE_IN_MB }}'
+    preconditions:
+      - sh: test '{{ .VM_NAME }}'
+        msg: Please provide a valid VM_NAME
+      - sh: test '{{ .CLUSTER_NAME }}'
+        msg: Please provide a valid CLUSTER_NAME
+      - sh: test '{{ .MAC_ADDRESS }}'
+        msg: Please provide a valid MAC_ADDRESS
+      - sh: test '{{ .VBOX_BRIDGE_ADAPTER }}'
+        msg: Please provide a valid VBOX_BRIDGE_ADAPTER
+    cmds:
+      - |
+        "{{ .VBOX_MANAGE_BINARY }}" modifyvm "{{ .VM_NAME }}" \
+          --memory={{ .RAM_SIZE_IN_MB }} \
+          --cpus={{ .VBOX_CPU_COUNT }} \
+          --firmware=efi64 \
+          --rtc-use-utc=on \
+          --audio-enabled=off \
+          --boot1=disk \
+          --boot2=dvd \
+          --boot3=none \
+          --nic1=bridged \
+          --macaddress1="{{ .MAC_ADDRESS }}" \
+          --bridge-adapter1="{{ .VBOX_BRIDGE_ADAPTER }}" \
+          --hpet=on \
+          --vram=20 \
+          --graphicscontroller=vmsvga \
+          --description="{{ .CLUSTER_NAME }} Cluster Node" \
+          1>/dev/null
+
+  add-piix4-storage-controller-to-vm:
+    internal: true
+    desc: Adds a PIIX4 (IDE) storage controller to an existing virtual machine.
+    vars:
+      VM_NAME: '{{ .VM_NAME }}'
+    preconditions:
+      - sh: test '{{ .VM_NAME }}'
+        msg: Please provide a valid VM_NAME
+    cmds:
+      - '"{{ .VBOX_MANAGE_BINARY }}" storagectl "{{ .VM_NAME }}" --name="PIIX4 (IDE)" --add=ide --controller=PIIX4'
+
+  add-ahci-storage-controller-to-vm:
+    internal: true
+    desc: Adds an AHCI (SATA) storage controller to an existing virtual machine.
+    vars:
+      VM_NAME: '{{ .VM_NAME }}'
+    preconditions:
+      - sh: test '{{ .VM_NAME }}'
+        msg: Please provide a valid VM_NAME
+    cmds:
+      - '"{{ .VBOX_MANAGE_BINARY }}" storagectl "{{ .VM_NAME }}" --name="AHCI (SATA)" --add=sata --controller=IntelAhci --portcount=1'
+
+  attach-talos-livecd-to-vm:
+    internal: true
+    desc: Attaches the Talos Linux ISO Live CD to an existing virtual machine.
+    vars:
+      VM_NAME: '{{ .VM_NAME }}'
+      VBOX_TALOS_LINUX_ISO: '{{ .VBOX_TALOS_LINUX_ISO }}'
+    preconditions:
+      - sh: test '{{ .VM_NAME }}'
+        msg: Please provide a valid VM_NAME
+      - sh: test '{{ .VBOX_TALOS_LINUX_ISO }}'
+        msg: Please provide a valid VBOX_TALOS_LINUX_ISO
+    cmds:
+      - '"{{ .VBOX_MANAGE_BINARY }}" storageattach "{{ .VM_NAME }}" --storagectl="PIIX4 (IDE)" --port=0 --device=0 --type=dvddrive --medium="{{ .VBOX_TALOS_LINUX_ISO }}" --tempeject=on'
+
+  create-virtual-disk-for-vm:
+    internal: true
+    desc: Creates a new Virtual Disk (in VDI format).
+    vars:
+      VM_NAME: '{{ .VM_NAME }}'
+      BASE_FOLDER: '{{.BASE_FOLDER}}'
+    preconditions:
+      - sh: test '{{ .VM_NAME }}'
+        msg: Please provide a valid VM_NAME
+    cmds:
+      - '"{{ .VBOX_MANAGE_BINARY }}" createmedium --filename="{{ .BASE_FOLDER }}\{{ .CLUSTER_NAME }}-cluster\{{ .VM_NAME }}\{{ .VM_NAME }}.vdi" --size={{ .VBOX_HDD_SIZE_IN_MB }} >/dev/null 2>&1'
+
+  create-data-virtual-disk-for-vm:
+    internal: true
+    desc: Creates a new Virtual Disk (in VDI format).
+    vars:
+      VM_NAME: '{{ .VM_NAME }}'
+      BASE_FOLDER: '{{.BASE_FOLDER}}'
+    preconditions:
+      - sh: test '{{ .VM_NAME }}'
+        msg: Please provide a valid VM_NAME
+    cmds:
+      - '"{{ .VBOX_MANAGE_BINARY }}" createmedium --filename="{{ .BASE_FOLDER }}\{{ .CLUSTER_NAME }}-cluster\{{ .VM_NAME }}\{{ .VM_NAME }}-data.vdi" --size={{ .VBOX_HDD_SIZE_IN_MB }} >/dev/null 2>&1'
+
+  attach-virtual-disk-to-vm:
+    internal: true
+    desc: Attaches a Virtual Disk (.VDI) to an existing virtual machine.
+    vars:
+      VM_NAME: '{{ .VM_NAME }}'
+      BASE_FOLDER: '{{.BASE_FOLDER}}'
+    preconditions:
+      - sh: test '{{ .VM_NAME }}'
+        msg: Please provide a valid VM_NAME
+    cmds:
+      - '"{{ .VBOX_MANAGE_BINARY }}" storageattach "{{ .VM_NAME }}" --storagectl="AHCI (SATA)" --port=0 --device=0 --type=hdd --nonrotational=on --medium="{{ .BASE_FOLDER }}\{{ .CLUSTER_NAME }}-cluster\{{ .VM_NAME }}\{{ .VM_NAME }}.vdi"'
+
+  attach-data-virtual-disk-to-vm:
+    internal: true
+    desc: Attaches a Virtual Disk (.VDI) to an existing virtual machine.
+    vars:
+      VM_NAME: '{{ .VM_NAME }}'
+      BASE_FOLDER: '{{.BASE_FOLDER}}'
+    preconditions:
+      - sh: test '{{ .VM_NAME }}'
+        msg: Please provide a valid VM_NAME
+    cmds:
+      - '"{{ .VBOX_MANAGE_BINARY }}" storageattach "{{ .VM_NAME }}" --storagectl="AHCI (SATA)" --port=1 --device=0 --type=hdd --nonrotational=on --medium="{{ .BASE_FOLDER }}\{{ .CLUSTER_NAME }}-cluster\{{ .VM_NAME }}\{{ .VM_NAME }}-data.vdi"'
+
+  create-cluster-node-vm:
+    desc: Creates and configures all the virtualized resources required for a virtualized cluster node.
+    vars:
+      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
+      VM_NAME: '{{ .VM_NAME }}'
+      MAC_ADDRESS: '{{ .MAC_ADDRESS }}'
+      BASE_FOLDER: '{{.BASE_FOLDER}}'
+      VBOX_BRIDGE_ADAPTER: '{{ .VBOX_BRIDGE_ADAPTER }}'
+      RAM_SIZE_IN_MB: '{{ .RAM_SIZE_IN_MB }}'
+      _CREATE_MSG: Creating VM for {{.VM_NAME}}...
+    cmds:
+      - task: :_core:message
+        vars: { MESSAGE: '{{._CREATE_MSG}}' }
+      - task: create-vm
+        vars: { VM_NAME: "{{ .VM_NAME }}", CLUSTER_NAME: "{{ .CLUSTER_NAME }}", BASE_FOLDER: "{{.BASE_FOLDER}}" }
+      - task: configure-vm
+        vars: { VM_NAME: "{{ .VM_NAME }}", CLUSTER_NAME: "{{ .CLUSTER_NAME }}", MAC_ADDRESS: "{{ .MAC_ADDRESS }}", VBOX_BRIDGE_ADAPTER: '{{ .VBOX_BRIDGE_ADAPTER }}', RAM_SIZE_IN_MB: '{{.RAM_SIZE_IN_MB}}' }
+      - task: add-piix4-storage-controller-to-vm
+        vars: { VM_NAME: "{{ .VM_NAME }}" }
+      - task: add-ahci-storage-controller-to-vm
+        vars: { VM_NAME: "{{ .VM_NAME }}" }
+      - task: attach-talos-livecd-to-vm
+        vars: { VM_NAME: "{{ .VM_NAME }}", VBOX_TALOS_LINUX_ISO: "{{ .VBOX_TALOS_LINUX_ISO }}" }
+      - task: create-virtual-disk-for-vm
+        vars: { VM_NAME: "{{ .VM_NAME }}", CLUSTER_NAME: "{{ .CLUSTER_NAME }}", BASE_FOLDER: "{{.BASE_FOLDER}}" }
+      - task: attach-virtual-disk-to-vm
+        vars: { VM_NAME: "{{ .VM_NAME }}", CLUSTER_NAME: "{{ .CLUSTER_NAME }}", BASE_FOLDER: "{{.BASE_FOLDER}}" }
+
+  worker-node-vm-data-disk:
+    desc: worker node data disk stuff
+    vars:
+      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
+      VM_NAME: '{{ .VM_NAME }}'
+      BASE_FOLDER: '{{.BASE_FOLDER}}'
+    cmds:
+      - task: create-data-virtual-disk-for-vm
+        vars: { VM_NAME: "{{ .VM_NAME }}", CLUSTER_NAME: "{{ .CLUSTER_NAME }}", BASE_FOLDER: "{{.BASE_FOLDER}}" }
+      - task: attach-data-virtual-disk-to-vm
+        vars: { VM_NAME: "{{ .VM_NAME }}", CLUSTER_NAME: "{{ .CLUSTER_NAME }}", BASE_FOLDER: "{{.BASE_FOLDER}}" }
+
+  delete-vm:
+    internal: true
+    desc: Deletes an existing virtual machine.
+    vars:
+      VM_NAME: '{{ .VM_NAME }}'
+      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
+    preconditions:
+      - sh: test '{{ .VM_NAME }}'
+        msg: Please provide a valid VM_NAME
+      - sh: test '{{ .CLUSTER_NAME }}'
+        msg: Please provide a valid CLUSTER_NAME
+    cmds:
+      - '"{{ .VBOX_MANAGE_BINARY }}" unregistervm "{{ .VM_NAME }}" --delete || true'
+
+  start-vm:
+    internal: true
+    desc: Starts a particular VM in headless mode
+    vars:
+      VM_NAME: '{{ .VM_NAME }}'
+    preconditions:
+      - sh: test '{{ .VM_NAME }}'
+        msg: Please provide a valid VM_NAME
+    cmds:
+      - '"{{ .VBOX_MANAGE_BINARY }}" startvm "{{ .VM_NAME }}" --type=headless 1>/dev/null || true'
+
+  start-cluster:
+    desc: Starts the VMs associate with a particular virtualized cluster.
+    vars:
+      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
+    preconditions:
+      - sh: test '{{ .CLUSTER_NAME }}'
+        msg: Please provide a valid CLUSTER_NAME
+    cmds:
+      - task: start-vm
+        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp02" }
+      - task: :_core:sleep-for-resource-contention
+      - task: start-vm
+        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp03" }
+      - task: :_core:sleep-for-resource-contention
+      - task: start-vm
+        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-wk01" }
+
+  stop-vm:
+    internal: true
+    desc: Pushes the power button for a particular VM
+    vars:
+      VM_NAME: '{{ .VM_NAME }}'
+    cmds:
+      - '"{{ .VBOX_MANAGE_BINARY }}" controlvm "{{ .VM_NAME }}" acpipowerbutton || true'
+
+  stop-cluster:
+    desc: Stops the VMs associate with a particular virtualized cluster.
+    vars:
+      CLUSTER_NAME: '{{ .CLUSTER_NAME | default "staging" }}'
+    cmds:
+      - task: stop-vm
+        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp01" }
+      - task: stop-vm
+        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp02" }
+      - task: stop-vm
+        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp03" }
+      - task: stop-vm
+        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-wk01" }
+
+  delete-cluster:
+    desc: Deletes the VMs associate with a particular virtualized cluster.
+    vars:
+      CLUSTER_NAME: '{{ .CLUSTER_NAME | default "staging" }}'
+    cmds:
+      - task: delete-vm
+        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp01" }
+      - task: delete-vm
+        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp02" }
+      - task: delete-vm
+        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp03" }
+      - task: delete-vm
+        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-wk01" }
+
+  create-cluster:
+    desc: Builds-out a virtualized Kubernetes 3-node Control Plane / 2-node Worker Plane using Talos Linux.
+    vars:
+      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
+    preconditions:
+      - sh: test '{{ .CLUSTER_NAME }}'
+        msg: Please provide a valid CLUSTER_NAME
+    cmds:
+      - task: create-cluster-node-vm
+        vars: { CLUSTER_NAME: "{{ .CLUSTER_NAME }}", VM_NAME: "{{ .CLUSTER_NAME }}-cp01", MAC_ADDRESS: "001337133701", BASE_FOLDER: "{{.VBOX_CP_FOLDER}}", VBOX_BRIDGE_ADAPTER: '{{ .VBOX_BRIDGE_ADAPTER_1 }}' }
+      - task: create-cluster-node-vm
+        vars: { CLUSTER_NAME: "{{ .CLUSTER_NAME }}", VM_NAME: "{{ .CLUSTER_NAME }}-cp02", MAC_ADDRESS: "001337133702", BASE_FOLDER: "{{.VBOX_CP_FOLDER}}", VBOX_BRIDGE_ADAPTER: '{{ .VBOX_BRIDGE_ADAPTER_2 }}' }
+      - task: create-cluster-node-vm
+        vars: { CLUSTER_NAME: "{{ .CLUSTER_NAME }}", VM_NAME: "{{ .CLUSTER_NAME }}-cp03", MAC_ADDRESS: "001337133703", BASE_FOLDER: "{{.VBOX_CP_FOLDER}}", VBOX_BRIDGE_ADAPTER: '{{ .VBOX_BRIDGE_ADAPTER_3 }}' }
+      - task: create-cluster-node-vm
+        vars: { CLUSTER_NAME: "{{ .CLUSTER_NAME }}", VM_NAME: "{{ .CLUSTER_NAME }}-wk01", MAC_ADDRESS: "001337133704", BASE_FOLDER: "{{.VBOX_WK_FOLDER}}", VBOX_BRIDGE_ADAPTER: '{{ .VBOX_BRIDGE_ADAPTER_4 }}' }
+
+  snapshot-cluster:
+    desc: Snapshots a virtualized Kubernetes 3-node Control Plane / 2-node Worker Plane.
+    vars:
+      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
+      SNAPSHOT_NAME: '{{ .SNAPSHOT_NAME }}'
+      SNAPSHOT_DESCRIPTION: '{{ .SNAPSHOT_DESCRIPTION | default "" }}'
+    cmds:
+      - task: snapshot-vm
+        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp01", SNAPSHOT_NAME: "{{ .SNAPSHOT_NAME }}", SNAPSHOT_DESCRIPTION: "{{ .SNAPSHOT_DESCRIPTION }}" }
+      - task: snapshot-vm
+        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp02", SNAPSHOT_NAME: "{{ .SNAPSHOT_NAME }}", SNAPSHOT_DESCRIPTION: "{{ .SNAPSHOT_DESCRIPTION }}" }
+      - task: snapshot-vm
+        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp03", SNAPSHOT_NAME: "{{ .SNAPSHOT_NAME }}", SNAPSHOT_DESCRIPTION: "{{ .SNAPSHOT_DESCRIPTION }}" }
+      - task: snapshot-vm
+        vars: { VM_NAME: "{{.CLUSTER_NAME}}-wk01", SNAPSHOT_NAME: "{{.SNAPSHOT_NAME}}", SNAPSHOT_DESCRIPTION: "{{.SNAPSHOT_DESCRIPTION}}" }

@@ -1,0 +1,5 @@
+_old/
+_out/
+.task/
+Taskfile.yaml
+.env.*
