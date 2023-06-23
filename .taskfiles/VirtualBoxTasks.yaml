@@ -27,6 +27,7 @@ tasks:
       CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
       MAC_ADDRESS: '{{ .MAC_ADDRESS | default "auto" }}'
       VBOX_BRIDGE_ADAPTER: '{{ .VBOX_BRIDGE_ADAPTER }}'
+      RAM_SIZE_IN_MB: '{{ .RAM_SIZE_IN_MB }}'
     preconditions:
       - sh: test '{{ .VM_NAME }}'
         msg: Please provide a valid VM_NAME
@@ -39,7 +40,7 @@ tasks:
     cmds:
       - |
         "{{ .VBOX_MANAGE_BINARY }}" modifyvm "{{ .VM_NAME }}" \
-          --memory={{ .VBOX_RAM_SIZE_IN_MB }} \
+          --memory={{ .RAM_SIZE_IN_MB }} \
           --cpus={{ .VBOX_CPU_COUNT }} \
           --firmware=efi64 \
           --rtc-use-utc=on \
@@ -124,11 +125,12 @@ tasks:
       MAC_ADDRESS: '{{ .MAC_ADDRESS }}'
       BASE_FOLDER: '{{.BASE_FOLDER}}'
       VBOX_BRIDGE_ADAPTER: '{{ .VBOX_BRIDGE_ADAPTER }}'
+      RAM_SIZE_IN_MB: '{{ .RAM_SIZE_IN_MB }}'
     cmds:
       - task: create-vm
         vars: { VM_NAME: "{{ .VM_NAME }}", CLUSTER_NAME: "{{ .CLUSTER_NAME }}", BASE_FOLDER: "{{.BASE_FOLDER}}" }
       - task: configure-vm
-        vars: { VM_NAME: "{{ .VM_NAME }}", CLUSTER_NAME: "{{ .CLUSTER_NAME }}", MAC_ADDRESS: "{{ .MAC_ADDRESS }}", VBOX_BRIDGE_ADAPTER: '{{ .VBOX_BRIDGE_ADAPTER }}' }
+        vars: { VM_NAME: "{{ .VM_NAME }}", CLUSTER_NAME: "{{ .CLUSTER_NAME }}", MAC_ADDRESS: "{{ .MAC_ADDRESS }}", VBOX_BRIDGE_ADAPTER: '{{ .VBOX_BRIDGE_ADAPTER }}', RAM_SIZE_IN_MB: '{{.RAM_SIZE_IN_MB}}' }
       - task: add-piix4-storage-controller-to-vm
         vars: { VM_NAME: "{{ .VM_NAME }}" }
       - task: add-ahci-storage-controller-to-vm
