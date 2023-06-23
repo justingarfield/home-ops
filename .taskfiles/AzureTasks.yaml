@@ -100,7 +100,7 @@ tasks:
         msg: PRIVATE_DNS_ZONE
       - test ! {{ .EXISTING_SPN }}
     cmds:
-      - ./scripts/create-dns-contrib-sp.sh "{{ .AZURE_DNS_CONTRIB_SP_NAME }}" "{{ .AZURE_DNS_ZONE_RESOURCE_GROUP }}" "{{ .PUBLIC_DNS_ZONE }}" "{{ .PRIVATE_DNS_ZONE }}"
+      - ./scripts/azure/create-dns-contrib-sp.sh "{{ .AZURE_DNS_CONTRIB_SP_NAME }}" "{{ .AZURE_DNS_ZONE_RESOURCE_GROUP }}" "{{ .PUBLIC_DNS_ZONE }}" "{{ .PRIVATE_DNS_ZONE }}"
 
   create-cert-manager-sp:
     desc: Creates a new Service Principal for cert-manager to use.

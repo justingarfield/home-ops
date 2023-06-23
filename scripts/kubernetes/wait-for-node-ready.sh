@@ -6,7 +6,7 @@
 
 ### Usage
 # This script expects to be passed a Kubernetes node's hostname as the only argument
-# e.g: ./wait-for-node-ready.sh k8s-cp02
+# e.g: ./scripts/kubernetes/wait-for-node-ready.sh k8s-cp02
 
 ### Configurable bits
 # Number of seconds to sleep for each retry

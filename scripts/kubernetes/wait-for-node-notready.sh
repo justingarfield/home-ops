@@ -7,7 +7,7 @@
 
 ### Usage
 # This script expects to be passed the first control-plane node's hostname as the only argument
-# e.g: ./wait-for-node-notready.sh k8s-cp01
+# e.g: ./scripts/kubernetes/wait-for-node-notready.sh k8s-cp01
 
 ### Configurable bits
 # Number of seconds to sleep for each retry
