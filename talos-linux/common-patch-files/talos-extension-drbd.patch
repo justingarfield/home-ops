@@ -3,7 +3,7 @@
 
 # This patch file:
 #   * Tells Talos to install the drbd extension
-#   * Configures values required for drbd to work with Talos
+#   * Configures kernel values required for drbd to work with Talos
 
 machine:
   install:
