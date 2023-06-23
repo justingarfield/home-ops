@@ -1,6 +1,10 @@
 ---
 # yaml-language-server: $schema=https://talos.dev/v1.4/schemas/v1alpha1_config.schema.json
+
+# This patch file:
+#   * Applies a label named "bgp-peering-policy" with a value of "OPNsense" to a
+#     node. It is used for Cilium + OPNsense BGP integration.
+
 machine:
   nodeLabels:
-    # Allow Cilium to apply opnsense BGP Policies
-    bgp-peering-policy: opnsense
+    bgp-peering-policy: OPNsense

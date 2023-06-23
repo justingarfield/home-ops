@@ -1,5 +1,10 @@
 ---
 # yaml-language-server: $schema=https://talos.dev/v1.4/schemas/v1alpha1_config.schema.json
+
+# This patch file:
+#   * Tells Talos not to provision its default CNI (flannel) into the cluster
+#   * Tells Talos not to install kube-proxy (for Cilium Agent replacement)
+
 cluster:
   network:
     cni:

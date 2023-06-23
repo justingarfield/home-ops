@@ -1,8 +1,0 @@
----
-# yaml-language-server: $schema=https://talos.dev/v1.4/schemas/v1alpha1_config.schema.json
-machine:
-  systemDiskEncryption:
-    ephemeral:
-      keys:
-        - static:
-            passphrase: V7N6Aw^JDCspm{#,e?=0WLZ_@xT}eEn2

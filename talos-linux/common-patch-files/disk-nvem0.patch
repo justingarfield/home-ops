@@ -3,10 +3,10 @@
 
 # This patch file:
 #   * Tells Talos that a node has an additional disk device to format
-#     and partition located at /dev/sdb; mounts it at /var/mnt/sdb.
+#     and partition located at /dev/nvem0; mounts it at /var/mnt/nvem0.
 
 machine:
   disks:
-    - device: /dev/sdb
+    - device: /dev/nvme0
       partitions:
-        - mountpoint: /var/mnt/sdb
+        - mountpoint: /var/mnt/nvme0

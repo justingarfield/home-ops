@@ -1,5 +1,10 @@
 ---
 # yaml-language-server: $schema=https://talos.dev/v1.4/schemas/v1alpha1_config.schema.json
+
+# This patch file:
+#   * Applies a label named "node-role.kubernetes.io/worker" with a value of
+#     "true" to a node. It is used for worker nodes in the data plane.
+
 machine:
   nodeLabels:
     node-role.kubernetes.io/worker: "true"
