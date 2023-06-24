@@ -8,6 +8,7 @@ vars:
 
   # renovate: registryUrl=https://helm.cilium.io/ chart=cilium
   CILIUM_VERSION: '{{ .CILIUM_VERSION | default "v1.14.0-snapshot.3" }}'
+  TALOS_OUT_DIR: '{{ .OUTPUT_DIR }}/talos-linux'
 
 tasks:
 
@@ -111,9 +112,6 @@ tasks:
           --config-patch-control-plane @{{ .TALOS_DIR }}/cilium-opnsense-bgp-peering-policy.patch \
           --config-patch-control-plane @{{ .TALOS_DIR }}/disable-cni-and-kube-proxy.patch \
           --config-patch-worker @{{ .TALOS_DIR }}/disk-sdb.patch \
-          --config-patch-worker @{{ .TALOS_DIR }}/disk-sdc.patch \
-          --config-patch-worker @{{ .TALOS_DIR }}/disk-nvme0n1.patch \
-          --config-patch-worker @{{ .TALOS_DIR }}/disk-nvme1n1.patch \
           --config-patch-worker @{{ .TALOS_DIR }}/kubelet-unsafe-sysctls.patch \
           --config-patch-worker @{{ .TALOS_DIR }}/label-worker-node.patch \
           --config-patch @{{ .TALOS_DIR }}/machine-cert-sans.patch \
