@@ -1,12 +1,4 @@
 
-## Folders and Stuff
-
-| Folder | Description |
-|-|-|
-| `sidero-metal` | Files used to provision Sidero Metal related resources. |
-| `talos-linux`  | Files used to provision Talos Linux related resources.  |
-| `Makefile`     | Just my own scratch-pad of commands I've been screwing with to build this out (here for examples)<br />Be **_REALLLY_** careful if you decide to run any targets in here. |
-
 ## Observations
 
 ### Versions being used

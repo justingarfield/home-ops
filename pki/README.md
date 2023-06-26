@@ -26,7 +26,7 @@ task tooling:install-cfssl-toolkit
 
 The files located under this folder have tokens that will get replaced when running the corresponding tasks associated with them.
 
-This allows creation of multiple certificates, without repeating a majority of the JSON involved, reducing room for error.
+This allows creation of multiple certificates, without repeating a majority of the JSON involved, increasing consistency and reducing room for error.
 
 | Token | Purpose | Used In |
 |-|-|-|
@@ -42,8 +42,14 @@ This allows creation of multiple certificates, without repeating a majority of t
 | `USER_NAME`                         |  |  |
 | `CLUSTER_NAME`                      |  |  |
 
+## Troubleshooting
+
+### max_path_len
+
+```<add blurb about max_path_len here>```
+
 ## References
 
-https://stackoverflow.com/questions/6616470/certificates-basic-constraints-path-length
-https://propellered.com/posts/cfssl_setting_up/
-https://security.stackexchange.com/questions/183681/cfssl-example-certificate-chain-verification-failure
+* https://stackoverflow.com/questions/6616470/certificates-basic-constraints-path-length
+* https://propellered.com/posts/cfssl_setting_up/
+* https://security.stackexchange.com/questions/183681/cfssl-example-certificate-chain-verification-failure

@@ -1,5 +1,5 @@
-# yaml-language-server: $schema=https://taskfile.dev/schema.json
 ---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: '3'
 
 # See: https://stackoverflow.com/questions/13732826/convert-pem-to-crt-and-key
