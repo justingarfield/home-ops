@@ -69,7 +69,7 @@ resource "cloudflare_record" "cname_enterpriseregistration" {
 
 resource "cloudflare_record" "cname_domain_apex" {
   zone_id = var.cloudflare_zone_id
-  name    = "@"
+  name    = "${var.domain_name}"
   type    = "CNAME"
 
   value   = "justingarfield.github.io"
@@ -160,13 +160,14 @@ resource "cloudflare_record" "cname_www" {
 }
 
 resource "cloudflare_record" "mx_domain_apex" {
-  zone_id = var.cloudflare_zone_id
-  name    = "@"
-  type    = "MX"
+  zone_id  = var.cloudflare_zone_id
+  name     = "${var.domain_name}"
+  type     = "MX"
 
-  value   = "${local.domain_key}.mail.protection.outlook.com"
-  comment = "Microsoft Exchange - Mail exchanger"
-  # tags    = toset([
+  value    = "${local.domain_key}.mail.protection.outlook.com"
+  comment  = "Microsoft Exchange - Mail exchanger"
+  priority = 0
+  # tags     = toset([
   #   "production",
   #   "microsoft-office-365",
   #   "microsoft-exchange",
@@ -182,7 +183,7 @@ resource "cloudflare_record" "srv__sipfederationtls_tcp" {
   data {
     service  = "_sipfederationtls"
     proto    = "_tcp"
-    name     = "@"
+    name     = "${var.domain_name}"
     priority = 100
     weight   = 1
     port     = 5061
@@ -205,7 +206,7 @@ resource "cloudflare_record" "srv__sip_tls" {
   data {
     service  = "_sip"
     proto    = "_tls"
-    name     = "@"
+    name     = "${var.domain_name}"
     priority = 100
     weight   = 1
     port     = 443
@@ -237,7 +238,7 @@ resource "cloudflare_record" "txt__dmarc" {
 
 resource "cloudflare_record" "txt_domain_apex" {
   zone_id = var.cloudflare_zone_id
-  name    = "@"
+  name    = "${var.domain_name}"
   type    = "TXT"
 
   value   = "v=spf1 include:_spf.mailersend.net include:spf.protection.outlook.com ~all"
