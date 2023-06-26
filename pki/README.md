@@ -2,28 +2,45 @@
 
 ## Pre-requisites
 
-This area assumes that you've installed the cfssl-toolkit binaries...
+This area assumes that you've installed the [cfssl toolkit](https://github.com/cloudflare/cfssl) binaries...
 
 ```shell
 task tooling:install-cfssl-toolkit
 ```
 
-## Tokenized Files
+## Directory layout
+
+```sh
+📂 pki
+├─📁 cfssl-templates                         # Tokenized JSON template files used to create cfssl certificates
+│ ├─📄 kubernetes-intermediate-ca-csr.json   #
+│ ├─📄 root-ca-csr.json                      #
+│ ├─📄 root-client-certificate-csr.json      #
+│ ├─📄 server-certificate-csr.json           #
+│ ├─📄 site-client-certificate-csr.json      #
+│ └─📄 site-intermediate-ca-csr.json         #
+└─📄 cfssl-profiles.json                     # cfssl certificate profiles used when generating certificates
+```
+
+## cfssl-templates folder
 
 The files located under this folder have tokens that will get replaced when running the corresponding tasks associated with them.
 
-This allows me to share as-much of my workflow with you as possible, but not expose what my actual Site Names, DNS, OU, etc. actually are.
+This allows creation of multiple certificates, without repeating a majority of the JSON involved, reducing room for error.
 
-### Replaceable Tokens Provided
-
-|  |||
+| Token | Purpose | Used In |
 |-|-|-|
-| `CERT_COUNTRY` |  |  |
-| `CERT_STATE` |  |  |
-| `CERT_LOCATION` |  |  |
-| `ORGANIZATION_NAME` |  |  |
-| `SITE_NAME` |  |  |
-| `CERT_DOMAIN` |  |  |
+| `ORGANIZATION_COUNTRY_CODE`         | Used for the Organization's Country              | All templates |
+| `ORGANIZATION_STATE_PROVINCE_CODE`  | Used for the Organization's State/Province       | All templates |
+| `ORGANIZATION_LOCATION`             | Used for the Organization's City/Town            | All templates |
+| `ORGANIZATION_NAME`                 | Used for the Organization's Legal Name           | All templates |
+| `ORGANIZATION_ADMINISTRATIVE_EMAIL` | Used for the Organization's Administrative Email | All templates |
+| `CERT_CN`                           |  |  |
+| `SITE_NAME`                         |  |  |
+| `SERVER_NAME`                       |  |  |
+| `SERVER_IP`                         |  |  |
+| `USER_NAME`                         |  |  |
+| `CLUSTER_NAME`                      |  |  |
 
 ## References
 

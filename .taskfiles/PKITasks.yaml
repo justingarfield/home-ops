@@ -15,7 +15,6 @@ vars:
     | (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_ADMINISTRATIVE_EMAIL>", "{{.ORGANIZATION_ADMINISTRATIVE_EMAIL}}")
     | (.. | select(tag == "!!str")) |= sub("<CERT_CN>", "{{.CERT_CN}}")
     | (.. | select(tag == "!!str")) |= sub("<SITE_NAME>", "{{.SITE_NAME}}")
-    | (.. | select(tag == "!!str")) |= sub("<FUNCTION>", "{{.FUNCTION}}")
     | (.. | select(tag == "!!str")) |= sub("<SERVER_NAME>", "{{.SERVER_NAME}}")
     | (.. | select(tag == "!!str")) |= sub("<SERVER_IP>", "{{.SERVER_IP}}")
     | (.. | select(tag == "!!str")) |= sub("<USER_NAME>", "{{.USER_NAME}}")
