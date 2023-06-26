@@ -42,7 +42,7 @@ resource "cloudflare_record" "cname_enterpriseenrollment" {
   name    = "enterpriseenrollment"
   type    = "CNAME"
 
-  value   = "enterpriseenrollment.manage.microsoft.com"
+  value   = "enterpriseenrollment-s.manage.microsoft.com"
   comment = "Azure Active Directory (AAD) - Mobile Device Management (MDM) Enrollment"
   tags    = toset([
     "Production",

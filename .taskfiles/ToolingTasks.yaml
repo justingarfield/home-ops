@@ -45,7 +45,7 @@ vars:
   TALOSCTL_VERSION: v1.4.5
 
   # TODO: Need to investigate how to version this properly
-  TERRAFORM_VERSION: 1.4.5
+  TERRAFORM_VERSION: 1.5.1
 
   # renovate: datasource=github-releases depName=cilium/tetragon
   TETRAGON_VERSION: v0.9.0
@@ -434,7 +434,7 @@ tasks:
       DOWNLOAD_URL: https://releases.hashicorp.com/terraform/{{.TERRAFORM_VERSION}}/{{.DOWNLOAD_FILENAME}}
       USR_LOCAL_BIN_FILENAME: /usr/local/bin/terraform-{{.TERRAFORM_VERSION}}
     preconditions:
-      - sh: curl --location --silent --show-error --fail --head {{.DOWNLOAD_URL}}
+      - sh: curl --location --silent --fail --head {{.DOWNLOAD_URL}}
         msg: |
           terraform cannot be found at provided URL: {{.DOWNLOAD_URL}} (it's possible the provider changed their download location for release files)
     cmds:
@@ -444,8 +444,6 @@ tasks:
       - sudo install -o root -g root -m 0755 {{.DOWNLOADS_DIRECTORY}}/terraform /usr/local/bin/terraform-{{.TERRAFORM_VERSION}}
       - sudo ln --force /usr/local/bin/terraform-{{.TERRAFORM_VERSION}} /usr/local/bin/terraform
       - rm {{.DOWNLOADS_DIRECTORY}}/{{.DOWNLOAD_FILENAME}} {{.DOWNLOADS_DIRECTORY}}/terraform
-    status:
-      - test -f {{.USR_LOCAL_BIN_FILENAME}}
 
   install-vagrant:
     desc: Install vagrant
