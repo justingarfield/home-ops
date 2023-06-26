@@ -19,7 +19,11 @@ provider "cloudflare" {
 }
 
 locals {
+  # turns "domain.com" into "domain-com"
   domain_key = replace(var.domain_name, ".", "-")
+
+  # removes ".onmicrosoft.com" suffix if it was included
+  onmicrosoft = replace(var.onmicrosoft_domain_name, ".onmicrosoft.com", "")
 }
 
 resource "cloudflare_record" "cname_autodiscover" {
@@ -103,7 +107,7 @@ resource "cloudflare_record" "cname_dkim_selector1" {
   name    = "selector1._domainkey"
   type    = "CNAME"
 
-  value   = "selector1-${local.domain_key}._domainkey.${var.onmicrosoft_domain_name}.onmicrosoft.com"
+  value   = "selector1-${local.domain_key}._domainkey.${local.onmicrosoft}.onmicrosoft.com"
   comment = "Microsoft Exchange - DKIM"
   # tags    = toset([
   #   "production",
@@ -118,7 +122,7 @@ resource "cloudflare_record" "cname_dkim_selector2" {
   name    = "selector2._domainkey"
   type    = "CNAME"
 
-  value   = "selector2-${local.domain_key}._domainkey.${var.onmicrosoft_domain_name}.onmicrosoft.com"
+  value   = "selector2-${local.domain_key}._domainkey.${local.onmicrosoft}.onmicrosoft.com"
   comment = "Microsoft Exchange - DKIM"
   # tags    = toset([
   #   "production",

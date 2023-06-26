@@ -47,4 +47,3 @@ task
 * https://github.com/onedr0p/home-ops
 * https://github.com/bjw-s/home-ops
 * https://k8s-at-home.com/
-das

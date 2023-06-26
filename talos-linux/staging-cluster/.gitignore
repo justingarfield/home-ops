@@ -1,6 +1,0 @@
-machine-templates/controlplane.yaml
-machine-templates/worker.yaml
-
-cilium.yaml
-secrets-bundle.yaml
-talosconfig
