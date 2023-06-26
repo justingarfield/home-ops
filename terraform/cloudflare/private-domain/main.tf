@@ -20,5 +20,4 @@ provider "cloudflare" {
 
 locals {
   domain_key = replace(var.domain_name, ".", "-")
-  onmicrosoft_domain_name = "powerislife"
 }
