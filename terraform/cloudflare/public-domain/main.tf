@@ -2,16 +2,16 @@ terraform {
   required_providers {
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "~> 4.0"
+      version = "~> 4.8.0"
     }
   }
 
-  # backend "azurerm" {
-  #   resource_group_name  = "rg-tenant-provisioning"
-  #   storage_account_name = "satenantprovisioningjpg"
-  #   container_name       = "terraform-state-files"
-  #   key                  = "terraform-azure-provisioning.tfstate"
-  # }
+  backend "azurerm" {
+    resource_group_name  = "terraform"
+    storage_account_name = "jpg-home-ops-terraform"
+    container_name       = "terraform-state-files"
+    key                  = "azure-public-domain.tfstate"
+  }
 }
 
 provider "cloudflare" {

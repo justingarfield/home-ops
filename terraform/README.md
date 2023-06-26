@@ -12,14 +12,13 @@ task tooling:install-terraform
 
 ```sh
 📂 terraform
-├─📁 azure-provisioning
-└─📁 cloudflare
-  ├─📁 private-domain
-  │ ├─📄 main.tf          # Provisions all of the DNS records required under my private domain
-  │ └─📄 variables.tf     # Variables and validation required for main.tf to function properly
-  └─📁 public-domain
-    ├─📄 main.tf          # Provisions all of the DNS records required under my public domain
-    └─📄 variables.tf     # Variables and validation required for main.tf to function properly
+├─📁 azure
+│ └─📁 terraform-state    # Provisions Azure-backed State Storage (if using, run before any other Terraform deployments)
+├─📁 cloudflare
+│ ├─📁 private-domain     # Provisions all of the DNS records required under my private domain
+│ └─📁 public-domain      # Provisions all of the DNS records required under my public domain
+└─📁 oracle
+  └─📁 free-account       # Coming soon!
 ```
 
 ## Azure
@@ -43,6 +42,10 @@ terraform import cloudflare_record.<resource_name> <zone id>/<record id>
 ```
 
 Note: Being new to Cloudflare recently, the fastest way I found to grab the record ids was to open F12 Dev Tools to the Network tab for XHR, then load the DNS -> Records page, and look for a call to `https://dash.cloudflare.com/api/v4/zones/<zone id>/dns_records?per_page=50`
+
+## Oracle
+
+Coming soon! I plan to introduce some of the Oracle Cloud Free Account tier resources here, such as ARM-based Compute.
 
 ## References
 

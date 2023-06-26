@@ -4,12 +4,6 @@ variable "location" {
   default     = "East US 2"
 }
 
-variable "tenantRootDisplayName" {
-  type        = string
-  description = "The Display Name of the Azure Tenant's Root Management Group"
-  default     = "Tenant Root Group"
-}
-
 variable "billingAccountId" {
   type        = string
   description = "The Id of the Azure Billing Account to place the Terraform provisioning Subscription under"
