@@ -2,11 +2,11 @@
 apiVersion: cilium.io/v2alpha1
 kind: CiliumBGPPeeringPolicy
 metadata:
-  name: ${CILIUM_BGP_PEERING_POLICY_NAME}
+  name: OPNsense
 spec:
   nodeSelector:
     matchLabels:
-      bgp-peering-policy: ${CILIUM_BGP_PEERING_POLICY_NAME}
+      bgp-peering-policy: OPNsense
   virtualRouters:
     - localASN: ${CILIUM_BGP_PEERING_POLICY_LOCAL_ASN}
       # I want my pods behind an Ingress / API Gateway.

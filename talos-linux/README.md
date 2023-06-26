@@ -8,23 +8,25 @@ I may change this down the road if I start to have configuration values that end
 
 ```sh
 📂 talos-linux
-├─📁 cilium-opnsense-bgp-peering-policy.patch
-├─📁 disable-cni-and-kube-proxy.patch
-├─📁 disk-nvme.patch
-├─📁 disk-nvme.patch
-├─📁 disk-sd.patch
-├─📁 disk-sd.patch
-├─📁 disk-sd.patch
-├─📁 kubelet-unsafe-sysctls.patch
-├─📁 label-worker-node.patch
-├─📁 machine-cert-sans.patch
-├─📁 system-disk-encryption.patch
-└─📁 talos-extension-drbd.patch
+├─📄 cilium-opnsense-bgp-peering-policy.patch
+├─📄 disable-cni-and-kube-proxy.patch
+├─📄 disk-nvme.patch
+├─📄 disk-nvme.patch
+├─📄 disk-sd.patch
+├─📄 disk-sd.patch
+├─📄 disk-sd.patch
+├─📄 kubelet-unsafe-sysctls.patch
+├─📄 label-worker-node.patch
+├─📄 machine-cert-sans.patch
+├─📄 system-disk-encryption.patch
+└─📄 talos-extension-drbd.patch
 ```
 
 ## cilium-opnsense-bgp-peering-policy
 
-Applies a label named "bgp-peering-policy" with a value of "OPNsense" to a node. It is used for Cilium + OPNsense BGP integration.
+Applies a label named `bgp-peering-policy` with a value of `OPNsense` to a node.
+
+This is used to make sure that Cilium matches the node properly when reconciling `CiliumBGPPeeringPolicy/OPNsense` later on. See: `/home-ops/flux/infrastructure/config/cilium.yaml` for more details.
 
 ## disable-cni-and-kube-proxy
 

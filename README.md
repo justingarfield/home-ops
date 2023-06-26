@@ -15,6 +15,7 @@ As-such, all scripts and configuration files in this repository have been tokeni
 ├─📁 .ci             # Continuous Integration (CI) tooling configurations
 ├─📁 .github         # GitHub Workflow and template items
 ├─📁 .taskfiles      # This repo uses Taskfiles vs. Makefiles (see https://taskfile.dev)
+├─📁 .vscode         # Recommended extensions and settings for this repo
 ├─📁 assets          # Random assets used in repo documentation / charts / graphs
 ├─📁 docker          # Docker Compose files used for a local Container Registry and Pull-through-caches
 ├─📁 docs            # Folder containing detailed documentation about this repository
