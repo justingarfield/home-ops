@@ -47,9 +47,9 @@ spec:
         ingressClassName: cilium
         annotations:
           hajimari.io/icon: music-box
-          cert-manager.io/cluster-issuer: letsencrypt
+          cert-manager.io/cluster-issuer: home-arpa
         hosts:
-          - host: &host "{{ .Release.Name }}.${PUBLIC_DNS_ZONE}"
+          - host: &host "{{.Release.Name}}.${INTERNAL_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
