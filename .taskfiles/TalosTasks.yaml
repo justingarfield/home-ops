@@ -24,20 +24,20 @@ tasks:
       _BOOTSTRAP_TOKEN:
         sh: kubeadm token generate
     preconditions:
-      - sh: test '{{ .ORGANIZATION_NAME }}'
+      - sh: test '{{.ORGANIZATION_NAME }}'
         msg: Please provide a valid ORGANIZATION_NAME
-      - sh: test '{{ ._BOOTSTRAP_TOKEN }}'
+      - sh: test '{{._BOOTSTRAP_TOKEN }}'
         msg: Issues using kubeadm to generate a bootstrap token _BOOTSTRAP_TOKEN
-      - sh: test '{{ .CLUSTER_NAME }}'
+      - sh: test '{{.CLUSTER_NAME}}'
         msg: Please provide a valid CLUSTER_NAME
-      - sh: test '{{ .K8S_PKI_DIR }}'
+      - sh: test '{{.K8S_PKI_DIR}}'
         msg: Please provide a valid K8S_PKI_DIR
-      - sh: test -d {{ .K8S_PKI_DIR }}
-        msg: Please provide a valid K8S_PKI_DIR {{ .K8S_PKI_DIR }}
+      - sh: test -d {{.K8S_PKI_DIR}}
+        msg: Please provide a valid K8S_PKI_DIR {{.K8S_PKI_DIR}}
     cmds:
       - task: :_core:ensure-directory-exists
-        vars: { DIRECTORY: '{{ ._SECRETS_BUNDLE_FILENAME | dir }}' }
-      - talosctl gen secrets --from-kubernetes-pki "{{ .K8S_PKI_DIR }}" --kubernetes-bootstrap-token {{ ._BOOTSTRAP_TOKEN }} --output-file "{{ ._SECRETS_BUNDLE_FILENAME }}"
+        vars: { DIRECTORY: '{{._SECRETS_BUNDLE_FILENAME | dir}}' }
+      - talosctl gen secrets --from-kubernetes-pki "{{.K8S_PKI_DIR}}" --kubernetes-bootstrap-token {{._BOOTSTRAP_TOKEN}} --output-file "{{.TALOS_OUT_DIR}}/{{._SECRETS_BUNDLE_FILENAME}}"
     sources:
       - '{{ .K8S_PKI_DIR }}'
     generates:

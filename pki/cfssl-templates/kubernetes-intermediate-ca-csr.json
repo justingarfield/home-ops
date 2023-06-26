@@ -1,5 +1,5 @@
 {
-    "CN": "<CN>",
+    "CN": "<CERT_CN>",
     "key": {
         "algo": "rsa",
         "size": 4096
@@ -10,11 +10,11 @@
     "names": [
         {
             "OU": "<ORGANIZATION_NAME> - <CLUSTER_NAME> Cluster Intermediate Certificate Authority",
-            "E":  "<CERT_EMAIL>",
+            "E":  "<ORGANIZATION_ADMINISTRATIVE_EMAIL>",
             "O":  "<ORGANIZATION_NAME>",
-            "L":  "<CERT_LOCATION>",
-            "ST": "<CERT_STATE>",
-            "C":  "<CERT_COUNTRY>"
+            "L":  "<ORGANIZATION_LOCATION>",
+            "ST": "<ORGANIZATION_STATE_PROVINCE_CODE>",
+            "C":  "<ORGANIZATION_COUNTRY_CODE>"
         }
     ]
 }

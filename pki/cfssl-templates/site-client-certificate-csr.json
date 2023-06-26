@@ -9,12 +9,12 @@
     ],
     "names": [
         {
-            "C":  "<CERT_COUNTRY>",
-            "ST": "<CERT_STATE>",
-            "L":  "<CERT_LOCATION>",
-            "O":  "<ORGANIZATION_NAME>",
             "OU": "<CERT_CN>",
-            "E":  "<CERT_EMAIL>"
+            "E":  "<ORGANIZATION_ADMINISTRATIVE_EMAIL>",
+            "O":  "<ORGANIZATION_NAME>",
+            "L":  "<ORGANIZATION_LOCATION>",
+            "ST": "<ORGANIZATION_STATE_PROVINCE_CODE>",
+            "C":  "<ORGANIZATION_COUNTRY_CODE>"
         }
     ]
 }

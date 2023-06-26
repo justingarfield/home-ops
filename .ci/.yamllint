@@ -15,13 +15,15 @@ ignore: |
   **/talos-linux/*/cilium.yaml
   **/talos-linux/*/secrets-bundle.yaml
 
+  # All Task files
+  **/.taskfiles/**
+
   # Things that can't be screwed with
   *.sops.yaml
 
 # See: https://yamllint.readthedocs.io/en/stable/configuration.html#setting-the-locale
 # Note: In order for this locale to function, you will need to:
 #   * sudo apt-get install locales -y
-#     * This should already be installed for WSL2 on Windows Ubuntu instances
 #   * sudo locale-gen en_US.UTF-8
 #   * sudo nano /etc/default/locale
 #     * Change file contents to be: LANG=en_US.UTF-8
@@ -55,13 +57,8 @@ rules:
   indentation:
     check-multi-line-strings: false # might want to test this with true
   key-ordering: false
-  line-length:
-    # might want to test this with true
-    allow-non-breakable-inline-mappings: false
-    # Don't change until non-breakable option stuff is working with URLs
-    level: warning
-  # this is default value, but not sure if I want to enable or not yet
-  octal-values: disable
+  line-length: disable # Don't change until non-breakable option stuff is working with URLs
+  octal-values: disable # this is default value, but not sure if I want to enable or not yet
   quoted-strings:
     # might want to only use this for certain sets of files
     allow-quoted-quotes: true

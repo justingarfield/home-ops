@@ -10,11 +10,11 @@
     "names": [
         {
             "OU": "<CERT_CN>",
-            "E":  "<CERT_EMAIL>",
+            "E":  "<ORGANIZATION_ADMINISTRATIVE_EMAIL>",
             "O":  "<ORGANIZATION_NAME>",
-            "L":  "<CERT_LOCATION>",
-            "ST": "<CERT_STATE>",
-            "C":  "<CERT_COUNTRY>"
+            "L":  "<ORGANIZATION_LOCATION>",
+            "ST": "<ORGANIZATION_STATE_PROVINCE_CODE>",
+            "C":  "<ORGANIZATION_COUNTRY_CODE>"
         }
     ]
 }
