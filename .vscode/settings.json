@@ -2,6 +2,9 @@
     "files.associations": {
         "*.patch": "yaml"
     },
+    "files.exclude": {
+        ".task/": true
+    },
     "linter.linters": {
         "language-tool": {
             "capabilities": [],
