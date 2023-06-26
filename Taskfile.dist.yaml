@@ -3,38 +3,53 @@
 version: '3'
 
 vars:
-  _REPOSITORY_DIR:
+  REPOSITORY_DIR:
     sh: git rev-parse --show-toplevel
-  REPOSITORY_DIR: '{{ .REPOSITORY_DIR | default "{{ ._REPOSITORY_DIR }}" }}'
-  OUTPUT_DIR: '{{ .OUTPUT_DIR | default "{{ .REPOSITORY_DIR }}/_out" }}'
+  _OUTPUT_ROOT_DIR: '{{ .OUTPUT_ROOT_DIR | default .REPOSITORY_DIR }}'
+  _NORMALIZED_OUTPUT_ROOT_DIR: '{{ ._OUTPUT_ROOT_DIR | replace "_out/" "" | replace "_out" "" }}/_out'
+  _OUTPUT_ENV_DIR: '{{ ._NORMALIZED_OUTPUT_ROOT_DIR }}/{{ .ENVIRONMENT_NAME }}'
+  _NORMALIZED_OUTPUT_ENV_DIR: '{{ ._OUTPUT_ENV_DIR | lower }}'
+  OUTPUT_DIR: '{{ ._NORMALIZED_OUTPUT_ENV_DIR }}'
+  REPOSITORY_REMOTE_ORIGIN_NAME:
+    sh: basename -s .git `git config --get remote.origin.url`
 
 includes:
   _core: .taskfiles/_Core.yaml
-  # azure:
-  #  taskfile: .taskfiles/AzureTasks.yaml
-  #  aliases: [az]
-  # docker: .taskfiles/DockerTasks.yaml
-  # flux: .taskfiles/FluxTasks.yaml
-  # kubectl: .taskfiles/Kubectl.yaml
+  azure:
+    taskfile: .taskfiles/AzureTasks.yaml
+    aliases: [ az ]
+  cilium:
+    taskfile: .taskfiles/CiliumTasks.yaml
+    aliases: [ cil ]
+  cloudflareApiTasks:
+    taskfile: .taskfiles/CloudflareApiTasks.yaml
+    aliases: [ cf ]
+  csidrivers: .taskfiles/CsiDrivers.yaml
+  docker: .taskfiles/DockerTasks.yaml
+  flux: .taskfiles/FluxTasks.yaml
+  kubectl: .taskfiles/Kubectl.yaml
+  misc: .taskfiles/MiscTasks.yaml
+  # openssl: .taskfiles/OpenSslTasks.yaml
   pki: .taskfiles/PKITasks.yaml
-  # precommit:
-  #  taskfile: .taskfiles/PreCommitTasks.yaml
-  #  aliases: [pc]
-  # production: .taskfiles/TalosTasks-ProductionCluster.yaml
-  # sops: .taskfiles/SOPSTasks.yaml
-  # staging: .taskfiles/TalosTasks-StagingCluster.yaml
-  # terraform:
-  #  taskfile: .taskfiles/TerraformTasks.yaml
-  #  aliases: [tf]
+  precommit:
+    taskfile: .taskfiles/PreCommitTasks.yaml
+    aliases: [ pc ]
+  # sidero: .taskfiles/SideroTasks.yaml
+  sops: .taskfiles/SOPSTasks.yaml
+  talos: .taskfiles/TalosTasks.yaml
+  terraform:
+    taskfile: .taskfiles/TerraformTasks.yaml
+    aliases: [ tf ]
+  tetragon: .taskfiles/TetragonTasks.yaml
   # tooling: .taskfiles/ToolingTasks.yaml
-  # virtualbox:
-  #  taskfile: .taskfiles/VirtualBoxTasks.yaml
-  #  aliases: [vbox]
+  virtualbox:
+    taskfile: .taskfiles/VirtualBoxTasks.yaml
+    aliases: [ vbox ]
 
 silent: false
 
-dotenv: [ .env.example.staging, .env.example.common ]
-# dotenv: [ .env.example.production, .env.example.common ]
+dotenv: [ .env.sops.staging, .env.sops.common ]
+# dotenv: [ .env.sops.production, .env.sops.common ]
 
 tasks:
 
