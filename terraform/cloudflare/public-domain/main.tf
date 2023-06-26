@@ -29,12 +29,12 @@ resource "cloudflare_record" "cname_autodiscover" {
 
   value   = "autodiscover.outlook.com"
   comment = "Microsoft Exchange - Client Auto-Discovery"
-  tags    = toset([
-    "Production",
-    "Microsoft Office 365",
-    "Microsoft Exchange",
-    "Client Auto-Discovery"
-  ])
+  # tags    = toset([
+  #   "Production",
+  #   "Microsoft Office 365",
+  #   "Microsoft Exchange",
+  #   "Client Auto-Discovery"
+  # ])
 }
 
 resource "cloudflare_record" "cname_enterpriseenrollment" {
@@ -44,12 +44,12 @@ resource "cloudflare_record" "cname_enterpriseenrollment" {
 
   value   = "enterpriseenrollment-s.manage.microsoft.com"
   comment = "Azure Active Directory (AAD) - Mobile Device Management (MDM) Enrollment"
-  tags    = toset([
-    "Production",
-    "Microsoft Azure",
-    "Azure Active Directory (AAD)",
-    "Mobile Device Management (MDM) Enrollment"
-  ])
+  # tags    = toset([
+  #   "Production",
+  #   "Microsoft Azure",
+  #   "Azure Active Directory (AAD)",
+  #   "Mobile Device Management (MDM) Enrollment"
+  # ])
 }
 
 resource "cloudflare_record" "cname_enterpriseregistration" {
@@ -59,12 +59,12 @@ resource "cloudflare_record" "cname_enterpriseregistration" {
 
   value   = "enterpriseregistration.windows.net"
   comment = "Azure Active Directory (AAD) - Mobile Device Management (MDM) Registration"
-  tags    = toset([
-    "Production",
-    "Microsoft Azure",
-    "Azure Active Directory (AAD)",
-    "Mobile Device Management (MDM) Registration"
-  ])
+  # tags    = toset([
+  #   "Production",
+  #   "Microsoft Azure",
+  #   "Azure Active Directory (AAD)",
+  #   "Mobile Device Management (MDM) Registration"
+  # ])
 }
 
 resource "cloudflare_record" "cname_domain_apex" {
@@ -74,13 +74,13 @@ resource "cloudflare_record" "cname_domain_apex" {
 
   value   = "justingarfield.github.io"
   comment = "Jekyll Static Site - Personal Site"
-  tags    = toset([
-    "Production",
-    "GitHub Pages",
-    "Jekyll Static Site",
-    "Personal website"
-  ])
   proxied = true
+  # tags    = toset([
+  #   "Production",
+  #   "GitHub Pages",
+  #   "Jekyll Static Site",
+  #   "Personal website"
+  # ])
 }
 
 resource "cloudflare_record" "cname_lyncdiscover" {
@@ -90,12 +90,12 @@ resource "cloudflare_record" "cname_lyncdiscover" {
 
   value   = "webdir.online.lync.com"
   comment = "Skype for Business Online - Web Directory and Teams-only Support"
-  tags    = toset([
-    "Production",
-    "Microsoft Office 365",
-    "Skype for Business Online",
-    "Web Directory and Teams-only Support"
-  ])
+  # tags    = toset([
+  #   "Production",
+  #   "Microsoft Office 365",
+  #   "Skype for Business Online",
+  #   "Web Directory and Teams-only Support"
+  # ])
 }
 
 resource "cloudflare_record" "cname_dkim_selector1" {
@@ -105,12 +105,12 @@ resource "cloudflare_record" "cname_dkim_selector1" {
 
   value   = "selector1-${local.domain_key}._domainkey.${var.onmicrosoft_domain_name}.onmicrosoft.com"
   comment = "Microsoft Exchange - DKIM"
-  tags    = toset([
-    "Production",
-    "Microsoft Office 365",
-    "Microsoft Exchange",
-    "DKIM"
-  ])
+  # tags    = toset([
+  #   "Production",
+  #   "Microsoft Office 365",
+  #   "Microsoft Exchange",
+  #   "DKIM"
+  # ])
 }
 
 resource "cloudflare_record" "cname_dkim_selector2" {
@@ -120,12 +120,12 @@ resource "cloudflare_record" "cname_dkim_selector2" {
 
   value   = "selector2-${local.domain_key}._domainkey.${var.onmicrosoft_domain_name}.onmicrosoft.com"
   comment = "Microsoft Exchange - DKIM"
-  tags    = toset([
-    "Production",
-    "Microsoft Office 365",
-    "Microsoft Exchange",
-    "DKIM"
-  ])
+  # tags    = toset([
+  #   "Production",
+  #   "Microsoft Office 365",
+  #   "Microsoft Exchange",
+  #   "DKIM"
+  # ])
 }
 
 resource "cloudflare_record" "cname_sip" {
@@ -135,12 +135,12 @@ resource "cloudflare_record" "cname_sip" {
 
   value   = "sipdir.online.lync.com"
   comment = "Skype for Business Online - SIP Directory and Teams-only Support"
-  tags    = toset([
-    "Production",
-    "Microsoft Office 365",
-    "Skype for Business Online",
-    "Web Directory and Teams-only Support"
-  ])
+  # tags    = toset([
+  #   "Production",
+  #   "Microsoft Office 365",
+  #   "Skype for Business Online",
+  #   "Web Directory and Teams-only Support"
+  # ])
 }
 
 resource "cloudflare_record" "cname_www" {
@@ -150,13 +150,13 @@ resource "cloudflare_record" "cname_www" {
 
   value   = "justingarfield.github.io"
   comment = "Jekyll Static Site - Personal Site"
-  tags    = toset([
-    "Production",
-    "GitHub Pages",
-    "Jekyll Static Site",
-    "Personal website"
-  ])
   proxied = true
+  # tags    = toset([
+  #   "Production",
+  #   "GitHub Pages",
+  #   "Jekyll Static Site",
+  #   "Personal website"
+  # ])
 }
 
 resource "cloudflare_record" "mx_domain_apex" {
@@ -166,12 +166,12 @@ resource "cloudflare_record" "mx_domain_apex" {
 
   value   = "${local.domain_key}.mail.protection.outlook.com"
   comment = "Microsoft Exchange - Mail exchanger"
-  tags    = toset([
-    "Production",
-    "Microsoft Office 365",
-    "Microsoft Exchange",
-    "Mail exchanger"
-  ])
+  # tags    = toset([
+  #   "Production",
+  #   "Microsoft Office 365",
+  #   "Microsoft Exchange",
+  #   "Mail exchanger"
+  # ])
 }
 
 resource "cloudflare_record" "srv__sipfederationtls_tcp" {
@@ -189,12 +189,12 @@ resource "cloudflare_record" "srv__sipfederationtls_tcp" {
     target   = "sipfed.online.lync.com"
   }
   comment = "Skype for Business Online - SIP Federation"
-  tags    = toset([
-    "Production",
-    "Microsoft Office 365",
-    "Skype for Business Online",
-    "SIP Federation"
-  ])
+  # tags    = toset([
+  #   "Production",
+  #   "Microsoft Office 365",
+  #   "Skype for Business Online",
+  #   "SIP Federation"
+  # ])
 }
 
 resource "cloudflare_record" "srv__sip_tls" {
@@ -212,12 +212,12 @@ resource "cloudflare_record" "srv__sip_tls" {
     target   = "sipdir.online.lync.com"
   }
   comment = "Skype for Business Online - SIP TLS"
-  tags    = toset([
-    "Production",
-    "Microsoft Office 365",
-    "Skype for Business Online",
-    "SIP TLS"
-  ])
+  # tags    = toset([
+  #   "Production",
+  #   "Microsoft Office 365",
+  #   "Skype for Business Online",
+  #   "SIP TLS"
+  # ])
 }
 
 resource "cloudflare_record" "txt__dmarc" {
@@ -227,12 +227,12 @@ resource "cloudflare_record" "txt__dmarc" {
 
   value   = "v=DMARC1; p=none; rua=mailto:admin@${var.domain_name}; ruf=mailto:admin@${var.domain_name}; fo=1"
   comment = "Microsoft Exchange - DMARC"
-  tags    = toset([
-    "Production",
-    "Microsoft Office 365",
-    "Microsoft Exchange",
-    "DMARC"
-  ])
+  # tags    = toset([
+  #   "Production",
+  #   "Microsoft Office 365",
+  #   "Microsoft Exchange",
+  #   "DMARC"
+  # ])
 }
 
 resource "cloudflare_record" "txt_domain_apex" {
@@ -242,10 +242,10 @@ resource "cloudflare_record" "txt_domain_apex" {
 
   value   = "v=spf1 include:_spf.mailersend.net include:spf.protection.outlook.com ~all"
   comment = "Microsoft Exchange - SPF"
-  tags    = toset([
-    "Production",
-    "Microsoft Office 365",
-    "Microsoft Exchange",
-    "SPF"
-  ])
+  # tags    = toset([
+  #   "Production",
+  #   "Microsoft Office 365",
+  #   "Microsoft Exchange",
+  #   "SPF"
+  # ])
 }
