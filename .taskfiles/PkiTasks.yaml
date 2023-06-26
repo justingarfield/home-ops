@@ -32,7 +32,7 @@ tasks:
       ORGANIZATION_STATE_PROVINCE_CODE: '{{.ORGANIZATION_STATE_PROVINCE_CODE}}'
       ORGANIZATION_COUNTRY_CODE: '{{.ORGANIZATION_COUNTRY_CODE}}'
       _CLEAN_ORG_NAME: '{{ .ORGANIZATION_NAME | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." "" }}'
-      _OUTPUT_FILENAME: '{{ .PKI_OUT_DIR }}/{{ ._CLEAN_ORG_NAME }}/{{ ._CLEAN_ORG_NAME }}'
+      _OUTPUT_FILENAME: '{{ .PKI_OUT_DIR }}/{{ ._CLEAN_ORG_NAME }}'
       _CA_CSR_FILENAME: '{{ .PKI_TPL_DIR }}/root-ca-csr.json'
     preconditions:
       - sh: test '{{.ORGANIZATION_NAME}}'
@@ -49,8 +49,8 @@ tasks:
       - task: :_core:ensure-directory-exists
         vars: { DIRECTORY: '{{._OUTPUT_FILENAME | dir}}' }
       - |
-        yq eval "{{ ._YQ_TOKENIZATION }}" "{{._CA_CSR_FILENAME}}" \
-          | ./scripts/pki/cfssl-generate-ca.sh "{{._OUTPUT_FILENAME}}"
+        yq eval '{{ ._YQ_TOKENIZATION }}' '{{._CA_CSR_FILENAME}}' \
+          | ./scripts/pki/cfssl-generate-ca.sh "{{._OUTPUT_FILENAME}}" {{.CFSSL_LOG_LEVEL}}
     sources:
       - '{{._CA_CSR_FILENAME}}'
     generates:
@@ -203,6 +203,7 @@ tasks:
     cmds:
       - echo '{{ ._CFSSL_BLANK_TEMPLATE }}' | cfssl genkey -loglevel={{ .CFSSL_LOG_LEVEL }} - | yq .key > "{{ ._OUTPUT_DIRECTORY }}/sa.key"
 
+  # See: https://kubernetes.io/docs/setup/best-practices/certificates/
   generate-and-sign-kubernetes-single-root-cas:
     desc: Generates and Signs Kubernetes / etcd Intermediate Certificate Authorities (CAs).
     vars:

@@ -12,21 +12,25 @@ vars:
 
 tasks:
 
-  generate-secrets-bundle-from-pki-output-folder:
-    desc: Generate a secrets bundle for a Talos environment using pre-generated Single Root CA PKI directory.
+  generate-secrets-bundle-from-pki:
+    desc: Generate a secrets bundle for a Talos environment using a pre-generated Single Root Intermediary CA
     vars:
-      ORGANIZATION_NAME: '{{ .ORGANIZATION_NAME }}'
-      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
-      K8S_PKI_DIR: '{{ .K8S_PKI_DIR }}'
-      _CLEAN_ORG_NAME: '{{ .ORGANIZATION_NAME | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." "" }}'
-      _CLUSTER_DIR: '{{ .TALOS_DIR }}/{{ .CLUSTER_NAME }}-cluster'
-      _SECRETS_BUNDLE_FILENAME: '{{ ._CLUSTER_DIR }}/secrets-bundle.yaml'
+      ORGANIZATION_NAME: '{{.ORGANIZATION_NAME}}'
+      CLUSTER_NAME: '{{.CLUSTER_NAME}}'
+      K8S_PKI_DIR: '{{.K8S_PKI_DIR}}'
+      _CLEAN_ORG_NAME: '{{.ORGANIZATION_NAME | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." ""}}'
+      _CLUSTER_DIR: '{{.TALOS_DIR}}/{{.CLUSTER_NAME}}-cluster'
+      _SECRETS_BUNDLE_FILENAME: '{{._CLUSTER_DIR}}/secrets-bundle.yaml'
       _BOOTSTRAP_TOKEN:
         sh: kubeadm token generate
     preconditions:
-      - sh: test '{{.ORGANIZATION_NAME }}'
+      - sh: which talosctl
+        msg: The 'talosctl' binary is required on the path to run this task'
+      - sh: which kubeadm
+        msg: The 'kubeadm' binary is required on the path to run this task'
+      - sh: test '{{.ORGANIZATION_NAME}}'
         msg: Please provide a valid ORGANIZATION_NAME
-      - sh: test '{{._BOOTSTRAP_TOKEN }}'
+      - sh: test '{{._BOOTSTRAP_TOKEN}}'
         msg: Issues using kubeadm to generate a bootstrap token _BOOTSTRAP_TOKEN
       - sh: test '{{.CLUSTER_NAME}}'
         msg: Please provide a valid CLUSTER_NAME
@@ -39,47 +43,11 @@ tasks:
         vars: { DIRECTORY: '{{._SECRETS_BUNDLE_FILENAME | dir}}' }
       - talosctl gen secrets --from-kubernetes-pki "{{.K8S_PKI_DIR}}" --kubernetes-bootstrap-token {{._BOOTSTRAP_TOKEN}} --output-file "{{.TALOS_OUT_DIR}}/{{._SECRETS_BUNDLE_FILENAME}}"
     sources:
-      - '{{ .K8S_PKI_DIR }}'
+      - '{{.K8S_PKI_DIR}}'
     generates:
-      - '{{ ._SECRETS_BUNDLE_FILENAME }}'
+      - '{{._SECRETS_BUNDLE_FILENAME}}'
 
   generate-machine-templates:
-    desc: Generate Machine Templates for a particular cluster
-    vars:
-      CLUSTER_NAME: "{{ .CLUSTER_NAME }}"
-      CLUSTER_LOAD_BALANCER_IP: "{{ .CLUSTER_LOAD_BALANCER_IP }}"
-      _CLUSTER_DIR: "{{ .TALOS_DIR }}/{{ .CLUSTER_NAME }}-cluster"
-      _SECRETS_BUNDLE_FILENAME: "{{ ._CLUSTER_DIR }}/secrets-bundle.yaml"
-      _MACHINE_TEMPLATES_DIR: "{{ ._CLUSTER_DIR }}/machine-templates"
-      _CONTROL_PLANE_HOSTNAME: control-plane
-    preconditions:
-      - test {{ .CLUSTER_NAME }}
-      - test {{ .CLUSTER_LOAD_BALANCER_IP }}
-      - test -d {{ ._CLUSTER_DIR }}
-      - test -f {{ ._SECRETS_BUNDLE_FILENAME }}
-    cmds:
-      - |
-        talosctl gen config {{ .CLUSTER_NAME }}-cluster https://{{ ._CONTROL_PLANE_HOSTNAME }}.{{ .CLUSTER_DOMAIN }}:{{ .CLUSTER_API_SERVER_PORT }} \
-          --with-secrets {{ ._SECRETS_BUNDLE_FILENAME }} \
-          --additional-sans {{ ._CONTROL_PLANE_HOSTNAME }},{{ .CLUSTER_LOAD_BALANCER_IP }} \
-          --dns-domain staging.home.arpa \
-          --install-image ghcr.io/siderolabs/installer:v1.4.5 \
-          --kubernetes-version 1.27.2 \
-          --registry-mirror docker.io=http://pull-through-cache.home.arpa:5003,gcr.io=http://pull-through-cache.home.arpa:5001,ghcr.io=http://pull-through-cache.home.arpa:5000,registry.k8s.io=http://pull-through-cache.home.arpa:5002 \
-          --talos-version v1.4.5 \
-          --version v1alpha1 \
-          --with-cluster-discovery=false \
-          --with-docs=false \
-          --with-examples=false \
-          --config-patch='[{"op": "remove", "path": "/machine/certSANs"}]' \
-          --config-patch @{{ ._CLUSTER_DIR }}/machine-patches/all-nodes.patch \
-          --config-patch @{{ ._CLUSTER_DIR }}/machine-patches/systemDiskEncryption.patch \
-          --config-patch-control-plane @{{ ._CLUSTER_DIR }}/machine-patches/cp-nodes.patch \
-          --config-patch-worker @{{ ._CLUSTER_DIR }}/machine-patches/wk-nodes.patch \
-          --output {{ ._MACHINE_TEMPLATES_DIR }}
-      - mv {{ ._MACHINE_TEMPLATES_DIR }}/talosconfig {{ ._CLUSTER_DIR }}
-
-  gen-config:
     desc: Generate Machine Templates for a particular cluster
     vars:
       CLUSTER_NAME: "{{ .CLUSTER_NAME }}"
@@ -123,7 +91,7 @@ tasks:
 
   generate-machine-config:
     internal: true
-    desc: (no longer used) Generate individual Machine Configs for a particular cluster node
+    desc: (optional) Generate individual Machine Configs for a particular cluster node
     vars:
       CLUSTER_NAME: "{{.CLUSTER_NAME}}"
       CLUSTER_DIR: "{{.TALOS_DIR}}/{{.CLUSTER_NAME}}-cluster"

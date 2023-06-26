@@ -44,9 +44,9 @@ spec:
         enabled: true
         ingressClassName: cilium
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt
+          cert-manager.io/cluster-issuer: home-arpa
         hosts:
-          - host: &host "{{ .Release.Name }}.${PUBLIC_DNS_ZONE}"
+          - host: &host "{{.Release.Name}}.${INTERNAL_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
@@ -54,3 +54,17 @@ spec:
           - hosts:
               - *host
             secretName: tls-theme-park
+      private:
+        enabled: true
+        ingressClassName: cilium
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt
+        hosts:
+          - host: &host-private "{{.Release.Name}}.${PRIVATE_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host-private
+            secretName: private-tls-theme-park
