@@ -7,18 +7,6 @@ vars:
   PKI_TPL_DIR: '{{.PKI_SRC_DIR}}/cfssl-templates'
   PKI_OUT_DIR: '{{.OUTPUT_DIR}}/pki'
   CFSSL_LOG_LEVEL: '{{.CFSSL_LOG_LEVEL | default 2}}' # Set to 1 to see INFO output from cfssl
-  _YQ_TOKENIZATION: | # https://stackoverflow.com/questions/70032588/use-yq-to-substitute-string-in-a-yaml-file
-    (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_COUNTRY_CODE>", "{{.ORGANIZATION_COUNTRY_CODE}}")
-    | (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_STATE_PROVINCE_CODE>", "{{.ORGANIZATION_STATE_PROVINCE_CODE}}")
-    | (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_LOCATION>", "{{.ORGANIZATION_LOCATION}}")
-    | (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_NAME>", "{{.ORGANIZATION_NAME}}")
-    | (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_ADMINISTRATIVE_EMAIL>", "{{.ORGANIZATION_ADMINISTRATIVE_EMAIL}}")
-    | (.. | select(tag == "!!str")) |= sub("<CERT_CN>", "{{.CERT_CN}}")
-    | (.. | select(tag == "!!str")) |= sub("<SITE_NAME>", "{{.SITE_NAME}}")
-    | (.. | select(tag == "!!str")) |= sub("<SERVER_NAME>", "{{.SERVER_NAME}}")
-    | (.. | select(tag == "!!str")) |= sub("<SERVER_IP>", "{{.SERVER_IP}}")
-    | (.. | select(tag == "!!str")) |= sub("<USER_NAME>", "{{.USER_NAME}}")
-    | (.. | select(tag == "!!str")) |= sub("<CLUSTER_NAME>", "{{.CLUSTER_NAME}}")
   _CFSSL_BLANK_TEMPLATE: '{ "key": { "algo": "rsa", "size": 4096 } }'
 
 tasks:
@@ -33,7 +21,15 @@ tasks:
       ORGANIZATION_LOCATION: '{{.ORGANIZATION_LOCATION}}'
       ORGANIZATION_STATE_PROVINCE_CODE: '{{.ORGANIZATION_STATE_PROVINCE_CODE}}'
       ORGANIZATION_COUNTRY_CODE: '{{.ORGANIZATION_COUNTRY_CODE}}'
+      INTERMEDIARY_NAME: '{{.INTERMEDIARY_NAME | default " "}}' # Optional
       _OUTPUT_FILENAME: '{{.PKI_OUT_DIR}}/{{.OUTPUT_FILENAME | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." ""}}'
+      _YQ_TOKENIZATION: | # https://stackoverflow.com/questions/70032588/use-yq-to-substitute-string-in-a-yaml-file
+        (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_COUNTRY_CODE>", "{{.ORGANIZATION_COUNTRY_CODE}}")
+        | (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_STATE_PROVINCE_CODE>", "{{.ORGANIZATION_STATE_PROVINCE_CODE}}")
+        | (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_LOCATION>", "{{.ORGANIZATION_LOCATION}}")
+        | (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_NAME>", "{{.ORGANIZATION_NAME}}")
+        | (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_ADMINISTRATIVE_EMAIL>", "{{.ORGANIZATION_ADMINISTRATIVE_EMAIL}}")
+        | (.. | select(tag == "!!str")) |= sub("<INTERMEDIARY_NAME>", "{{.INTERMEDIARY_NAME}}")
     preconditions:
       - sh: test '{{.ORGANIZATION_NAME}}'
         msg: Please provide a valid ORGANIZATION_NAME
@@ -51,6 +47,7 @@ tasks:
       - task: :_core:ensure-directory-exists
         vars: { DIRECTORY: '{{._OUTPUT_FILENAME | dir}}' }
       - |
+        printf '{{._YQ_TOKENIZATION}}'
         yq eval '{{._YQ_TOKENIZATION}}' '{{.CSR_TEMPLATE_FILENAME}}' \
           | cfssl gencert -initca=true -loglevel={{.CFSSL_LOG_LEVEL}} - \
           | cfssljson -bare '{{._OUTPUT_FILENAME}}'
@@ -90,6 +87,7 @@ tasks:
       CSR_TEMPLATE_FILENAME: '{{.CSR_TEMPLATE_FILENAME | default "default-intermediate-ca-csr.json"}}'
       OUTPUT_FILENAME: '{{.OUTPUT_FILENAME}}'
       SIGNING_KEY_FILENAME: '{{.SIGNING_KEY_FILENAME | default .ORGANIZATION_NAME}}'
+      INTERMEDIARY_NAME: '{{.INTERMEDIARY_NAME | default " "}}' # Optional
     preconditions:
       - sh: test -f '{{.PKI_TPL_DIR}}/{{.CSR_TEMPLATE_FILENAME}}'
         msg: Please provide a valid CSR_TEMPLATE_FILENAME ({{.CSR_TEMPLATE_FILENAME}} does not exist)
@@ -97,7 +95,7 @@ tasks:
         msg: Please provide a valid OUTPUT_FILENAME
     cmds:
       - task: generate-ca
-        vars: { CSR_TEMPLATE_FILENAME: "{{.CSR_TEMPLATE_FILENAME}}", OUTPUT_FILENAME: "{{.OUTPUT_FILENAME}}" }
+        vars: { CSR_TEMPLATE_FILENAME: "{{.CSR_TEMPLATE_FILENAME}}", OUTPUT_FILENAME: "{{.OUTPUT_FILENAME}}", INTERMEDIARY_NAME: "{{.INTERMEDIARY_NAME}}" }
       - task: sign-intermediate-ca
         vars: { SIGNING_KEY_FILENAME: "{{.SIGNING_KEY_FILENAME}}", INTERMEDIATE_CA_FILENAME: "{{.OUTPUT_FILENAME}}" }
 
@@ -110,7 +108,7 @@ tasks:
       - sh: test '{{.OUTPUT_FILENAME}}'
         msg: Please provide a valid OUTPUT_FILENAME
     cmds:
-      # Note: With Talos Linux's talosconfig file, you won't need the public 'sa.pub' file
+      # Note: With Talos Linux's 'talosconfig' file, you won't need the public 'sa.pub' file
       - echo '{{._CFSSL_BLANK_TEMPLATE}}' | cfssl genkey -loglevel={{.CFSSL_LOG_LEVEL}} - | yq .key > "{{._OUTPUT_FILENAME}}.key"
 
   prepare-k8s-directory:
