@@ -23,6 +23,8 @@ spec:
     remediation:
       retries: 5
   dependsOn:
+    - name: flemmarr
+    - name: prowlarr
     - name: pod-gateway
       namespace: pod-gateway
   values:

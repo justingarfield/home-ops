@@ -15,6 +15,11 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+  dependsOn:
+    - name: flemmarr
+    - name: prowlarr
+    - name: pod-gateway
+      namespace: pod-gateway
   maxHistory: 2
   install:
     createNamespace: false
