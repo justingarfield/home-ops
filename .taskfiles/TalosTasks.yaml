@@ -78,7 +78,6 @@ tasks:
           --config-patch-control-plane @{{.TALOS_SRC_DIR}}/cilium-opnsense-bgp-peering-policy.patch \
           --config-patch-control-plane @{{.TALOS_SRC_DIR}}/disable-cni-and-kube-proxy.patch \
           --config-patch-worker @{{.TALOS_SRC_DIR}}/kubelet-unsafe-sysctls.patch \
-          --config-patch-worker @{{.TALOS_SRC_DIR}}/label-worker-node.patch \
           --config-patch @{{.TALOS_SRC_DIR}}/machine-cert-sans.patch \
           --config-patch @{{.TALOS_SRC_DIR}}/registry-mirrors.patch \
           --config-patch='[{"op": "add", "path": "/machine/certSANs/-", "value": "{{.CLUSTER_LOAD_BALANCER_IP}}" }]' \

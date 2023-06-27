@@ -19,10 +19,12 @@ tasks:
   message:
     desc: Displays a message to the end-user running the Task.
     internal: true
+    vars:
+      _TIME: date +"%H:%M:%S"
     preconditions:
       - test "{{ .MESSAGE }}"
     cmds:
-      - printf '[home-ops] {{ .MESSAGE }}\n'
+      - printf '[{{._TIME}}] {{ .MESSAGE }}\n'
 
   display-banner:
     desc: Displays a fun looking banner of the repository's name

@@ -16,7 +16,6 @@ I may change this down the road if I start to have configuration values that end
 ├─📄 disk-sd.patch
 ├─📄 disk-sd.patch
 ├─📄 kubelet-unsafe-sysctls.patch
-├─📄 label-worker-node.patch
 ├─📄 machine-cert-sans.patch
 ├─📄 registry-mirrors.patch
 ├─📄 system-disk-encryption.patch
@@ -60,12 +59,6 @@ Modifies a machine to mount `/dev/sdb`, `/dev/sdc`, or `/dev/sdd` to a mount-poi
 ### kubelet-unsafe-sysctls
 
 Allows certain unsafe sysctls to be used on a cluster node.
-
-### label-worker-node
-
-Applies a label named "node-role.kubernetes.io/worker" with a value of "true" to a node. It is used for worker nodes in the data plane.
-
-This is how you can see the `worker` role when using `kubectl get nodes`; otherwise it will be blank _(which is perfectly normal too)_.
 
 ### machine-cert-sans
 
