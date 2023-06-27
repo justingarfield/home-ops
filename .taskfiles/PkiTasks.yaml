@@ -54,13 +54,13 @@ tasks:
         yq eval '{{._YQ_TOKENIZATION}}' '{{.CSR_TEMPLATE_FILENAME}}' \
           | cfssl gencert -initca=true -loglevel={{.CFSSL_LOG_LEVEL}} - \
           | cfssljson -bare '{{._OUTPUT_FILENAME}}'
-    sources:
-      - '{{._YQ_TOKENIZATION}}'
-      - '{{.CSR_TEMPLATE_FILENAME}}'
-    generates:
-      - '{{._OUTPUT_FILENAME}}.csr'
-      - '{{._OUTPUT_FILENAME}}.pem'
-      - '{{._OUTPUT_FILENAME}}-key.pem'
+    # sources:
+    #   - '{{._YQ_TOKENIZATION}}'
+    #   - '{{.CSR_TEMPLATE_FILENAME}}'
+    # generates:
+    #   - '{{._OUTPUT_FILENAME}}.csr'
+    #   - '{{._OUTPUT_FILENAME}}.pem'
+    #   - '{{._OUTPUT_FILENAME}}-key.pem'
 
   sign-intermediate-ca:
     internal: true
@@ -76,13 +76,13 @@ tasks:
         cfssl sign -loglevel={{.CFSSL_LOG_LEVEL}} -ca "{{._SIGNING_KEY_FILENAME}}.pem" -ca-key "{{._SIGNING_KEY_FILENAME}}-key.pem" \
           -config "{{.PKI_SRC_DIR}}/cfssl-profiles.json" -profile intermediate-ca "{{._INTERMEDIATE_CA_FILENAME}}.csr" \
           | cfssljson -bare "{{._INTERMEDIATE_CA_FILENAME}}"
-    sources:
-      - '{{._SIGNING_KEY_FILENAME}}.pem'
-      - '{{._SIGNING_KEY_FILENAME}}-key.pem'
-      - '{{.PKI_SRC_DIR}}/cfssl-profiles.json'
-    generates:
-      - '{{._INTERMEDIATE_CA_FILENAME}}.csr'
-      - '{{._INTERMEDIATE_CA_FILENAME}}.pem'
+    # sources:
+    #   - '{{._SIGNING_KEY_FILENAME}}.pem'
+    #   - '{{._SIGNING_KEY_FILENAME}}-key.pem'
+    #   - '{{.PKI_SRC_DIR}}/cfssl-profiles.json'
+    # generates:
+    #   - '{{._INTERMEDIATE_CA_FILENAME}}.csr'
+    #   - '{{._INTERMEDIATE_CA_FILENAME}}.pem'
 
   generate-and-sign-intermediate-ca:
     desc: Generates and Signs an Intermediate Certificate Authority (CA) using cfssl
@@ -164,12 +164,12 @@ tasks:
       - echo "Server Certificate CSR created....................  {{ ._CSR_FILENAME }}"
       - echo "Server Certificate Public key created.............  {{ ._PUBLIC_KEY_FILENAME }}"
       - echo "Server Certificate Private key created............  {{ ._PRIVATE_KEY_FILENAME }}"
-    sources:
-      - '{{ .PKI_TPL_DIR }}/server-certificate-csr.json'
-    generates:
-      - '{{ ._CSR_FILENAME }}'
-      - '{{ ._PUBLIC_KEY_FILENAME }}'
-      - '{{ ._PRIVATE_KEY_FILENAME }}'
+      # sources:
+      #   - '{{ .PKI_TPL_DIR }}/server-certificate-csr.json'
+      # generates:
+      #   - '{{ ._CSR_FILENAME }}'
+      #   - '{{ ._PUBLIC_KEY_FILENAME }}'
+      #   - '{{ ._PRIVATE_KEY_FILENAME }}'
 
   generate-root-client-certificate:
     desc: Generates a Client Certificate at the Root of the PKI (Global)
@@ -200,12 +200,12 @@ tasks:
       - echo "Client Certificate CSR created....................  {{ ._CSR_FILENAME }}"
       - echo "Client Certificate Public key created.............  {{ ._PUBLIC_KEY_FILENAME }}"
       - echo "Client Certificate Private key created............  {{ ._PRIVATE_KEY_FILENAME }}"
-    sources:
-      - '{{ .PKI_TPL_DIR }}/root-client-certificate-csr.json'
-    generates:
-      - '{{ ._CSR_FILENAME }}'
-      - '{{ ._PUBLIC_KEY_FILENAME }}'
-      - '{{ ._PRIVATE_KEY_FILENAME }}'
+      # sources:
+      #   - '{{ .PKI_TPL_DIR }}/root-client-certificate-csr.json'
+      # generates:
+      #   - '{{ ._CSR_FILENAME }}'
+      #   - '{{ ._PUBLIC_KEY_FILENAME }}'
+      #   - '{{ ._PRIVATE_KEY_FILENAME }}'
 
   generate-site-client-certificate:
     desc: Generates a Client Certificate at the Site-level of the PKI
@@ -239,9 +239,9 @@ tasks:
       - echo "Client Certificate CSR created....................  {{ ._CSR_FILENAME }}"
       - echo "Client Certificate Public key created.............  {{ ._PUBLIC_KEY_FILENAME }}"
       - echo "Client Certificate Private key created............  {{ ._PRIVATE_KEY_FILENAME }}"
-    sources:
-      - '{{ .PKI_TPL_DIR }}/site-client-certificate-csr.json'
-    generates:
-      - '{{ ._CSR_FILENAME }}'
-      - '{{ ._PUBLIC_KEY_FILENAME }}'
-      - '{{ ._PRIVATE_KEY_FILENAME }}'
+      # sources:
+      #   - '{{ .PKI_TPL_DIR }}/site-client-certificate-csr.json'
+      # generates:
+      #   - '{{ ._CSR_FILENAME }}'
+      #   - '{{ ._PUBLIC_KEY_FILENAME }}'
+      #   - '{{ ._PRIVATE_KEY_FILENAME }}'

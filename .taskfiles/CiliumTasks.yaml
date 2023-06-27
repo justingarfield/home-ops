@@ -4,6 +4,7 @@ version: '3'
 
 vars:
   TALOS_DIR: '{{.REPOSITORY_DIR}}/talos-linux'
+  TALOS_OUT_DIR: '{{.OUTPUT_DIR}}/talos-linux'
 
   # renovate: registryUrl=https://helm.cilium.io/ chart=cilium
   CILIUM_VERSION: '{{.CILIUM_VERSION | default "v1.14.0-snapshot.3"}}'
@@ -20,11 +21,12 @@ tasks:
       - kubectl -n kube-system exec ds/cilium -- cilium endpoint list
 
   install-via-helm:
-    internal: true
+    internal: false
     desc: Installs the Cilium CNI for a particular cluster
     vars:
-      CLUSTER_NAME: "{{.CLUSTER_NAME}}"
-      CLUSTER_DIR: "{{.TALOS_DIR}}/{{.CLUSTER_NAME}}-cluster"
+      INTERNAL_DOMAIN: '{{.INTERNAL_DOMAIN | default "home.arpa"}}'
+      CLUSTER_API_SERVER_PORT: '{{.CLUSTER_API_SERVER_PORT | default "6443"}}'
+      OUTPUT_FILENAME: '{{.OUTPUT_FILENAME}}'
     cmds:
       - task: :_core:message
         vars: { MESSAGE: Updating Helm repositories... }
@@ -44,16 +46,16 @@ tasks:
             --set cgroup.autoMount.enabled=false \
             --set cgroup.hostRoot=/sys/fs/cgroup \
             --set k8sServiceHost="control-plane.{{.INTERNAL_DOMAIN}}" \
-            --set k8sServicePort="{{.CLUSTER_API_SERVER_PORT}}" > {{.CLUSTER_DIR}}/cilium.yaml \
+            --set k8sServicePort="{{.CLUSTER_API_SERVER_PORT}}" \
             --set bgpControlPlane.enabled=true \
             --set ingressController.enabled=true \
             --set ingressController.loadbalancerMode=shared \
             --set hubble.relay.enabled=true \
             --set hubble.ui.enabled=true \
-            --set tunnelPort=6669
-      # --set hubble.peerService.clusterDomain="cluster.local" \
+            --set tunnelPort=6669 \
+            > "{{.OUTPUT_FILENAME}}"
       - task: :_core:message
-        vars: { MESSAGE: Applying Cilium manifest to .CLUSTER_NAME cluster... }
-      - kubectl apply -f {{.CLUSTER_DIR}}/cilium.yaml 1>/dev/null
+        vars: { MESSAGE: Applying Cilium manifest to cluster... }
+      - kubectl apply -f "{{.OUTPUT_FILENAME}}" # 1>/dev/null
       - task: :_core:message
-        vars: { MESSAGE: Cilium manifest applied to .CLUSTER_NAME cluster }
+        vars: { MESSAGE: Cilium manifest applied to cluster }

@@ -36,7 +36,7 @@ tasks:
     generates:
       - '{{._OUTPUT_FILENAME}}'
 
-  generate-machine-templates:
+  generate-talos-configs:
     desc: Generate Machine Templates for a particular cluster
     vars:
       CLUSTER_NAME: '{{.CLUSTER_NAME | default .ENVIRONMENT_NAME | lower}}'
@@ -45,7 +45,6 @@ tasks:
       CLUSTER_API_SERVER_PORT: '{{.CLUSTER_API_SERVER_PORT | default "6443"}}'
       SECRETS_BUNDLE_FILENAME: '{{.TALOS_OUT_DIR}}/secrets-bundle.yaml'
       CLUSTER_LOAD_BALANCER_IP: '{{.CLUSTER_LOAD_BALANCER_IP}}'
-      _MACHINE_TEMPLATES_DIR: '{{.TALOS_OUT_DIR}}/machine-templates'
     preconditions:
       - sh: which talosctl
         msg: The 'talosctl' binary is required on the path to run this task'
@@ -57,7 +56,7 @@ tasks:
       - test {{.CLUSTER_LOAD_BALANCER_IP}}
     cmds:
       - task: :_core:ensure-directory-exists
-        vars: { DIRECTORY: '{{._MACHINE_TEMPLATES_DIR}}' }
+        vars: { DIRECTORY: '{{.TALOS_OUT_DIR}}' }
       - |
         talosctl gen config {{.CLUSTER_NAME}} https://{{.CONTROL_PLANE_HOSTNAME}}.{{.INTERNAL_DOMAIN}}:{{.CLUSTER_API_SERVER_PORT}} \
           --with-secrets {{.SECRETS_BUNDLE_FILENAME}} \
@@ -72,7 +71,6 @@ tasks:
           --config-patch='[{"op": "remove", "path": "/machine/certSANs"}]' \
           --config-patch-control-plane @{{.TALOS_SRC_DIR}}/cilium-opnsense-bgp-peering-policy.patch \
           --config-patch-control-plane @{{.TALOS_SRC_DIR}}/disable-cni-and-kube-proxy.patch \
-          --config-patch-worker @{{.TALOS_SRC_DIR}}/disk-sdb.patch \
           --config-patch-worker @{{.TALOS_SRC_DIR}}/kubelet-unsafe-sysctls.patch \
           --config-patch-worker @{{.TALOS_SRC_DIR}}/label-worker-node.patch \
           --config-patch @{{.TALOS_SRC_DIR}}/machine-cert-sans.patch \
@@ -80,7 +78,17 @@ tasks:
           --config-patch='[{"op": "add", "path": "/machine/certSANs/-", "value": "{{.CLUSTER_LOAD_BALANCER_IP}}" }]' \
           --config-patch @{{.TALOS_SRC_DIR}}/system-disk-encryption.patch \
           --config-patch='[{"op": "replace", "path": "/machine/systemDiskEncryption/ephemeral/keys", "value": [{ "static": { "passphrase": "{{.EPHEMERAL_PASSPHRASE}}" }, "slot": 0 }] }]' \
-          --output {{._MACHINE_TEMPLATES_DIR}}
+          --output {{.TALOS_OUT_DIR}}
+
+  merge-config-files:
+    desc: Sets up the talos and kubectl configuration files
+    cmds:
+      - task: :_core:message
+        vars: { MESSAGE: Merging in talosconfig and setting endpoints... }
+      - talosctl config merge "{{.TALOS_OUT_DIR}}/talosconfig" >/dev/null 2>&1
+      - talosctl config endpoints talos-endpoints.{{.INTERNAL_DOMAIN}}
+      - task: :_core:message
+        vars: { MESSAGE: talosconfig and endpoints updated }
 
   apply-machine-template:
     internal: true
@@ -95,7 +103,7 @@ tasks:
         msg: The 'talosctl' binary is required on the path to run this task'
     cmds:
       - printf "[home-ops] Applying Talos machine-template to {{.NODE_TYPE}} node {{.NODE_NAME}}\n"
-      - talosctl apply-config --insecure --nodes {{.NODE_NAME}}.{{.INTERNAL_DOMAIN}} --file {{.CLUSTER_DIR}}/machine-templates/{{.NODE_TYPE}}.yaml
+      - talosctl apply-config --insecure --nodes {{.NODE_NAME}}.{{.INTERNAL_DOMAIN}} --file {{.TALOS_OUT_DIR}}/{{.NODE_TYPE}}.yaml
       - printf "[home-ops] Applied Talos machine-template to {{.NODE_TYPE}} node {{.NODE_NAME}}\n"
 
   bootstrap-etcd:
