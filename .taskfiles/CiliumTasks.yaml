@@ -56,6 +56,6 @@ tasks:
             > "{{.OUTPUT_FILENAME}}"
       - task: :_core:message
         vars: { MESSAGE: Applying Cilium manifest to cluster... }
-      - kubectl apply -f "{{.OUTPUT_FILENAME}}" # 1>/dev/null
+      - kubectl apply -f "{{.OUTPUT_FILENAME}}" 1>/dev/null
       - task: :_core:message
         vars: { MESSAGE: Cilium manifest applied to cluster }

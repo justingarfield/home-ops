@@ -9,7 +9,7 @@
     ],
     "names": [
         {
-            "OU": "<ORGANIZATION_NAME> - <CLUSTER_NAME> Cluster Intermediate Certificate Authority",
+            "OU": "<ORGANIZATION_NAME> - <ENVIRONMENT_NAME> Cluster Intermediate Certificate Authority",
             "E":  "<ORGANIZATION_ADMINISTRATIVE_EMAIL>",
             "O":  "<ORGANIZATION_NAME>",
             "L":  "<ORGANIZATION_LOCATION>",

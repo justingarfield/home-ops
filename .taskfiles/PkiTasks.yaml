@@ -22,6 +22,8 @@ tasks:
       ORGANIZATION_STATE_PROVINCE_CODE: '{{.ORGANIZATION_STATE_PROVINCE_CODE}}'
       ORGANIZATION_COUNTRY_CODE: '{{.ORGANIZATION_COUNTRY_CODE}}'
       INTERMEDIARY_NAME: '{{.INTERMEDIARY_NAME | default " "}}' # Optional
+      CERT_CN: '{{.CERT_CN | default " "}}' # Optional
+      ENVIRONMENT_NAME: '{{.ENVIRONMENT_NAME | default " "}}' # Optional
       _OUTPUT_FILENAME: '{{.PKI_OUT_DIR}}/{{.OUTPUT_FILENAME | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." ""}}'
       _YQ_TOKENIZATION: | # https://stackoverflow.com/questions/70032588/use-yq-to-substitute-string-in-a-yaml-file
         (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_COUNTRY_CODE>", "{{.ORGANIZATION_COUNTRY_CODE}}")
@@ -30,6 +32,8 @@ tasks:
         | (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_NAME>", "{{.ORGANIZATION_NAME}}")
         | (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_ADMINISTRATIVE_EMAIL>", "{{.ORGANIZATION_ADMINISTRATIVE_EMAIL}}")
         | (.. | select(tag == "!!str")) |= sub("<INTERMEDIARY_NAME>", "{{.INTERMEDIARY_NAME}}")
+        | (.. | select(tag == "!!str")) |= sub("<CERT_CN>", "{{.CERT_CN}}")
+        | (.. | select(tag == "!!str")) |= sub("<ENVIRONMENT_NAME>", "{{.ENVIRONMENT_NAME}}")
     preconditions:
       - sh: test '{{.ORGANIZATION_NAME}}'
         msg: Please provide a valid ORGANIZATION_NAME
@@ -46,11 +50,14 @@ tasks:
     cmds:
       - task: :_core:ensure-directory-exists
         vars: { DIRECTORY: '{{._OUTPUT_FILENAME | dir}}' }
+      - task: :_core:message
+        vars: { MESSAGE: Generating Root Certificate Authority... }
       - |
-        printf '{{._YQ_TOKENIZATION}}'
         yq eval '{{._YQ_TOKENIZATION}}' '{{.CSR_TEMPLATE_FILENAME}}' \
           | cfssl gencert -initca=true -loglevel={{.CFSSL_LOG_LEVEL}} - \
           | cfssljson -bare '{{._OUTPUT_FILENAME}}'
+      - task: :_core:message
+        vars: { MESSAGE: Root Certificate Authority generated }
     # sources:
     #   - '{{._YQ_TOKENIZATION}}'
     #   - '{{.CSR_TEMPLATE_FILENAME}}'
@@ -69,10 +76,14 @@ tasks:
       _SIGNING_KEY_FILENAME: '{{.PKI_OUT_DIR}}/{{.SIGNING_KEY_FILENAME | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." ""}}'
       _INTERMEDIATE_CA_FILENAME: '{{.PKI_OUT_DIR}}/{{.INTERMEDIATE_CA_FILENAME | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." ""}}'
     cmds:
+      - task: :_core:message
+        vars: { MESSAGE: Signing Intermediate Certificate Authority... }
       - |
         cfssl sign -loglevel={{.CFSSL_LOG_LEVEL}} -ca "{{._SIGNING_KEY_FILENAME}}.pem" -ca-key "{{._SIGNING_KEY_FILENAME}}-key.pem" \
           -config "{{.PKI_SRC_DIR}}/cfssl-profiles.json" -profile intermediate-ca "{{._INTERMEDIATE_CA_FILENAME}}.csr" \
           | cfssljson -bare "{{._INTERMEDIATE_CA_FILENAME}}"
+      - task: :_core:message
+        vars: { MESSAGE: Intermediate Certificate Authority signed }
     # sources:
     #   - '{{._SIGNING_KEY_FILENAME}}.pem'
     #   - '{{._SIGNING_KEY_FILENAME}}-key.pem'
@@ -88,6 +99,8 @@ tasks:
       OUTPUT_FILENAME: '{{.OUTPUT_FILENAME}}'
       SIGNING_KEY_FILENAME: '{{.SIGNING_KEY_FILENAME | default .ORGANIZATION_NAME}}'
       INTERMEDIARY_NAME: '{{.INTERMEDIARY_NAME | default " "}}' # Optional
+      CERT_CN: '{{.CERT_CN | default " "}}' # Optional
+      ENVIRONMENT_NAME: '{{.ENVIRONMENT_NAME | default " "}}' # Optional
     preconditions:
       - sh: test -f '{{.PKI_TPL_DIR}}/{{.CSR_TEMPLATE_FILENAME}}'
         msg: Please provide a valid CSR_TEMPLATE_FILENAME ({{.CSR_TEMPLATE_FILENAME}} does not exist)
@@ -95,7 +108,7 @@ tasks:
         msg: Please provide a valid OUTPUT_FILENAME
     cmds:
       - task: generate-ca
-        vars: { CSR_TEMPLATE_FILENAME: "{{.CSR_TEMPLATE_FILENAME}}", OUTPUT_FILENAME: "{{.OUTPUT_FILENAME}}", INTERMEDIARY_NAME: "{{.INTERMEDIARY_NAME}}" }
+        vars: { CSR_TEMPLATE_FILENAME: "{{.CSR_TEMPLATE_FILENAME}}", OUTPUT_FILENAME: "{{.OUTPUT_FILENAME}}", INTERMEDIARY_NAME: "{{.INTERMEDIARY_NAME}}", CERT_CN: "{{.CERT_CN}}", ENVIRONMENT_NAME: "{{.ENVIRONMENT_NAME}}" }
       - task: sign-intermediate-ca
         vars: { SIGNING_KEY_FILENAME: "{{.SIGNING_KEY_FILENAME}}", INTERMEDIATE_CA_FILENAME: "{{.OUTPUT_FILENAME}}" }
 
@@ -108,21 +121,29 @@ tasks:
       - sh: test '{{.OUTPUT_FILENAME}}'
         msg: Please provide a valid OUTPUT_FILENAME
     cmds:
+      - task: :_core:message
+        vars: { MESSAGE: Generating Public/Private pair for a K8s Service Account... }
       # Note: With Talos Linux's 'talosconfig' file, you won't need the public 'sa.pub' file
       - echo '{{._CFSSL_BLANK_TEMPLATE}}' | cfssl genkey -loglevel={{.CFSSL_LOG_LEVEL}} - | yq .key > "{{._OUTPUT_FILENAME}}.key"
+      - task: :_core:message
+        vars: { MESSAGE: Public/Private pair for a K8s Service Account generated }
 
   prepare-k8s-directory:
-    desc: Copies cfssl-generated key files to the proper naming that Kubernetes expects in its PKI folders
+    desc: Moves cfssl-generated key files to the proper naming that Kubernetes expects in its PKI folders
     vars:
       KUBERNETES_PKI_DIR: '{{.KUBERNETES_PKI_DIR | default "kubernetes"}}'
       _KUBERNETES_PKI_DIR: '{{.PKI_OUT_DIR}}/{{.KUBERNETES_PKI_DIR | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." ""}}'
     cmds:
+      - task: :_core:message
+        vars: { MESSAGE: Fixing up K8s PKI folder to prep for talosctl consumption... }
       - mv {{._KUBERNETES_PKI_DIR}}/etcd/ca-key.pem {{._KUBERNETES_PKI_DIR}}/etcd/ca.key
       - mv {{._KUBERNETES_PKI_DIR}}/etcd/ca.pem {{._KUBERNETES_PKI_DIR}}/etcd/ca.crt
       - mv {{._KUBERNETES_PKI_DIR}}/ca-key.pem {{._KUBERNETES_PKI_DIR}}/ca.key
       - mv {{._KUBERNETES_PKI_DIR}}/ca.pem {{._KUBERNETES_PKI_DIR}}/ca.crt
       - mv {{._KUBERNETES_PKI_DIR}}/front-proxy-ca-key.pem {{._KUBERNETES_PKI_DIR}}/front-proxy-ca.key
       - mv {{._KUBERNETES_PKI_DIR}}/front-proxy-ca.pem {{._KUBERNETES_PKI_DIR}}/front-proxy-ca.crt
+      - task: :_core:message
+        vars: { MESSAGE: K8s PKI folder ready for talosctl consumption }
 
   generate-server-certificate:
     desc: Generates a Server Certificate.

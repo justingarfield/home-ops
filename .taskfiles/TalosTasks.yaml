@@ -29,7 +29,11 @@ tasks:
     cmds:
       - task: :_core:ensure-directory-exists
         vars: { DIRECTORY: '{{._OUTPUT_FILENAME | dir}}' }
-      - talosctl gen secrets --from-kubernetes-pki "{{.K8S_PKI_DIR}}" --kubernetes-bootstrap-token {{._BOOTSTRAP_TOKEN}} --output-file "{{._OUTPUT_FILENAME}}"
+      - task: :_core:message
+        vars: { MESSAGE: Generating secrets-bundle.yaml file... }
+      - talosctl gen secrets --from-kubernetes-pki "{{.K8S_PKI_DIR}}" --kubernetes-bootstrap-token {{._BOOTSTRAP_TOKEN}} --output-file "{{._OUTPUT_FILENAME}}" >/dev/null 2>&1
+      - task: :_core:message
+        vars: { MESSAGE: secrets-bundle.yaml file generated }
     sources:
       - '{{.K8S_PKI_DIR}}'
       - '{{._BOOTSTRAP_TOKEN}}'
@@ -57,6 +61,8 @@ tasks:
     cmds:
       - task: :_core:ensure-directory-exists
         vars: { DIRECTORY: '{{.TALOS_OUT_DIR}}' }
+      - task: :_core:message
+        vars: { MESSAGE: Generating machine-config related files... }
       - |
         talosctl gen config {{.CLUSTER_NAME}} https://{{.CONTROL_PLANE_HOSTNAME}}.{{.INTERNAL_DOMAIN}}:{{.CLUSTER_API_SERVER_PORT}} \
           --with-secrets {{.SECRETS_BUNDLE_FILENAME}} \
@@ -79,6 +85,8 @@ tasks:
           --config-patch @{{.TALOS_SRC_DIR}}/system-disk-encryption.patch \
           --config-patch='[{"op": "replace", "path": "/machine/systemDiskEncryption/ephemeral/keys", "value": [{ "static": { "passphrase": "{{.EPHEMERAL_PASSPHRASE}}" }, "slot": 0 }] }]' \
           --output {{.TALOS_OUT_DIR}}
+      - task: :_core:message
+        vars: { MESSAGE: machine-config related files generated }
 
   merge-config-files:
     desc: Sets up the talos and kubectl configuration files
