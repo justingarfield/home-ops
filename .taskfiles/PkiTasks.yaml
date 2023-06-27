@@ -101,132 +101,30 @@ tasks:
       - task: sign-intermediate-ca
         vars: { SIGNING_KEY_FILENAME: "{{.SIGNING_KEY_FILENAME}}", INTERMEDIATE_CA_FILENAME: "{{.OUTPUT_FILENAME}}" }
 
-  generate-kubernetes-intermediate-ca:
-    internal: true
-    desc: Generates a Kubernetes Intermediate Certificate Authority (CA).
+  generate-k8s-service-account-key:
+    desc: Generates a Public/Private key-pair for a Kubernetes Service Account.
     vars:
-      CERT_CN: '{{ .CERT_CN }}'
-      ORGANIZATION_NAME: '{{ .ORGANIZATION_NAME }}'
-      SITE_NAME: '{{ .SITE_NAME }}'
-      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
-      CERT_FILENAME: '{{ .CERT_FILENAME }}'
-      _CLEAN_ORG_NAME: '{{ .ORGANIZATION_NAME | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." "" }}'
-      _OUTPUT_FILENAME: '{{ .PKI_OUT_DIR }}/{{ ._CLEAN_ORG_NAME }}/{{ .SITE_NAME }}/kubernetes/{{ .CERT_FILENAME }}'
-      _CSR_FILENAME: '{{ ._OUTPUT_FILENAME }}.csr'
-      _PUBLIC_KEY_FILENAME: '{{ ._OUTPUT_FILENAME }}.pem'
-      _PRIVATE_KEY_FILENAME: '{{ ._OUTPUT_FILENAME }}-key.pem'
+      OUTPUT_FILENAME: '{{.OUTPUT_FILENAME}}'
+      _OUTPUT_FILENAME: '{{.PKI_OUT_DIR}}/{{.OUTPUT_FILENAME | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." ""}}'
     preconditions:
-      - test -f "{{ .PKI_TPL_DIR }}/kubernetes-intermediate-ca-csr.json"
+      - sh: test '{{.OUTPUT_FILENAME}}'
+        msg: Please provide a valid OUTPUT_FILENAME
     cmds:
-      - task: :_core:ensure-directory-exists
-        vars: { DIRECTORY: "{{ ._OUTPUT_FILENAME | dir }}" }
-      - |
-        yq eval '{{ ._YQ_TOKENIZATION }}' '{{ .PKI_TPL_DIR }}/kubernetes-intermediate-ca-csr.json' \
-          | cfssl gencert -initca=true -loglevel={{ .CFSSL_LOG_LEVEL }} - \
-          | cfssljson -bare {{ ._OUTPUT_FILENAME }}
-      - echo "Kubernetes Intermediate CA CSR created............  {{ ._CSR_FILENAME }}"
-      - echo "Kubernetes Intermediate CA Public key created.....  {{ ._PUBLIC_KEY_FILENAME }}"
-      - echo "Kubernetes Intermediate CA Private key created....  {{ ._PRIVATE_KEY_FILENAME }}"
-    sources:
-      - '{{ .PKI_TPL_DIR }}/kubernetes-intermediate-ca-csr.json'
-    generates:
-      - '{{ ._CSR_FILENAME }}'
-      - '{{ ._PUBLIC_KEY_FILENAME }}'
-      - '{{ ._PRIVATE_KEY_FILENAME }}'
+      # Note: With Talos Linux's talosconfig file, you won't need the public 'sa.pub' file
+      - echo '{{._CFSSL_BLANK_TEMPLATE}}' | cfssl genkey -loglevel={{.CFSSL_LOG_LEVEL}} - | yq .key > "{{._OUTPUT_FILENAME}}.key"
 
-  sign-kubernetes-intermediate-ca:
-    internal: true
-    desc: Signs a Kubernetes Intermediate Certificate Authority (CA).
+  prepare-k8s-directory:
+    desc: Copies cfssl-generated key files to the proper naming that Kubernetes expects in its PKI folders
     vars:
-      CERT_CN: '{{ .CERT_CN }}'
-      SITE_NAME: '{{ .SITE_NAME }}'
-      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
-      CERT_FUNCTION: '{{ .CERT_FUNCTION }}'
-      CERT_FILENAME: '{{ .CERT_FILENAME }}'
-      _CLEAN_ORG_NAME: '{{ .ORGANIZATION_NAME | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." "" }}'
-      _SITE_OUTPUT_FILENAME: '{{ .PKI_OUT_DIR }}/{{ ._CLEAN_ORG_NAME }}/{{ .SITE_NAME }}/{{ .SITE_NAME }}'
-      _SITE_PUBLIC_KEY_FILENAME: '{{ ._SITE_OUTPUT_FILENAME }}.pem'
-      _SITE_PRIVATE_KEY_FILENAME: '{{ ._SITE_OUTPUT_FILENAME }}-key.pem'
-      _INTERMEDIATE_OUTPUT_FILENAME: '{{ .PKI_OUT_DIR }}/{{ ._CLEAN_ORG_NAME }}/{{ .SITE_NAME }}/kubernetes/{{ .CERT_FILENAME }}'
-      _INTERMEDIATE_CSR_FILENAME: '{{ ._INTERMEDIATE_OUTPUT_FILENAME }}.csr'
-      _CSR_FILENAME: '{{ ._INTERMEDIATE_OUTPUT_FILENAME }}.csr'
-      _PUBLIC_KEY_FILENAME: '{{ ._INTERMEDIATE_OUTPUT_FILENAME }}.pem'
-      _PRIVATE_KEY_FILENAME: '{{ ._INTERMEDIATE_OUTPUT_FILENAME }}-key.pem'
+      KUBERNETES_PKI_DIR: '{{.KUBERNETES_PKI_DIR | default "kubernetes"}}'
+      _KUBERNETES_PKI_DIR: '{{.PKI_OUT_DIR}}/{{.KUBERNETES_PKI_DIR | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." ""}}'
     cmds:
-      - |
-        cfssl sign -loglevel={{ .CFSSL_LOG_LEVEL }} -ca "{{ ._SITE_PUBLIC_KEY_FILENAME }}" -ca-key "{{ ._SITE_PRIVATE_KEY_FILENAME }}" \
-          -config "{{ .PKI_SRC_DIR }}/cfssl-profiles.json" -profile site-intermediate-ca "{{ ._INTERMEDIATE_CSR_FILENAME }}" \
-          | cfssljson -bare "{{ ._INTERMEDIATE_OUTPUT_FILENAME }}"
-      - cp "{{ ._PUBLIC_KEY_FILENAME }}" "{{ ._INTERMEDIATE_OUTPUT_FILENAME }}.crt"
-      - echo "Kubernetes Intermediate CA Public key copied......  {{ ._INTERMEDIATE_OUTPUT_FILENAME }}.crt"
-      - cp "{{ ._PRIVATE_KEY_FILENAME }}" "{{ ._INTERMEDIATE_OUTPUT_FILENAME }}.key"
-      - echo "Kubernetes Intermediate CA Private key copied.....  {{ ._INTERMEDIATE_OUTPUT_FILENAME }}.key"
-
-  generate-and-sign-kubernetes-intermediate-ca:
-    internal: true
-    desc: Generates and Signs Kubernetes / etcd Intermediate Certificate Authorities (CAs).
-    vars:
-      ORGANIZATION_NAME: '{{ .ORGANIZATION_NAME }}'
-      SITE_NAME: '{{ .SITE_NAME }}'
-      CERT_EMAIL: '{{ .CERT_EMAIL }}'
-      CERT_LOCATION: '{{ .CERT_LOCATION }}'
-      CERT_STATE: '{{ .CERT_STATE }}'
-      CERT_COUNTRY: '{{ .CERT_COUNTRY }}'
-      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
-      CERT_CN: '{{ .CERT_CN }}'
-      CERT_FILENAME: '{{ .CERT_FILENAME }}'
-    cmds:
-      - task: generate-kubernetes-intermediate-ca
-        vars: { ORGANIZATION_NAME: "{{ .ORGANIZATION_NAME }}", CERT_EMAIL: "{{ .CERT_EMAIL }}", CERT_LOCATION: "{{ .CERT_LOCATION }}", CERT_STATE: "{{ .CERT_STATE }}", CERT_COUNTRY: "{{ .CERT_COUNTRY }}", SITE_NAME: "{{ .SITE_NAME }}", CLUSTER_NAME: "{{ .CLUSTER_NAME }}", CERT_FILENAME: "{{ .CERT_FILENAME }}", CERT_CN: "{{ .CERT_CN }}" }
-      - task: sign-kubernetes-intermediate-ca
-        vars: { ORGANIZATION_NAME: "{{ .ORGANIZATION_NAME }}", CERT_EMAIL: "{{ .CERT_EMAIL }}", CERT_LOCATION: "{{ .CERT_LOCATION }}", CERT_STATE: "{{ .CERT_STATE }}", CERT_COUNTRY: "{{ .CERT_COUNTRY }}", SITE_NAME: "{{ .SITE_NAME }}", CLUSTER_NAME: "{{ .CLUSTER_NAME }}", CERT_FILENAME: "{{ .CERT_FILENAME }}", CERT_CN: "{{ .CERT_CN }}" }
-
-  generate-service-account-key:
-    internal: true
-    desc: Generates a Public/Private key-pair for the Service Account.
-    vars:
-      SITE_NAME: '{{ .SITE_NAME }}'
-      ORGANIZATION_NAME: '{{ .ORGANIZATION_NAME }}'
-      _CLEAN_ORG_NAME: '{{ .ORGANIZATION_NAME | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." "" }}'
-      _OUTPUT_DIRECTORY: '{{ .PKI_OUT_DIR }}/{{ ._CLEAN_ORG_NAME }}/{{ .SITE_NAME }}/kubernetes'
-    cmds:
-      - echo '{{ ._CFSSL_BLANK_TEMPLATE }}' | cfssl genkey -loglevel={{ .CFSSL_LOG_LEVEL }} - | yq .key > "{{ ._OUTPUT_DIRECTORY }}/sa.key"
-
-  # See: https://kubernetes.io/docs/setup/best-practices/certificates/
-  generate-and-sign-kubernetes-single-root-cas:
-    desc: Generates and Signs Kubernetes / etcd Intermediate Certificate Authorities (CAs).
-    vars:
-      ORGANIZATION_NAME: '{{ .ORGANIZATION_NAME }}'
-      SITE_NAME: '{{ .SITE_NAME }}'
-      CERT_EMAIL: '{{ .CERT_EMAIL }}'
-      CERT_LOCATION: '{{ .CERT_LOCATION }}'
-      CERT_STATE: '{{ .CERT_STATE }}'
-      CERT_COUNTRY: '{{ .CERT_COUNTRY }}'
-      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
-    preconditions:
-      - sh: test '{{ .ORGANIZATION_NAME }}'
-        msg: Please provide a valid ORGANIZATION_NAME
-      - sh: test '{{ .SITE_NAME }}'
-        msg: Please provide a valid SITE_NAME
-      - sh: test '{{ .CERT_EMAIL }}'
-        msg: Please provide a valid CERT_EMAIL
-      - sh: test '{{ .CERT_LOCATION }}'
-        msg: Please provide a valid CERT_LOCATION
-      - sh: test '{{ .CERT_STATE }}'
-        msg: Please provide a valid CERT_STATE
-      - sh: test '{{ .CERT_COUNTRY }}'
-        msg: Please provide a valid CERT_COUNTRY
-      - sh: test '{{ .CLUSTER_NAME }}'
-        msg: Please provide a valid CLUSTER_NAME
-    cmds:
-      - task: generate-and-sign-kubernetes-intermediate-ca
-        vars: { ORGANIZATION_NAME: "{{ .ORGANIZATION_NAME }}", SITE_NAME: "{{ .SITE_NAME }}", CERT_EMAIL: "{{ .CERT_EMAIL }}", CERT_LOCATION: "{{ .CERT_LOCATION }}", CERT_STATE: "{{ .CERT_STATE }}", CERT_COUNTRY: "{{ .CERT_COUNTRY }}", CLUSTER_NAME: "{{ .CLUSTER_NAME }}", CERT_FILENAME: ca, CERT_CN: kubernetes-ca }
-      - task: generate-and-sign-kubernetes-intermediate-ca
-        vars: { ORGANIZATION_NAME: "{{ .ORGANIZATION_NAME }}", SITE_NAME: "{{ .SITE_NAME }}", CERT_EMAIL: "{{ .CERT_EMAIL }}", CERT_LOCATION: "{{ .CERT_LOCATION }}", CERT_STATE: "{{ .CERT_STATE }}", CERT_COUNTRY: "{{ .CERT_COUNTRY }}", CLUSTER_NAME: "{{ .CLUSTER_NAME }}", CERT_FILENAME: etcd/ca, CERT_CN: etcd-ca }
-      - task: generate-and-sign-kubernetes-intermediate-ca
-        vars: { ORGANIZATION_NAME: "{{ .ORGANIZATION_NAME }}", SITE_NAME: "{{ .SITE_NAME }}", CERT_EMAIL: "{{ .CERT_EMAIL }}", CERT_LOCATION: "{{ .CERT_LOCATION }}", CERT_STATE: "{{ .CERT_STATE }}", CERT_COUNTRY: "{{ .CERT_COUNTRY }}", CLUSTER_NAME: "{{ .CLUSTER_NAME }}", CERT_FILENAME: front-proxy-ca, CERT_CN: kubernetes-front-proxy-ca }
-      - task: generate-service-account-key
-        vars: { ORGANIZATION_NAME: "{{ .ORGANIZATION_NAME }}", SITE_NAME: "{{ .SITE_NAME }}" }
+      - mv {{._KUBERNETES_PKI_DIR}}/etcd/ca-key.pem {{._KUBERNETES_PKI_DIR}}/etcd/ca.key
+      - mv {{._KUBERNETES_PKI_DIR}}/etcd/ca.pem {{._KUBERNETES_PKI_DIR}}/etcd/ca.crt
+      - mv {{._KUBERNETES_PKI_DIR}}/ca-key.pem {{._KUBERNETES_PKI_DIR}}/ca.key
+      - mv {{._KUBERNETES_PKI_DIR}}/ca.pem {{._KUBERNETES_PKI_DIR}}/ca.crt
+      - mv {{._KUBERNETES_PKI_DIR}}/front-proxy-ca-key.pem {{._KUBERNETES_PKI_DIR}}/front-proxy-ca.key
+      - mv {{._KUBERNETES_PKI_DIR}}/front-proxy-ca.pem {{._KUBERNETES_PKI_DIR}}/front-proxy-ca.crt
 
   generate-server-certificate:
     desc: Generates a Server Certificate.

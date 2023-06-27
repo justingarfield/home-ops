@@ -42,6 +42,17 @@ This allows creation of multiple certificates, without repeating a majority of t
 | `USER_NAME`                         |  |  |
 | `CLUSTER_NAME`                      |  |  |
 
+## PKI Build-out
+
+Assuming you have already filled-in all of the environmental variables in a `.env.whatever` file...
+
+```shell
+task pki:generate-ca
+
+OUTPUT_FILENAME=some-intermediary/some-intermediary task pki:generate-and-sign-intermediate-ca
+OUTPUT_FILENAME=another-intermediary/another-intermediary task pki:generate-and-sign-intermediate-ca
+```
+
 ## Troubleshooting
 
 ### max_path_len
