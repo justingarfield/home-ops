@@ -9,23 +9,24 @@ spec:
   chart:
     spec:
       chart: rook-ceph
-      version: v1.11.5
+      version: v1.11.8
       sourceRef:
         kind: HelmRepository
         name: rook-ceph
         namespace: rook-ceph
   install:
-    createNamespace: true
+    createNamespace: false
     remediation:
       retries: 5
   upgrade:
     remediation:
-      retries: 5
+      retries: 3
   values:
     crds:
       enabled: false
+    pspEnable: false
     monitoring:
-      enabled: true
+      enabled: false
     resources:
       requests:
         cpu: 10m
