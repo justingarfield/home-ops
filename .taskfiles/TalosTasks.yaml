@@ -75,6 +75,7 @@ tasks:
           --config-patch-worker @{{.TALOS_SRC_DIR}}/kubelet-unsafe-sysctls.patch \
           --config-patch-worker @{{.TALOS_SRC_DIR}}/label-worker-node.patch \
           --config-patch @{{.TALOS_SRC_DIR}}/machine-cert-sans.patch \
+          --config-patch @{{.TALOS_SRC_DIR}}/registry-mirrors.patch \
           --config-patch='[{"op": "add", "path": "/machine/certSANs/-", "value": "{{.CLUSTER_LOAD_BALANCER_IP}}" }]' \
           --config-patch @{{.TALOS_SRC_DIR}}/system-disk-encryption.patch \
           --config-patch='[{"op": "replace", "path": "/machine/systemDiskEncryption/ephemeral/keys", "value": [{ "static": { "passphrase": "{{.EPHEMERAL_PASSPHRASE}}" }, "slot": 0 }] }]' \
