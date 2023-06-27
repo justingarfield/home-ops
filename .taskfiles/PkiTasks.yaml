@@ -24,16 +24,16 @@ vars:
 tasks:
 
   generate-ca:
-    desc: Generates a new Certificate Authority using cfssl
+    desc: Generates a new Certificate Authority (CA) using cfssl
     vars:
+      CSR_TEMPLATE_FILENAME: '{{.PKI_TPL_DIR}}/{{.CSR_TEMPLATE_FILENAME | default "root-ca-csr.json" }}'
+      OUTPUT_FILENAME: '{{.OUTPUT_FILENAME | default .ORGANIZATION_NAME}}'
       ORGANIZATION_NAME: '{{.ORGANIZATION_NAME}}'
       ORGANIZATION_ADMINISTRATIVE_EMAIL: '{{.ORGANIZATION_ADMINISTRATIVE_EMAIL}}'
       ORGANIZATION_LOCATION: '{{.ORGANIZATION_LOCATION}}'
       ORGANIZATION_STATE_PROVINCE_CODE: '{{.ORGANIZATION_STATE_PROVINCE_CODE}}'
       ORGANIZATION_COUNTRY_CODE: '{{.ORGANIZATION_COUNTRY_CODE}}'
-      _CLEAN_ORG_NAME: '{{ .ORGANIZATION_NAME | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." "" }}'
-      _OUTPUT_FILENAME: '{{ .PKI_OUT_DIR }}/{{ ._CLEAN_ORG_NAME }}'
-      _CA_CSR_FILENAME: '{{ .PKI_TPL_DIR }}/root-ca-csr.json'
+      _OUTPUT_FILENAME: '{{.PKI_OUT_DIR}}/{{.OUTPUT_FILENAME | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." ""}}'
     preconditions:
       - sh: test '{{.ORGANIZATION_NAME}}'
         msg: Please provide a valid ORGANIZATION_NAME
@@ -45,14 +45,18 @@ tasks:
         msg: Please provide a valid ORGANIZATION_STATE_PROVINCE_CODE
       - sh: test '{{.ORGANIZATION_COUNTRY_CODE}}'
         msg: Please provide a valid ORGANIZATION_COUNTRY_CODE
+      - sh: test -f '{{.CSR_TEMPLATE_FILENAME}}'
+        msg: Please provide a valid CSR_TEMPLATE_FILENAME ({{.CSR_TEMPLATE_FILENAME}} does not exist)
     cmds:
       - task: :_core:ensure-directory-exists
         vars: { DIRECTORY: '{{._OUTPUT_FILENAME | dir}}' }
       - |
-        yq eval '{{ ._YQ_TOKENIZATION }}' '{{._CA_CSR_FILENAME}}' \
-          | ./scripts/pki/cfssl-generate-ca.sh "{{._OUTPUT_FILENAME}}" {{.CFSSL_LOG_LEVEL}}
+        yq eval '{{._YQ_TOKENIZATION}}' '{{.CSR_TEMPLATE_FILENAME}}' \
+          | cfssl gencert -initca=true -loglevel={{.CFSSL_LOG_LEVEL}} - \
+          | cfssljson -bare '{{._OUTPUT_FILENAME}}'
     sources:
-      - '{{._CA_CSR_FILENAME}}'
+      - '{{._YQ_TOKENIZATION}}'
+      - '{{.CSR_TEMPLATE_FILENAME}}'
     generates:
       - '{{._OUTPUT_FILENAME}}.csr'
       - '{{._OUTPUT_FILENAME}}.pem'
@@ -60,57 +64,42 @@ tasks:
 
   sign-intermediate-ca:
     internal: true
-    desc: Signs a Site-level Intermediate Certificate Authority (CA).
+    desc: Signs an Intermediate Certificate Authority (CA) using cfssl
     vars:
-      ORGANIZATION_NAME: '{{ .ORGANIZATION_NAME }}'
-      SITE_NAME: '{{ .SITE_NAME }}'
-      _CLEAN_ORG_NAME: '{{ .ORGANIZATION_NAME | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." "" }}'
-      _ROOT_OUTPUT_FILENAME: '{{ .PKI_OUT_DIR }}/{{ ._CLEAN_ORG_NAME }}/{{ ._CLEAN_ORG_NAME }}'
-      _ROOT_PUBLIC_KEY_FILENAME: '{{ ._ROOT_OUTPUT_FILENAME }}.pem'
-      _ROOT_PRIVATE_KEY_FILENAME: '{{ ._ROOT_OUTPUT_FILENAME }}-key.pem'
-      _INTERMEDIATE_OUTPUT_FILENAME: '{{ .PKI_OUT_DIR }}/{{ ._CLEAN_ORG_NAME }}/{{ .SITE_NAME }}/{{ .SITE_NAME }}'
-      _INTERMEDIATE_CSR_FILENAME: '{{ ._INTERMEDIATE_OUTPUT_FILENAME }}.csr'
+      SIGNING_KEY_FILENAME: '{{.SIGNING_KEY_FILENAME}}'
+      INTERMEDIATE_CA_FILENAME: '{{.INTERMEDIATE_CA_FILENAME}}'
+      OUTPUT_FILENAME: '{{.OUTPUT_FILENAME}}'
+      _SIGNING_KEY_FILENAME: '{{.PKI_OUT_DIR}}/{{.SIGNING_KEY_FILENAME | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." ""}}'
+      _INTERMEDIATE_CA_FILENAME: '{{.PKI_OUT_DIR}}/{{.INTERMEDIATE_CA_FILENAME | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." ""}}'
     cmds:
       - |
-        cfssl sign -loglevel={{ .CFSSL_LOG_LEVEL }} -ca "{{ ._ROOT_PUBLIC_KEY_FILENAME }}" -ca-key "{{ ._ROOT_PRIVATE_KEY_FILENAME }}" \
-          -config "{{ .PKI_SRC_DIR }}/cfssl-profiles.json" -profile site-intermediate-ca "{{ ._INTERMEDIATE_CSR_FILENAME }}" \
-          | cfssljson -bare "{{ ._INTERMEDIATE_OUTPUT_FILENAME }}"
+        cfssl sign -loglevel={{.CFSSL_LOG_LEVEL}} -ca "{{._SIGNING_KEY_FILENAME}}.pem" -ca-key "{{._SIGNING_KEY_FILENAME}}-key.pem" \
+          -config "{{.PKI_SRC_DIR}}/cfssl-profiles.json" -profile intermediate-ca "{{._INTERMEDIATE_CA_FILENAME}}.csr" \
+          | cfssljson -bare "{{._INTERMEDIATE_CA_FILENAME}}"
     sources:
-      - '{{ ._ROOT_PUBLIC_KEY_FILENAME }}'
-      - '{{ ._ROOT_PRIVATE_KEY_FILENAME }}'
-      - '{{ .PKI_SRC_DIR }}/cfssl-profiles.json'
-      - '{{ ._INTERMEDIATE_CSR_FILENAME }}'
+      - '{{._SIGNING_KEY_FILENAME}}.pem'
+      - '{{._SIGNING_KEY_FILENAME}}-key.pem'
+      - '{{.PKI_SRC_DIR}}/cfssl-profiles.json'
     generates:
-      - '{{ ._INTERMEDIATE_OUTPUT_FILENAME }}'
-      - '{{ ._INTERMEDIATE_CSR_FILENAME }}'
+      - '{{._INTERMEDIATE_CA_FILENAME}}.csr'
+      - '{{._INTERMEDIATE_CA_FILENAME}}.pem'
 
   generate-and-sign-intermediate-ca:
-    desc: Generates and Signs a Site-level Intermediate Certificate Authority (CA).
+    desc: Generates and Signs an Intermediate Certificate Authority (CA) using cfssl
     vars:
-      ORGANIZATION_NAME: '{{ .ORGANIZATION_NAME }}'
-      SITE_NAME: '{{ .SITE_NAME }}'
-      CERT_EMAIL: '{{ .CERT_EMAIL }}'
-      CERT_LOCATION: '{{ .CERT_LOCATION }}'
-      CERT_STATE: '{{ .CERT_STATE }}'
-      CERT_COUNTRY: '{{ .CERT_COUNTRY }}'
+      CSR_TEMPLATE_FILENAME: '{{.CSR_TEMPLATE_FILENAME | default "default-intermediate-ca-csr.json"}}'
+      OUTPUT_FILENAME: '{{.OUTPUT_FILENAME}}'
+      SIGNING_KEY_FILENAME: '{{.SIGNING_KEY_FILENAME | default .ORGANIZATION_NAME}}'
     preconditions:
-      - sh: test '{{ .ORGANIZATION_NAME }}'
-        msg: Please provide a valid ORGANIZATION_NAME
-      - sh: test '{{ .SITE_NAME }}'
-        msg: Please provide a valid SITE_NAME
-      - sh: test '{{ .CERT_EMAIL }}'
-        msg: Please provide a valid CERT_EMAIL
-      - sh: test '{{ .CERT_LOCATION }}'
-        msg: Please provide a valid CERT_LOCATION
-      - sh: test '{{ .CERT_STATE }}'
-        msg: Please provide a valid CERT_STATE
-      - sh: test '{{ .CERT_COUNTRY }}'
-        msg: Please provide a valid CERT_COUNTRY
+      - sh: test -f '{{.PKI_TPL_DIR}}/{{.CSR_TEMPLATE_FILENAME}}'
+        msg: Please provide a valid CSR_TEMPLATE_FILENAME ({{.CSR_TEMPLATE_FILENAME}} does not exist)
+      - sh: test '{{.OUTPUT_FILENAME}}'
+        msg: Please provide a valid OUTPUT_FILENAME
     cmds:
-      - task: generate-site-intermediate-ca
-        vars: { ORGANIZATION_NAME: "{{ .ORGANIZATION_NAME }}", CERT_EMAIL: "{{ .CERT_EMAIL }}", CERT_LOCATION: "{{ .CERT_LOCATION }}", CERT_STATE: "{{ .CERT_STATE }}", CERT_COUNTRY: "{{ .CERT_COUNTRY }}", SITE_NAME: "{{ .SITE_NAME }}" }
-      - task: sign-site-intermediate-ca
-        vars: { ORGANIZATION_NAME: "{{ .ORGANIZATION_NAME }}", SITE_NAME: "{{ .SITE_NAME }}" }
+      - task: generate-ca
+        vars: { CSR_TEMPLATE_FILENAME: "{{.CSR_TEMPLATE_FILENAME}}", OUTPUT_FILENAME: "{{.OUTPUT_FILENAME}}" }
+      - task: sign-intermediate-ca
+        vars: { SIGNING_KEY_FILENAME: "{{.SIGNING_KEY_FILENAME}}", INTERMEDIATE_CA_FILENAME: "{{.OUTPUT_FILENAME}}" }
 
   generate-kubernetes-intermediate-ca:
     internal: true
@@ -251,7 +240,7 @@ tasks:
       _INTERMEDIATE_OUTPUT_FILENAME: '{{ .PKI_OUT_DIR }}/{{ ._CLEAN_ORG_NAME }}/{{ .SITE_NAME }}/{{ .SITE_NAME }}'
       _INTERMEDIATE_PUBLIC_KEY_FILENAME: '{{ ._INTERMEDIATE_OUTPUT_FILENAME }}.pem'
       _INTERMEDIATE_PRIVATE_KEY_FILENAME: '{{ ._INTERMEDIATE_OUTPUT_FILENAME }}-key.pem'
-      _SERVER_OUTPUT_FILENAME: '{{ .PKI_OUT_DIR }}/{{ ._CLEAN_ORG_NAME }}/{{ .SITE_NAME }}/{{ .SERVER_NAME }}/{{ .SERVER_NAME }}'
+      _SERVER_OUTPUT_FILENAME: '{{ .PKI_OUT_DIR }}/{{ .SITE_NAME }}/{{ .SERVER_NAME }}'
       _CSR_FILENAME: '{{ ._SERVER_OUTPUT_FILENAME }}.csr'
       _PUBLIC_KEY_FILENAME: '{{ ._SERVER_OUTPUT_FILENAME }}.pem'
       _PRIVATE_KEY_FILENAME: '{{ ._SERVER_OUTPUT_FILENAME }}-key.pem'
