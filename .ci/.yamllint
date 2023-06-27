@@ -10,10 +10,6 @@ ignore: |
 
   # Automatically generated
   **/flux/clusters/*/kustomizations/flux-system/*
-  **/talos-linux/*/machine-configs/*
-  **/talos-linux/*/machine-templates/*
-  **/talos-linux/*/cilium.yaml
-  **/talos-linux/*/secrets-bundle.yaml
 
   # All Task files
   **/.taskfiles/**

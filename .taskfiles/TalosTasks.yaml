@@ -47,6 +47,8 @@ tasks:
       CLUSTER_LOAD_BALANCER_IP: '{{.CLUSTER_LOAD_BALANCER_IP}}'
       _MACHINE_TEMPLATES_DIR: '{{.TALOS_OUT_DIR}}/machine-templates'
     preconditions:
+      - sh: which talosctl
+        msg: The 'talosctl' binary is required on the path to run this task'
       - test {{.CLUSTER_NAME}}
       - test {{.CONTROL_PLANE_HOSTNAME}}
       - test {{.CLUSTER_DOMAIN}}
@@ -81,32 +83,6 @@ tasks:
           --config-patch='[{"op": "replace", "path": "/machine/systemDiskEncryption/ephemeral/keys", "value": [{ "static": { "passphrase": "{{.EPHEMERAL_PASSPHRASE}}" }, "slot": 0 }] }]' \
           --output {{._MACHINE_TEMPLATES_DIR}}
 
-  generate-machine-config:
-    internal: true
-    desc: (optional) Generate individual Machine Configs for a particular cluster node
-    vars:
-      CLUSTER_NAME: "{{.CLUSTER_NAME}}"
-      CLUSTER_DIR: "{{.TALOS_SRC_DIR}}/{{.CLUSTER_NAME}}-cluster"
-      NODE_TYPE: "{{.NODE_TYPE}}"
-      NODE_NAME: "{{.NODE_NAME}}"
-    cmds:
-      - |
-        talosctl machineconfig patch {{.CLUSTER_DIR}}/machine-templates/{{.NODE_TYPE}}.yaml \
-          --patch @{{.CLUSTER_DIR}}/machine-patches/{{.NODE_NAME}}.patch \
-          --output {{.CLUSTER_DIR}}/machine-configs/{{.NODE_NAME}}.yaml
-
-  apply-machine-config:
-    internal: true
-    desc: (no longer used) Apply a node-specific Machine Config to a particular cluster node
-    vars:
-      CLUSTER_NAME: "{{.CLUSTER_NAME}}"
-      NODE_NAME: "{{.NODE_NAME}}"
-      CLUSTER_DIR: "{{.TALOS_SRC_DIR}}/{{.CLUSTER_NAME}}-cluster"
-    cmds:
-      - printf "[home-ops] Applying Talos machine-config to {{.NODE_NAME}}\n"
-      - talosctl apply-config --insecure --nodes {{.NODE_NAME}}.{{.CLUSTER_DOMAIN}} --file {{.CLUSTER_DIR}}/machine-configs/{{.NODE_NAME}}.yaml
-      - printf "[home-ops] Applied Talos machine-config to {{.NODE_NAME}}\n"
-
   apply-machine-template:
     internal: true
     desc: Apply a machine-template to a particular cluster node
@@ -115,6 +91,9 @@ tasks:
       NODE_NAME: "{{.NODE_NAME}}"
       NODE_TYPE: "{{.NODE_TYPE}}"
       CLUSTER_DIR: "{{.TALOS_SRC_DIR}}/{{.CLUSTER_NAME}}-cluster"
+    preconditions:
+      - sh: which talosctl
+        msg: The 'talosctl' binary is required on the path to run this task'
     cmds:
       - printf "[home-ops] Applying Talos machine-template to {{.NODE_TYPE}} node {{.NODE_NAME}}\n"
       - talosctl apply-config --insecure --nodes {{.NODE_NAME}}.{{.CLUSTER_DOMAIN}} --file {{.CLUSTER_DIR}}/machine-templates/{{.NODE_TYPE}}.yaml
@@ -125,5 +104,8 @@ tasks:
     desc: Bootstraps etcd on a particular cluster's '-cp01' node
     vars:
       CLUSTER_NAME: "{{.CLUSTER_NAME}}"
+    preconditions:
+      - sh: which talosctl
+        msg: The 'talosctl' binary is required on the path to run this task'
     cmds:
       - talosctl bootstrap --nodes k8s-cp01.{{.CLUSTER_DOMAIN}}

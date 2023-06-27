@@ -18,6 +18,7 @@ I may change this down the road if I start to have configuration values that end
 ├─📄 kubelet-unsafe-sysctls.patch
 ├─📄 label-worker-node.patch
 ├─📄 machine-cert-sans.patch
+├─📄 registry-mirrors.patch
 ├─📄 system-disk-encryption.patch
 └─📄 talos-extension-drbd.patch
 ```
@@ -71,6 +72,10 @@ This is how you can see the `worker` role when using `kubectl get nodes`; otherw
 Adds additional certificate SANs that represent my HA Proxy endpoint used for communications via talosctl.
 
 I also add my HA Proxy Static IP address to the ones specified in there; I do that later-on when calling "talosctl gen config ..." to create the `controlplane.yaml` and `worker.yaml` files.
+
+### registry-mirrors
+
+
 
 ### system-disk-encryption
 
