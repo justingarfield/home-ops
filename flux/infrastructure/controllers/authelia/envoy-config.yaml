@@ -12,7 +12,7 @@ spec:
     - "@type": type.googleapis.com/envoy.extensions.filters.http.ext_authz.v3.ExtAuthz
       name: envoy-ext-authz-http
       http_service:
-        server_uri: authelia.authelia.svc.${CLUSTER_DOMAIN}
+        server_uri: authelia.authelia.svc.cluster.local
         pathPrefix: /api/verify/
         port: 80
         includeRequestHeadersInCheck:

@@ -84,7 +84,6 @@ tasks:
       GITHUB_TOKEN: '{{ .GITHUB_TOKEN }}'
       GITHUB_AUTHOR_EMAIL: '{{ .GITHUB_AUTHOR_EMAIL }}'
       GITHUB_AUTHOR_NAME: '{{ .GITHUB_AUTHOR_NAME }}'
-      CLUSTER_DOMAIN: '{{ .CLUSTER_DOMAIN }}'
       GITHUB_USERNAME: '{{ .GITHUB_USERNAME }}'
       GITHUB_REPO: '{{ .GITHUB_REPO | default .REPOSITORY_REMOTE_ORIGIN_NAME }}' # Override this if you want to store your Flux stuff in another Repository
     preconditions:
@@ -96,8 +95,6 @@ tasks:
         msg: GITHUB_AUTHOR_EMAIL
       - sh: test "{{ .GITHUB_AUTHOR_NAME }}"
         msg: GITHUB_AUTHOR_NAME
-      - sh: test {{ .CLUSTER_DOMAIN }}
-        msg: CLUSTER_DOMAIN
       - sh: test {{ .GITHUB_USERNAME }}
         msg: GITHUB_USERNAME
       - sh: test {{ .GITHUB_REPO }}
@@ -110,13 +107,12 @@ tasks:
           --author-email={{ .GITHUB_AUTHOR_EMAIL }} \
           --author-name="{{ .GITHUB_AUTHOR_NAME }}" \
           --branch=main \
-          --cluster-domain={{ .CLUSTER_DOMAIN }} \
           --commit-message-appendix="[ci skip]" \
           --owner={{ .GITHUB_USERNAME }} \
           --path=flux/clusters/{{ .CLUSTER_NAME }}/kustomizations \
           --personal \
           --repository={{ .GITHUB_REPO }}
-
+      # --cluster-domain={{ .CLUSTER_DOMAIN }} \
   apply-existing-install:
     desc: Applies an existing flux install from a repo using SOPS age keys
     cmds:

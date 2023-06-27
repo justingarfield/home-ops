@@ -41,7 +41,7 @@ tasks:
     vars:
       CLUSTER_NAME: '{{.CLUSTER_NAME | default .ENVIRONMENT_NAME | lower}}'
       CONTROL_PLANE_HOSTNAME: '{{.CONTROL_PLANE_HOSTNAME | default "control-plane"}}'
-      CLUSTER_DOMAIN: '{{.CLUSTER_DOMAIN | default .INTERNAL_DOMAIN}}'
+      INTERNAL_DOMAIN: '{{.INTERNAL_DOMAIN | default "home.arpa"}}'
       CLUSTER_API_SERVER_PORT: '{{.CLUSTER_API_SERVER_PORT | default "6443"}}'
       SECRETS_BUNDLE_FILENAME: '{{.TALOS_OUT_DIR}}/secrets-bundle.yaml'
       CLUSTER_LOAD_BALANCER_IP: '{{.CLUSTER_LOAD_BALANCER_IP}}'
@@ -51,7 +51,6 @@ tasks:
         msg: The 'talosctl' binary is required on the path to run this task'
       - test {{.CLUSTER_NAME}}
       - test {{.CONTROL_PLANE_HOSTNAME}}
-      - test {{.CLUSTER_DOMAIN}}
       - test {{.CLUSTER_API_SERVER_PORT}}
       - test {{.SECRETS_BUNDLE_FILENAME}}
       - test -f '{{.SECRETS_BUNDLE_FILENAME}}'
@@ -60,7 +59,7 @@ tasks:
       - task: :_core:ensure-directory-exists
         vars: { DIRECTORY: '{{._MACHINE_TEMPLATES_DIR}}' }
       - |
-        talosctl gen config {{.CLUSTER_NAME}} https://{{.CONTROL_PLANE_HOSTNAME}}.{{.CLUSTER_DOMAIN}}:{{.CLUSTER_API_SERVER_PORT}} \
+        talosctl gen config {{.CLUSTER_NAME}} https://{{.CONTROL_PLANE_HOSTNAME}}.{{.INTERNAL_DOMAIN}}:{{.CLUSTER_API_SERVER_PORT}} \
           --with-secrets {{.SECRETS_BUNDLE_FILENAME}} \
           --additional-sans {{.CONTROL_PLANE_HOSTNAME}},{{.CLUSTER_LOAD_BALANCER_IP}} \
           --install-image ghcr.io/siderolabs/installer:v1.4.5 \
@@ -96,7 +95,7 @@ tasks:
         msg: The 'talosctl' binary is required on the path to run this task'
     cmds:
       - printf "[home-ops] Applying Talos machine-template to {{.NODE_TYPE}} node {{.NODE_NAME}}\n"
-      - talosctl apply-config --insecure --nodes {{.NODE_NAME}}.{{.CLUSTER_DOMAIN}} --file {{.CLUSTER_DIR}}/machine-templates/{{.NODE_TYPE}}.yaml
+      - talosctl apply-config --insecure --nodes {{.NODE_NAME}}.{{.INTERNAL_DOMAIN}} --file {{.CLUSTER_DIR}}/machine-templates/{{.NODE_TYPE}}.yaml
       - printf "[home-ops] Applied Talos machine-template to {{.NODE_TYPE}} node {{.NODE_NAME}}\n"
 
   bootstrap-etcd:
@@ -108,4 +107,4 @@ tasks:
       - sh: which talosctl
         msg: The 'talosctl' binary is required on the path to run this task'
     cmds:
-      - talosctl bootstrap --nodes k8s-cp01.{{.CLUSTER_DOMAIN}}
+      - talosctl bootstrap --nodes k8s-cp01.{{.INTERNAL_DOMAIN}}
