@@ -55,7 +55,8 @@ spec:
     nodeSelector:
       node-role.kubernetes.io/control-plane: ""
     tolerations:
-      - effect: NoSchedule
+      - key: node-role.kubernetes.io/control-plane
+        effect: NoSchedule
         operator: Exists
     extraVolumeMounts:
       - name: external-dns-config-file
