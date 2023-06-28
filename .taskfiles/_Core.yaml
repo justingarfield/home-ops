@@ -20,7 +20,8 @@ tasks:
     desc: Displays a message to the end-user running the Task.
     internal: true
     vars:
-      _TIME: date +"%H:%M:%S"
+      _TIME:
+        sh: date +"%H:%M:%S"
     preconditions:
       - test "{{ .MESSAGE }}"
     cmds:
