@@ -51,13 +51,13 @@ tasks:
       - task: :_core:ensure-directory-exists
         vars: { DIRECTORY: '{{._OUTPUT_FILENAME | dir}}' }
       - task: :_core:message
-        vars: { MESSAGE: Generating Root Certificate Authority... }
+        vars: { MESSAGE: Generating Certificate Authority... }
       - |
         yq eval '{{._YQ_TOKENIZATION}}' '{{.CSR_TEMPLATE_FILENAME}}' \
           | cfssl gencert -initca=true -loglevel={{.CFSSL_LOG_LEVEL}} - \
           | cfssljson -bare '{{._OUTPUT_FILENAME}}'
       - task: :_core:message
-        vars: { MESSAGE: Root Certificate Authority generated }
+        vars: { MESSAGE: Certificate Authority generated }
     # sources:
     #   - '{{._YQ_TOKENIZATION}}'
     #   - '{{.CSR_TEMPLATE_FILENAME}}'

@@ -6,4 +6,4 @@ metadata:
   namespace: cert-manager
 spec:
   ca:
-    secretName: home-arpa-intermediate-key-pair
+    secretName: home-arpa-issuer
