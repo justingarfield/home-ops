@@ -32,9 +32,9 @@ spec:
       className: cilium
       annotations:
         hajimari.io/icon: mdi:sawtooth-wave
-        cert-manager.io/cluster-issuer: letsencrypt
+        cert-manager.io/cluster-issuer: home-arpa
       hosts:
-        - host: &host "gitops.${PUBLIC_DNS_ZONE}"
+        - host: &host "gitops.${INTERNAL_DOMAIN}"
           paths:
             - path: /
               pathType: Prefix
