@@ -33,7 +33,7 @@ spec:
     pspEnable: false
     cephClusterSpec:
       cephVersion:
-        image: quay.io/ceph/ceph:v18.1.1
+        image: quay.io/ceph/ceph:v17.2.6
       mon:
         count: 1
       mgr:
