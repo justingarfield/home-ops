@@ -7,4 +7,4 @@ resources:
   - crds.yaml
   - repository.yaml
   - operator
-  # - cluster
+  - cluster

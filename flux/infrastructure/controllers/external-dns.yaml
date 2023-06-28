@@ -52,6 +52,7 @@ spec:
         cpu: 25m
       limits:
         memory: 250Mi
+    # I'm currently scheduling on the Control Plane nodes until I have more workers available
     nodeSelector:
       node-role.kubernetes.io/control-plane: ""
     tolerations:
