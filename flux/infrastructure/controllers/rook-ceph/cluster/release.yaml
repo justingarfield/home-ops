@@ -15,7 +15,7 @@ spec:
         name: rook-ceph
         namespace: rook-ceph
   install:
-    createNamespace: true
+    createNamespace: false
     remediation:
       retries: 5
   upgrade:
@@ -26,8 +26,8 @@ spec:
       namespace: rook-ceph
   values:
     monitoring:
-      enabled: true
-      createPrometheusRules: true
+      enabled: false
+      createPrometheusRules: false
     ingress:
       dashboard:
         ingressClassName: cilium
