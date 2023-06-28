@@ -8,7 +8,7 @@ resources:
   - rook-ceph
   - weave-gitops
   - csi-driver-smb.yaml
-  # - external-dns.yaml
+  - external-dns.yaml
   - lldap.yaml
   - ./local-path-provisioner/ks.yaml
   # - piraeus.yaml - pending resolution to https://github.com/siderolabs/extensions/pull/103
