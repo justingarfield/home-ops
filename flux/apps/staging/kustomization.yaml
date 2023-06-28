@@ -13,4 +13,4 @@ resources:
   - ../base/monitoring
   # - ../base/networking
   # - ../base/pvr
-  # - ../base/theme-park
+  - ../base/theme-park
