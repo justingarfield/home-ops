@@ -54,6 +54,9 @@ spec:
         memory: 250Mi
     nodeSelector:
       node-role.kubernetes.io/control-plane: ""
+    tolerations:
+      - effect: NoSchedule
+        operator: Exists
     extraVolumeMounts:
       - name: external-dns-config-file
         mountPath: /etc/kubernetes
