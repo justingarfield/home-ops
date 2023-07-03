@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   # - authelia
   - cert-manager
-  - rook-ceph
+  # - rook-ceph
   - weave-gitops
   - csi-driver-smb.yaml
   - external-dns.yaml
