@@ -11,7 +11,7 @@
 
 ### Configurable bits
 # Number of seconds to sleep for each retry
-sleep_time=45
+sleep_time=30
 
 # Number of retry attempts before giving up
 retries=10
@@ -20,15 +20,37 @@ retries=10
 
 attempt=1
 services_with_ok_health=0
+time_status=false
 services_to_wait_for="machined|udevd"
 num_services_to_wait_for=$(printf "$services_to_wait_for" | tr -s '|' ' ' | wc -w)
 
 while [ $attempt -le $retries ]; do
-    # This call will throw the following error until the required services are up and listening...
-    #   rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing: dial tcp 192.168.60.9:50000: i/o timeout"
-    services_with_ok_health=$(talosctl get service --nodes $1 --insecure 2>/dev/null | tail -n +2 | grep -E $services_to_wait_for | wc -l)
+    services_response=$(talosctl get services.v1alpha1.talos.dev --nodes $1 --insecure 2>&1)
+    if [ $? -ne 0 ]; then
+        # This call will throw the following error until the required services are up and listening...
+        #   rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing: dial tcp 192.168.60.9:50000: i/o timeout"
+        if ! [ "grep -q \"i/o timeout\" <<< $services_response" ]; then
+            printf "[home-ops] An unexpected error occurred attempting to retrieve services running on the talos node\n"
+            printf "[home-ops] ERROR: ${services_response}"
+            exit 1
+        fi
+    else
+        services_with_ok_health=$(printf "${services_response}" | tail -n +2 | grep -E $services_to_wait_for | wc -l)
+    fi
 
-    if [ $services_with_ok_health -ne $num_services_to_wait_for ]; then
+    time_status_response=$(talosctl get timestatuses.v1alpha1.talos.dev --nodes $1 --insecure --output yaml 2>&1)
+    if [ $? -ne 0 ]; then
+        # Bail on non-timeout errors
+        if ! [ "grep -q \"i/o timeout\" <<< $time_status_response" ]; then
+            printf "[home-ops] An error occurred attempting to retrieve time-sync status on the talos node\n"
+            printf "[home-ops] ERROR: ${time_status_response}"
+            exit 1
+        fi
+    else
+        time_status=$(printf "${time_status_response}" | yq .spec.synced)
+    fi
+
+    if [ $services_with_ok_health -ne $num_services_to_wait_for ] || ! [ $time_status ]; then
         printf "[home-ops] Waiting for required services on Talos node $1...\n"
         /usr/bin/sleep ${sleep_time}s
     else
@@ -39,5 +61,5 @@ while [ $attempt -le $retries ]; do
     ((attempt=attempt+1))
 done
 
-# Ran out of retry attempts
+printf "[home-ops] Exhausted maximum number of retries"
 exit 1

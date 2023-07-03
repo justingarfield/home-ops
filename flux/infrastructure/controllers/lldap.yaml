@@ -31,7 +31,7 @@ spec:
       tag: latest-alpine@sha256:a6a8215f8bb286ae9ce6e4f6ef303a543094a954d0091da9a62aee2b391ed023
     env:
       TZ: ${TIMEZONE}
-      LLDAP_HTTP_URL: https://lldap.${PUBLIC_DNS_ZONE}
+      LLDAP_HTTP_URL: https://{{.Release.Name}}.${INTERNAL_DOMAIN}
       LLDAP_LDAP_BASE_DN: ${LDAP_BASE_DN}
     envFrom:
       - secretRef:
@@ -51,7 +51,7 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: home-arpa
         hosts:
-          - host: &host "{{ .Release.Name }}.${INTERNAL_DOMAIN}"
+          - host: &host "{{.Release.Name}}.${INTERNAL_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix

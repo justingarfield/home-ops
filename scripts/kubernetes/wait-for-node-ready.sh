@@ -10,7 +10,7 @@
 
 ### Configurable bits
 # Number of seconds to sleep for each retry
-sleep_time=45
+sleep_time=30
 
 # Number of retry attempts before giving up
 retries=10

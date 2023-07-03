@@ -109,9 +109,11 @@ tasks:
       - sh: which talosctl
         msg: The 'talosctl' binary is required on the path to run this task'
     cmds:
-      - printf "[home-ops] Applying Talos machine-template to {{.NODE_TYPE}} node {{.NODE_NAME}}\n"
+      - task: :_core:message
+        vars: { MESSAGE: "Applying Talos machine-template to {{.NODE_TYPE}} node {{.NODE_NAME}}" }
       - talosctl apply-config --insecure --nodes {{.NODE_NAME}}.{{.INTERNAL_DOMAIN}} --file {{.TALOS_OUT_DIR}}/{{.NODE_TYPE}}.yaml
-      - printf "[home-ops] Applied Talos machine-template to {{.NODE_TYPE}} node {{.NODE_NAME}}\n"
+      - task: :_core:message
+        vars: { MESSAGE: "Applied Talos machine-template to {{.NODE_TYPE}} node {{.NODE_NAME}}" }
 
   bootstrap-etcd:
     internal: false
@@ -122,4 +124,8 @@ tasks:
       - sh: which talosctl
         msg: The 'talosctl' binary is required on the path to run this task'
     cmds:
+      - task: :_core:message
+        vars: { MESSAGE: Issuing etcd bootstrap command... }
       - talosctl bootstrap --nodes k8s-cp01.{{.INTERNAL_DOMAIN}}
+      - task: :_core:message
+        vars: { MESSAGE: etcd bootstrap process has started }

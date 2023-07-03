@@ -1,0 +1,7 @@
+---
+# yaml-language-server: $schema=https://talos.dev/v1.4/schemas/v1alpha1_config.schema.json
+
+machine:
+  install:
+    extensions:
+      - image: ghcr.io/siderolabs/intel-ucode:20230613@sha256:4b7f80acbccac2e64a1f78bb11426c76a674ed336c9c40b54fc7e8741bfcbb86
