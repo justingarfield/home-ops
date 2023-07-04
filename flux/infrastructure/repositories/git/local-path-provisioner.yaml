@@ -5,7 +5,7 @@ kind: GitRepository
 metadata:
   name: local-path-provisioner
 spec:
-  interval: 30m
+  interval: 1h
   url: https://github.com/rancher/local-path-provisioner
   ref:
     tag: v0.0.24

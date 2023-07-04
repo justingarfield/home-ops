@@ -4,5 +4,5 @@ kind: HelmRepository
 metadata:
   name: csi-driver-smb
 spec:
-  interval: 2h
+  interval: 1h
   url: https://raw.githubusercontent.com/kubernetes-csi/csi-driver-smb/master/charts
