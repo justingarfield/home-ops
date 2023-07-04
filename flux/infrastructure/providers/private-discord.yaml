@@ -3,7 +3,6 @@ apiVersion: notification.toolkit.fluxcd.io/v1beta2
 kind: Provider
 metadata:
   name: private-discord
-  namespace: flux-system
 spec:
   type: discord
   channel: continuous-deployment

@@ -1,0 +1,15 @@
+---
+# This ClusterIssuer is used for internally-facing application ingress endpoints.
+#
+# I chose not to use LetsEncrypt for ingresses that will never be externally exposed,
+# as LetsEncrypt frowns upon cutting certificates for non-public applications.
+#
+# Note: Requires importing the Intermediate CA to your local device(s) if you don't
+#       want to deal with SSL/TLS Certificate Errors when browsing to said ingresses.
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: home-arpa
+spec:
+  ca:
+    secretName: home-arpa

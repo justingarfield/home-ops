@@ -14,8 +14,6 @@ spec:
         kind: HelmRepository
         name: rook-ceph
         namespace: rook-ceph
-  dependsOn:
-    - name: crds-rook-ceph
   install:
     createNamespace: false
     remediation:

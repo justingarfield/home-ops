@@ -4,7 +4,3 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - cilium.yaml
-  - cluster-issuers.yaml
-  - home-arpa-issuer.yaml
-  # - nfs-storage-classes.yaml
-  # - smb-storage-classes.yaml

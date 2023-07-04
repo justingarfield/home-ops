@@ -125,3 +125,15 @@ AUTHELIA_WEBAUTHN_TIMEOUT:
         mountPath: /config/configuration.yml
         readOnly: false
 ```
+
+
+* https://github.com/fluxcd/flux2/discussions/3354
+* https://github.com/fluxcd/flux2/discussions/3677
+* https://github.com/fluxcd/flux2/discussions/3163
+* https://github.com/fluxcd/flux2/discussions/1767
+* https://github.com/fluxcd/flux2/discussions/745
+* https://github.com/fluxcd/flux2/discussions/3677
+
+* https://fluxcd.io/flux/guides/helmreleases/#refer-to-values-in-secret-generated-with-kustomize-and-sops
+* https://github.com/fluxcd-community/helm-charts
+* https://github.com/fluxcd/flux2/discussions/3136

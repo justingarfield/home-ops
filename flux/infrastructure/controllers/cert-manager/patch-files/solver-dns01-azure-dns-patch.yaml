@@ -1,0 +1,13 @@
+---
+- op: add
+  path: /spec/acme/solvers
+  value:
+    - dns01:
+        azureDNS:
+          clientID: ${AZURE_DNS_CLIENT_ID}
+          clientSecretSecretRef:
+            name: azure-dns-dns01-solver
+            key: azure-dns-dns01-solver-key
+          subscriptionID: ${AZURE_DNS_SUBSCRIPTION_ID}
+          tenantID: ${AZURE_DNS_TENANT_ID}
+          resourceGroupName: ${AZURE_DNS_RESOURCE_GROUP_NAME}

@@ -3,7 +3,6 @@ apiVersion: notification.toolkit.fluxcd.io/v1beta2
 kind: Alert
 metadata:
   name: private-discord-alerts
-  namespace: flux-system
 spec:
   summary: ${ENVIRONMENT_NAME} Talos Cluster
   providerRef:
