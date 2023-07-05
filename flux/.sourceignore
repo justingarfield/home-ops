@@ -1,3 +1,5 @@
-*
-!*/flux/*
-!*/sops/*
+/*
+!/flux
+!/flux/*
+!/sops
+!/sops/*
