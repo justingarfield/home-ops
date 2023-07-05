@@ -7,9 +7,8 @@ kind: Kustomization
 namespace: cert-manager
 
 resources:
-  - ./cluster-issuers
-  - network-policy.yaml
-  - release.yaml
+  - namespace.yaml
+  - ./cert-manager/ks.yaml
 
 patches:
   - path: ./patch-files/solver-dns01-azure-dns-patch.yaml

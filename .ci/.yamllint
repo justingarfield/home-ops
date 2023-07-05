@@ -9,7 +9,7 @@ ignore: |
   **/.task/**
 
   # Automatically generated
-  **/flux/clusters/*/kustomizations/flux-system/*
+  **/flux/clusters/*/flux-system/*
 
   # All Task files
   **/.taskfiles/**

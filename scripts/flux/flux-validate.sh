@@ -46,7 +46,7 @@ find . -type f -name '*.yaml' -print0 | while IFS= read -r -d $'\0' file;
 done
 
 echo "INFO - Validating clusters"
-find ./clusters -maxdepth 2 -type f -name '*.yaml' -print0 | while IFS= read -r -d $'\0' file;
+find ./flux/clusters -maxdepth 2 -type f -name '*.yaml' -print0 | while IFS= read -r -d $'\0' file;
   do
     kubeconform "${kubeconform_flags[@]}" "${kubeconform_config[@]}" "${file}"
     if [[ ${PIPESTATUS[0]} != 0 ]]; then
