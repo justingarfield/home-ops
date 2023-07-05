@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./controllers/authelia
   - ./controllers/cert-manager
+  - ./controllers/external-dns
   - ./controllers/lldap
   - alerts.yaml
   - providers.yaml
