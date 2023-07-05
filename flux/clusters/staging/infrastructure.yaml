@@ -12,11 +12,6 @@ spec:
       name: sops-age
   interval: 1h
   path: ./flux/infrastructure
-  postBuild:
-    substituteFrom:
-      - kind: ConfigMap
-        name: cluster-settings
-        optional: false
   prune: true
   retryInterval: 1m
   sourceRef:
