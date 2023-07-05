@@ -11,3 +11,18 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
+  patches:
+    - patch: |
+        - op: replace
+          path: /spec/summary
+          value: Staging Hyper-V Cluster
+      target:
+        kind: Alert
+        name: private-discord
+    - patch: |
+        - op: replace
+          path: /spec/summary
+          value: Staging Hyper-V Cluster
+      target:
+        kind: Alert
+        name: public-discord

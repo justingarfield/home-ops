@@ -2,9 +2,9 @@
 apiVersion: notification.toolkit.fluxcd.io/v1beta2
 kind: Alert
 metadata:
-  name: public-discord-alerts
+  name: public-discord
 spec:
-  summary: ${ENVIRONMENT_NAME} Talos Cluster
+  summary: Generic Cluster
   providerRef:
     name: public-discord
   eventSeverity: error

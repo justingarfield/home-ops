@@ -6,10 +6,6 @@ metadata:
   name: infra-alerts
   namespace: flux-system
 spec:
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
   dependsOn:
     - name: infra-providers
   interval: 30m0s
