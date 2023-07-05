@@ -5,3 +5,5 @@ kind: Kustomization
 resources:
   - network-policy.yaml
   - release.yaml
+
+namespace: cert-manager
