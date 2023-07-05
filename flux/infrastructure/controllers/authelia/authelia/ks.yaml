@@ -24,8 +24,8 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    - name: authelia-namespace
-    - name: authelia-secrets
+    - name: infra-authelia-namespace
+    - name: infra-authelia-secrets
   path: ./flux/infrastructure/controllers/authelia/authelia/app
   prune: true
   sourceRef:
