@@ -64,6 +64,7 @@ spec:
   dependsOn:
     - name: infra-cert-manager-namespace
     - name: infra-cert-manager-app
+    - name: infra-cert-manager-crds
   path: ./flux/infrastructure/controllers/cert-manager/cert-manager/cluster-issuers
   prune: true
   sourceRef:
