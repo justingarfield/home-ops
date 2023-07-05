@@ -4,6 +4,6 @@ kind: Namespace
 metadata:
   name: piraeus
   labels:
-    pod-security.kubernetes.io/enforce=privileged
-    pod-security.kubernetes.io/auth=privileged
-    pod-security.kubernetes.io/warn=privileged
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/auth: privileged
+    pod-security.kubernetes.io/warn: privileged

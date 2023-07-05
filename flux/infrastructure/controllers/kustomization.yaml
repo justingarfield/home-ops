@@ -7,10 +7,10 @@ resources:
   - cert-manager
   - rook-ceph
   - weave-gitops
-  - csi-driver-smb.yaml
-  - external-dns.yaml
-  - lldap.yaml
+  - csi-driver-smb
+  - external-dns
+  - lldap
   - ./local-path-provisioner/ks.yaml
-  # - piraeus.yaml - pending resolution to https://github.com/siderolabs/extensions/pull/103
-  # - reloader.yaml
-  - tetragon.yaml
+  # - piraeus - pending resolution to https://github.com/siderolabs/extensions/pull/103
+  # - reloader
+  - tetragon
