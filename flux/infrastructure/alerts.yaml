@@ -10,11 +10,6 @@ spec:
     - name: infra-providers
   interval: 30m0s
   path: ./flux/infrastructure/alerts
-  postBuild:
-    substituteFrom:
-      - kind: ConfigMap
-        name: cluster-settings
-        optional: false
   prune: true
   retryInterval: 1m
   sourceRef:
