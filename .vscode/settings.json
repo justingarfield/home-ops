@@ -177,5 +177,8 @@
             "name": "yamllint",
             "url": "https://github.com/adrienverge/yamllint"
         }
+    },
+    "yaml.schemas": {
+        "kubernetes://schema/kustomize.toolkit.fluxcd.io/v1%40kustomization": "file:///home/jgarfield/src/justingarfield/home-ops/flux/clusters/staging/flux-system/gotk-sync.yaml"
     }
 }

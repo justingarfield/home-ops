@@ -102,17 +102,18 @@ tasks:
     cmds:
       - defer: unset GITHUB_TOKEN
       - |
-        export GITHUB_TOKEN={{ .GITHUB_TOKEN }}
+        export GITHUB_TOKEN={{.GITHUB_TOKEN}}
         flux bootstrap github \
-          --author-email={{ .GITHUB_AUTHOR_EMAIL }} \
-          --author-name="{{ .GITHUB_AUTHOR_NAME }}" \
+          --author-email={{.GITHUB_AUTHOR_EMAIL}} \
+          --author-name="{{.GITHUB_AUTHOR_NAME}}" \
           --branch=main \
           --commit-message-appendix="[ci skip]" \
-          --owner={{ .GITHUB_USERNAME }} \
-          --path=flux/clusters/{{ .CLUSTER_NAME }}/kustomizations \
+          --owner={{.GITHUB_USERNAME}} \
+          --path=flux/clusters/{{.CLUSTER_NAME}} \
           --personal \
-          --repository={{ .GITHUB_REPO }}
+          --repository={{.GITHUB_REPO}}
       # --cluster-domain={{ .CLUSTER_DOMAIN }} \
+
   apply-existing-install:
     desc: Applies an existing flux install from a repo using SOPS age keys
     cmds:
