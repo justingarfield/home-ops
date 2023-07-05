@@ -125,17 +125,17 @@ tasks:
       - kubectl apply --server-side --kustomize ./flux/clusters/staging/flux-system
 
   get-all-git-repositories:
-    desc:
+    desc: Returns a listing of all Flux GitRepository resources
     cmds:
       - kubectl get gitrepositories -A
 
   get-all-kustomizations:
-    desc:
+    desc: Returns a listing of all Flux Kustomization resources
     cmds:
       - kubectl get kustomizations -A
 
   get-logs:
-    desc:
+    desc: Returns the logs from the Flux Kustomize and Source controllers
     cmds:
       - kubectl logs -f deploy/kustomize-controller -n flux-system
       - kubectl logs -f deploy/source-controller -n flux-system
