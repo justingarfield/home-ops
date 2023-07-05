@@ -9,3 +9,11 @@ namespace: flux-system
 resources:
   - private-discord.yaml
   # - public-discord.yaml
+
+secretGenerator:
+  - name: podinfo-values
+    files:
+      - values.yaml=my-values.enc.yaml
+
+configurations:
+  - kustomizeconfig.yaml
