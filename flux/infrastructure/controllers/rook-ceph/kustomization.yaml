@@ -5,6 +5,4 @@ kind: Kustomization
 resources:
   - repository.yaml
   - namespace.yaml
-  - ./crds
-  - ./operator
-  # - cluster
+  - ./rook-ceph/ks.yaml
