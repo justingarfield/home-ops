@@ -7,6 +7,8 @@ metadata:
   namespace: flux-system
 spec:
   path: ./flux/infrastructure/controllers/cilium/cilium/app
+  dependsOn:
+    - name: infra-cilium-secrets
   prune: true
   sourceRef:
     kind: GitRepository
@@ -17,8 +19,8 @@ spec:
   timeout: 5m
   postBuild:
     substituteFrom:
-      - kind: ConfigMap
-        name: cilium-settings
+      - kind: Secret
+        name: cilium-secrets
         optional: false
   decryption:
     provider: sops

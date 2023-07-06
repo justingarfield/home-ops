@@ -2,7 +2,7 @@
 apiVersion: cilium.io/v2alpha1
 kind: CiliumLoadBalancerIPPool
 metadata:
-  name: ${CILIUM_LOAD_BALANCER_IP_POOL_NAME}
+  name: opnsense
 spec:
   cidrs:
     - cidr: ${CILIUM_LOAD_BALANCER_IP_POOL_CIDR}
