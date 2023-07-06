@@ -3,6 +3,7 @@ apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
   name: weave-gitops
+  namespace: weave-gitops
 spec:
   type: oci
   interval: 1h
