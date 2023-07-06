@@ -11,8 +11,8 @@ spec:
       chart: tetragon
       sourceRef:
         kind: HelmRepository
-        name: cilium
-        namespace: flux-system
+        name: tetragon
+        namespace: tetragon
       version: v0.9.0
   install:
     crds: Skip
