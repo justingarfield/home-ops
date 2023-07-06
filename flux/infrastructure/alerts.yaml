@@ -17,18 +17,3 @@ spec:
     name: flux-system
   timeout: 3m
   wait: true
-  patches:
-    - patch: |
-        - op: replace
-          path: /spec/summary
-          value: Staging Hyper-V Cluster
-      target:
-        kind: Alert
-        name: private-discord
-    - patch: |
-        - op: replace
-          path: /spec/summary
-          value: Staging Hyper-V Cluster
-      target:
-        kind: Alert
-        name: public-discord

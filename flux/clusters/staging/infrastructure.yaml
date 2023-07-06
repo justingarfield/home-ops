@@ -19,6 +19,7 @@ spec:
       target:
         kind: Alert
         name: private-discord
+        namespace: flux-system
     - patch: |
         - op: replace
           path: /spec/summary
@@ -26,3 +27,4 @@ spec:
       target:
         kind: Alert
         name: public-discord
+        namespace: flux-system
