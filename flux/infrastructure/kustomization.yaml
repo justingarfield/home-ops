@@ -8,8 +8,8 @@ resources:
   - alerts.yaml
   - ./controllers/cert-manager
   - ./controllers/lldap
-  # - ./controllers/authelia
+  - ./controllers/authelia
   - ./controllers/external-dns
   # - ./controllers/rook-ceph
   - ./controllers/tetragon
-  # - ./controllers/weave-gitops
+  - ./controllers/weave-gitops
