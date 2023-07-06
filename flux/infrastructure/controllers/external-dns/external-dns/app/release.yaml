@@ -12,7 +12,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: external-dns
-        namespace: flux-system
+        namespace: external-dns
       version: 1.12.2
   install:
     crds: Skip
