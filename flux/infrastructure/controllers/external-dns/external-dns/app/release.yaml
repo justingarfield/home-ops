@@ -44,20 +44,23 @@ spec:
       - ${PUBLIC_DNS_ZONE}
       - ${PRIVATE_DNS_ZONE}
     extraArgs:
-      - --exclude-target-net=10.0.0.0/8
-      - --default-targets=174.169.160.189
+      - --exclude-target-net=${EXCLUDE_TARGET_NET}
+      - --default-targets=${DEFAULT_TARGETS}
     resources:
       requests:
         memory: 100Mi
         cpu: 25m
       limits:
         memory: 250Mi
+
     # I'm currently scheduling on the Control Plane nodes until I have more workers available
     nodeSelector:
       node-role.kubernetes.io/control-plane: ""
     tolerations:
       - effect: NoSchedule
         operator: Exists
+
+    # Handle mounting the azure.json file from the external-dns-config-file secret
     extraVolumeMounts:
       - name: external-dns-config-file
         mountPath: /etc/kubernetes

@@ -35,3 +35,8 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: external-dns-secrets
+        optional: false
