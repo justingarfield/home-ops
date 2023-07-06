@@ -14,7 +14,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: weave-gitops
-        namespace: flux-system
+        namespace: weave-gitops
   maxHistory: 3
   releaseName: *helmReleaseName
   install:
