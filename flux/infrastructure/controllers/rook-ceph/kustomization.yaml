@@ -6,5 +6,5 @@ resources:
   - repository.yaml
   - namespace.yaml
   - ./crds
-  - operator
+  - ./operator
   # - cluster

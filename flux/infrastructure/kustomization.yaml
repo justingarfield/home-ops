@@ -8,5 +8,5 @@ resources:
   - ./controllers/lldap
   - ./controllers/authelia
   - ./controllers/external-dns
-  - ./controllers/rook-ceph
+  # - ./controllers/rook-ceph
   - ./controllers/tetragon
