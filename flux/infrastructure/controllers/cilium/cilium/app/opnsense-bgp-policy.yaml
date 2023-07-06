@@ -18,11 +18,3 @@ spec:
         matchExpressions:
           # This might change as I evolve the configurations over-time
           - { key: somekey, operator: NotIn, values: [ never-used-value ] }
----
-apiVersion: cilium.io/v2alpha1
-kind: CiliumLoadBalancerIPPool
-metadata:
-  name: ${CILIUM_LOAD_BALANCER_IP_POOL_NAME}
-spec:
-  cidrs:
-    - cidr: ${CILIUM_LOAD_BALANCER_IP_POOL_CIDR}
