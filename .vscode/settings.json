@@ -179,6 +179,7 @@
         }
     },
     "yaml.schemas": {
-        "kubernetes://schema/kustomize.toolkit.fluxcd.io/v1%40kustomization": "file:///home/jgarfield/src/justingarfield/home-ops/flux/clusters/staging/flux-system/gotk-sync.yaml"
+        "kubernetes://schema/kustomize.toolkit.fluxcd.io/v1%40kustomization": "file:///home/jgarfield/src/justingarfield/home-ops/flux/clusters/staging/flux-system/gotk-sync.yaml",
+        "https://json.schemastore.org/yamllint.json": "file:///home/jgarfield/src/justingarfield/home-ops/flux/clusters/staging/secrets.yaml"
     }
 }
