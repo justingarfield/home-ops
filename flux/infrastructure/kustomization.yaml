@@ -10,3 +10,4 @@ resources:
   - ./controllers/external-dns
   # - ./controllers/rook-ceph
   - ./controllers/tetragon
+  - ./controllers/weave-gitops
