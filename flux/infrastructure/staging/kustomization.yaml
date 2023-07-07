@@ -12,3 +12,4 @@ resources:
   - lldap.yaml
   - external-dns.yaml
   - authelia.yaml
+  - csi-driver-smb.yaml
