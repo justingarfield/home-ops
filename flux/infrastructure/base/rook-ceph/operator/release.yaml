@@ -15,7 +15,6 @@ spec:
         name: rook-ceph
         namespace: rook-ceph
   install:
-    createNamespace: false
     remediation:
       retries: 5
   upgrade:

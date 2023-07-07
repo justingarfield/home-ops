@@ -15,5 +15,5 @@ resources:
   - csi-driver-smb.yaml
   - node-feature-discovery.yaml
   # - reloader.yaml # - need to get prometheus stack going first
-  - rook-ceph.yaml
+  # - rook-ceph.yaml
   # - piraeus.yaml # - waiting on newer build of Talos for DRBD extension

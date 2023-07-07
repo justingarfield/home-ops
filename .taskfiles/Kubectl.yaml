@@ -26,3 +26,8 @@ tasks:
     desc: Deletes ALL 'ContainerStatusUnknown' and 'Completed' pods in the current cluster context.
     cmds:
       - kubectl get pods -A | tail -n +2 | awk '{if ($4 ~ /^(ContainerStatusUnknown|Completed)$/) print "kubectl delete pod -n "$1, $2 }' | sh
+
+  get-node-labels:
+    desc: Useful for seeing all the labels from Node Feature Discovery (NFD)
+    cmds:
+      - kubectl get no -o json | jq .items[].metadata.labels
