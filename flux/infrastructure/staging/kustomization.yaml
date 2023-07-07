@@ -11,7 +11,7 @@ resources:
   - weave-gitops.yaml
   - lldap.yaml
   - external-dns.yaml
-  - authelia.yaml
+  # - authelia.yaml
   - csi-driver-smb.yaml
   - node-feature-discovery.yaml
   # - reloader.yaml # - need to get prometheus stack going first
