@@ -5,3 +5,5 @@ resources:
   - providers.yaml
   - alerts.yaml
   - cilium.yaml
+  - tetragon.yaml
+  - weave-gitops.yaml

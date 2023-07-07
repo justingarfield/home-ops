@@ -3,11 +3,30 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: infra-cilium-sops
+  name: infra-weave-gitops-ns
   namespace: flux-system
 spec:
   interval: 1m0s
-  path: flux/infrastructure/base/cilium/app/secrets/staging
+  path: flux/infrastructure/base/weave-gitops/namespace
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 3m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: infra-weave-gitops-sops
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  path: flux/infrastructure/base/weave-gitops/app/secrets/staging
+  dependsOn:
+    - name: infra-weave-gitops-ns
   prune: true
   retryInterval: 1m
   sourceRef:
@@ -24,13 +43,13 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: infra-cilium-app
+  name: infra-weave-gitops-apps
   namespace: flux-system
 spec:
   interval: 1m0s
-  path: ./flux/infrastructure/base/cilium/app
+  path: flux/infrastructure/base/weave-gitops/app
   dependsOn:
-    - name: infra-cilium-sops
+    - name: infra-weave-gitops-sops
   prune: true
   retryInterval: 1m
   sourceRef:
@@ -38,8 +57,3 @@ spec:
     name: flux-system
   timeout: 3m
   wait: true
-  postBuild:
-    substituteFrom:
-      - kind: ConfigMap
-        name: cilium-config-substitutions
-        optional: false
