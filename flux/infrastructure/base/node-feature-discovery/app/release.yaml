@@ -39,9 +39,3 @@ spec:
       # however, Helm template currently defaults to passing -featurerules-controller flag
       # to toggle this, causing a WARN in the logs right on startup. This alleviates that.
       crdController: false
-      config:
-        noPublish: false
-
-    worker:
-      config:
-        noPublish: false
