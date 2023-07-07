@@ -4,5 +4,4 @@ kind: Kustomization
 resources:
   - providers.yaml
   - alerts.yaml
-  # - ../base/cilium/cilium/app/secrets/staging-cilium-secrets.sops.yaml
-  # - cilium.yaml
+  - cilium.yaml

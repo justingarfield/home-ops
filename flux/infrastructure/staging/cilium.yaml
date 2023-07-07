@@ -3,11 +3,12 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: infra-cilium-ns
+  name: infra-cilium-sops
   namespace: flux-system
 spec:
+
   interval: 1m0s
-  path: ./flux/infrastructure/base/cilium
+  path: flux/infrastructure/base/cilium/app/secrets/staging
   prune: true
   retryInterval: 1m
   sourceRef:
@@ -15,18 +16,22 @@ spec:
     name: flux-system
   timeout: 3m
   wait: true
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: infra-cilium
+  name: infra-cilium-app
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: infra-providers
   interval: 1m0s
-  path: ./flux/infrastructure/base/cilium
+  path: ./flux/infrastructure/base/cilium/app
+  dependsOn:
+    - name: infra-cilium-sops
   prune: true
   retryInterval: 1m
   sourceRef:
@@ -34,3 +39,8 @@ spec:
     name: flux-system
   timeout: 3m
   wait: true
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: cilium-config
+        optional: false
