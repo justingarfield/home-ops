@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: cilium-config-substitutions
+    namespace: kube-system
+stringData:
+    CILIUM_BGP_PEERING_POLICY_LOCAL_ASN: "60"
+    CILIUM_BGP_PEERING_POLICY_PEER_ADDRESS: 192.168.60.1/22
+    CILIUM_BGP_PEERING_POLICY_PEER_ASN: "1337"
+    CILIUM_LOAD_BALANCER_IP_POOL_CIDR: 10.60.0.0/24
