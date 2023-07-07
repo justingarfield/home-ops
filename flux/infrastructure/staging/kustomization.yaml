@@ -15,4 +15,5 @@ resources:
   - csi-driver-smb.yaml
   - node-feature-discovery.yaml
   - reloader.yaml
+  - rook-ceph.yaml
   # - piraeus.yaml
