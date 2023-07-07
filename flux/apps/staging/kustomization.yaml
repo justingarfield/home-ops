@@ -2,15 +2,3 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-resources:
-  - namespaces
-  - secrets
-  # - ../base/pod-gateway
-  # - ../base/database
-  # - ../base/hajimari
-  - ../base/kubernetes-schemas
-  # - ../base/media
-  - ../base/monitoring
-  # - ../base/networking
-  # - ../base/pvr
-  - ../base/theme-park

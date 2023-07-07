@@ -6,7 +6,26 @@ metadata:
   name: infra-authelia-namespace
   namespace: flux-system
 spec:
-  path: ./flux/infrastructure/controllers/authelia/authelia/namespace
+  path: ./flux/infrastructure/base/authelia/namespace
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  interval: 5m
+  retryInterval: 1m
+  timeout: 3m
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: infra-authelia-secrets
+  namespace: flux-system
+spec:
+  path: ./flux/infrastructure/base/authelia/app/sops/staging
+  dependsOn:
+    - name: infra-authelia-namespace
   prune: true
   sourceRef:
     kind: GitRepository
@@ -23,17 +42,15 @@ metadata:
   name: infra-authelia-app
   namespace: flux-system
 spec:
+  suspend: true
+  path: ./flux/infrastructure/base/authelia/app
   dependsOn:
-    - name: infra-authelia-namespace
     - name: infra-authelia-secrets
-    - name: infra-cert-manager-app
-    - name: infra-lldap-app
-  path: ./flux/infrastructure/controllers/authelia/authelia/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: false
+  wait: true
   interval: 5m
   retryInterval: 1m
   timeout: 3m

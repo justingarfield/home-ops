@@ -7,7 +7,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1m0s
-  path: flux/infrastructure/base/tetragon/namespace
+  path: ./flux/infrastructure/base/tetragon/namespace
   prune: true
   retryInterval: 1m
   sourceRef:
@@ -24,7 +24,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1m0s
-  path: flux/infrastructure/base/tetragon/app
+  path: ./flux/infrastructure/base/tetragon/app
   dependsOn:
     - name: infra-tetragon-ns
   prune: true

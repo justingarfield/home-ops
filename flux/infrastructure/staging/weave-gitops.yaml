@@ -7,7 +7,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1m0s
-  path: flux/infrastructure/base/weave-gitops/namespace
+  path: ./flux/infrastructure/base/weave-gitops/namespace
   prune: true
   retryInterval: 1m
   sourceRef:
@@ -24,7 +24,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1m0s
-  path: flux/infrastructure/base/weave-gitops/app/sops/staging
+  path: ./flux/infrastructure/base/weave-gitops/app/sops/staging
   dependsOn:
     - name: infra-weave-gitops-ns
   prune: true
@@ -47,7 +47,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1m0s
-  path: flux/infrastructure/base/weave-gitops/app
+  path: ./flux/infrastructure/base/weave-gitops/app
   dependsOn:
     - name: infra-weave-gitops-sops
   prune: true
