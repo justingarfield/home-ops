@@ -9,7 +9,7 @@ spec:
   dependsOn:
     - name: infra-providers
   interval: 1m0s
-  path: ./flux/infrastructure/alerts
+  path: ./flux/infrastructure/base/flux-system/alerts
   prune: true
   retryInterval: 1m
   sourceRef:
