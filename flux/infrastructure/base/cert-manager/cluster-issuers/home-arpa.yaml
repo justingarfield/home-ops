@@ -12,4 +12,4 @@ metadata:
   name: home-arpa
 spec:
   ca:
-    secretName: home-arpa
+    secretName: home-arpa-issuer
