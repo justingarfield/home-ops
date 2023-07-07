@@ -42,5 +42,5 @@ spec:
   postBuild:
     substituteFrom:
       - kind: ConfigMap
-        name: cilium-config
+        name: cilium-config-substitutions
         optional: false
