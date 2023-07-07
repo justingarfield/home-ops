@@ -3,18 +3,37 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: infra-rook-ceph-crds
+  name: infra-rook-ceph-ns
   namespace: flux-system
 spec:
-  path: ./flux/infrastructure/controllers/rook-ceph/rook-ceph/crds
+  interval: 1m0s
+  path: ./flux/infrastructure/base/rook-ceph/namespace
   prune: true
+  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
+  timeout: 3m
   wait: true
-  interval: 30m
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: infra-rook-ceph-crds
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  path: ./flux/infrastructure/base/rook-ceph/crds
+  dependsOn:
+    - name: infra-rook-ceph-ns
+  prune: true
   retryInterval: 1m
-  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 3m
+  wait: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -23,17 +42,17 @@ metadata:
   name: infra-rook-ceph-operator
   namespace: flux-system
 spec:
+  interval: 1m0s
+  path: ./flux/infrastructure/base/rook-ceph/operator
   dependsOn:
     - name: infra-rook-ceph-crds
-  path: ./flux/infrastructure/controllers/rook-ceph/rook-ceph/operator
   prune: true
+  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: false
-  interval: 5m
-  retryInterval: 1m
   timeout: 3m
+  wait: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -42,15 +61,15 @@ metadata:
   name: infra-rook-ceph-cluster
   namespace: flux-system
 spec:
+  suspend: true
+  interval: 1m0s
+  path: ./flux/infrastructure/base/rook-ceph/cluster
   dependsOn:
-    - name: infra-rook-ceph-crds
     - name: infra-rook-ceph-operator
-  path: ./flux/infrastructure/controllers/rook-ceph/rook-ceph/cluster
   prune: true
+  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: false
-  interval: 30m
-  retryInterval: 1m
-  timeout: 5m
+  timeout: 3m
+  wait: true

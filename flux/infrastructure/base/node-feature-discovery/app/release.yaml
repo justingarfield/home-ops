@@ -12,7 +12,7 @@ spec:
       version: 0.13.1
       sourceRef:
         kind: HelmRepository
-        name: node-feature-discovery-charts
+        name: node-feature-discovery
         namespace: node-feature-discovery
   install:
     createNamespace: true

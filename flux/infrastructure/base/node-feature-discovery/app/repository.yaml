@@ -2,7 +2,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
-  name: node-feature-discovery-charts
+  name: node-feature-discovery
   namespace: node-feature-discovery
 spec:
   interval: 10m
