@@ -1,0 +1,64 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: infra-external-dns-ns
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  path: ./flux/infrastructure/base/external-dns/namespace
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 3m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: infra-external-dns-sops
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  path: ./flux/infrastructure/base/external-dns/app/sops/staging
+  dependsOn:
+    - name: infra-external-dns-ns
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 3m
+  wait: true
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: infra-external-dns-app
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  path: ./flux/infrastructure/base/external-dns/app
+  dependsOn:
+    - name: infra-external-dns-sops
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 3m
+  wait: true
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: external-dns-substitutions
+        optional: false

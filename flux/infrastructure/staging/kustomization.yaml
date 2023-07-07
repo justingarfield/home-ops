@@ -9,3 +9,4 @@ resources:
   - cert-manager.yaml
   - weave-gitops.yaml
   - lldap.yaml
+  - external-dns.yaml

@@ -62,11 +62,11 @@ spec:
 
     # Handle mounting the azure.json file from the external-dns-config-file secret
     extraVolumeMounts:
-      - name: external-dns-config-file
+      - name: azure-dns-config-file
         mountPath: /etc/kubernetes
         readOnly: true
     extraVolumes:
-      - name: external-dns-config-file
+      - name: azure-dns-config-file
         secret:
-          secretName: external-dns-config-file
+          secretName: azure-dns-config-file
           optional: false

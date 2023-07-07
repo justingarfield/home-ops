@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-    name: external-dns-config-file
+    name: azure-dns-config-file
     namespace: external-dns
 data:
     azure.json: ENC[AES256_GCM,data:pf3OTguKZaT1vL8V6/ty5GP8zry0GRnpcxLHiAE5tu2PGli38XSs8UQbp28nKczYXL7PRa/5bmZzNiIJh1iZIdl2L9cwHfmsnEiNTRlm9RNUYOLBkSk6ZqAQiGtnPQri2xUUq0kJ88WuFq6UONJoQyv+BWRf7I2R4+IdgyPq+Y+PGPKa/7igq2tkP1gHs80etEUNh/pDiytSrAOa6cq/dp3lbTVb4x6Q0cCo8jKE4OvRn4lB1EjwRtS0An+GL/tWdSQBw0sAxT0Ro6OiMmKDV/V6soH1n3pbQUaO4MOvzq0qXxgHFtMYFFz18BFZYoQsVxhG2ZnauI5sIP+Oe49+kU3hVVS6Vjm2LrJrxASuQGuMmp1zI5iYtgKBQvBpfdYeLxIwp4xLbQ72GGBU7H+lqGO9awDCvYV3nSolbMYCpuo8vtYL3o2ajOTfhQYZyYaRkoKN84jwjT99PbiHB6tKc2ry/FzrZA3ogRcNUyb1auQ=,iv:7icbpfr2GJr6pHJ7KadDnL231lPuI18N1MEsR7xIgDw=,tag:JT6Y3zGcULOG4fAHWFA2hA==,type:str]
@@ -20,8 +20,8 @@ sops:
             UXNTMHVXN2YwVTFvVHc3Rmw5d2E4dnMK4HxUo8ktAHjlt6X+p9s67xWEggowLbB9
             hRGMTbljMXAi2V/mgCwic6EhfnfygPkjoUNHBLf6w+kB5CZuWVGveg==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-05-27T16:11:19Z"
-    mac: ENC[AES256_GCM,data:FZI9zCaX5rNH0mCsXOFxi0NkpuMgXXyTB9uYqUGQFhzSLB4R7jZmncDOMXz51Ddu8TnwO5HcsgXWP4+V/Pju2gWiFU2Y+uvqjsVnIlYiqCfp4GHH6Ctrp/FJBijNp/32kZtAMQTeEMZCBwhnIZ5M/bB1MC8xCa30ZzdsioPSZu4=,iv:ixqXVl5cJaai2+uTlS2iWdruwbhbwHcFZcb2ihJ2RL0=,tag:TxvRLXOByQurtbiPUFS2wA==,type:str]
+    lastmodified: "2023-07-07T19:03:34Z"
+    mac: ENC[AES256_GCM,data:PoM10ekReXNHTULapWhTMpI4An2CCwKHn3pCC5NvSOLP2lARruyhB/K4FapxQZVlhbHBIVO8sIxAeADbOmOpzD3xzG6Zfrs8HKj1vNC0k+OOSGBD9zKFGL/tebUg7fiSF3XAD71RfczP5w0aoJzwhxhraP70tZaKXiKUL+VxN8Q=,iv:nPixgKy355BOcWt6nJk3QRUDF7sKUVw/4xleV086ceo=,tag:E5JFYH48mRV8C+QONH4FBQ==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.7.3

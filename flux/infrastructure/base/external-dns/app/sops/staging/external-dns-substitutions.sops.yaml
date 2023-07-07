@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: external-dns-substitutions
+    namespace: flux-system
+data:
+    PUBLIC_DNS_ZONE: jgarfield.com
+    PRIVATE_DNS_ZONE: poweris.life
+    EXCLUDE_TARGET_NET: 10.0.0.0/8
+    DEFAULT_TARGETS: 174.169.160.189
