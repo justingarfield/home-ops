@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
     name: cilium-config-substitutions
-    namespace: kube-system
+    namespace: flux-system
 data:
     CILIUM_BGP_PEERING_POLICY_LOCAL_ASN: ENC[AES256_GCM,data:XXw=,iv:KUk109pqGGXkx1r78G72mwct8oRI1iATQbF0btJWK5E=,tag:A/clEWdEmJayQ0s8nKtDiQ==,type:str]
     CILIUM_BGP_PEERING_POLICY_PEER_ADDRESS: ENC[AES256_GCM,data:AlbLXLpi7V0Lnq4XZtoH,iv:mFwjpZ50BaIBd9IHKXzNA8+V/q2ZXO32SKAWFhgIP14=,tag:wN2wH8nxY27YP8NDU3JAAA==,type:str]
@@ -23,8 +23,8 @@ sops:
             QzJ6NjFNYkZrZi9xMEViLzRneFJLbHMKNIG9anWc/XiwMkFA1Lge29IhcW31c2cr
             vaXYJQrztKhkR2e5oaFaACOb9YdnT2uneIz7zPLopz5DPk0Jjet/3w==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-07-07T18:28:12Z"
-    mac: ENC[AES256_GCM,data:loRHP70pX4ZEIr9JRkNz2TMeRQ0Sl7V3Gwd4l+M04pPKfKc5Xr4jYsLkO+AdM6y+/FQdyMUK5cikvZFI4gmYYC4pLJPNgvV6/4Q9FTsare/Y9vmYbTs4eA+llZFwc+7iq3Sd6rVZSbKPMJh08zxaAPlfBiRNcVAJNZcdfEDwdFo=,iv:kPXq+Ya3q5ja5E/7BcLLGgfFNGYycHtQ1WGfemJQU38=,tag:41tEJyJwhnPRxUPBeq3liQ==,type:str]
+    lastmodified: "2023-07-07T18:29:30Z"
+    mac: ENC[AES256_GCM,data:KJ4/oI34WN+wQu8aQWmFeRfaPVtt/Vgonqg1CHHa11YeYv4G+ZgQ+1xHUFrvqkG6+jvSyGDTmIpvbaPpQN2xMFzFTNqFmPNiv0+l48nP3vHd50q8l9GPh57Jvp/Cv2CS3fX2A+QwEKY1HnNHbhJcgJ8hSkzMj8BtCvP9Zg+ZbZ4=,iv:WreFayyD2qDsa5lj4mKlETs91fnQ7UG4aLhn43jwvT4=,tag:B0I0Pd6bk2BlMnLhLuKsvw==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.7.3
