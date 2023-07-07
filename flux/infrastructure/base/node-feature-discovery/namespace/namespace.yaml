@@ -4,4 +4,5 @@ kind: Namespace
 metadata:
   name: node-feature-discovery
   labels:
+    # NFD Matt-DaemonSet will not be able to run inside of Talos without this
     pod-security.kubernetes.io/enforce: privileged
