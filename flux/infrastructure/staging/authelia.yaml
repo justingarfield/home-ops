@@ -46,7 +46,6 @@ metadata:
   name: infra-authelia-app
   namespace: flux-system
 spec:
-  suspend: true
   path: ./flux/infrastructure/base/authelia/app
   dependsOn:
     - name: infra-authelia-secrets

@@ -12,7 +12,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: csi-driver-smb
-        namespace: flux-system
+        namespace: csi-driver-smb
       version: v1.11.0
   install:
     crds: Skip
