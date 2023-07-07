@@ -5,7 +5,6 @@ metadata:
     namespace: weave-gitops
 stringData:
     adminPassword: ENC[AES256_GCM,data:kkRdCcv1mrFAdKKnI0Z7pLLFy+lyOgxo2WjrJjpoBVQEsROFX4k8YXFTGHMVh87letOjkAzXUJ+43nfX,iv:jR9PA1/Zs8HUdV0HS5nJ4UTvLVozhGt4aD+jHsXlBII=,tag:NYuw9ygNuro09AOgQg+cxg==,type:str]
-    INTERNAL_DOMAIN: ENC[AES256_GCM,data:8Xbfx7jNShaf,iv:Z4xufECcE+V8m7KFoX9KxnUbCR1zbHh05zkH7RqQwDs=,tag:C5MCaoAqsBErbxggR3Ardg==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -21,8 +20,8 @@ sops:
             dThuZXZzb0NHNzU5bElqL0hGbERRMG8Kg+fxsksNgE4XMlwRKyb5ditCMVXciBzG
             U39NZ5ooU6qkmbE2x3Ejiw38AZJMabKyTT1zy8y707GUD5RSjuGS8g==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-07-06T13:52:18Z"
-    mac: ENC[AES256_GCM,data:3ILEO2yFRpfHmfHvwduxJD/tRnLSmSuzF7939wMA5EKuIFWSC7KWAeyW+NoFGUSxLIyZuCUYe1WjeugFhf9rbMdhEklNUDKXR63m8z8fJnpDxDV8t7odA0PyDXd3vbnaGjiWlEKuTl6nW6yzJRgT03b5g69I3qWwOxJoyisWC7o=,iv:A7zcH9ujGTpOfYPL3ecKjHp+xmJdZe0i9rAKUs15ln8=,tag:Se+YPaiogupupyRE/rLZIg==,type:str]
+    lastmodified: "2023-07-07T18:36:58Z"
+    mac: ENC[AES256_GCM,data:RJJ8TeIIU7dm8i9sOU1bHOP0xEGxVwIWtcP9PTddBpMsp3TV8D+XodxiXcX6bgCZJHXKK0ZrwZtmHWQPpr/ARfAM7BHUZLlHnGVJWb00OwoJSguL42BoLl9xmICL9KwDFqm0THYfr4BY/oXaYD+dt1+/viEU0DWCyavZnG/dpAU=,iv:o79XZcVzXod5xTgg96i5wyTdT7/AbXO2E2fiLkKXdyg=,tag:XClK+8IHVqHIzyTmpTrBKQ==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.7.3

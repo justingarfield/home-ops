@@ -57,3 +57,8 @@ spec:
     name: flux-system
   timeout: 3m
   wait: true
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: weave-gitops-substitutions
+        optional: false

@@ -23,6 +23,9 @@ spec:
   upgrade:
     remediation:
       retries: 3
+  dependsOn:
+    - name: cert-manager
+      namespace: cert-manager
   values:
     adminUser:
       create: true
