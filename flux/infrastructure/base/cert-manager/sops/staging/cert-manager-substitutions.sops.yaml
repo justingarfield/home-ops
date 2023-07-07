@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: cert-manager-substitutions
+    namespace: flux-system
+data:
+    OPNSENSE_DNS_SERVER: ENC[AES256_GCM,data:xny5ZCQr2EFg5T82,iv:DsyO3LyFWTRLCZDWiBod/CpqKX4IPu5Y0PZPHOC6wQM=,tag:23lTnbivDsV738+Ax4QrmA==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1ntkvvzktwzhmzq9gcygrtpwxu3k8ghx9p0khk7jqjf5hgxklggvsv6zhvz
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBpSVRqSFdvY3pWbW1QRkxk
+            bGNsR3gydVlQWDROc1pNYjRob2VRa0tFdmswCithV2lrL3ZVUitTQ0JXVkF5ejlQ
+            UjhPMjhWSXA0V2hBdlQ4aGRsK1VvcncKLS0tIHJvUVhrUFdaRGlBaTB3UW5KTm5w
+            d1U1aTloUURLMHJiWlpaVWlWZlVnREEKd+YtLi6UqERtq0vEaWlCiIsYzbsBLDMb
+            LB1mDD032Ffvy7dZr3NsgKuyKRovaJbX3923/QBrQdZVvIu5xMdBkA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-07-07T19:11:40Z"
+    mac: ENC[AES256_GCM,data:1wrOt2aaeXPkcWKaKUX7KG8//0xOPNCHOeRt7ZhF+SbmOs6WTcbQdeAVJvffjDV9z8Qd/on6ZsRsXLrgevOtDFWG5lL4z3Z/hYY8nqV+yB+Ods2Weky+OTbYcQWaxqq+NH0Kh96DQGGaHVR4SohzrXAx/Pi7/w0i03L6TUpiAP8=,iv:MWfw/EJ1z8YdDG1hMGmQzPe+Ah9G33anWbvnzFEH4rY=,tag:9DTSg4vmjMDEPQL4lRzwGQ==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.7.3

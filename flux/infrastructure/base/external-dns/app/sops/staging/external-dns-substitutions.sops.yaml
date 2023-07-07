@@ -4,7 +4,27 @@ metadata:
     name: external-dns-substitutions
     namespace: flux-system
 data:
-    PUBLIC_DNS_ZONE: jgarfield.com
-    PRIVATE_DNS_ZONE: poweris.life
-    EXCLUDE_TARGET_NET: 10.0.0.0/8
-    DEFAULT_TARGETS: 174.169.160.189
+    PUBLIC_DNS_ZONE: ENC[AES256_GCM,data:fo7ptAbkVy0+tky2cA==,iv:xz8LZnofGTM4Fmo33SE+intlKHbW976mbiaDkmMgS2k=,tag:56fLhcKfY9C8GbmR5hs5ew==,type:str]
+    PRIVATE_DNS_ZONE: ENC[AES256_GCM,data:pIHMpAblRhJS7mZc,iv:GaVAl3S5bw0h7UEh/B4BTfIW5IXsOYNqAPB/BDwVtek=,tag:eiu5OhRrLi3Z/h0dO2wuvA==,type:str]
+    EXCLUDE_TARGET_NET: ENC[AES256_GCM,data:VQLE1PEY8OUGjA==,iv:7Mg5dCVeE0+w7OVV+sh87ov45DzEjFDTNNFvQewnu5g=,tag:T7/wLSQt1k4RVjXIYSEdXA==,type:str]
+    DEFAULT_TARGETS: ENC[AES256_GCM,data:OGqC3ezlnro85EEReNcB,iv:S+McEh6o2PxQ0X5fBvDjoXhit6tbBfIqRcOG/Woo4WQ=,tag:ai537tjohL0HwR4/XQkyEQ==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1ntkvvzktwzhmzq9gcygrtpwxu3k8ghx9p0khk7jqjf5hgxklggvsv6zhvz
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBkSVVBK25zVThYOUJQT2hj
+            NksvTFd6aHhiZHVJVU13bjE0TlFVNS9zNms0Cnl3OEVKSFpScit2RnloUmVCLzkv
+            MTJjWGhhZUpYVU82ZnNqKzJtZnpoVUkKLS0tIFBmR1lKamhyemJMMUgvU0hNSmdo
+            Z0VyYUdrQlNTamx1ZFo3Qk44Qm5WTnMKrlcQMJZzkcGAT01fbatizgBS9bZjWe0v
+            WGpi7VKA/SckY/ZD3PImFabf5vw47312Bwy2pE3Dw36QtnjJ7phvVg==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-07-07T19:11:58Z"
+    mac: ENC[AES256_GCM,data:byjByKIE4CvQo5MEA9W+wMy2hXa/2aLX1wtKVFFLO0dw98O1rjmNFp7Uu6L1KXjH74yQfAFkPPxQXAS5/GbSHUdtjyCLjU5xJfk4l/HXkBZ5Kqh0wE7fwSJ1ufTcvO0tLHizCrUL8/UzXZDdqRTcR6oHUh5/2ILhNCrzksYmq6k=,iv:AU5PBfCWCVWfkUePlZTlzswZ1Lk4GbiTrtKR+kZFmf0=,tag:YYrNQtum8AyC2/3pPP/Yog==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.7.3

@@ -25,7 +25,7 @@ metadata:
 spec:
   dependsOn:
     - name: infra-cert-manager-namespace
-  path: ./flux/infrastructure/base/cert-manager/cluster-issuers/sops/staging
+  path: ./flux/infrastructure/base/cert-manager/sops/staging
   prune: true
   sourceRef:
     kind: GitRepository
@@ -74,6 +74,11 @@ spec:
   interval: 5m
   retryInterval: 1m
   timeout: 3m
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: cert-manager-substitutions
+        optional: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
