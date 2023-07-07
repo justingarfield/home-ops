@@ -6,25 +6,12 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./flux/infrastructure
+  path: ./flux/infrastructure/staging
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  patches:
-    - patch: |
-        - op: replace
-          path: /spec/summary
-          value: Staging Hyper-V Cluster
-      target:
-        kind: Alert
-        name: private-discord
-        namespace: flux-system
-    - patch: |
-        - op: replace
-          path: /spec/summary
-          value: Staging Hyper-V Cluster
-      target:
-        kind: Alert
-        name: public-discord
-        namespace: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age

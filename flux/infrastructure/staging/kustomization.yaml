@@ -1,0 +1,8 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../base/flux-system/providers/secrets/staging-provider-private-discord.sops.yaml
+  - ../base/flux-system/providers/secrets/staging-provider-public-discord.sops.yaml
+  - providers.yaml
+  - alerts.yaml
