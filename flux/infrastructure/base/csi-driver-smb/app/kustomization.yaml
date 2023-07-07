@@ -5,3 +5,5 @@ kind: Kustomization
 resources:
   - repository.yaml
   - release.yaml
+
+namespace: csi-driver-smb
