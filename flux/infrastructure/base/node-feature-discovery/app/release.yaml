@@ -20,9 +20,9 @@ spec:
       retries: 3
   # See: https://github.com/kubernetes-sigs/node-feature-discovery/blob/v0.13.2/deployment/helm/node-feature-discovery/values.yaml
   values:
+    enableNodeFeatureApi: true
     master:
       crdController: true
-      enableNodeFeatureApi: true
       config:
         noPublish: true
     worker:
