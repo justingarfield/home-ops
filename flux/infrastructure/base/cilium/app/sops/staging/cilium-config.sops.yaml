@@ -4,7 +4,27 @@ metadata:
     name: cilium-config-substitutions
     namespace: kube-system
 stringData:
-    CILIUM_BGP_PEERING_POLICY_LOCAL_ASN: "60"
-    CILIUM_BGP_PEERING_POLICY_PEER_ADDRESS: 192.168.60.1/22
-    CILIUM_BGP_PEERING_POLICY_PEER_ASN: "1337"
-    CILIUM_LOAD_BALANCER_IP_POOL_CIDR: 10.60.0.0/24
+    CILIUM_BGP_PEERING_POLICY_LOCAL_ASN: ENC[AES256_GCM,data:zLA=,iv:EX56w4ehuPZ1QtT34IlF6yPZ9dP+7Gq6DNCPMdVY0cw=,tag:iE6RIjEn0cnGPohNB7PDPQ==,type:str]
+    CILIUM_BGP_PEERING_POLICY_PEER_ADDRESS: ENC[AES256_GCM,data:j7qYP29PoEhDTztmHD9w,iv:UpdFyNLC3eObkHHKRcS8YMBrTKkd5ZQ629cFVrhtiZc=,tag:exVGeh9elL0/gDzcPcLnSQ==,type:str]
+    CILIUM_BGP_PEERING_POLICY_PEER_ASN: ENC[AES256_GCM,data:wnsjvw==,iv:aSrPeKHE6PZW05pR2Vs58e4ETG3zSf5ZjVAJoiKUeeI=,tag:OERG/4fVEWHtMfzyhRBkxQ==,type:str]
+    CILIUM_LOAD_BALANCER_IP_POOL_CIDR: ENC[AES256_GCM,data:IiGmaVbAJEzXDgYz,iv:GiJ97iLzoj3yAaFagfOyNaj3s6u6fzdRrPyG3/5kVXg=,tag:Bzf5PBLwL4NDooKr6WB+wQ==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1ntkvvzktwzhmzq9gcygrtpwxu3k8ghx9p0khk7jqjf5hgxklggvsv6zhvz
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBKUldnLzlLM0o5KzUrS0pv
+            dFZuVTZUTC9CWWROZ2VHZGlSamk1NGVlSWk4CmxHY2F3Z0xDY2k4WXpteEpPcjNh
+            bHRKa1ZnV21xTUx0UDZUSFB4OFdVMHMKLS0tIFVEUzVZaEoyd0RpRGVnWkNsQVQx
+            REZlcGNheTkweS8rRDMyVUEweUVnQ0kKsekYmhBxq8ofIDDYr1ZasLDPUQ+1jUeZ
+            AE2lYDgUUBUNo2x4Z9xfe8UP4mnLg2+DaOjdIB7SoSII6mNRuWgn6w==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-07-07T18:27:35Z"
+    mac: ENC[AES256_GCM,data:ZJRtKfaivTN6mVJt94M412sOVVieKJmVoIGmRJwg6XsV3UbYPHoIraSY88Jc3lSuERJw6VAI1JKqI0siuQhFfzBfbRvc3Z/Bu8N31B5mBigaoZv1KbXCvO1EOi4T97gNovEXXklCe97/Uvqxaa5EZ+IT6K4c784cBAJMmHYbqSA=,iv:vp/L6Gl7grMAymHPv74vH3yrezXyfM8YfzGexL99OXo=,tag:oI88+COXLGQYo2CYYtmDWw==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.7.3
