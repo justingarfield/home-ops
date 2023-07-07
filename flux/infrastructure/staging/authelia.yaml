@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: infra-authelia-namespace
+  name: infra-authelia-ns
   namespace: flux-system
 spec:
   path: ./flux/infrastructure/base/authelia/namespace
@@ -25,7 +25,7 @@ metadata:
 spec:
   path: ./flux/infrastructure/base/authelia/app/sops/staging
   dependsOn:
-    - name: infra-authelia-namespace
+    - name: infra-authelia-ns
   prune: true
   sourceRef:
     kind: GitRepository
@@ -34,6 +34,10 @@ spec:
   interval: 5m
   retryInterval: 1m
   timeout: 3m
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -54,3 +58,8 @@ spec:
   interval: 5m
   retryInterval: 1m
   timeout: 3m
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: authelia-substitutions
+        optional: false

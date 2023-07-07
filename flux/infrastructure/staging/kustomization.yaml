@@ -11,3 +11,4 @@ resources:
   - weave-gitops.yaml
   - lldap.yaml
   - external-dns.yaml
+  - authelia.yaml

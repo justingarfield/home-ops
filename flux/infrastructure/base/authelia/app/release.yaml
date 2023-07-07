@@ -39,7 +39,7 @@ spec:
       tag: 4.37.5@sha256:25fc5423238b6f3a1fc967fda3f6a9212846aeb4a720327ef61c8ccff52dbbe2
     rbac:
       enabled: true
-    domain: ${PUBLIC_DNS_ZONE}
+    domain: ${PRIVATE_DNS_ZONE}
     ingress:
       enabled: true
       annotations:
@@ -54,7 +54,7 @@ spec:
         - name: TZ
           value: ${TIMEZONE}
     configMap:
-      default_redirection_url: https://auth.${PUBLIC_DNS_ZONE}
+      default_redirection_url: https://auth.${PRIVATE_DNS_ZONE}
       default_2fa_method: totp
       theme: dark
       webauthn:
@@ -97,8 +97,4 @@ spec:
           host: ${AUTHELIA_NOTIFIER_SMTP_HOST}
           port: 587
           username: ${AUTHELIA_NOTIFIER_SMTP_USERNAME}
-          sender: Authelia <authelia@${PUBLIC_DNS_ZONE}>
-# secret:
-#  existingSecret: authelia
-# certificates:
-#  existingSecret: authelia
+          sender: Authelia <authelia@${PRIVATE_DNS_ZONE}>

@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: authelia-substitutions
+    namespace: flux-system
+data:
+    PRIVATE_DNS_ZONE: ENC[AES256_GCM,data:e48jDbK4Kry3IlIb,iv:W2w1C6gtFqgzXuUcDFJaBQGIxM/rheaLYXzlc0kjbIA=,tag:omQBfp2rFQzr4MxM7MZAgQ==,type:str]
+    TIMEZONE: ENC[AES256_GCM,data:pJMNOW7R19tQqIHBiiP81Q==,iv:NUxAm8k8grxMbn16LkKihK/7MId/A0zyl5bBfYO+t+U=,tag:bgaBfUVeme+qWFRrJXl7Eg==,type:str]
+    NTP_SERVER_IP: ENC[AES256_GCM,data:Fmht26P7Kch4XQRv,iv:YmAcOulYp+b03DrmYSd9g/YbzhuiBJp1GDpmeyDJEp4=,tag:xOWo1qO7s+OKaMp8m5z2bA==,type:str]
+    AUTHELIA_NOTIFIER_SMTP_HOST: ENC[AES256_GCM,data:Du6OD3N3KIVF2UpJlrLSETNhBQ==,iv:y+TdhcbGBOoaZmh12LQ728oz3UvGiLF1wt/g9hwFXzQ=,tag:3QQIObRzB5OIckq+F/Gd8A==,type:str]
+    AUTHELIA_NOTIFIER_SMTP_USERNAME: ENC[AES256_GCM,data:EOIp5iH0td8Hp7RNYBUFIhyDXcYjXE0=,iv:u38lnu+UacyfKApul9Wpmv8BQ17jkI7tRoecV3R8PC4=,tag:0LWvpANlmgqKvRnTydIunA==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1ntkvvzktwzhmzq9gcygrtpwxu3k8ghx9p0khk7jqjf5hgxklggvsv6zhvz
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB3NHZyZ3FmaVVsOWY5eWFo
+            ZEkzRHpNTUZWZmpmakI4dWpDSmdwRmRnK1FVClI1a244N1hrellmcWZwSU5BcTlH
+            YUhHeDVOMzlVVitUT3hDbG9ZdnMvNk0KLS0tIEtsbXZIN2dBM0MvWFRiNkJQd1oy
+            UUlMRytaMytPQ0t2dmFxY0ZHWjJkVEEKFq1o5INn4F55TJADDdZK1cUzDGSsJg2K
+            IiAyRG4pgX1IBZ5Q8XycfuWauf/Ngv3GntfB+LD4JpSixtnnQeJ5FA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-07-07T21:34:12Z"
+    mac: ENC[AES256_GCM,data:CtVy9usNSA6syQSET0AeFZmvDE4UQEKR1AIBqBflR/h4z+E/6ohy9zjOB5vI/J0tYxCtC0NASWa6XG3N8tEJhHo4LRiXDH7vaiDpVvB0Y0m63HLM48zx4ck9d1J9LfSc8zS2OATh+7JdFrZY3Ame1Ji50qr+yogPU1J5opTG1Eo=,iv:MpH00wPOhdpYMvZbcREtbSyiA2Ktj5nHoGkBrlbas64=,tag:neDivYCyzzlpgIi+CX7ZHg==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.7.3
