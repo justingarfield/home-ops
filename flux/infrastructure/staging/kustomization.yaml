@@ -6,4 +6,6 @@ resources:
   - alerts.yaml
   - cilium.yaml
   - tetragon.yaml
+  - cert-manager.yaml
   - weave-gitops.yaml
+  - lldap.yaml

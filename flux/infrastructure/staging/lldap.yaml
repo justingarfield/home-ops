@@ -3,11 +3,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: infra-weave-gitops-ns
+  name: infra-lldap-ns
   namespace: flux-system
 spec:
   interval: 1m0s
-  path: ./flux/infrastructure/base/weave-gitops/namespace
+  path: ./flux/infrastructure/base/lldap/namespace
   prune: true
   retryInterval: 1m
   sourceRef:
@@ -20,13 +20,13 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: infra-weave-gitops-sops
+  name: infra-lldap-sops
   namespace: flux-system
 spec:
   interval: 1m0s
-  path: ./flux/infrastructure/base/weave-gitops/app/sops/staging
+  path: ./flux/infrastructure/base/lldap/app/sops/staging
   dependsOn:
-    - name: infra-weave-gitops-ns
+    - name: infra-lldap-ns
   prune: true
   retryInterval: 1m
   sourceRef:
@@ -43,13 +43,13 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: infra-weave-gitops-app
+  name: infra-lldap-app
   namespace: flux-system
 spec:
   interval: 1m0s
-  path: ./flux/infrastructure/base/weave-gitops/app
+  path: ./flux/infrastructure/base/lldap/app
   dependsOn:
-    - name: infra-weave-gitops-sops
+    - name: infra-lldap-sops
   prune: true
   retryInterval: 1m
   sourceRef:
@@ -60,5 +60,5 @@ spec:
   postBuild:
     substituteFrom:
       - kind: ConfigMap
-        name: weave-gitops-substitutions
+        name: lldap-substitutions
         optional: false
