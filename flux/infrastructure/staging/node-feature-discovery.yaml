@@ -20,13 +20,31 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: infra-node-feature-discovery-crds
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: infra-node-feature-discovery-namespace
+  path: ./flux/infrastructure/base/node-feature-discovery/crds
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  interval: 5m
+  retryInterval: 1m
+  timeout: 3m
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: infra-node-feature-discovery-app
   namespace: flux-system
 spec:
   interval: 1m0s
   path: ./flux/infrastructure/base/node-feature-discovery/app
   dependsOn:
-    - name: infra-node-feature-discovery-ns
+    - name: infra-node-feature-discovery-crds
   prune: true
   retryInterval: 1m
   sourceRef:
