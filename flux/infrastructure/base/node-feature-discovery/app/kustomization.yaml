@@ -6,3 +6,12 @@ namespace: node-feature-discovery
 resources:
   - repository.yaml
   - release.yaml
+
+configMapGenerator:
+  - name: nfd-master-conf
+    files:
+      - nfd-master.conf=./config/nfd-master.conf
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
