@@ -40,8 +40,8 @@ spec:
       # to toggle this, causing a WARN in the logs right on startup. This alleviates that.
       crdController: false
       config:
-        noPublish: true
+        noPublish: false
 
     worker:
       config:
-        noPublish: true
+        noPublish: false
