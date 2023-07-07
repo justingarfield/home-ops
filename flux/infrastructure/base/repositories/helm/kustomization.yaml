@@ -4,7 +4,3 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - bjw-s.yaml
-  - csi-driver-smb.yaml
-  - jetstack.yaml
-  - k8s-at-home.yaml
-  - stakater.yaml

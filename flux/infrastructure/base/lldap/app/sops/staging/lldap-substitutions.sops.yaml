@@ -4,7 +4,9 @@ metadata:
     name: lldap-substitutions
     namespace: flux-system
 data:
+    TIMEZONE: ENC[AES256_GCM,data:oZNizlqzDliwhwQe2RNeqQ==,iv:QJaqBa0atpQPDiKqP2D1NZe+WHl4HJ6xJazdN3bm8KQ=,tag:37A7V6uH7v/bzJPySGmyDQ==,type:str]
     INTERNAL_DOMAIN: ENC[AES256_GCM,data:qYLeKChWsAAn,iv:5bRXVqNDNti9YMiu1q4Z4d2Abmum5FflcAbyLjFk9VA=,tag:l+9L9Qf/HA3BezTY7R8hvg==,type:str]
+    LDAP_BASE_DN: ENC[AES256_GCM,data:5d9h9UTnRwHOi6oBgHNnNu1brYMt0Cj/GoA=,iv:E/81+pV/21+PTHGkjkoGdU1nnaoo9fEgpsQELPgcBps=,tag:rTI8q7HvHTBBiju3o/8VFg==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -20,8 +22,8 @@ sops:
             djF6cWkvY0RQaDZTQ2NDdWhyNEdGTEUKcEyPmj5jZHMrryJmQYeYrX2LNka9lWag
             UllhEU8qXiSfk3Qb6KEVWrfzrc/k+Gu3n+SA1y2HkKodtdkvy0R7wg==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-07-07T18:44:16Z"
-    mac: ENC[AES256_GCM,data:Oyr76MrqCdlIqBVMM24OQ8bVP21mucy/snVi/BcLE2IvLsWa7Nt7Ikt7dVjoB/fX0gJ34o0XMsN0vt9FAz52TXIlWKp0gwaVfyYNN+KrMwx9o5iSE3wj4dpBwLrwtI194OvVCOqlclCrHZize80nwa06FqQuYHmOESbKX9XCAlI=,iv:YeHInGN/Z8TnDOzjnhIz25g60GKgRFvlupzkpc5KvTY=,tag:8rs9Hz+gdQNeOHAyH4jVSw==,type:str]
+    lastmodified: "2023-07-07T19:18:01Z"
+    mac: ENC[AES256_GCM,data:fz8DwUDIstlp+msGzD1T6KZ3bq6PdbnJsxRfbsA1kaN/W9cQDohCE5h/IPLOLgTyZHg/LQhzMDNaEes/mGNrQFq0BCKdi/KKH9C0IOCyqXjMILrdFjmbYhwU5CY/1eAtnIY6grdpvIK9zB5/NBmHH2QHcQzYw2VY2yHaPETOhTI=,iv:FnQs47im4rCcc1SAkwYBGNrvLKpga7pfEEUWFBemJ4Q=,tag:bAe5fxmFavUnUjfHzCrVcQ==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.7.3
