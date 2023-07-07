@@ -24,7 +24,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    - name: infra-node-feature-discovery-namespace
+    - name: infra-node-feature-discovery-ns
   path: ./flux/infrastructure/base/node-feature-discovery/crds
   prune: true
   sourceRef:
