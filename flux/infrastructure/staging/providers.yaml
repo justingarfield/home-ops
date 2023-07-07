@@ -6,8 +6,6 @@ metadata:
   name: infra-providers
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: infra-provider-secrets
   interval: 30m0s
   path: ./flux/infrastructure/providers
   prune: true
