@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
     name: weave-gitops-substitutions
-    namespace: weave-gitops
+    namespace: flux-system
 data:
     INTERNAL_DOMAIN: ENC[AES256_GCM,data:rP1jV+RXspUb,iv:O5sdnh0TinDBiU+gLSKlQglYmx+RE7k40bWBYXItTu8=,tag:GtQhGRiIN1M9auZXBbqibw==,type:str]
 sops:
@@ -20,8 +20,8 @@ sops:
             ZytjTzNCdW5Nc1M1UFN0alZ3K0hrZGsKFSHbuwLpD/hHIjbVkUvisBgBK9PeHug5
             dEnlhq3YL0lFc2ckg5pOw8004N1D7oMfpLXlEPv4ZnYERI/UxCXXIw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-07-07T18:39:21Z"
-    mac: ENC[AES256_GCM,data:e2imE4UY4Aof+SbQxiHOsJVZxPUm2uFsyH2qYecNiNWqlZSSpzllhEgsa1vilv4V4iD1Z2jIF3slZTdVwG+OccTWBRHrja94KDCNXwuBdG3xw3jbdCztW04b7GJ4RKjJa/MfidesnICer0kiyCLD3KK6PcEsfXy34YMpMPtMfLo=,iv:VNQtif6YNXe4ZsGEgOMuWhJXYk+2zwfRti4KEX8QLfk=,tag:/RPhf2akFBpgOAWJHjAD1g==,type:str]
+    lastmodified: "2023-07-07T18:40:29Z"
+    mac: ENC[AES256_GCM,data:w7xNQnQ94V63iRQ6vAiRj3ZUC9n/sKlIJBzzUks3ODYwLijAlO6edrAgIuc3UVgB1rcYiCHfvoI62S2x/qcs2YCOUcVZLg4PrZ0iD5rhiOBTX06FQLikElMQb4wDvFfFd29oCrxxwlcNoiv6TFA/zpjtK2u8VTQ3JXaG1C8hgaA=,iv:i4BGN3gICJ4ns6fpV+LiFet7hEMPE7OiPbM5lo1peJY=,tag:+Rhynfw4yFvri2gdGD5H6A==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.7.3
