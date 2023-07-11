@@ -72,3 +72,5 @@ spec:
             static_configs:
               - targets:
                   - 192.168.60.1:9100
+              - labels:
+                  - myLabel: opnsense
