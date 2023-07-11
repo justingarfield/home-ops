@@ -27,3 +27,50 @@ spec:
       admissionWebhooks:
         certManager:
           enabled: true
+    kubeProxy:
+      enabled: false
+    alertmanager:
+      ingress:
+        enabled: true
+        ingressClassName: cilium
+        annotations:
+          cert-manager.io/cluster-issuer: home-arpa
+        hosts:
+          - host: &host "alertmanager.${INTERNAL_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+            secretName: tls-alertmanager
+    grafana:
+      ingress:
+        enabled: true
+        ingressClassName: cilium
+        annotations:
+          cert-manager.io/cluster-issuer: home-arpa
+        hosts:
+          - host: &host "grafana.${INTERNAL_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+            secretName: tls-grafana
+    prometheus:
+      ingress:
+        enabled: true
+        ingressClassName: cilium
+        annotations:
+          cert-manager.io/cluster-issuer: home-arpa
+        hosts:
+          - host: &host "prometheus.${INTERNAL_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+            secretName: tls-prometheus
