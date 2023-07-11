@@ -65,7 +65,7 @@ spec:
             secretName: tls-prometheus
       prometheusSpec:
         additionalScrapeConfigs:
-          - job_name: node-exporter
+          - job_name: opnsense
             scrape_interval: 1m
             scrape_timeout: 10s
             honor_timestamps: true
