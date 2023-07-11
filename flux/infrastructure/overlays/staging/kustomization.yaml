@@ -8,7 +8,7 @@ resources:
   - cert-manager.yaml
   - piraeus.yaml
   - tetragon.yaml
-  # - weave-gitops.yaml
+  - weave-gitops.yaml
   # - lldap.yaml
   - external-dns.yaml
   # - authelia.yaml
