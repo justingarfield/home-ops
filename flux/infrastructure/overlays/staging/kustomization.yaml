@@ -15,7 +15,9 @@ resources:
   - csi-driver-smb.yaml
   - node-feature-discovery.yaml
   # - reloader.yaml # - need to get prometheus stack going first
-  - kube-prometheus-stack.yaml
+  # - kube-prometheus-stack.yaml
+  - vertical-pod-autoscaler.yaml
+  - goldilocks.yaml
 
 
   # ============ No longer in-use ============

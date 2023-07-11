@@ -45,6 +45,7 @@ spec:
               - *host
             secretName: tls-alertmanager
     grafana:
+      forceDeployDashboards: true
       ingress:
         enabled: true
         ingressClassName: cilium
