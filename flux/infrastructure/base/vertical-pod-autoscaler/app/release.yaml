@@ -24,10 +24,12 @@ spec:
   values:
     recommender:
       enabled: false
-      extraArgs:
-        storage: prometheus
-        prometheus-address: |-
-          http://thanos-query.monitoring.svc.cluster.local:9090
+    #   extraArgs:
+    #     storage: prometheus
+    #     prometheus-address: |-
+    #       http://thanos-query.monitoring.svc.cluster.local:9090
+
+    # See: https://goldilocks.docs.fairwinds.com/installation/#important-note-about-vpa
     updater:
       enabled: false
     admissionController:

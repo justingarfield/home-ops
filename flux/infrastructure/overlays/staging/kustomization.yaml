@@ -30,4 +30,4 @@ resources:
   # Rook-Ceph was my first choice for storage since it also offers S3 Object APIs, but dear god is
   # this thing overly-complex for my current needs and hardware specs. If you decide to try rook-ceph,
   # just know that it expects around 4-CPUs and ~30GB of RAM for the OOTB Requests/Limits. Don't be
-  # surprised if the kube-scheduler keeps telling you "Hellz no!" in a lab environment :)
+  # surprised if the kube-scheduler keeps telling you "Hellz no!" in a desktop lab environment :)
