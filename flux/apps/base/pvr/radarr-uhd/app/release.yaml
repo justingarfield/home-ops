@@ -16,7 +16,6 @@ spec:
         name: bjw-s
         namespace: flux-system
   dependsOn:
-    - name: flemmarr
     - name: prowlarr
     - name: pod-gateway
       namespace: pod-gateway
