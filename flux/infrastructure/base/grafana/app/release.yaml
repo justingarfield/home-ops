@@ -85,3 +85,4 @@ spec:
       tls:
         - hosts:
             - *host
+          secret: tls-grafana
