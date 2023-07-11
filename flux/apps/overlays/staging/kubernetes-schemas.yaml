@@ -8,6 +8,8 @@ metadata:
 spec:
   interval: 12h
   path: ./flux/apps/base/kubernetes-schemas/app
+  dependsOn:
+    - name: infra-cert-manager-app
   prune: true
   retryInterval: 3m
   sourceRef:

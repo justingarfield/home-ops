@@ -26,6 +26,7 @@ spec:
   path: ./flux/apps/base/theme-park/app
   dependsOn:
     - name: apps-theme-park-ns
+    - name: infra-cert-manager-app
   prune: true
   retryInterval: 3m
   sourceRef:

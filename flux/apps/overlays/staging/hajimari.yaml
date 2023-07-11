@@ -26,6 +26,7 @@ spec:
   path: ./flux/apps/base/hajimari/app
   dependsOn:
     - name: apps-hajimari-ns
+    - name: infra-cert-manager-app
   prune: true
   retryInterval: 3m
   sourceRef:

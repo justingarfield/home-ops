@@ -47,6 +47,7 @@ spec:
   path: ./flux/infrastructure/base/authelia/app
   dependsOn:
     - name: infra-authelia-secrets
+    - name: infra-cert-manager-app
   prune: true
   sourceRef:
     kind: GitRepository

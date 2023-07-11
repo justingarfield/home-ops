@@ -48,6 +48,7 @@ spec:
   path: ./flux/infrastructure/base/weave-gitops/app
   dependsOn:
     - name: infra-weave-gitops-sops
+    - name: infra-cert-manager-app
   prune: true
   retryInterval: 3m
   sourceRef:

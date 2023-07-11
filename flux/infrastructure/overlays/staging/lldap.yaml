@@ -48,6 +48,7 @@ spec:
   path: ./flux/infrastructure/base/lldap/app
   dependsOn:
     - name: infra-lldap-sops
+    - name: infra-cert-manager-app
   prune: true
   retryInterval: 3m
   sourceRef:

@@ -67,6 +67,7 @@ spec:
   path: ./flux/apps/base/pvr/prowlarr/app
   dependsOn:
     - name: apps-pvr-ns
+    - name: infra-cert-manager-app
   prune: true
   retryInterval: 3m
   sourceRef:
@@ -91,6 +92,7 @@ spec:
   path: ./flux/apps/base/pvr/qbittorrent/app
   dependsOn:
     - name: apps-pvr-ns
+    - name: infra-cert-manager-app
   prune: true
   retryInterval: 3m
   sourceRef:
@@ -136,6 +138,7 @@ spec:
   dependsOn:
     - name: apps-pvr-ns
     - name: apps-pvr-sops
+    - name: infra-cert-manager-app
   prune: true
   retryInterval: 3m
   sourceRef:
@@ -160,6 +163,7 @@ spec:
   dependsOn:
     - name: apps-pvr-ns
     - name: apps-pvr-sops
+    - name: infra-cert-manager-app
   prune: true
   retryInterval: 3m
   sourceRef:
@@ -184,6 +188,7 @@ spec:
   dependsOn:
     - name: apps-pvr-ns
     - name: apps-pvr-sops
+    - name: infra-cert-manager-app
   prune: true
   retryInterval: 3m
   sourceRef:
@@ -208,6 +213,7 @@ spec:
   dependsOn:
     - name: apps-pvr-ns
     - name: apps-pvr-sops
+    - name: infra-cert-manager-app
   prune: true
   retryInterval: 3m
   sourceRef:
@@ -232,6 +238,7 @@ spec:
   dependsOn:
     - name: apps-pvr-ns
     - name: apps-pvr-sops
+    - name: infra-cert-manager-app
   prune: true
   retryInterval: 3m
   sourceRef:
@@ -256,6 +263,7 @@ spec:
   dependsOn:
     - name: apps-pvr-ns
     - name: apps-pvr-sops
+    - name: infra-cert-manager-app
   prune: true
   retryInterval: 3m
   sourceRef:
@@ -280,6 +288,7 @@ spec:
   dependsOn:
     - name: apps-pvr-ns
     - name: apps-pvr-sops
+    - name: infra-cert-manager-app
   prune: true
   retryInterval: 3m
   sourceRef:
