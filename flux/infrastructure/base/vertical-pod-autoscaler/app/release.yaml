@@ -23,7 +23,7 @@ spec:
       retries: 3
   values:
     recommender:
-      enabled: false
+      enabled: true
     #   extraArgs:
     #     storage: prometheus
     #     prometheus-address: |-
