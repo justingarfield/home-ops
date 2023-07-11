@@ -17,10 +17,11 @@ spec:
         namespace: kube-prometheus-stack
       interval: 30m
   install:
-    crds: CreateReplace
+    remediation:
+      retries: 5
   upgrade:
-    crds: CreateReplace
-
+    remediation:
+      retries: 3
   # See: https://github.com/prometheus-community/helm-charts/blob/kube-prometheus-stack-47.6.1/charts/kube-prometheus-stack/values.yaml
   values:
     prometheusOperator:
@@ -45,21 +46,8 @@ spec:
               - *host
             secretName: tls-alertmanager
     grafana:
+      enabled: false
       forceDeployDashboards: true
-      ingress:
-        enabled: true
-        ingressClassName: cilium
-        annotations:
-          cert-manager.io/cluster-issuer: home-arpa
-        hosts:
-          - &host "grafana.${INTERNAL_DOMAIN}"
-        paths:
-          - /
-        pathType: Prefix
-        tls:
-          - hosts:
-              - *host
-            secretName: tls-grafana
     prometheus:
       ingress:
         enabled: true
