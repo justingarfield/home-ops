@@ -1,0 +1,30 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - providers.yaml
+  - alerts.yaml
+  - cilium.yaml
+  - cert-manager.yaml
+  - piraeus.yaml
+  - tetragon.yaml
+  - weave-gitops.yaml
+  - lldap.yaml
+  - external-dns.yaml
+  # - authelia.yaml
+  - csi-driver-smb.yaml
+  - node-feature-discovery.yaml
+  # - reloader.yaml # - need to get prometheus stack going first
+
+
+  # ============ No longer in-use ============
+
+  # - mayastor.yaml
+  # I decided to pass on Mayastor, because it only supports amd64 officially at this point in time.
+  # There are unofficial arm64 methods to deploy it out there on the web, but it's not supported.
+
+  # - rook-ceph.yaml
+  # Rook-Ceph was my first choice for storage since it also offers S3 Object APIs, but dear god is
+  # this thing overly-complex for my current needs and hardware specs. If you decide to try rook-ceph,
+  # just know that it expects around 4-CPUs and ~30GB of RAM for the OOTB Requests/Limits. Don't be
+  # surprised if the kube-scheduler keeps telling you "Hellz no!" in a lab environment :)

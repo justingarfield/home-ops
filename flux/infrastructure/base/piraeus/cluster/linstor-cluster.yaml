@@ -1,0 +1,8 @@
+---
+apiVersion: piraeus.io/v1
+kind: LinstorCluster
+metadata:
+  name: linstor-cluster
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: k8s-wk01

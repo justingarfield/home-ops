@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - home-arpa.yaml
+  - letsencrypt-production.yaml
+  - letsencrypt-staging.yaml
+
+patches:
+  - path: ./patch-files/solver-dns01-azure-dns-patch.yaml
+    target:
+      group: cert-manager.io
+      version: v1
+      kind: ClusterIssuer
+      name: letsencrypt-production
+  - path: ./patch-files/solver-dns01-azure-dns-patch.yaml
+    target:
+      group: cert-manager.io
+      version: v1
+      kind: ClusterIssuer
+      name: letsencrypt-staging

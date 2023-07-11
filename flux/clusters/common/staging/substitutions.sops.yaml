@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: common-substitutions
+    namespace: flux-system
+data:
+    INTERNAL_DOMAIN: ENC[AES256_GCM,data:uvFJp+3EukKAKQpVSY+Jtd8=,iv:mixocq2LLcAPYANFs/K+W3gn79tEyZaC17hNSZAueGM=,tag:NbwNUl2yhgR92Eu1Zbtq+g==,type:str]
+    PRIVATE_DOMAIN: ENC[AES256_GCM,data:ITQ94Xf1umIPFmoe7rmXYvwsm2s=,iv:J5ySKeep7CtFlo/pWnydOz91M363PAKo4AueiJFVpRQ=,tag:ua5Hevy6PAAu+J825heP0w==,type:str]
+    PUBLIC_DOMAIN: ENC[AES256_GCM,data:sfyWTqLLbAekgyrXlTKgH5ax07LQ,iv:8swBgbOCreDGj4iWBQvffGfkAqclUoDG6iQGvJ4tVbE=,tag:MCWmHeBsUxgiPSFCbNaTYA==,type:str]
+    LOCAL_TIMEZONE: ENC[AES256_GCM,data:Oc+3WEmCgUNq6N0QQXRIMQ==,iv:e2LF4HwNdu1Kg8Y3G3zqVa3IlFRCJTX1IudV7631GRc=,tag:q42zHMYjZkJ0IN2mcSPUAQ==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1ntkvvzktwzhmzq9gcygrtpwxu3k8ghx9p0khk7jqjf5hgxklggvsv6zhvz
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBOSVVKL1pCMEdiMVhEc056
+            L09ZeXRIUTVQQVh2MXkwaDNnSkVIaWNtdUYwCjBKWXU5L3dsNzdDdGl1ZlZIQ01V
+            dlZqUFNRRlFWd3RmME5HNGRlT0UyYlkKLS0tIFYrQ0pEeC9yN1FXczdaVkREWkNn
+            Tnh4L3htV0tsSFZiMldtRVB3WDhidmMKUI5SLOsNevoWETDTnIcr0dDMfgW63uA5
+            iupqRkGHk2VJpkkGAgSjZzAnpik2jKsHsbKGHpmI2QV7SkbdNpmV4w==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-07-11T02:28:00Z"
+    mac: ENC[AES256_GCM,data:HuV0MokQn946exC9ss6YGzEpIO5f1ZaWV9K6vp39Vmdl5FT7PM9qsh3uyv7Z2AcPqbvq6pYQQU6UgIfcJLpRKcHasbTllv2+VjXlFMyNaZ6ShalCMmhEVXyZDKKooc0kAOnTROx1f3hPBY+ap3jn7iIj+VpfXqAB+/u/bOcntsk=,iv:lC3bpRoJEQDcodVhafDkITVfCQ5U1yrgAm7o7RufxBA=,tag:Hocgo4GgefLoeCBRYYgycA==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.7.3

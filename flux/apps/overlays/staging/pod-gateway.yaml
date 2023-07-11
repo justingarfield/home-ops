@@ -1,0 +1,66 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps-pod-gateway-ns
+  namespace: flux-system
+spec:
+  interval: 12h
+  path: ./flux/apps/base/pod-gateway/namespace
+  prune: true
+  retryInterval: 3m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 3m
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps-pod-gateway-sops
+  namespace: flux-system
+spec:
+  interval: 12h
+  path: ./flux/apps/base/pod-gateway/app/sops/staging
+  dependsOn:
+    - name: apps-pod-gateway-ns
+  prune: true
+  retryInterval: 3m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 3m
+  wait: true
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps-pod-gateway-app
+  namespace: flux-system
+spec:
+  interval: 12h
+  path: ./flux/apps/base/pod-gateway/app
+  dependsOn:
+    - name: apps-pod-gateway-sops
+    # The pod-gateway will attempt to verify / label / annotate
+    # the namespace, so it needs to exist ahead of time.
+    - name: apps-pvr-ns
+  prune: true
+  retryInterval: 3m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 3m
+  wait: true
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: pod-gateway-substitutions
+        optional: false

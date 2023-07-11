@@ -1,0 +1,54 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+tasks:
+
+  ensure-directory-exists:
+    desc: Creates a directory (and any sub-directories) if needed.
+    internal: true
+    vars:
+      DIRECTORY: '{{.DIRECTORY | replace "./{{.OUTPUT_DIR}}" "" | replace .OUTPUT_DIR ""}}'
+    preconditions:
+      - test "{{.OUTPUT_DIR}}/{{.DIRECTORY}}"
+    cmds:
+      - mkdir -p "{{ .OUTPUT_DIR }}/{{.DIRECTORY}}"
+    status:
+      - test -d "{{.OUTPUT_DIR}}/{{.DIRECTORY}}"
+
+  message:
+    desc: Displays a message to the end-user running the Task.
+    internal: true
+    vars:
+      MESSAGE: "{{.MESSAGE}}"
+    cmds:
+      - printf '[home-ops] {{.MESSAGE}}\n'
+
+  imporant-message:
+    desc: Displays an 'important' message to the end-user running the Task.
+    internal: true
+    vars:
+      MESSAGE: "{{.MESSAGE}}"
+    cmds:
+      - task: message
+      - task: message
+        vars: { MESSAGE: ------------------------------------------------------------------------------------ }
+      - task: message
+        vars: { MESSAGE: "*** {{.MESSAGE}} ***" }
+      - task: message
+        vars: { MESSAGE: ------------------------------------------------------------------------------------ }
+      - task: message
+
+  display-banner:
+    desc: Displays a fun looking banner of the repository's name
+    internal: true
+    cmds:
+      - echo -e \
+          "\n\n"
+          "██╗  ██╗ ██████╗ ███╗   ███╗███████╗     ██████╗ ██████╗ ███████╗\n"
+          "██║  ██║██╔═══██╗████╗ ████║██╔════╝    ██╔═══██╗██╔══██╗██╔════╝\n"
+          "███████║██║   ██║██╔████╔██║█████╗█████╗██║   ██║██████╔╝███████╗\n"
+          "██╔══██║██║   ██║██║╚██╔╝██║██╔══╝╚════╝██║   ██║██╔═══╝ ╚════██║\n"
+          "██║  ██║╚██████╔╝██║ ╚═╝ ██║███████╗    ╚██████╔╝██║     ███████║\n"
+          "╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝     ╚═════╝ ╚═╝     ╚══════╝\n"
+          "\n\n"

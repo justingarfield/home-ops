@@ -1,0 +1,73 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+# See: https://stackoverflow.com/questions/13732826/convert-pem-to-crt-and-key
+
+tasks:
+
+  DER-to-PEM:
+    desc: Convert a DER file (.crt .cer .der) to PEM
+    aliases:
+      - CRT-to-PEM
+      - CER-to-PEM
+    cmds:
+      - openssl x509 -inform der -in certificate.cer -out certificate.pem
+
+  PEM-to-DER:
+    desc: Convert a PEM file to DER
+    cmds:
+      - openssl x509 -outform der -in certificate.pem -out certificate.der
+
+  PKCS12-to-PEM:
+    desc: Convert a PKCS#12 file (.pfx .p12) containing a private key and certificates to PEM
+    aliases:
+      - PFX-to-PEM
+      - P12-to-PEM
+    cmds:
+      - openssl pkcs12 -in keyStore.pfx -out keyStore.pem -nodes # You can add -nocerts to only output the private key or add -nokeys to only output the certificates.
+
+  PEM-to-PKCS12:
+    desc: Convert a PEM certificate file and a private key to PKCS#12 (.pfx .p12)
+    aliases:
+      - PEM-to-PFX
+      - PEM-to-P12
+    cmds:
+      - openssl pkcs12 -export -out certificate.pfx -inkey privateKey.key -in certificate.crt -certfile CACert.crt
+
+  # Same as PEM-to-DER??
+  PEM-to-CRT:
+    desc: Convert PEM to CRT (.CRT file)
+    vars:
+      PEM_FILENAME: '{{ .PEM_FILENAME }}'
+      OUT_FILENAME: '{{ .OUT_FILENAME }}'
+    preconditions:
+      - test "{{ .PEM_FILENAME | ext }}" = ".pem"
+    cmds:
+      - openssl x509 -outform der -in "{{ .PEM_FILENAME }}" -out "{{ .OUT_FILENAME }}"
+
+  RSA-KEY-PEM-to-KEY:
+    desc: Convert RSA Private Key PEM to KEY (.KEY file)
+    vars:
+      PEM_FILENAME: '{{ .PEM_FILENAME }}'
+      OUT_FILENAME: '{{ .OUT_FILENAME }}'
+    preconditions:
+      - test "{{ .PEM_FILENAME | ext }}" = ".pem"
+    cmds:
+      - openssl rsa -in "{{ .PEM_FILENAME }}" -out "{{ .OUT_FILENAME }}"
+
+  PEM-to-P7B:
+    desc: Convert PEM to P7B
+    cmds:
+      - openssl crl2pkcs7 -nocrl -certfile certificate.cer -out certificate.p7b -certfile CACert.cer
+
+  P7B-to-PEM:
+    desc: Convert P7B to PEM
+    cmds:
+      - openssl pkcs7 -print_certs -in certificate.p7b -out certificate.cer
+
+  P7B-to-PFX:
+    desc: Convert P7B to PFX
+    cmds:
+      - openssl pkcs7 -print_certs -in certificate.p7b -out certificate.cer
+      - openssl pkcs12 -export -in certificate.cer -inkey privateKey.key -out certificate.pfx -certfile CACert.cer

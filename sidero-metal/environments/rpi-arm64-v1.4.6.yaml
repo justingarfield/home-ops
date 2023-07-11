@@ -1,0 +1,24 @@
+---
+###
+# This is a new Sidero Environment for the Pi 4s.
+#
+# Without it, all Pis will boot using amd64 and fail to load, since only the "default" Environment exists OOTB.
+###
+apiVersion: metal.sidero.dev/v1alpha1
+kind: Environment
+metadata:
+  name: rpi-arm64-v1.4.6
+spec:
+  kernel:
+    url: https://github.com/talos-systems/talos/releases/download/v1.4.6/vmlinuz-arm64
+    args:
+      - initrd=initramfs.xz
+      - slab_nomerge
+      - init_on_alloc=1
+      - init_on_free=1
+      - pti=on
+      - talos.board=rpi_4
+      - talos.platform=metal
+      # - sysctl.kernel.kexec_load_disabled=0
+  initrd:
+    url: https://github.com/talos-systems/talos/releases/download/v1.4.6/initramfs-arm64.xz

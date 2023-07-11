@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: pod-gateway-substitutions
+    namespace: flux-system
+data:
+    PIA_FORWARDED_PORT_TCP: ENC[AES256_GCM,data:vX2wfTU=,iv:hGpAJLCpWScb5icqQ2h19ndIket9ZWJVaaJz2ls+/80=,tag:s3EYBxGxqGVscpjI0l3acg==,type:str]
+    PIA_FORWARDED_PORT_UDP: ENC[AES256_GCM,data:/eRxw6o=,iv:Xhjao17UzAAflc5VesaeUgOP9kjnzEOiQSYWeLUf8+U=,tag:b3JKWWwGJqKDhPQJeYDCJA==,type:str]
+    PIA_TCP_PORT: ENC[AES256_GCM,data:S6yQ,iv:Fun4/B04+Kpq/Hbz4ilyxXfgv5tmxYO2T3OcNpPoU08=,tag:bgtzF+Oc+9s+DJ9SUSxUTw==,type:str]
+    PIA_UDP_PORT: ENC[AES256_GCM,data:k/wF5Q==,iv:iGOWdl32bQ3YqMcpUrfMma2VBr1/8Cg17zEH5kLAYzg=,tag:qHXjdOx1mk5Lm240uUGNnw==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1ntkvvzktwzhmzq9gcygrtpwxu3k8ghx9p0khk7jqjf5hgxklggvsv6zhvz
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBrTWpzYWc2c2ZuQTh4OVNt
+            VU5XZUp2Nk5MdGRCZUlocmZKRUd3RWN4VWlnCjZ3aFd0eWlCaHh6MEFHZkN1N3R1
+            L3B0Zy9GWlcxRjQzTlVDM1VWMGxUSlkKLS0tIFlXZXl4UmE3TFIrS0tyUitmeXlx
+            NVZnMGZiOVVvd1V1SEZhOWpIcEVMSHcKIJsaZSb2W893FTA4+OwzDzX7p49+Pj8I
+            tRVpgehk4+U293IQIruk0qN20EYNEYMDxVKQtjk82TEetnzMGsLOng==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-07-10T22:33:43Z"
+    mac: ENC[AES256_GCM,data:KliJ+0BytTq6mDHPrCu5a8HJDYenyHpogxEK0pA++tIVibNVWftP135YMbdgxGq8PiijVTzFQeENecsO7qmgd/MW/6/FnetcCUXCwx3ed+u3q21iuhg7t9l/ieDPwLmSWSLuseFLFBBuYrbCXZJssmfdAkBuPX4lKQfka7BRWL0=,iv:T/mV+vVOF4zq0YFDzbbFvHwCWx3f1NQKPpjJ2wQ2DJY=,tag:e8xlHAV1NLgTOaGiptsfwQ==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.7.3

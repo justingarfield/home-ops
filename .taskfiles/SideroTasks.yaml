@@ -1,0 +1,87 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+tasks:
+
+  generate-talos-cp-configs:
+    talosctl gen config sidero-metal https://${SIDERO_ENDPOINT}:6443/ \
+      --additional-sans=sidero-metal,sidero-metal.staging.home.arpa \
+      --config-patch-control-plane @./talos-linux/patch-sidero-controlplane-config.yaml \
+      --with-docs=false \
+      --with-examples=false \
+      --output-types=controlplane,talosconfig \
+      --output ./_out/sidero-metal
+
+  apply-talos-cp-configs:
+    talosctl apply-config --insecure -n $(SIDERO_MASTER_ENDPOINT) -f ./_out/sidero-metal/controlplane.yaml
+
+  apply-cli-configs:
+    talosctl config merge ./_out/sidero-metal/talosconfig
+    talosctl config endpoints $(SIDERO_MASTER_ENDPOINT)
+    talosctl config nodes $(SIDERO_MASTER_ENDPOINT)
+
+  bootstrap-talos-etcd:
+    talosctl bootstrap --nodes $(SIDERO_MASTER_ENDPOINT)
+    talosctl kubeconfig
+    talosctl dmesg -f
+
+  install-sidero:
+    bash ./scripts/install-sidero.sh
+
+  patch-tftp-raspberrypi4-uefi:
+    echo ""
+    echo "-- Setting replicas for sidero-controller-manager to 0..."
+    kubectl -n sidero-system scale deployments/sidero-controller-manager --replicas=0
+    sleep 15
+    echo ""
+    echo "-- Patching sidero-controller-manager..."
+    kubectl -n sidero-system patch deployments.apps sidero-controller-manager --patch-file=sidero-metal/sidero-controller-manager/patch-tftp-raspberrypi4b-uefi.yaml
+    echo ""
+    echo "-- Setting replicas for sidero-controller-manager to 1..."
+    kubectl -n sidero-system scale deployments/sidero-controller-manager --replicas=1
+    sleep 15
+    kubectl -n sidero-system get pods
+
+  apply-all: apply-all-environments apply-all-serverclasses apply-all-servers
+
+  apply-all-environments:
+    ls ./sidero-metal/environments/*.yaml | while read server; do kubectl apply -f $$server; done
+
+  apply-all-serverclasses:
+    ls ./sidero-metal/serverclasses/*.yaml | while read server; do kubectl apply -f $$server; done
+
+  apply-all-servers:
+    ls ./sidero-metal/servers/*.yaml | while read server; do kubectl apply -f $$server; done
+
+  generate-hybrid-cluster-config:
+    bash ./scripts/generate-hybrid-cluster-config.sh
+
+  install-cli-binaries:
+    sudo --preserve-env=HOME bash ./scripts/install-cli-binaries.sh
+
+  tail-logs:
+    kubectl -n sidero-system logs deployments/sidero-controller-manager manager | grep --text -v 127.0.0.1 | grep --text -v "HTTP OPTIONS /tftp/ipxe.efi" | tail -n 35
+
+  tail-logs-no-filter:
+    kubectl -n sidero-system logs deployments/sidero-controller-manager manager | tail -n 35
+
+  restart-manager:
+    echo ""
+    echo "-- Setting replicas for sidero-controller-manager to 0..."
+    kubectl -n sidero-system scale deployments/sidero-controller-manager --replicas=0
+    sleep 30
+    echo ""
+    echo "-- Setting replicas for sidero-controller-manager to 1..."
+    kubectl -n sidero-system scale deployments/sidero-controller-manager --replicas=1
+    sleep 20
+    kubectl -n sidero-system get pods
+
+  apply-cluster:
+    kubectl apply -f ./sidero-metal/clusters/hybrid-cluster.yaml
+
+  remove-cluster:
+    kubectl delete -f ./sidero-metal/clusters/hybrid-cluster.yaml
+
+  read-mac-addresses:
+    talosctl list /sys/class/net | tail -n +3 | grep -v bonding_masters | grep -v teql0 | while read _ interface; do echo $$interface; talosctl read /sys/class/net/$$interface/address; done

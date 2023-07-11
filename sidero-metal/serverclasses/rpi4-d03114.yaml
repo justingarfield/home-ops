@@ -1,0 +1,22 @@
+---
+###
+# This is a new Sidero ServerClass for the Pi 4 - Model D03114.
+###
+apiVersion: metal.sidero.dev/v1alpha1
+kind: ServerClass
+metadata:
+  name: rpi4-d03114
+spec:
+  bootFromDiskMethod: ipxe-sanboot
+  configPatches:
+    - op: replace
+      path: /machine/install/disk
+      value: /dev/sda
+  environmentRef:
+    name: rpi-arm64-v1.4.6
+  qualifiers:
+    systemInformation:
+      - family: Raspberry Pi
+        manufacturer: Raspberry Pi Foundation
+        productName: Raspberry Pi 4 Model B
+        version: D03114

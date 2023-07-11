@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: weave-gitops
+    namespace: weave-gitops
+stringData:
+    adminPassword: ENC[AES256_GCM,data:kkRdCcv1mrFAdKKnI0Z7pLLFy+lyOgxo2WjrJjpoBVQEsROFX4k8YXFTGHMVh87letOjkAzXUJ+43nfX,iv:jR9PA1/Zs8HUdV0HS5nJ4UTvLVozhGt4aD+jHsXlBII=,tag:NYuw9ygNuro09AOgQg+cxg==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1ntkvvzktwzhmzq9gcygrtpwxu3k8ghx9p0khk7jqjf5hgxklggvsv6zhvz
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA1SG94elJ6djNWWVZrNi8r
+            WlY2Q3RtRTZTaTFmNk9IZlZnaWxMeHFnZVVvCmgzNzF6MDRnUVc2bll5LzNqY0g1
+            TGxSYWdvRnRPb2F1dFNmSU0yaFFaMkUKLS0tIDJLdi9Wb1Jyb0hhbThxcHEzVExp
+            dThuZXZzb0NHNzU5bElqL0hGbERRMG8Kg+fxsksNgE4XMlwRKyb5ditCMVXciBzG
+            U39NZ5ooU6qkmbE2x3Ejiw38AZJMabKyTT1zy8y707GUD5RSjuGS8g==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-07-07T18:36:58Z"
+    mac: ENC[AES256_GCM,data:RJJ8TeIIU7dm8i9sOU1bHOP0xEGxVwIWtcP9PTddBpMsp3TV8D+XodxiXcX6bgCZJHXKK0ZrwZtmHWQPpr/ARfAM7BHUZLlHnGVJWb00OwoJSguL42BoLl9xmICL9KwDFqm0THYfr4BY/oXaYD+dt1+/viEU0DWCyavZnG/dpAU=,iv:o79XZcVzXod5xTgg96i5wyTdT7/AbXO2E2fiLkKXdyg=,tag:XClK+8IHVqHIzyTmpTrBKQ==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.7.3

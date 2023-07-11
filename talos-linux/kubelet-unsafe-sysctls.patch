@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://talos.dev/v1.4/schemas/v1alpha1_config.schema.json
+
+# This patch file:
+#   * Allows certain unsafe sysctls to be used on a node
+#   * Used only for the pod-gateway right now
+
+machine:
+  kubelet:
+    extraConfig:
+      allowedUnsafeSysctls:
+        - net.ipv6.conf.all.disable_ipv6
+        - net.ipv6.conf.default.disable_ipv6
+        - net.ipv4.conf.all.src_valid_mark

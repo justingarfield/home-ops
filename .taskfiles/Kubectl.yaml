@@ -1,0 +1,38 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+tasks:
+
+  get-all:
+    desc: Gets all resources + CRDS
+    vars:
+      _INSTALLED_CRDS:
+        sh: kubectl get crds | tail -n +2 | awk '{print $1}' | paste -d, -s -
+    cmds:
+      - kubectl get all,{{ ._INSTALLED_CRDS }} {{ .CLI_ARGS }}
+
+  get-cert-manager-related:
+    desc: Retrieves cert-manager related resources for troubleshooting TLS certificates.
+    cmds:
+      - kubectl get clusterissuers,issuers,certificaterequests,challenges,orders,certificates {{.CLI_ARGS}}
+
+  purge-old-replicasets:
+    desc: Deletes ALL ReplicaSets which have 0 DESIRED, CURRENT, and READY status across ALL namespaces
+    cmds:
+      - kubectl get rs -A -o wide | tail -n +2 | awk '{if ($3 + $4 + $5 == 0) print "kubectl delete rs -n "$1, $2 }' | sh
+
+  purge-completed-and-unknown:
+    desc: Deletes ALL 'ContainerStatusUnknown' and 'Completed' pods in the current cluster context.
+    cmds:
+      - kubectl get pods -A | tail -n +2 | awk '{if ($4 ~ /^(ContainerStatusUnknown|Completed)$/) print "kubectl delete pod -n "$1, $2 }' | sh
+
+  purge-evicted:
+    desc: Deletes ALL 'Evicted' pods in the current cluster context.
+    cmds:
+      - kubectl get pods -A | tail -n +2 | awk '{if ($4 ~ /^(Evicted)$/) print "kubectl delete pod -n "$1, $2 }' | sh
+
+  get-node-labels:
+    desc: Useful for seeing all the labels from Node Feature Discovery (NFD)
+    cmds:
+      - kubectl get no -o json | jq .items[].metadata.labels

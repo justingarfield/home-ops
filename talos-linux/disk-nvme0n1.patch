@@ -1,0 +1,12 @@
+---
+# yaml-language-server: $schema=https://talos.dev/v1.4/schemas/v1alpha1_config.schema.json
+
+# This patch file:
+#   * Tells Talos that a node has an additional disk device to format and
+#     partition located at /dev/nvme0n1; mounts it at /var/mnt/nvme0n1.
+
+machine:
+  disks:
+    - device: /dev/nvme0n1
+      partitions:
+        - mountpoint: /var/mnt/nvme0n1

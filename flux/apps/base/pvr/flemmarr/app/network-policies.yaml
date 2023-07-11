@@ -1,0 +1,16 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: flemmarr
+  namespace: pvr
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: flemmarr
+  egress:
+    - toEntities:
+        - all
+  ingress:
+    - fromEntities:
+        - all

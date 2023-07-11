@@ -1,0 +1,62 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: infra-weave-gitops-ns
+  namespace: flux-system
+spec:
+  interval: 12h
+  path: ./flux/infrastructure/base/weave-gitops/namespace
+  prune: true
+  retryInterval: 3m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 3m
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: infra-weave-gitops-sops
+  namespace: flux-system
+spec:
+  interval: 12h
+  path: ./flux/infrastructure/base/weave-gitops/app/sops/staging
+  dependsOn:
+    - name: infra-weave-gitops-ns
+  prune: true
+  retryInterval: 3m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 3m
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: infra-weave-gitops-app
+  namespace: flux-system
+spec:
+  interval: 12h
+  path: ./flux/infrastructure/base/weave-gitops/app
+  dependsOn:
+    - name: infra-weave-gitops-sops
+  prune: true
+  retryInterval: 3m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 3m
+  wait: true
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: weave-gitops-substitutions
+        optional: false

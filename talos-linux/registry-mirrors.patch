@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://talos.dev/v1.4/schemas/v1alpha1_config.schema.json
+
+# This patch file:
+#   *
+
+machine:
+  registries:
+    mirrors:
+      docker.io:
+        endpoints:
+          - http://pull-through-cache.home.arpa:5003
+      gcr.io:
+        endpoints:
+          - http://pull-through-cache.home.arpa:5001
+      ghcr.io:
+        endpoints:
+          - http://pull-through-cache.home.arpa:5000
+      registry.k8s.io:
+        endpoints:
+          - http://pull-through-cache.home.arpa:5002

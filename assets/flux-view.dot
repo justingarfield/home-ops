@@ -1,0 +1,23 @@
+digraph G {
+
+    subgraph cluster_staging {
+        label = "staging"
+
+        subgraph cluster_staging {
+            label = "apps"
+        }
+
+        subgraph cluster_staging {
+            label = "clusters"
+        }
+
+        subgraph cluster_staging {
+            label = "infrastructure"
+        }
+    }
+
+    subgraph cluster_production {
+        label = "production"
+    }
+
+}

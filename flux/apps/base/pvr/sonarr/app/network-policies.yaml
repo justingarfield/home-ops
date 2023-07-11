@@ -1,0 +1,16 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: sonarr
+  namespace: pvr
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: sonarr
+  egress:
+    - toEntities:
+        - all
+  ingress:
+    - fromEntities:
+        - all

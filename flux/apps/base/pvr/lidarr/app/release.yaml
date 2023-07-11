@@ -1,0 +1,69 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: lidarr
+  namespace: pvr
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 15m
+  install:
+    createNamespace: false
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 3
+  dependsOn:
+    - name: prowlarr
+    - name: pod-gateway
+      namespace: pod-gateway
+  values:
+    image:
+      repository: ghcr.io/onedr0p/lidarr
+      tag: 1.1.4.3027@sha256:d7e06edaee3b2227a0dcbf170a95d26595b0d10655d5e084c45b859f175a0672
+    env:
+      TZ: ${LOCAL_TIMEZONE}
+      LIDARR__INSTANCE_NAME: Lidarr
+      LIDARR__PORT: &port 8686
+      LIDARR__LOG_LEVEL: info
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: cilium
+        annotations:
+          hajimari.io/icon: music-box
+          cert-manager.io/cluster-issuer: home-arpa
+        hosts:
+          - host: &host "{{.Release.Name}}.${INTERNAL_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+            secretName: tls-lidarr
+    persistence:
+      config:
+        enabled: true
+        type: pvc
+        readOnly: false
+        existingClaim: lidarr-config-pvc
+      media:
+        enabled: true
+        type: pvc
+        readOnly: false
+        existingClaim: lidarr-media-pvc

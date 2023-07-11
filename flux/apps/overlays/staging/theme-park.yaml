@@ -1,0 +1,40 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps-theme-park-ns
+  namespace: flux-system
+spec:
+  interval: 12h
+  path: ./flux/apps/base/theme-park/namespace
+  prune: true
+  retryInterval: 3m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 3m
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps-theme-park-app
+  namespace: flux-system
+spec:
+  interval: 12h
+  path: ./flux/apps/base/theme-park/app
+  dependsOn:
+    - name: apps-theme-park-ns
+  prune: true
+  retryInterval: 3m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 3m
+  wait: true
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: common-substitutions
+        optional: false

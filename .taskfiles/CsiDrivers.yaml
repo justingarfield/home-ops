@@ -1,0 +1,20 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+vars:
+  SMB_OUT_DIR: '{{ .OUTPUT_DIR }}/csi-driver-smb'
+
+tasks:
+
+  # See: https://github.com/kubernetes-csi/csi-driver-smb/blob/master/docs/csi-debug.md
+  smb-debug:
+    desc: Dumps debug information to log files for csi-driver-smb
+    cmds:
+      - task: :_core:ensure-directory-exists
+        vars: { DIRECTORY: '{{ .SMB_OUT_DIR }}' }
+      - kubectl get pods -A -o wide | grep csi-smb-controller | awk '{print "kubectl -n "$1" logs pods/"$2" -c smb > {{.SMB_OUT_DIR}}/"$2".log"}' | sh
+      - kubectl get pods -A -o wide | grep csi-smb-controller | awk '{print "kubectl -n "$1" describe pod "$2" >> {{.SMB_OUT_DIR}}/"$2".log"}' | sh
+      - kubectl get pods -A -o wide | grep csi-smb-node | awk '{print "kubectl -n "$1" logs pods/"$2" -c smb > {{.SMB_OUT_DIR}}/"$2".log"}' | sh
+      - kubectl get pods -A -o wide | grep csi-smb-node | awk '{print "kubectl -n "$1" describe pod "$2" >> {{.SMB_OUT_DIR}}/"$2".log"}' | sh
+      - kubectl get pods -A -o wide | grep csi-smb-node | awk '{print "kubectl -n "$1" exec -it "$2" -c smb -- mount | grep cifs"}'

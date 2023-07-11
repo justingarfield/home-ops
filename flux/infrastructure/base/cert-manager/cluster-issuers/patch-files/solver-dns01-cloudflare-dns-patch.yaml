@@ -1,0 +1,10 @@
+---
+- op: add
+  path: /spec/acme/solvers
+  value:
+    - dns01:
+        cloudflare:
+          email: ${CLOUDFLARE_EMAIL}
+          apiKeySecretRef:
+            name: cloudflare-secret
+            key: api-key

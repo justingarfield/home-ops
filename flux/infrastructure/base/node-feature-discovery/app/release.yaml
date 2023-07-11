@@ -1,0 +1,48 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: node-feature-discovery
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: node-feature-discovery
+      version: 0.13.2
+      sourceRef:
+        kind: HelmRepository
+        name: node-feature-discovery
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 3
+  # See: https://github.com/kubernetes-sigs/node-feature-discovery/blob/v0.13.2/deployment/helm/node-feature-discovery/values.yaml
+  values:
+    # Disabling this for now, due to the fact that I was getting this on Hyper-V Talos nodes...
+    #
+    # panic: runtime error: invalid memory address or nil pointer dereference
+    # [signal SIGSEGV: segmentation violation code=0x1 addr=0x18 pc=0x172431b]
+    #
+    # goroutine 16 [running]:
+    # sigs.k8s.io/node-feature-discovery/pkg/nfd-master.(*nfdMaster).nfdAPIUpdateAllNodes(0xc00047e3c0)
+    #         /go/node-feature-discovery/pkg/nfd-master/nfd-master.go:616 +0x9b
+    # sigs.k8s.io/node-feature-discovery/pkg/nfd-master.(*nfdMaster).nfdAPIUpdateHandler(0xc00047e3c0)
+    #         /go/node-feature-discovery/pkg/nfd-master/nfd-master.go:338 +0x1cc
+    # created by sigs.k8s.io/node-feature-discovery/pkg/nfd-master.(*nfdMaster).Run
+    #         /go/node-feature-discovery/pkg/nfd-master/nfd-master.go:228 +0x6f8
+    enableNodeFeatureApi: false
+
+    master:
+      # Disabling for same reasons as above. Should default to "false" from Helm Template;
+      # however, Helm template currently defaults to passing -featurerules-controller flag
+      # to toggle this, causing a WARN in the logs right on startup. This alleviates that.
+      crdController: false
+
+    worker:
+      config:
+        core:
+          # For custom hardware @ home, unless you're changing your
+          # equipment every day, this can be left extremely high.
+          sleepInterval: 24h

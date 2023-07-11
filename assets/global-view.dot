@@ -1,0 +1,11 @@
+digraph G {
+
+    subgraph cluster_0 {
+        label = "staging"
+    }
+
+    subgraph cluster_1 {
+        label = "production"
+    }
+
+}

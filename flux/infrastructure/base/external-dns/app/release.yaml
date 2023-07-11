@@ -1,0 +1,72 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &helmReleaseName external-dns
+  namespace: external-dns
+spec:
+  chart:
+    spec:
+      # renovate: registryUrl=https://kubernetes-sigs.github.io/external-dns
+      chart: external-dns
+      sourceRef:
+        kind: HelmRepository
+        name: external-dns
+        namespace: external-dns
+      version: 1.12.2
+  install:
+    crds: Skip
+    remediation:
+      # I set this to larger value than upgrade section, as resource
+      # contention may be a little wonky after a fresh cluster boot.
+      retries: 5
+  interval: 30m
+  maxHistory: 3
+  releaseName: *helmReleaseName
+  upgrade:
+    crds: Skip
+    remediation:
+      retries: 3
+  test:
+    enable: true
+    ignoreFailures: false
+  values:
+    # See: https://github.com/kubernetes-sigs/external-dns/blob/master/charts/external-dns/values.yaml
+    interval: 5m
+    logLevel: info
+    provider: azure
+    policy: sync
+    sources:
+      - ingress
+    txtPrefix: externaldns-
+    txtOwnerId: externaldns
+    domainFilters:
+      - ${PUBLIC_DNS_ZONE}
+      - ${PRIVATE_DNS_ZONE}
+    extraArgs:
+      - --exclude-target-net=${EXCLUDE_TARGET_NET}
+      - --default-targets=${DEFAULT_TARGETS}
+    resources:
+      requests:
+        memory: 100Mi
+        cpu: 25m
+      limits:
+        memory: 250Mi
+
+    # I'm currently scheduling on the Control Plane nodes until I have more workers available
+    nodeSelector:
+      node-role.kubernetes.io/control-plane: ""
+    tolerations:
+      - effect: NoSchedule
+        operator: Exists
+
+    # Handle mounting the azure.json file from the external-dns-config-file secret
+    extraVolumeMounts:
+      - name: azure-dns-config-file
+        mountPath: /etc/kubernetes
+        readOnly: true
+    extraVolumes:
+      - name: azure-dns-config-file
+        secret:
+          secretName: azure-dns-config-file
+          optional: false

@@ -1,0 +1,62 @@
+---
+# See: https://yamllint.readthedocs.io/en/stable/configuration.html#default-configuration
+extends: default
+
+ignore: |
+  # Random output assets
+  **/_old/**
+  **/_out/**
+  **/.task/**
+
+  # Automatically generated
+  **/flux/clusters/*/flux-system/*
+
+  # All Task files
+  **/.taskfiles/**
+
+  # Things that can't be screwed with
+  *.sops.yaml
+
+# See: https://yamllint.readthedocs.io/en/stable/configuration.html#setting-the-locale
+# Note: In order for this locale to function, you will need to:
+#   * sudo apt-get install locales -y
+#   * sudo locale-gen en_US.UTF-8
+#   * sudo nano /etc/default/locale
+#     * Change file contents to be: LANG=en_US.UTF-8
+locale: en_US.UTF-8
+
+# See: https://yamllint.readthedocs.io/en/stable/rules.html
+rules:
+  braces:
+    max-spaces-inside: 1
+    min-spaces-inside: 1
+  brackets:
+    max-spaces-inside: 1
+    min-spaces-inside: 1
+  comments:
+    min-spaces-from-content: 1
+  document-end:
+    # This is default, but pondering whether to set to true.
+    # See: https://www.yaml.info/learn/document.html#end
+    present: false
+  document-start:
+    level: error
+  empty-lines:
+    max-end: 1 # How does this interact with new-line-at-end-of-file????
+  empty-values: enable
+  # Most projects that I work on never require these sorts of concepts
+  float-values:
+    forbid-inf: true
+    forbid-nan: true
+    forbid-scientific-notation: true
+    require-numeral-before-decimal: true
+  indentation:
+    check-multi-line-strings: false # might want to test this with true
+  key-ordering: false
+  line-length: disable # Don't change until non-breakable option stuff is working with URLs
+  octal-values: disable # this is default value, but not sure if I want to enable or not yet
+  quoted-strings:
+    # might want to only use this for certain sets of files
+    allow-quoted-quotes: true
+    # Note: Multi-line strings (with | or >) will not be checked.
+    required: only-when-needed

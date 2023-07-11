@@ -1,0 +1,37 @@
+## Generate PKI certificates
+
+```shell
+task generate-pki
+```
+
+task talos-prepare-configs
+
+task vbox:create-cluster
+
+task vbox:create-and-start-first-cp-node
+
+task talos-prepare-nodes
+
+task talos-bootstrap-nodes
+
+# Wait until you see
+
+```
+[talos] phase labelControlPlane (19/21): done, 1m1.654444159s
+[talos] phase uncordon (20/21): 1 tasks(s)
+[talos] task uncordonNode (1/1): starting
+[talos] retrying error: node not ready
+```
+
+task talos-install-cilium
+
+watch kubectl get nodes
+
+kubectl label nodes k8s-wk01 node-role.kubernetes.io/worker=
+
+task flux:create-namespace
+task flux:create-sops-age-secret
+task flux:bootstrap-flux-cd GITHUB_TOKEN=<token>
+
+flux logs
+flux get all

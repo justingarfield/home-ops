@@ -1,0 +1,21 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: infra
+  namespace: flux-system
+spec:
+  interval: 1h
+  path: ./flux/infrastructure/overlays/staging
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  dependsOn:
+    - name: common-substitutions
+    - name: common-repositories
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: common-substitutions
+        optional: false

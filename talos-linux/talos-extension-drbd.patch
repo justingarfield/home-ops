@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://talos.dev/v1.4/schemas/v1alpha1_config.schema.json
+
+# This patch file:
+#   * Tells Talos to install the drbd extension
+#   * Configures kernel values required for drbd to work with Talos
+machine:
+  install:
+    extensions:
+      - image: ghcr.io/siderolabs/drbd:9.2.4-v1.4.6@sha256:8471ba60c7ce5f23b6112d67af4ae91f87a06dca3366f56c5b83b5e0c6d30cf3
+  kernel:
+    modules:
+      - name: drbd
+        # See: https://github.com/piraeusdatastore/piraeus-operator/blob/v2/docs/how-to/talos.md
+        parameters:
+          - usermode_helper=disabled
+      - name: drbd_transport_tcp

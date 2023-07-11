@@ -1,0 +1,30 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+tasks:
+
+  start-pull-through-caches:
+    desc: Starts container registry pull-through cache containers using Docker.
+    cmds:
+      - docker compose --file docker/pull-through-caches/docker-compose.yaml up --detach
+
+  stop-pull-through-caches:
+    desc: Stops container registry pull-through cache containers using Docker.
+    cmds:
+      - docker compose --file docker/pull-through-caches/docker-compose.yaml down
+
+  start-local-registry:
+    desc: Starts container registry pull-through cache containers using Docker.
+    cmds:
+      - docker compose --file docker/local-registry/docker-compose.yaml up --detach
+
+  stop-local-registry:
+    desc: Stops container registry pull-through cache containers using Docker.
+    cmds:
+      - docker compose --file docker/local-registry/docker-compose.yaml down
+
+  prune-images:
+    desc: Removes all 'dangling' images, as-well as those not referenced by any container.
+    cmds:
+      - docker image prune --all --force

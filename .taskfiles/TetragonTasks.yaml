@@ -1,0 +1,53 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+vars:
+  _DEMO_APP_URL: https://raw.githubusercontent.com/cilium/cilium/v1.14.0-snapshot.2/examples/minikube/http-sw-app.yaml
+  _TEST_POD_URL: https://raw.githubusercontent.com/cilium/tetragon/v0.9.0/testdata/specs/testpod.yaml
+
+tasks:
+
+  deploy-demo-application:
+    desc: Deploys the cilium demo application
+    cmds:
+      - kubectl create -f {{._DEMO_APP_URL}}
+
+  cleanup-demo-application:
+    desc: Removes the cilium demo application
+    cmds:
+      - kubectl delete -f {{._DEMO_APP_URL}}
+
+  run-tetra-in-container:
+    desc: "'tetra' for those that don't want to install local tooling binaries"
+    cmds:
+      - kubectl exec -it -n kube-system ds/tetragon -c tetragon -- tetra getevents -o compact
+
+  edit-config:
+    desc: Edit the main 'tetragon-config' configmap
+    cmds:
+      - kubectl edit configmap -n kube-system tetragon-config
+
+  deploy-test-pod:
+    desc: Deploys the tetragon 'test-pod' used for capability and namespace change testing.
+    cmds:
+      - kubectl create ns tetragon-test-pod
+      - kubectl label ns tetragon-test-pod pod-security.kubernetes.io/enforce=privileged
+      - kubectl -n tetragon-test-pod apply -f {{._TEST_POD_URL}}
+      - sleep 5
+      - kubectl -n tetragon-test-pod wait --for=condition=ready pod/test-pod
+      - |
+        printf "\ntetragon-test-pod/test-pod should now be ready\n"
+        printf "\nTo see raw events:    kubectl logs -n kube-system -l app.kubernetes.io/name=tetragon -c export-stdout -f\n"
+        printf "\nTo see pretty events: kubectl logs -n kube-system -l app.kubernetes.io/name=tetragon -c export-stdout -f | tetra getevents -o compact\n\n"
+
+  cleanup-deploy-test-pod:
+    desc: Removes the tetragon 'test-pod' used for capability and namespace change testing.
+    cmds:
+      - kubectl -n tetragon-test-pod delete -f {{._TEST_POD_URL}}
+      - kubectl delete ns tetragon-test-pod
+
+  show-generic-events:
+    desc: Show the most basic high-level overview of events
+    cmds:
+      - kubectl logs -n tetragon -l app.kubernetes.io/name=tetragon -c export-stdout -f | tetra getevents -o compact {{.CLI_ARGS}}

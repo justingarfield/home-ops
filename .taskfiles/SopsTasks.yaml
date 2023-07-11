@@ -1,0 +1,77 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+vars:
+  SOPS_OUT_DIR: '{{ .OUTPUT_DIR }}/sops'
+
+tasks:
+
+  generate-new-age-key:
+    desc: Generates a new Age public/private key-pair.
+    vars:
+      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
+    preconditions:
+      - test {{ .CLUSTER_NAME }}
+    cmds:
+      - task: :_core:ensure-directory-exists
+        vars: { DIRECTORY: "{{ .SOPS_OUT_DIR }}/{{ .CLUSTER_NAME }}" }
+      - age-keygen -o {{ .SOPS_OUT_DIR }}/{{ .CLUSTER_NAME }}/age.agekey
+
+  encrypt-file:
+    desc: Test
+    vars:
+      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
+      AGE_PUBLIC_KEY:
+        sh: cat "{{ .SOPS_OUT_DIR }}/age.agekey" | sed -n '2p' | awk '{print $4}'
+      FILENAME: "{{ .FILENAME }}"
+    preconditions:
+      - test {{ .CLUSTER_NAME }}
+      - test {{ .AGE_PUBLIC_KEY }}
+      - sh: test {{ .AGE_PUBLIC_KEY }}
+        msg: Please provide an AGE_PUBLIC_KEY
+      - sh: test {{ .FILENAME }}
+        msg: Please provide a FILENAME
+    cmds:
+      - sops --age={{ .AGE_PUBLIC_KEY }} --encrypt --encrypted-regex '^(data|stringData)$' --in-place "{{ .FILENAME }}"
+
+  edit-file:
+    desc: Test
+    vars:
+      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
+      AGE_PRIVATE_KEY: '{{ .SOPS_OUT_DIR }}/age.agekey'
+      FILENAME: "{{ .FILENAME }}"
+    preconditions:
+      - test {{ .CLUSTER_NAME }}
+      - sh: test {{ .AGE_PRIVATE_KEY }}
+        msg: Please provide an AGE_PRIVATE_KEY
+      - sh: test {{ .FILENAME }}
+        msg: Please provide a FILENAME
+    cmds:
+      - SOPS_AGE_KEY_FILE="{{ .AGE_PRIVATE_KEY }}" sops "{{ .FILENAME }}"
+
+  decrypt-file:
+    desc: Decrypts an Age encrypted file to stdout
+    vars:
+      AGE_PRIVATE_KEY: '{{ .SOPS_OUT_DIR }}/age.agekey'
+      FILENAME: "{{ .FILENAME }}"
+    preconditions:
+      - sh: test {{ .AGE_PRIVATE_KEY }}
+        msg: Please provide an AGE_PRIVATE_KEY
+      - sh: test {{ .FILENAME }}
+        msg: Please provide a FILENAME
+    cmds:
+      - SOPS_AGE_KEY_FILE="{{ .AGE_PRIVATE_KEY }}" sops --decrypt "{{ .FILENAME }}"
+
+  decrypt-and-apply-file:
+    desc: Decrypts a SOPS age-encrypted file and applies it to the currently active kubectl context.
+    vars:
+      AGE_PRIVATE_KEY: '{{.SOPS_OUT_DIR}}/age.agekey'
+      FILENAME: "{{.FILENAME}}"
+    preconditions:
+      - sh: test {{.AGE_PRIVATE_KEY}}
+        msg: Please provide an AGE_PRIVATE_KEY
+      - sh: test {{.FILENAME}}
+        msg: Please provide a FILENAME
+    cmds:
+      - SOPS_AGE_KEY_FILE="{{ .AGE_PRIVATE_KEY }}" sops --decrypt "{{.FILENAME}}" | kubectl apply -f -

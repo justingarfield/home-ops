@@ -1,0 +1,5 @@
+# Configure the GitHub "Linguist Languages bar"
+*.sops.yaml linguist-language=sops
+*.yaml linguist-detectable
+./docs/* linguist-documentation
+./terraform/**/*.tf linguist-language=terraform

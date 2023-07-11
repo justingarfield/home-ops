@@ -1,0 +1,266 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+vars:
+  PKI_SRC_DIR: '{{.REPOSITORY_DIR}}/pki'
+  PKI_TPL_DIR: '{{.PKI_SRC_DIR}}/cfssl-templates'
+  PKI_OUT_DIR: '{{.OUTPUT_DIR}}/pki'
+  CFSSL_LOG_LEVEL: '{{.CFSSL_LOG_LEVEL | default 2}}' # Set to 1 to see INFO output from cfssl
+  _CFSSL_BLANK_TEMPLATE: '{ "key": { "algo": "rsa", "size": 4096 } }'
+
+tasks:
+
+  generate-ca:
+    desc: Generates a new Certificate Authority (CA) using cfssl
+    vars:
+      CSR_TEMPLATE_FILENAME: '{{.PKI_TPL_DIR}}/{{.CSR_TEMPLATE_FILENAME | default "root-ca-csr.json" }}'
+      OUTPUT_FILENAME: '{{.OUTPUT_FILENAME | default .ORGANIZATION_NAME}}'
+      ORGANIZATION_NAME: '{{.ORGANIZATION_NAME}}'
+      ORGANIZATION_ADMINISTRATIVE_EMAIL: '{{.ORGANIZATION_ADMINISTRATIVE_EMAIL}}'
+      ORGANIZATION_LOCATION: '{{.ORGANIZATION_LOCATION}}'
+      ORGANIZATION_STATE_PROVINCE_CODE: '{{.ORGANIZATION_STATE_PROVINCE_CODE}}'
+      ORGANIZATION_COUNTRY_CODE: '{{.ORGANIZATION_COUNTRY_CODE}}'
+      INTERMEDIARY_NAME: '{{.INTERMEDIARY_NAME | default " "}}' # Optional
+      CERT_CN: '{{.CERT_CN | default " "}}' # Optional
+      ENVIRONMENT_NAME: '{{.ENVIRONMENT_NAME | default " "}}' # Optional
+      _OUTPUT_FILENAME: '{{.PKI_OUT_DIR}}/{{.OUTPUT_FILENAME | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." ""}}'
+      _YQ_TOKENIZATION: | # https://stackoverflow.com/questions/70032588/use-yq-to-substitute-string-in-a-yaml-file
+        (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_COUNTRY_CODE>", "{{.ORGANIZATION_COUNTRY_CODE}}")
+        | (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_STATE_PROVINCE_CODE>", "{{.ORGANIZATION_STATE_PROVINCE_CODE}}")
+        | (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_LOCATION>", "{{.ORGANIZATION_LOCATION}}")
+        | (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_NAME>", "{{.ORGANIZATION_NAME}}")
+        | (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_ADMINISTRATIVE_EMAIL>", "{{.ORGANIZATION_ADMINISTRATIVE_EMAIL}}")
+        | (.. | select(tag == "!!str")) |= sub("<INTERMEDIARY_NAME>", "{{.INTERMEDIARY_NAME}}")
+        | (.. | select(tag == "!!str")) |= sub("<CERT_CN>", "{{.CERT_CN}}")
+        | (.. | select(tag == "!!str")) |= sub("<ENVIRONMENT_NAME>", "{{.ENVIRONMENT_NAME}}")
+    preconditions:
+      - sh: test '{{.ORGANIZATION_NAME}}'
+        msg: Please provide a valid ORGANIZATION_NAME
+      - sh: test '{{.ORGANIZATION_ADMINISTRATIVE_EMAIL}}'
+        msg: Please provide a valid ORGANIZATION_ADMINISTRATIVE_EMAIL
+      - sh: test '{{.ORGANIZATION_LOCATION}}'
+        msg: Please provide a valid ORGANIZATION_LOCATION
+      - sh: test '{{.ORGANIZATION_STATE_PROVINCE_CODE}}'
+        msg: Please provide a valid ORGANIZATION_STATE_PROVINCE_CODE
+      - sh: test '{{.ORGANIZATION_COUNTRY_CODE}}'
+        msg: Please provide a valid ORGANIZATION_COUNTRY_CODE
+      - sh: test -f '{{.CSR_TEMPLATE_FILENAME}}'
+        msg: Please provide a valid CSR_TEMPLATE_FILENAME ({{.CSR_TEMPLATE_FILENAME}} does not exist)
+    cmds:
+      - task: :_core:ensure-directory-exists
+        vars: { DIRECTORY: '{{._OUTPUT_FILENAME | dir}}' }
+      - task: :_core:message
+        vars: { MESSAGE: Generating Certificate Authority... }
+      - |
+        yq eval '{{._YQ_TOKENIZATION}}' '{{.CSR_TEMPLATE_FILENAME}}' \
+          | cfssl gencert -initca=true -loglevel={{.CFSSL_LOG_LEVEL}} - \
+          | cfssljson -bare '{{._OUTPUT_FILENAME}}'
+      - task: :_core:message
+        vars: { MESSAGE: Certificate Authority generated }
+    # sources:
+    #   - '{{._YQ_TOKENIZATION}}'
+    #   - '{{.CSR_TEMPLATE_FILENAME}}'
+    # generates:
+    #   - '{{._OUTPUT_FILENAME}}.csr'
+    #   - '{{._OUTPUT_FILENAME}}.pem'
+    #   - '{{._OUTPUT_FILENAME}}-key.pem'
+
+  sign-intermediate-ca:
+    internal: true
+    desc: Signs an Intermediate Certificate Authority (CA) using cfssl
+    vars:
+      SIGNING_KEY_FILENAME: '{{.SIGNING_KEY_FILENAME}}'
+      INTERMEDIATE_CA_FILENAME: '{{.INTERMEDIATE_CA_FILENAME}}'
+      OUTPUT_FILENAME: '{{.OUTPUT_FILENAME}}'
+      _SIGNING_KEY_FILENAME: '{{.PKI_OUT_DIR}}/{{.SIGNING_KEY_FILENAME | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." ""}}'
+      _INTERMEDIATE_CA_FILENAME: '{{.PKI_OUT_DIR}}/{{.INTERMEDIATE_CA_FILENAME | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." ""}}'
+    cmds:
+      - task: :_core:message
+        vars: { MESSAGE: Signing Intermediate Certificate Authority... }
+      - |
+        cfssl sign -loglevel={{.CFSSL_LOG_LEVEL}} -ca "{{._SIGNING_KEY_FILENAME}}.pem" -ca-key "{{._SIGNING_KEY_FILENAME}}-key.pem" \
+          -config "{{.PKI_SRC_DIR}}/cfssl-profiles.json" -profile intermediate-ca "{{._INTERMEDIATE_CA_FILENAME}}.csr" \
+          | cfssljson -bare "{{._INTERMEDIATE_CA_FILENAME}}"
+      - task: :_core:message
+        vars: { MESSAGE: Intermediate Certificate Authority signed }
+    # sources:
+    #   - '{{._SIGNING_KEY_FILENAME}}.pem'
+    #   - '{{._SIGNING_KEY_FILENAME}}-key.pem'
+    #   - '{{.PKI_SRC_DIR}}/cfssl-profiles.json'
+    # generates:
+    #   - '{{._INTERMEDIATE_CA_FILENAME}}.csr'
+    #   - '{{._INTERMEDIATE_CA_FILENAME}}.pem'
+
+  generate-and-sign-intermediate-ca:
+    desc: Generates and Signs an Intermediate Certificate Authority (CA) using cfssl
+    vars:
+      CSR_TEMPLATE_FILENAME: '{{.CSR_TEMPLATE_FILENAME | default "default-intermediate-ca-csr.json"}}'
+      OUTPUT_FILENAME: '{{.OUTPUT_FILENAME}}'
+      SIGNING_KEY_FILENAME: '{{.SIGNING_KEY_FILENAME | default .ORGANIZATION_NAME}}'
+      INTERMEDIARY_NAME: '{{.INTERMEDIARY_NAME | default " "}}' # Optional
+      CERT_CN: '{{.CERT_CN | default " "}}' # Optional
+      ENVIRONMENT_NAME: '{{.ENVIRONMENT_NAME | default " "}}' # Optional
+    preconditions:
+      - sh: test -f '{{.PKI_TPL_DIR}}/{{.CSR_TEMPLATE_FILENAME}}'
+        msg: Please provide a valid CSR_TEMPLATE_FILENAME ({{.CSR_TEMPLATE_FILENAME}} does not exist)
+      - sh: test '{{.OUTPUT_FILENAME}}'
+        msg: Please provide a valid OUTPUT_FILENAME
+    cmds:
+      - task: generate-ca
+        vars: { CSR_TEMPLATE_FILENAME: "{{.CSR_TEMPLATE_FILENAME}}", OUTPUT_FILENAME: "{{.OUTPUT_FILENAME}}", INTERMEDIARY_NAME: "{{.INTERMEDIARY_NAME}}", CERT_CN: "{{.CERT_CN}}", ENVIRONMENT_NAME: "{{.ENVIRONMENT_NAME}}" }
+      - task: sign-intermediate-ca
+        vars: { SIGNING_KEY_FILENAME: "{{.SIGNING_KEY_FILENAME}}", INTERMEDIATE_CA_FILENAME: "{{.OUTPUT_FILENAME}}" }
+
+  generate-k8s-service-account-key:
+    desc: Generates a Public/Private key-pair for a Kubernetes Service Account.
+    vars:
+      OUTPUT_FILENAME: '{{.OUTPUT_FILENAME}}'
+      _OUTPUT_FILENAME: '{{.PKI_OUT_DIR}}/{{.OUTPUT_FILENAME | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." ""}}'
+    preconditions:
+      - sh: test '{{.OUTPUT_FILENAME}}'
+        msg: Please provide a valid OUTPUT_FILENAME
+    cmds:
+      - task: :_core:message
+        vars: { MESSAGE: Generating Public/Private pair for a K8s Service Account... }
+      # Note: With Talos Linux's 'talosconfig' file, you won't need the public 'sa.pub' file
+      - echo '{{._CFSSL_BLANK_TEMPLATE}}' | cfssl genkey -loglevel={{.CFSSL_LOG_LEVEL}} - | yq .key > "{{._OUTPUT_FILENAME}}.key"
+      - task: :_core:message
+        vars: { MESSAGE: Public/Private pair for a K8s Service Account generated }
+
+  prepare-k8s-directory:
+    desc: Moves cfssl-generated key files to the proper naming that Kubernetes expects in its PKI folders
+    vars:
+      KUBERNETES_PKI_DIR: '{{.KUBERNETES_PKI_DIR | default "kubernetes"}}'
+      _KUBERNETES_PKI_DIR: '{{.PKI_OUT_DIR}}/{{.KUBERNETES_PKI_DIR | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." ""}}'
+    cmds:
+      - task: :_core:message
+        vars: { MESSAGE: Fixing up K8s PKI folder to prep for talosctl consumption... }
+      - mv {{._KUBERNETES_PKI_DIR}}/etcd/ca-key.pem {{._KUBERNETES_PKI_DIR}}/etcd/ca.key
+      - mv {{._KUBERNETES_PKI_DIR}}/etcd/ca.pem {{._KUBERNETES_PKI_DIR}}/etcd/ca.crt
+      - mv {{._KUBERNETES_PKI_DIR}}/ca-key.pem {{._KUBERNETES_PKI_DIR}}/ca.key
+      - mv {{._KUBERNETES_PKI_DIR}}/ca.pem {{._KUBERNETES_PKI_DIR}}/ca.crt
+      - mv {{._KUBERNETES_PKI_DIR}}/front-proxy-ca-key.pem {{._KUBERNETES_PKI_DIR}}/front-proxy-ca.key
+      - mv {{._KUBERNETES_PKI_DIR}}/front-proxy-ca.pem {{._KUBERNETES_PKI_DIR}}/front-proxy-ca.crt
+      - task: :_core:message
+        vars: { MESSAGE: K8s PKI folder ready for talosctl consumption }
+
+  generate-server-certificate:
+    desc: Generates a Server Certificate.
+    vars:
+      ORGANIZATION_NAME: '{{ .ORGANIZATION_NAME }}'
+      SITE_NAME: '{{ .SITE_NAME }}'
+      CERT_CN: '{{ .CERT_CN }}'
+      SERVER_NAME: '{{ .SERVER_NAME }}'
+      SERVER_IP: '{{ .SERVER_IP }}'
+      _CLEAN_ORG_NAME: '{{ .ORGANIZATION_NAME | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." "" }}'
+      _INTERMEDIATE_OUTPUT_FILENAME: '{{ .PKI_OUT_DIR }}/{{ ._CLEAN_ORG_NAME }}/{{ .SITE_NAME }}/{{ .SITE_NAME }}'
+      _INTERMEDIATE_PUBLIC_KEY_FILENAME: '{{ ._INTERMEDIATE_OUTPUT_FILENAME }}.pem'
+      _INTERMEDIATE_PRIVATE_KEY_FILENAME: '{{ ._INTERMEDIATE_OUTPUT_FILENAME }}-key.pem'
+      _SERVER_OUTPUT_FILENAME: '{{ .PKI_OUT_DIR }}/{{ .SITE_NAME }}/{{ .SERVER_NAME }}'
+      _CSR_FILENAME: '{{ ._SERVER_OUTPUT_FILENAME }}.csr'
+      _PUBLIC_KEY_FILENAME: '{{ ._SERVER_OUTPUT_FILENAME }}.pem'
+      _PRIVATE_KEY_FILENAME: '{{ ._SERVER_OUTPUT_FILENAME }}-key.pem'
+    preconditions:
+      - sh: test '{{ .ORGANIZATION_NAME }}'
+        msg: Please provide a valid ORGANIZATION_NAME
+      - sh: test '{{ .SITE_NAME }}'
+        msg: Please provide a valid SITE_NAME
+      - sh: test '{{ .CERT_CN }}'
+        msg: Please provide a valid CERT_CN
+      - sh: test '{{ .SERVER_NAME }}'
+        msg: Please provide a valid SERVER_NAME
+      - sh: test '{{ .SERVER_IP }}'
+        msg: Please provide a valid SERVER_IP
+    cmds:
+      - task: :_core:ensure-directory-exists
+        vars: { DIRECTORY: "{{ ._SERVER_OUTPUT_FILENAME | dir }}" }
+      - |
+        yq eval '{{ ._YQ_TOKENIZATION }}' "{{ .PKI_TPL_DIR }}/server-certificate-csr.json" \
+          | cfssl gencert -loglevel={{ .CFSSL_LOG_LEVEL }} -ca "{{ ._INTERMEDIATE_PUBLIC_KEY_FILENAME }}" -ca-key "{{ ._INTERMEDIATE_PRIVATE_KEY_FILENAME }}" \
+            -config "{{ .PKI_SRC_DIR }}/cfssl-profiles.json" -profile=server - \
+          | cfssljson -bare "{{ ._SERVER_OUTPUT_FILENAME }}"
+      - echo "Server Certificate CSR created....................  {{ ._CSR_FILENAME }}"
+      - echo "Server Certificate Public key created.............  {{ ._PUBLIC_KEY_FILENAME }}"
+      - echo "Server Certificate Private key created............  {{ ._PRIVATE_KEY_FILENAME }}"
+      # sources:
+      #   - '{{ .PKI_TPL_DIR }}/server-certificate-csr.json'
+      # generates:
+      #   - '{{ ._CSR_FILENAME }}'
+      #   - '{{ ._PUBLIC_KEY_FILENAME }}'
+      #   - '{{ ._PRIVATE_KEY_FILENAME }}'
+
+  generate-root-client-certificate:
+    desc: Generates a Client Certificate at the Root of the PKI (Global)
+    vars:
+      ORGANIZATION_NAME: '{{ .ORGANIZATION_NAME }}'
+      CERT_CN: '{{ .CERT_CN }}'
+      _CLEAN_ORG_NAME: '{{ .ORGANIZATION_NAME | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." "" }}'
+      _ROOT_OUTPUT_FILENAME: '{{ .PKI_OUT_DIR }}/{{ ._CLEAN_ORG_NAME }}/{{ ._CLEAN_ORG_NAME }}'
+      _ROOT_PUBLIC_KEY_FILENAME: '{{ ._ROOT_OUTPUT_FILENAME }}.pem'
+      _ROOT_PRIVATE_KEY_FILENAME: '{{ ._ROOT_OUTPUT_FILENAME }}-key.pem'
+      _CLIENT_OUTPUT_FILENAME: '{{ .PKI_OUT_DIR }}/{{ ._CLEAN_ORG_NAME }}/_clients/{{ .CERT_CN }}'
+      _CSR_FILENAME: '{{ ._CLIENT_OUTPUT_FILENAME }}.csr'
+      _PUBLIC_KEY_FILENAME: '{{ ._CLIENT_OUTPUT_FILENAME }}.pem'
+      _PRIVATE_KEY_FILENAME: '{{ ._CLIENT_OUTPUT_FILENAME }}-key.pem'
+    preconditions:
+      - sh: test '{{ .ORGANIZATION_NAME }}'
+        msg: Please provide a valid ORGANIZATION_NAME
+      - sh: test '{{ .CERT_CN }}'
+        msg: Please provide a valid CERT_CN
+    cmds:
+      - task: :_core:ensure-directory-exists
+        vars: { DIRECTORY: "{{ ._CLIENT_OUTPUT_FILENAME | dir }}" }
+      - |
+        yq eval '{{ ._YQ_TOKENIZATION }}' "{{ .PKI_TPL_DIR }}/root-client-certificate-csr.json" \
+          | cfssl gencert -loglevel={{ .CFSSL_LOG_LEVEL }} -ca "{{ ._ROOT_PUBLIC_KEY_FILENAME }}" -ca-key "{{ ._ROOT_PRIVATE_KEY_FILENAME }}" \
+            -config "{{ .PKI_SRC_DIR }}/cfssl-profiles.json" -profile=client - \
+          | cfssljson -bare "{{ ._CLIENT_OUTPUT_FILENAME }}"
+      - echo "Client Certificate CSR created....................  {{ ._CSR_FILENAME }}"
+      - echo "Client Certificate Public key created.............  {{ ._PUBLIC_KEY_FILENAME }}"
+      - echo "Client Certificate Private key created............  {{ ._PRIVATE_KEY_FILENAME }}"
+      # sources:
+      #   - '{{ .PKI_TPL_DIR }}/root-client-certificate-csr.json'
+      # generates:
+      #   - '{{ ._CSR_FILENAME }}'
+      #   - '{{ ._PUBLIC_KEY_FILENAME }}'
+      #   - '{{ ._PRIVATE_KEY_FILENAME }}'
+
+  generate-site-client-certificate:
+    desc: Generates a Client Certificate at the Site-level of the PKI
+    vars:
+      ORGANIZATION_NAME: '{{ .ORGANIZATION_NAME }}'
+      CERT_CN: '{{ .CERT_CN }}'
+      SITE_NAME: '{{ .SITE_NAME }}'
+      _CLEAN_ORG_NAME: '{{ .ORGANIZATION_NAME | lower | replace "(" "" | replace ")" "" | replace " " "-" | replace "." "" }}'
+      _SITE_OUTPUT_FILENAME: '{{ .PKI_OUT_DIR }}/{{ ._CLEAN_ORG_NAME }}/{{ .SITE_NAME }}/{{ .SITE_NAME }}'
+      _SITE_PUBLIC_KEY_FILENAME: '{{ ._SITE_OUTPUT_FILENAME }}.pem'
+      _SITE_PRIVATE_KEY_FILENAME: '{{ ._SITE_OUTPUT_FILENAME }}-key.pem'
+      _CLIENT_OUTPUT_FILENAME: '{{ .PKI_OUT_DIR }}/{{ ._CLEAN_ORG_NAME }}/{{ .SITE_NAME }}/_clients/{{ .CERT_CN }}'
+      _CSR_FILENAME: '{{ ._CLIENT_OUTPUT_FILENAME }}.csr'
+      _PUBLIC_KEY_FILENAME: '{{ ._CLIENT_OUTPUT_FILENAME }}.pem'
+      _PRIVATE_KEY_FILENAME: '{{ ._CLIENT_OUTPUT_FILENAME }}-key.pem'
+    preconditions:
+      - sh: test '{{ .ORGANIZATION_NAME }}'
+        msg: Please provide a valid ORGANIZATION_NAME
+      - sh: test '{{ .CERT_CN }}'
+        msg: Please provide a valid CERT_CN
+      - sh: test '{{ .SITE_NAME }}'
+        msg: Please provide a valid SITE_NAME
+    cmds:
+      - task: :_core:ensure-directory-exists
+        vars: { DIRECTORY: "{{ ._CLIENT_OUTPUT_FILENAME | dir }}" }
+      - |
+        yq eval '{{ ._YQ_TOKENIZATION }}' "{{ .PKI_TPL_DIR }}/site-client-certificate-csr.json" \
+          | cfssl gencert -loglevel={{ .CFSSL_LOG_LEVEL }} -ca "{{ ._SITE_PUBLIC_KEY_FILENAME }}" -ca-key "{{ ._SITE_PRIVATE_KEY_FILENAME }}" \
+            -config "{{ .PKI_SRC_DIR }}/cfssl-profiles.json" -profile=client - \
+          | cfssljson -bare "{{ ._CLIENT_OUTPUT_FILENAME }}"
+      - echo "Client Certificate CSR created....................  {{ ._CSR_FILENAME }}"
+      - echo "Client Certificate Public key created.............  {{ ._PUBLIC_KEY_FILENAME }}"
+      - echo "Client Certificate Private key created............  {{ ._PRIVATE_KEY_FILENAME }}"
+      # sources:
+      #   - '{{ .PKI_TPL_DIR }}/site-client-certificate-csr.json'
+      # generates:
+      #   - '{{ ._CSR_FILENAME }}'
+      #   - '{{ ._PUBLIC_KEY_FILENAME }}'
+      #   - '{{ ._PRIVATE_KEY_FILENAME }}'

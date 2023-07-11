@@ -1,0 +1,10 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: tetragon
+  namespace: tetragon
+spec:
+  interval: 1h
+  # Uses same repo as cilium itself
+  url: https://helm.cilium.io

@@ -1,0 +1,20 @@
+{
+    "CN": "<CLIENT_NAME>@<SITE_NAME>.<CERT_CN>",
+    "key": {
+        "algo": "rsa",
+        "size": 4096
+    },
+    "hosts": [
+        ""
+    ],
+    "names": [
+        {
+            "OU": "<CERT_CN>",
+            "E":  "<ORGANIZATION_ADMINISTRATIVE_EMAIL>",
+            "O":  "<ORGANIZATION_NAME>",
+            "L":  "<ORGANIZATION_LOCATION>",
+            "ST": "<ORGANIZATION_STATE_PROVINCE_CODE>",
+            "C":  "<ORGANIZATION_COUNTRY_CODE>"
+        }
+    ]
+}

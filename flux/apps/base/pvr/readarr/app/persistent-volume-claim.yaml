@@ -1,0 +1,30 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: readarr-config-pvc
+  namespace: pvr
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: readarr-smb
+  volumeName: readarr-config-pv
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: readarr-media-pvc
+  namespace: pvr
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: readarr-smb
+  volumeName: readarr-media-pv
+  resources:
+    requests:
+      storage: 1Ti

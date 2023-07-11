@@ -1,0 +1,71 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+vars:
+  TALOS_DIR: '{{.REPOSITORY_DIR}}/talos-linux'
+  TALOS_OUT_DIR: '{{.OUTPUT_DIR}}/talos-linux'
+
+  # renovate: registryUrl=https://helm.cilium.io/ chart=cilium
+  CILIUM_VERSION: '{{.CILIUM_VERSION | default "v1.14.0-snapshot.3"}}'
+tasks:
+
+  status-verbose:
+    desc: Uses the cilium binary in the DS for a verbose status
+    cmds:
+      - kubectl exec ds/cilium -n kube-system -- cilium status verbose
+
+  get-endpoint-list:
+    desc: Uses the cilium binary in the DS to query the endpoints list
+    cmds:
+      - kubectl -n kube-system exec ds/cilium -- cilium endpoint list
+
+  install-via-helm:
+    internal: false
+    desc: Installs the Cilium CNI for a particular cluster
+    vars:
+      INTERNAL_DOMAIN: '{{.INTERNAL_DOMAIN | default "home.arpa"}}'
+      CLUSTER_API_SERVER_PORT: '{{.CLUSTER_API_SERVER_PORT | default "6443"}}'
+      OUTPUT_FILENAME: '{{.OUTPUT_FILENAME}}'
+    cmds:
+      - ./scripts/kubernetes/wait-for-node-notready.sh k8s-cp01
+
+      - task: :_core:message
+        vars: { MESSAGE: Updating Helm repositories to get any updated Cilium chart information... }
+      - helm repo update 1>/dev/null
+
+      - task: :_core:message
+        vars: { MESSAGE: Generating Cilium manifest using Helm template... }
+      - |
+        helm template \
+            cilium \
+            cilium/cilium \
+            --version {{.CILIUM_VERSION}} \
+            --namespace kube-system \
+            --set ipam.mode=kubernetes \
+            --set kubeProxyReplacement=strict \
+            --set securityContext.capabilities.ciliumAgent="{CHOWN,KILL,NET_ADMIN,NET_RAW,IPC_LOCK,SYS_ADMIN,SYS_RESOURCE,DAC_OVERRIDE,FOWNER,SETGID,SETUID}" \
+            --set securityContext.capabilities.cleanCiliumState="{NET_ADMIN,SYS_ADMIN,SYS_RESOURCE}" \
+            --set cgroup.autoMount.enabled=false \
+            --set cgroup.hostRoot=/sys/fs/cgroup \
+            --set k8sServiceHost="control-plane.{{.INTERNAL_DOMAIN}}" \
+            --set k8sServicePort="{{.CLUSTER_API_SERVER_PORT}}" \
+            --set bgpControlPlane.enabled=true \
+            --set ingressController.enabled=true \
+            --set ingressController.loadbalancerMode=shared \
+            --set hubble.relay.enabled=true \
+            --set hubble.ui.enabled=true \
+            --set tunnelPort=6669 \
+            > "{{.OUTPUT_FILENAME}}"
+      - task: :_core:message
+        vars: { MESSAGE: "Cilium manifest file was output to {{.OUTPUT_FILENAME}}" }
+
+      - task: :_core:message
+        vars: { MESSAGE: Applying Cilium manifest to cluster... }
+      - kubectl apply -f "{{.OUTPUT_FILENAME}}" 1>/dev/null
+      - task: :_core:message
+        vars: { MESSAGE: Cilium manifest applied to cluster }
+
+      - ./scripts/kubernetes/wait-for-node-ready.sh k8s-cp01
+      - task: :_core:message
+        vars: { MESSAGE: Cilium CNI should now be running on k8s-cp01 }
