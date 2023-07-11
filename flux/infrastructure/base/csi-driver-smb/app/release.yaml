@@ -29,27 +29,9 @@ spec:
     # See: https://github.com/kubernetes-csi/csi-driver-smb/blob/master/charts/v1.9.0/csi-driver-smb/values.yaml
     controller:
       runOnControlPlane: true
-    linux:
-      securityContext:
-        # This is necessary only for systems with SELinux, where
-        # non-privileged sidecar containers cannot access unix domain socket
-        # created by privileged CSI driver container.
-        privileged: true
-        runAsUser: 0
-        capabilities:
-          drop: [ ALL ]
-          add:
-            - SYS_ADMIN
+
+    # I only want this to run on worker nodes, because I never plan on
+    # mounting SMB-related endpoints on any of the Control Plane nodes.
     node:
       nodeSelector:
         node-role.kubernetes.io/worker: ""
-    securityContext:
-      # This is necessary only for systems with SELinux, where
-      # non-privileged sidecar containers cannot access unix domain socket
-      # created by privileged CSI driver container.
-      privileged: true
-      runAsUser: 0
-      capabilities:
-        drop: [ ALL ]
-        add:
-          - SYS_ADMIN
