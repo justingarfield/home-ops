@@ -20,3 +20,7 @@ spec:
     crds: CreateReplace
   upgrade:
     crds: CreateReplace
+  values:
+    prometheusOperator:
+      admissionWebhooks:
+        certManager: enabled
