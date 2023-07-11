@@ -27,11 +27,13 @@ spec:
     ignoreFailures: false
   values:
     # See: https://github.com/kubernetes-csi/csi-driver-smb/blob/master/charts/v1.9.0/csi-driver-smb/values.yaml
+
+    # Run the csi-smb-controller on Control Plane nodes
     controller:
       runOnControlPlane: true
 
-    # I only want this to run on worker nodes, because I never plan on
-    # mounting SMB-related endpoints on any of the Control Plane nodes.
+    # Only run csi-smb-node on worker nodes since nothing running
+    # in the Control Plane requires SMB-related endpoints.
     node:
       nodeSelector:
         node-role.kubernetes.io/worker: ""
