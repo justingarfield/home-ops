@@ -20,7 +20,10 @@ spec:
     crds: CreateReplace
   upgrade:
     crds: CreateReplace
+
+  # See: https://github.com/prometheus-community/helm-charts/blob/kube-prometheus-stack-47.6.1/charts/kube-prometheus-stack/values.yaml
   values:
     prometheusOperator:
       admissionWebhooks:
-        certManager: enabled
+        certManager:
+          enabled: true
