@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &helmReleaseName csi-driver-smb
+  name: csi-driver-smb
   namespace: csi-driver-smb
 spec:
   chart:
@@ -15,14 +15,10 @@ spec:
         namespace: csi-driver-smb
       version: v1.11.0
   install:
-    crds: Skip
     remediation:
-      # I set this to larger value than upgrade section, as resource
-      # contention may be a little wonky after a fresh cluster boot.
       retries: 5
   interval: 30m
   maxHistory: 3
-  releaseName: *helmReleaseName
   upgrade:
     crds: Skip
     remediation:
@@ -33,9 +29,7 @@ spec:
   values:
     # See: https://github.com/kubernetes-csi/csi-driver-smb/blob/master/charts/v1.9.0/csi-driver-smb/values.yaml
     controller:
-      replicas: 2
       runOnControlPlane: true
-    dnsPolicy: ClusterFirst
     linux:
       securityContext:
         # This is necessary only for systems with SELinux, where
