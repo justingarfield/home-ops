@@ -26,7 +26,7 @@ spec:
     enable: true
     ignoreFailures: false
   values:
-    # See: https://github.com/kubernetes-csi/csi-driver-smb/blob/master/charts/v1.11.0/csi-driver-smb/values.yaml
+    # See: https://github.com/kubernetes-csi/csi-driver-smb/blob/master/charts/v1.9.0/csi-driver-smb/values.yaml
     controller:
       runOnControlPlane: true
     linux:
@@ -43,3 +43,13 @@ spec:
     node:
       nodeSelector:
         node-role.kubernetes.io/worker: ""
+    securityContext:
+      # This is necessary only for systems with SELinux, where
+      # non-privileged sidecar containers cannot access unix domain socket
+      # created by privileged CSI driver container.
+      privileged: true
+      runAsUser: 0
+      capabilities:
+        drop: [ ALL ]
+        add:
+          - SYS_ADMIN
