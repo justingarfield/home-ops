@@ -48,6 +48,7 @@ spec:
   dependsOn:
     - name: infra-authelia-secrets
     - name: infra-cert-manager-app
+    - name: infra-cert-manager-cluster-issuers
   prune: true
   sourceRef:
     kind: GitRepository

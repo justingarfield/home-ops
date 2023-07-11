@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &helmReleaseName weave-gitops
+  name: weave-gitops
   namespace: weave-gitops
 spec:
   interval: 30m
@@ -16,7 +16,6 @@ spec:
         name: weave-gitops
         namespace: weave-gitops
   maxHistory: 3
-  releaseName: *helmReleaseName
   install:
     remediation:
       retries: 5
@@ -37,7 +36,7 @@ spec:
         hajimari.io/icon: mdi:sawtooth-wave
         cert-manager.io/cluster-issuer: home-arpa
       hosts:
-        - host: &host "gitops.${INTERNAL_DOMAIN}"
+        - host: &host "weave-gitops.${INTERNAL_DOMAIN}"
           paths:
             - path: /
               pathType: Prefix

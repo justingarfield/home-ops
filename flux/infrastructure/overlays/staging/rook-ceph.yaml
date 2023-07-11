@@ -67,6 +67,7 @@ spec:
     - name: infra-rook-ceph-sops
     - name: infra-rook-ceph-operator
     - name: infra-cert-manager-app
+    - name: infra-cert-manager-cluster-issuers
   prune: true
   retryInterval: 3m
   sourceRef:

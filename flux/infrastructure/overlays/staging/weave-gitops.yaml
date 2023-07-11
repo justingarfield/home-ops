@@ -49,6 +49,7 @@ spec:
   dependsOn:
     - name: infra-weave-gitops-sops
     - name: infra-cert-manager-app
+    - name: infra-cert-manager-cluster-issuers
   prune: true
   retryInterval: 3m
   sourceRef:

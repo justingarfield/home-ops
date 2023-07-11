@@ -32,6 +32,19 @@ tasks:
     cmds:
       - kubectl get pods -A | tail -n +2 | awk '{if ($4 ~ /^(Evicted)$/) print "kubectl delete pod -n "$1, $2 }' | sh
 
+  purge-errored:
+    desc: Deletes ALL 'Error' pods in the current cluster context.
+    cmds:
+      - kubectl get pods -A | tail -n +2 | awk '{if ($4 ~ /^(Error)$/) print "kubectl delete pod -n "$1, $2 }' | sh
+
+  purge-all:
+    desc: Purges all useless container crap still in cluster
+    cmds:
+      - task: purge-old-replicasets
+      - task: purge-completed-and-unknown
+      - task: purge-evicted
+      - task: purge-errored
+
   get-node-labels:
     desc: Useful for seeing all the labels from Node Feature Discovery (NFD)
     cmds:
