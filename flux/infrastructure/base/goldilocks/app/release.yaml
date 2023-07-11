@@ -35,7 +35,7 @@ spec:
         enabled: true
         ingressClassName: cilium
         annotations:
-          hajimari.io/appName: *app
+          cert-manager.io/cluster-issuer: home-arpa
         hosts:
           - host: &host "goldilocks.${INTERNAL_DOMAIN}"
             paths:
