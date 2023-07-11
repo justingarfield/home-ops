@@ -47,18 +47,6 @@ spec:
         mode: console
       grafana_net:
         url: https://grafana.net
-    dashboardProviders:
-      dashboardproviders.yaml:
-        apiVersion: 1
-        providers:
-          - name: default
-            orgId: 1
-            folder: ""
-            type: file
-            disableDeletion: false
-            editable: true
-            options:
-              path: /var/lib/grafana/dashboards/default
     sidecar:
       dashboards:
         enabled: true
@@ -73,8 +61,8 @@ spec:
       - vonage-status-panel
       - grafana-worldmap-panel
       - grafana-clock-panel
-    # serviceMonitor:
-    #   enabled: true
+    serviceMonitor:
+      enabled: true
     ingress:
       enabled: true
       ingressClassName: cilium
