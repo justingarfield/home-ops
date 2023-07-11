@@ -36,10 +36,10 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: home-arpa
         hosts:
-          - host: &host "alertmanager.${INTERNAL_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
+          - &host "alertmanager.${INTERNAL_DOMAIN}"
+        paths:
+          - /
+        pathType: Prefix
         tls:
           - hosts:
               - *host
@@ -51,10 +51,10 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: home-arpa
         hosts:
-          - host: &host "grafana.${INTERNAL_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
+          - &host "grafana.${INTERNAL_DOMAIN}"
+        paths:
+          - /
+        pathType: Prefix
         tls:
           - hosts:
               - *host
@@ -66,10 +66,10 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: home-arpa
         hosts:
-          - host: &host "prometheus.${INTERNAL_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
+          - &host "prometheus.${INTERNAL_DOMAIN}"
+        paths:
+          - /
+        pathType: Prefix
         tls:
           - hosts:
               - *host
