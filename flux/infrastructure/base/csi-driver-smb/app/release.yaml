@@ -20,7 +20,6 @@ spec:
   interval: 30m
   maxHistory: 3
   upgrade:
-    crds: Skip
     remediation:
       retries: 3
   test:
@@ -44,13 +43,3 @@ spec:
     node:
       nodeSelector:
         node-role.kubernetes.io/worker: ""
-    securityContext:
-      # This is necessary only for systems with SELinux, where
-      # non-privileged sidecar containers cannot access unix domain socket
-      # created by privileged CSI driver container.
-      privileged: true
-      runAsUser: 0
-      capabilities:
-        drop: [ ALL ]
-        add:
-          - SYS_ADMIN
