@@ -17,6 +17,8 @@ ignore: |
   # Things that can't be screwed with
   *.sops.yaml
 
+  **/flux/infrastructure/base/kube-prometheus-stack/app/release.yaml
+
 # See: https://yamllint.readthedocs.io/en/stable/configuration.html#setting-the-locale
 # Note: In order for this locale to function, you will need to:
 #   * sudo apt-get install locales -y
