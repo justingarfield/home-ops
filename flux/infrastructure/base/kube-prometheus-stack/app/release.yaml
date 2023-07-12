@@ -47,7 +47,6 @@ spec:
             secretName: tls-alertmanager
     grafana:
       enabled: false
-      forceDeployDashboards: true
     prometheus:
       ingress:
         enabled: true
@@ -66,11 +65,9 @@ spec:
       prometheusSpec:
         additionalScrapeConfigs:
           - job_name: opnsense
-            scrape_interval: 1m
+            scrape_interval: 15s
             scrape_timeout: 10s
             honor_timestamps: true
             static_configs:
               - targets:
                   - 192.168.60.1:9100
-              - labels:
-                  - myLabel: opnsense
