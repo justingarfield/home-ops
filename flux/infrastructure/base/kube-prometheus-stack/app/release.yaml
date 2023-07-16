@@ -37,7 +37,7 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: home-arpa
         hosts:
-          - &host "alertmanager.${INTERNAL_DOMAIN}"
+          - &host "alertmanager-staging.${INTERNAL_DOMAIN}"
         paths:
           - /
         pathType: Prefix
@@ -54,7 +54,7 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: home-arpa
         hosts:
-          - &host "prometheus.${INTERNAL_DOMAIN}"
+          - &host "prometheus-staging.${INTERNAL_DOMAIN}"
         paths:
           - /
         pathType: Prefix

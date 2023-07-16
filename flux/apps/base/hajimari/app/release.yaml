@@ -57,7 +57,7 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: home-arpa
         hosts:
-          - host: &host "{{.Release.Name}}.${INTERNAL_DOMAIN}"
+          - host: &host "{{.Release.Name}}-staging.${INTERNAL_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
