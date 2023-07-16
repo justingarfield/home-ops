@@ -19,8 +19,8 @@ spec:
                   readOnly: true
                   subPath: config.yml
           restartPolicy: OnFailure
-        volumes:
-          - configMap:
-              defaultMode: 420
-              name: flemmarr-configmap
-            name: config
+          volumes:
+            - configMap:
+                defaultMode: 420
+                name: flemmarr-configmap
+              name: config
