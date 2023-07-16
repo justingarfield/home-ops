@@ -46,7 +46,7 @@ spec:
             key: api-token
     extraArgs:
       # - --annotation-filter=external-dns.alpha.kubernetes.io/target
-      # - --cloudflare-proxied
+      - --cloudflare-proxied
       # - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       # - --crd-source-kind=DNSEndpoint
       - --default-targets=${DEFAULT_TARGETS}
