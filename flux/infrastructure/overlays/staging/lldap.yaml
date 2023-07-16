@@ -50,6 +50,7 @@ spec:
     - name: infra-lldap-sops
     - name: infra-cert-manager-app
     - name: infra-cert-manager-cluster-issuers
+    - name: infra-piraeus-cluster
   prune: true
   retryInterval: 3m
   sourceRef:
