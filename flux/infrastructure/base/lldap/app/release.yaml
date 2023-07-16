@@ -65,4 +65,4 @@ spec:
     persistence:
       data:
         enabled: true
-        type: emptyDir
+        existingClaim: lldap-data
