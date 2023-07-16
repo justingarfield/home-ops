@@ -63,7 +63,7 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-staging
         hosts:
-          - host: &host-private "{{.Release.Name}}.${PRIVATE_DOMAIN}"
+          - host: &host-private "{{.Release.Name}}.poweris.life"
             paths:
               - path: /
                 pathType: Prefix
