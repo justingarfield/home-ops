@@ -4,7 +4,6 @@
   value:
     - dns01:
         cloudflare:
-          email: ${CLOUDFLARE_EMAIL}
-          apiKeySecretRef:
-            name: cloudflare-secret
-            key: api-key
+          apiTokenSecretRef:
+            name: cloudflare-dns01-solver
+            key: api-token

@@ -8,13 +8,13 @@ resources:
   - letsencrypt-staging.yaml
 
 patches:
-  - path: ./patch-files/solver-dns01-azure-dns-patch.yaml
+  - path: ./patch-files/solver-dns01-cloudflare-dns-patch.yaml
     target:
       group: cert-manager.io
       version: v1
       kind: ClusterIssuer
       name: letsencrypt-production
-  - path: ./patch-files/solver-dns01-azure-dns-patch.yaml
+  - path: ./patch-files/solver-dns01-cloudflare-dns-patch.yaml
     target:
       group: cert-manager.io
       version: v1

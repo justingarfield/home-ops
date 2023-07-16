@@ -17,8 +17,6 @@ spec:
   install:
     crds: Skip
     remediation:
-      # I set this to larger value than upgrade section, as resource
-      # contention may be a little wonky after a fresh cluster boot.
       retries: 5
   interval: 30m
   maxHistory: 3
