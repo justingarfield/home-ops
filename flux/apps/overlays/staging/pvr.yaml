@@ -166,7 +166,7 @@ spec:
     - name: infra-cert-manager-app
     - name: infra-cert-manager-cluster-issuers
     - name: apps-radarr-app
-    # - name: apps-radarr-uhd-app
+    - name: apps-radarr-uhd-app
     - name: apps-sonarr-app
     - name: apps-sonarr-uhd-app
   prune: true
@@ -190,6 +190,31 @@ metadata:
 spec:
   interval: 12h
   path: ./flux/apps/base/pvr/radarr/app
+  dependsOn:
+    - name: apps-pvr-ns
+    - name: apps-pvr-sops
+    - name: infra-cert-manager-app
+  prune: true
+  retryInterval: 3m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 3m
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: common-substitutions
+        optional: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps-radarr-uhd-app
+  namespace: flux-system
+spec:
+  interval: 12h
+  path: ./flux/apps/base/pvr/radarr-uhd/app
   dependsOn:
     - name: apps-pvr-ns
     - name: apps-pvr-sops
