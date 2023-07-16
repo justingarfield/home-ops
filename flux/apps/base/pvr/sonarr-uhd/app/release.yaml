@@ -38,6 +38,11 @@ spec:
       SONARR__INSTANCE_NAME: Sonarr
       SONARR__PORT: &port 8989
       SONARR__LOG_LEVEL: info
+      SONARR__API_KEY:
+        valueFrom:
+          secretKeyRef:
+            name: api-keys
+            key: sonarr-uhd-api-key
     service:
       main:
         ports:

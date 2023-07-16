@@ -34,6 +34,11 @@ spec:
       READARR__INSTANCE_NAME: Readarr
       READARR__PORT: &port 8787
       READARR__LOG_LEVEL: info
+      READARR__API_KEY:
+        valueFrom:
+          secretKeyRef:
+            name: api-keys
+            key: readarr-api-key
     service:
       main:
         ports:

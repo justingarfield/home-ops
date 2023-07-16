@@ -35,6 +35,11 @@ spec:
       LIDARR__INSTANCE_NAME: Lidarr
       LIDARR__PORT: &port 8686
       LIDARR__LOG_LEVEL: info
+      LIDARR__API_KEY:
+        valueFrom:
+          secretKeyRef:
+            name: api-keys
+            key: lidarr-api-key
     service:
       main:
         ports:

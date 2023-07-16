@@ -40,6 +40,11 @@ spec:
       RADARR__PORT: &port 7878
       RADARR__APPLICATION_URL: https://{{.Release.Name}}.${INTERNAL_DOMAIN}
       RADARR__LOG_LEVEL: info
+      RADARR__API_KEY:
+        valueFrom:
+          secretKeyRef:
+            name: api-keys
+            key: radarr-uhd-api-key
     service:
       main:
         ports:

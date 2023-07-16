@@ -36,6 +36,11 @@ spec:
       PROWLARR__PORT: &port 9696
       PROWLARR__LOG_LEVEL: info
       # PROWLARR__AUTHENTICATION_METHOD: External
+      PROWLARR__API_KEY:
+        valueFrom:
+          secretKeyRef:
+            name: api-keys
+            key: prowlarr-api-key
     service:
       main:
         ports:
