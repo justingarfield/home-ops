@@ -17,9 +17,9 @@ spec:
         namespace: flux-system
   dependsOn:
     - name: radarr
-    - name: radarr-uhd
+    # - name: radarr-uhd
     - name: sonarr
-    - name: sonarr-uhd
+    # - name: sonarr-uhd
     - name: pod-gateway
       namespace: pod-gateway
   maxHistory: 3
