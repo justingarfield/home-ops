@@ -45,10 +45,10 @@ spec:
             name: external-dns-cloudflare
             key: api-token
     extraArgs:
-      - --annotation-filter=external-dns.alpha.kubernetes.io/target
+      # - --annotation-filter=external-dns.alpha.kubernetes.io/target
       # - --cloudflare-proxied
-      - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
-      - --crd-source-kind=DNSEndpoint
+      # - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
+      # - --crd-source-kind=DNSEndpoint
       - --default-targets=${DEFAULT_TARGETS}
       - --exclude-target-net=${EXCLUDE_TARGET_NET}
     resources:
