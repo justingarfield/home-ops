@@ -35,10 +35,7 @@ spec:
       repository: ghcr.io/onedr0p/sonarr-develop
       tag: 4.0.0.520@sha256:1879baff5b1155fc1dc40cadc0aa509a26d2c5afc3b234473d878e5573579f08
     env:
-      TZ: America/New_York
-      SONARR__INSTANCE_NAME: Sonarr
       SONARR__PORT: &port 8989
-      SONARR__LOG_LEVEL: info
       SONARR__API_KEY:
         valueFrom:
           secretKeyRef:
