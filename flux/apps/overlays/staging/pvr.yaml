@@ -164,6 +164,11 @@ spec:
     - name: apps-pvr-ns
     - name: apps-pvr-sops
     - name: infra-cert-manager-app
+    - name: infra-cert-manager-cluster-issuers
+    - name: apps-radarr-app
+    - name: apps-radarr-uhd-app
+    - name: apps-sonarr-app
+    - name: apps-sonarr-uhd-app
   prune: true
   retryInterval: 3m
   sourceRef:

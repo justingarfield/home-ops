@@ -17,9 +17,9 @@ spec:
         namespace: flux-system
   dependsOn:
     - name: radarr
-    # - name: radarr-uhd
+    - name: radarr-uhd
     - name: sonarr
-    # - name: sonarr-uhd
+    - name: sonarr-uhd
     - name: pod-gateway
       namespace: pod-gateway
   maxHistory: 3
@@ -63,7 +63,7 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-staging
         hosts:
-          - host: &host-private "{{.Release.Name}}.poweris.life"
+          - host: &host-private "{{.Release.Name}}-staging.${PRIVATE_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
