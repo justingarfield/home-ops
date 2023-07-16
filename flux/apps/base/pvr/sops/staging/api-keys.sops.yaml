@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-    name: smbcreds-lidarr
+    name: api-keys
     namespace: pvr
 stringData:
     lidarr-api-key: ENC[AES256_GCM,data:wDopxnmZL5pWeavpkXnqeD8MEcgAyS3teOowAc6YN+Q=,iv:fQd/Cu1WD4qvTfxvhqCiCWmqz7rc/edv3E7C4Zirk4I=,tag:QC9mdupfCofZxjAEZ/8etg==,type:str]
@@ -26,8 +26,8 @@ sops:
             MWtKTnRIVDlUMzlpb21iYTUrZmh5K0UKMhCg9IfiK1KSSEf/PBxzKw5l/PTn/PcN
             TETJVi6ElFJwH7AvHRuI7AWfExrwkVViDpSoJ0Bbb1NCXAG2jgh4tw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-07-16T16:59:11Z"
-    mac: ENC[AES256_GCM,data:GQiI6jKRJOHA+g22naUmeXHVUvXGOxg+ZTglgCpqZxTTECjzk4pXB5aqt1Ze/Pre2kHJFE+iaRZkt1fcklPTKJKbXjBHJqjNoaAAIGsE/rfKbYzxoLNTp+3CuIUM4YPmKmTZAyyBzHSMh6UK3sC+Cknlg0aR7cobo2CAEobaA4g=,iv:T0rS6d61NmqsDnAsC/+Jl4VOnwS61FrCpYFRg4lWtbE=,tag:YFZauKZcZSV3qJ1kJtQWrQ==,type:str]
+    lastmodified: "2023-07-16T17:23:09Z"
+    mac: ENC[AES256_GCM,data:InrMNr6bUb4adOROfZ2sw275ftwj77H4HuMF1W1gCqm4xEFM3Jlwsg8lCjB7J6sAdqfFkeamBnqtnaxk/geROAbAxbBemzER6NHhBI5NSXrYHrEGtnGwjj3fL+ip1pk8ms6DaqffdA9gEni+FVT5D+wqmJTkmZm+P1n0K9318Hs=,iv:cI+tnniOxMgUiDyKPPYfSnEx85X6MfZ4OlUES3FIn5w=,tag:mQzLRKUOyWiR6iOjrh5bHQ==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData)$
     version: 3.7.3
