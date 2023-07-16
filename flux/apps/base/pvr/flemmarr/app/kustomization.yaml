@@ -5,7 +5,8 @@ kind: Kustomization
 namespace: pvr
 resources:
   # - network-policies.yaml
-  - release.yaml
+  # - release.yaml
+  - cronjob.yaml
 configMapGenerator:
   - name: flemmarr-configmap
     files:

@@ -13,8 +13,14 @@ spec:
             - name: hello
               image: pierremesure/flemmarr
               imagePullPolicy: IfNotPresent
-              command:
-                - /bin/sh
-                - -c
-                - date; echo Hello from the Kubernetes cluster
+              volumeMounts:
+                - mountPath: /config/config.yml
+                  name: config
+                  readOnly: true
+                  subPath: config.yml
           restartPolicy: OnFailure
+        volumes:
+          - configMap:
+              defaultMode: 420
+              name: flemmarr-configmap
+            name: config
