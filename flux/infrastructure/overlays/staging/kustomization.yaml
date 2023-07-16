@@ -9,7 +9,7 @@ resources:
   - piraeus.yaml
   - tetragon.yaml
   - weave-gitops.yaml
-  # - lldap.yaml
+  - lldap.yaml
   - external-dns.yaml
   # - authelia.yaml
   - csi-driver-smb.yaml
