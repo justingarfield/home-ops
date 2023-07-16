@@ -10,7 +10,7 @@ spec:
       template:
         spec:
           containers:
-            - name: hello
+            - name: flemmarr
               image: pierremesure/flemmarr
               imagePullPolicy: IfNotPresent
               volumeMounts:
