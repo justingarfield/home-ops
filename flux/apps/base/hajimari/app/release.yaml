@@ -69,7 +69,7 @@ spec:
         enabled: true
         ingressClassName: cilium
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt
+          cert-manager.io/cluster-issuer: letsencrypt-staging
         hosts:
           - host: &host-private "{{.Release.Name}}.${PRIVATE_DOMAIN}"
             paths:
