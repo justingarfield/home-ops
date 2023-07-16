@@ -8,7 +8,7 @@ resources:
   - cert-manager.yaml
   - piraeus.yaml
   - tetragon.yaml
-  - weave-gitops.yaml
+  # - weave-gitops.yaml
   - lldap.yaml
   - external-dns.yaml
   # - authelia.yaml
@@ -16,7 +16,7 @@ resources:
   - node-feature-discovery.yaml
   # - reloader.yaml # - need to get prometheus stack going first
   - vertical-pod-autoscaler.yaml
-  - goldilocks.yaml
+  # - goldilocks.yaml
   - grafana.yaml
   - kube-prometheus-stack.yaml
 
