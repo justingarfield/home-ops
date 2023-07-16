@@ -69,7 +69,7 @@ spec:
       annotations:
         cert-manager.io/cluster-issuer: home-arpa
       hosts:
-        - &host "grafana.${INTERNAL_DOMAIN}"
+        - &host "{{.Release.Name}}-staging.${INTERNAL_DOMAIN}"
       tls:
         - hosts:
             - *host

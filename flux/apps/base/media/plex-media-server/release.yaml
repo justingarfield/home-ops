@@ -45,7 +45,7 @@ spec:
         enabled: true
         ingressClassName: cilium
         hosts:
-          - host: &host "{{ .Release.Name }}.${PUBLIC_DNS_ZONE}"
+          - host: &host "{{ .Release.Name }}-staging.${PUBLIC_DNS_ZONE}"
             paths:
               - path: /
                 pathType: Prefix
