@@ -8,7 +8,7 @@ CILIUM_CLI_VERSION=v0.14.6
 CFSSL_TOOLKIT_VERSION=v1.6.4
 
 # renovate: datasource=github-releases depName=kubernetes-sigs/cluster-api
-CLUSTERCTL_VERSION=v1.4.2
+CLUSTERCTL_VERSION=v1.4.4
 
 # renovate: datasource=github-releases depName=fluxcd/flux2
 FLUX_VERSION=v2.0.0-rc.1
