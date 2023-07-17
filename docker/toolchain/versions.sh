@@ -11,7 +11,7 @@ CFSSL_TOOLKIT_VERSION=v1.6.4
 CLUSTERCTL_VERSION=v1.4.2
 
 # renovate: datasource=github-releases depName=fluxcd/flux2
-FLUX_VERSION=v2.0.0-rc.1
+FLUX_VERSION=v2.0.1
 
 # renovate: datasource=github-releases depName=cli/cli
 GITHUB_CLI_VERSION=v2.32.0
