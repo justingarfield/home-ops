@@ -9,6 +9,9 @@
   "major": {
     "dependencyDashboardApproval": true
   },
+  "flux": {
+    "fileMatch": ["flux/.+\\.yaml$"]
+  },
   "regexManagers": [
     {
       "fileMatch": ["^sidero-metal/.+\\.ya?ml$"],
