@@ -16,5 +16,7 @@ USER root
 WORKDIR /root
 COPY motd motd
 
+LABEL org.opencontainers.image.source="https://github.com/justingarfield/home-ops"
+
 # CMD ["bash"]
 # ENTRYPOINT ["/bin/sleep","3600"]

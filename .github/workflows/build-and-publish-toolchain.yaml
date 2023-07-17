@@ -1,0 +1,30 @@
+---
+name: Build and Publish Toolchain
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: { }
+
+jobs:
+  push-image:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./docker/toolchain
+    steps:
+      - name: Checkout GitHub Action
+        uses: actions/checkout@v3.5.3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2.2.0
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Build Image
+        run: |
+          docker build . --tag ghcr.io/justingarfield/home-ops-toolchain:latest
+          docker push ghcr.io/justingarfield/home-ops-toolchain:latest
