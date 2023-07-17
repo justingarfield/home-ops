@@ -1,0 +1,52 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: booksonic-air
+  namespace: booksonic-air
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 15m
+  maxHistory: 2
+  install:
+    createNamespace: false
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    image:
+      repository: lscr.io/linuxserver/booksonic-air
+      tag: latest
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: cilium
+        annotations:
+          cert-manager.io/cluster-issuer: home-arpa
+        hosts:
+          - host: &host "{{.Release.Name}}-staging.${INTERNAL_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+            secretName: tls-booksonic-air
+    persistence:
+      data:
+        enabled: true
+        type: emptyDir
