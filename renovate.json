@@ -8,6 +8,13 @@
   },
   "regexManagers": [
     {
+      "fileMatch": ["^.sidero-metal/.+\\.ya?ml$"],
+      "matchStrings": [
+        "image:\\s?(?<depName>.*?):(?<currentValue>.*)"
+      ],
+      "datasourceTemplate": "docker"
+    },
+    {
       "fileMatch": ["^Makefile$"],
       "matchStrings": [
         "#\\s?renovate: depName=(?<depName>.*?)\\s?.*?_VERSION=(?<currentValue>.*)"

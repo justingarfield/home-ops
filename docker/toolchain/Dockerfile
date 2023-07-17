@@ -17,4 +17,4 @@ WORKDIR /root
 COPY motd motd
 
 # CMD ["bash"]
-ENTRYPOINT ["/bin/sleep","3600"]
+# ENTRYPOINT ["/bin/sleep","3600"]
