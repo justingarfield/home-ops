@@ -132,9 +132,10 @@ get_hubble() {
 }
 
 get_terraform() {
-    LINK="https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_${OS}_${ARCH}.zip"
-    wget $LINK -O /tmp/terraform.tar.gz && \
-    unzip /tmp/terraform.tar.gz terraform
+    STRIPPED_VERSION=${TERRAFORM_VERSION/v}
+    LINK="https://releases.hashicorp.com/terraform/${STRIPPED_VERSION}/terraform_${STRIPPED_VERSION}_${OS}_${ARCH}.zip"
+    wget $LINK -O /tmp/terraform.zip && \
+    unzip /tmp/terraform.zip terraform
     mv terraform $BINARIES_TMP && \
     chmod +x $BINARIES_TMP/terraform
 }
