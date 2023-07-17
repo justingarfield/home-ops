@@ -10,9 +10,17 @@
     {
       "fileMatch": ["^sidero-metal/.+\\.ya?ml$"],
       "matchStrings": [
+        "#\\s?renovate: depName=(?<depName>.*?)\\sversion: (?<currentValue>.*)",
         "image:\\s?(?<depName>.*?):(?<currentValue>.*)"
       ],
       "datasourceTemplate": "docker"
+    },
+    {
+      "fileMatch": ["^sidero-metal/.+\\.ya?ml$"],
+      "matchStrings": [
+        "#\\s?renovate: depName=(?<depName>.*?)\\s?talosVersion: (?<currentValue>.*)"
+      ],
+      "datasourceTemplate": "github-releases"
     },
     {
       "fileMatch": ["^Makefile$"],
