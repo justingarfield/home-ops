@@ -20,7 +20,7 @@ GITHUB_CLI_VERSION=v2.30.0
 HELM_VERSION=v3.11.3
 
 # renovate: datasource=github-releases depName=cilium/hubble
-HUBBLE_VERSION=v0.11.5
+HUBBLE_VERSION=v0.12.0
 
 KUBEADM_VERSION=v1.27.3
 
