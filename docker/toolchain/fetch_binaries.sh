@@ -4,12 +4,6 @@ set -euxo pipefail
 # cat versions.sh | sed -e 's/^/local /' > local_variables.sh
 . /tmp/versions.sh
 
-get_latest_release() {
-  curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
-    grep '"tag_name":' |                                            # Get tag line
-    sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
-}
-
 BINARIES_TMP=/tmp/binaries
 OS=$(uname -s | tr "[:upper:]" "[:lower:]")
 ARCH=$(uname -m)

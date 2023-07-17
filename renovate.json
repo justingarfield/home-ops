@@ -13,6 +13,25 @@
     "fileMatch": ["flux/.+\\.yaml$"]
   },
   "regexManagers": [
+    //=== docker folder
+    {
+      "fileMatch": ["^docker/.+\\.sh$"],
+      "matchStrings": [
+        "#\\s?renovate: datasource=(?<dataSource>.*?) depName=(?<depName>.*?)\\s.*?_VERSION=(?<currentValue>.*)"
+      ],
+      "datasourceTemplate": "github-releases"
+    },
+
+    //=== scripts folder
+    {
+      "fileMatch": ["^scripts/.+\\.sh$"],
+      "matchStrings": [
+        "https:\/\/github.com\/(?<depName>.*\/.*?)\/releases\/download\/(?<currentValue>.*)\/.+"
+      ],
+      "datasourceTemplate": "github-releases"
+    },
+
+    //=== sidero-metal folder
     {
       "fileMatch": ["^sidero-metal/.+\\.ya?ml$"],
       "matchStrings": [
@@ -22,13 +41,6 @@
       "datasourceTemplate": "docker"
     },
     {
-      "fileMatch": ["^scripts/.+\\.sh$"],
-      "matchStrings": [
-        "https:\/\/github.com\/(?<depName>.*\/.*?)\/releases\/download\/(?<currentValue>.*)\/.+"
-      ],
-      "datasourceTemplate": "github-releases"
-    },
-    {
       "fileMatch": ["^sidero-metal/.+\\.ya?ml$"],
       "matchStrings": [
         "url: https:\/\/github.com\/(?<depName>.*?)\/releases\/download\/(?<currentValue>.*)\/.+",
@@ -36,6 +48,8 @@
       ],
       "datasourceTemplate": "github-releases"
     },
+
+    //=== talos-linux folder
     {
       "fileMatch": ["^talos-linux/.+\\.patch$"],
       "matchStrings": [
@@ -51,6 +65,8 @@
       ],
       "datasourceTemplate": "github-releases"
     },
+
+    //=== Makefile
     {
       "fileMatch": ["^Makefile$"],
       "matchStrings": [

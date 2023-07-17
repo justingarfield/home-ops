@@ -1,4 +1,4 @@
-FROM alpine:3.18.2 as upgraded-alpine
+FROM alpine:3.18.1 as upgraded-alpine
 RUN set -ex \
     && apk update \
     && apk upgrade \
