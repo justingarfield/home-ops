@@ -153,6 +153,28 @@ get_task() {
     chmod +x $BINARIES_TMP/task
 }
 
+get_crictl() {
+    LINK="https://github.com/kubernetes-sigs/cri-tools/releases/download/${CRICTL_VERSION}/crictl-${CRICTL_VERSION}-${OS}-${ARCH}.tar.gz"
+    wget $LINK -O /tmp/crictl.tar.gz && \
+    tar -xzf /tmp/crictl.tar.gz crictl
+    mv crictl $BINARIES_TMP && \
+    chmod +x $BINARIES_TMP/crictl
+}
+
+get_critest() {
+    LINK="https://github.com/kubernetes-sigs/cri-tools/releases/download/${CRITEST_VERSION}/critest-${CRITEST_VERSION}-${OS}-${ARCH}.tar.gz"
+    wget $LINK -O /tmp/critest.tar.gz && \
+    tar -xzf /tmp/critest.tar.gz critest
+    mv critest $BINARIES_TMP && \
+    chmod +x $BINARIES_TMP/critest
+}
+
+get_kubeadm() {
+    LINK="https://dl.k8s.io/release/${KUBEADM_VERSION}/bin/${OS}/${ARCH}/kubeadm"
+    wget $LINK -O $BINARIES_TMP/kubeadm && \
+    chmod +x $BINARIES_TMP/kubeadm
+}
+
 mkdir -p $BINARIES_TMP
 
 get_age
@@ -170,3 +192,6 @@ get_hubble
 get_terraform
 get_yq
 get_task
+get_crictl
+get_critest
+get_kubeadm
