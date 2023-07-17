@@ -1,5 +1,5 @@
 # renovate: depName=go-task/task
-TASK_VERSION=v3.24.0
+TASK_VERSION=v3.27.1
 DOWNLOADS_FOLDER=$$HOME/downloads
 
 ARCH=$(uname -m)
