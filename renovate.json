@@ -18,6 +18,7 @@
     {
       "fileMatch": ["^sidero-metal/.+\\.ya?ml$"],
       "matchStrings": [
+        "url: https:\/\/github.com\/(?<depName>.*?)\/releases\/download\/(?<currentValue>.*)\/.+",
         "#\\s?renovate: depName=(?<depName>.*?)\\s+talosVersion: (?<currentValue>.*)"
       ],
       "datasourceTemplate": "github-releases"
