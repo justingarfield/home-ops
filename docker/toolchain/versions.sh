@@ -33,6 +33,9 @@ SOPS_VERSION=v3.7.3
 # renovate=datasource=github-releases depName=siderolabs/talos
 TALOSCTL_VERSION=v1.4.6
 
+# renovate=datasource=github-releases depName=siderolabs/talos
+TASK_VERSION=v3.24.0
+
 # TODO=Need to investigate how to version this properly
 TERRAFORM_VERSION=1.5.1
 

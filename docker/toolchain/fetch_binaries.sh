@@ -151,6 +151,14 @@ get_yq() {
     chmod +x $BINARIES_TMP/yq
 }
 
+get_task() {
+    LINK="https://github.com/go-task/task/releases/download/${TASK_VERSION}/task_${OS}_${ARCH}.tar.gz"
+    wget $LINK -O /tmp/task.tar.gz && \
+    tar -xzf /tmp/task.tar.gz task
+    mv task $BINARIES_TMP && \
+    chmod +x $BINARIES_TMP/task
+}
+
 mkdir -p $BINARIES_TMP
 
 get_age
@@ -167,3 +175,4 @@ get_tetragon
 get_hubble
 get_terraform
 get_yq
+get_task

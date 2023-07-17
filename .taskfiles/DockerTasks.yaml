@@ -2,7 +2,15 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: '3'
 
+vars:
+  IMAGENAME: justingarfield/home-ops-toolchain
+  IMAGE_VERSION: 0.1
+
 tasks:
+
+  build-toolchain:
+    cmds:
+      - docker build --platform linux/amd64 -t {{.IMAGENAME}}:{{.IMAGE_VERSION}} ./docker/toolchain
 
   start-pull-through-caches:
     desc: Starts container registry pull-through cache containers using Docker.
