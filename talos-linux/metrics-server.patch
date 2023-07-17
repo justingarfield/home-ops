@@ -6,5 +6,5 @@ machine:
       rotate-server-certificates: "true"
 cluster:
   extraManifests:
-    - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/standalone-install.yaml
-    - https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+    - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/v0.7.1/deploy/standalone-install.yaml
+    - https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.6.3/components.yaml

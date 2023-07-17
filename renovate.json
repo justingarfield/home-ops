@@ -31,6 +31,14 @@
       "datasourceTemplate": "docker"
     },
     {
+      "fileMatch": ["^talos-linux/.+\\.patch$"],
+      "matchStrings": [
+        "https:\/\/raw.githubusercontent.com\/(?<depName>.*\/.*?)\/(?<currentValue>.*)\/.+",
+        "https:\/\/github.com\/(?<depName>.*\/.*?)\/releases\/download\/(?<currentValue>.*)\/.+"
+      ],
+      "datasourceTemplate": "github-releases"
+    },
+    {
       "fileMatch": ["^Makefile$"],
       "matchStrings": [
         "#\\s?renovate: depName=(?<depName>.*?)\\s?.*?_VERSION=(?<currentValue>.*)"
