@@ -5,5 +5,15 @@
   ],
   "major": {
     "dependencyDashboardApproval": true
-  }
+  },
+  "regexManagers": [
+    {
+      "fileMatch": ["^Makefile$"],
+      "matchStrings": [
+        "#\\s?renovate: depName=(?<depName>.*?)\\s?.*?_VERSION=(?<currentValue>.*)",
+        ".*?_VERSION=(?<currentValue>.*) # (?<datasource>.*?)/(?<depName>.*?)\\s"
+      ],
+      "datasourceTemplate": "github-releases"
+    }
+  ]
 }

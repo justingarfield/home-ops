@@ -1,4 +1,4 @@
-# renovate: datasource=github-releases depName=go-task/task
+# renovate: depName=go-task/task
 TASK_VERSION=v3.24.0
 DOWNLOADS_FOLDER=$$HOME/downloads
 
