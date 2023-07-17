@@ -8,7 +8,7 @@
   },
   "regexManagers": [
     {
-      "fileMatch": ["^.sidero-metal/.+\\.ya?ml$"],
+      "fileMatch": ["^sidero-metal/.+\\.ya?ml$"],
       "matchStrings": [
         "image:\\s?(?<depName>.*?):(?<currentValue>.*)"
       ],
