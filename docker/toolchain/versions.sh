@@ -40,7 +40,7 @@ TASK_VERSION=v3.24.0
 TERRAFORM_VERSION=1.5.1
 
 # renovate: datasource=github-releases depName=cilium/tetragon
-TETRAGON_VERSION=v0.9.0
+TETRAGON_VERSION=v0.8.0
 
 # renovate: datasource=github-releases depName=mikefarah/yq
 YQ_VERSION=v4.34.1
