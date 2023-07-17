@@ -43,4 +43,4 @@ TERRAFORM_VERSION=1.5.1
 TETRAGON_VERSION=v0.10.0
 
 # renovate: datasource=github-releases depName=mikefarah/yq
-YQ_VERSION=v4.34.1
+YQ_VERSION=v4.34.2
