@@ -41,7 +41,7 @@ SOPS_VERSION=v3.7.3
 TALOSCTL_VERSION=v1.4.6
 
 # renovate: datasource=github-releases depName=go-task/task
-TASK_VERSION=v3.24.0
+TASK_VERSION=v3.27.1
 
 # renovate: datasource=github-releases depName=hashicorp/terraform
 TERRAFORM_VERSION=1.5.1
