@@ -14,7 +14,7 @@ CLUSTERCTL_VERSION=v1.4.2
 FLUX_VERSION=v2.0.0-rc.1
 
 # renovate: datasource=github-releases depName=cli/cli
-GITHUB_CLI_VERSION=v2.30.0
+GITHUB_CLI_VERSION=v2.32.0
 
 # TODO=Need to investigate how to version this properly vs. get.helm.sh
 HELM_VERSION=v3.11.3
