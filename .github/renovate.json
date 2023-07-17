@@ -10,7 +10,6 @@
     "dependencyDashboardApproval": true
   },
   "flux": {
-    "enabled": false,
     "fileMatch": ["flux/.+\\.yaml$"]
   },
   "regexManagers": [
