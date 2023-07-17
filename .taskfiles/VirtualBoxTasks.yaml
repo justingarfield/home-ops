@@ -2,6 +2,12 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: '3'
 
+# This file is left here for reference purposes.
+#
+# I originally started this project on VirtualBox, but have since moved-over to Hyper-V.
+#
+# These commands all work against VBoxManage.exe, so you can easily find documentation
+# about what all of these calls are doing if you're unfamiliar.
 tasks:
 
   create-vm:
@@ -258,19 +264,3 @@ tasks:
         vars: { CLUSTER_NAME: "{{ .CLUSTER_NAME }}", VM_NAME: "{{ .CLUSTER_NAME }}-cp03", MAC_ADDRESS: "001337133703", BASE_FOLDER: "{{.VBOX_CP_FOLDER}}", VBOX_BRIDGE_ADAPTER: '{{ .VBOX_BRIDGE_ADAPTER_3 }}' }
       - task: create-cluster-node-vm
         vars: { CLUSTER_NAME: "{{ .CLUSTER_NAME }}", VM_NAME: "{{ .CLUSTER_NAME }}-wk01", MAC_ADDRESS: "001337133704", BASE_FOLDER: "{{.VBOX_WK_FOLDER}}", VBOX_BRIDGE_ADAPTER: '{{ .VBOX_BRIDGE_ADAPTER_4 }}' }
-
-  snapshot-cluster:
-    desc: Snapshots a virtualized Kubernetes 3-node Control Plane / 2-node Worker Plane.
-    vars:
-      CLUSTER_NAME: '{{ .CLUSTER_NAME }}'
-      SNAPSHOT_NAME: '{{ .SNAPSHOT_NAME }}'
-      SNAPSHOT_DESCRIPTION: '{{ .SNAPSHOT_DESCRIPTION | default "" }}'
-    cmds:
-      - task: snapshot-vm
-        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp01", SNAPSHOT_NAME: "{{ .SNAPSHOT_NAME }}", SNAPSHOT_DESCRIPTION: "{{ .SNAPSHOT_DESCRIPTION }}" }
-      - task: snapshot-vm
-        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp02", SNAPSHOT_NAME: "{{ .SNAPSHOT_NAME }}", SNAPSHOT_DESCRIPTION: "{{ .SNAPSHOT_DESCRIPTION }}" }
-      - task: snapshot-vm
-        vars: { VM_NAME: "{{ .CLUSTER_NAME }}-cp03", SNAPSHOT_NAME: "{{ .SNAPSHOT_NAME }}", SNAPSHOT_DESCRIPTION: "{{ .SNAPSHOT_DESCRIPTION }}" }
-      - task: snapshot-vm
-        vars: { VM_NAME: "{{.CLUSTER_NAME}}-wk01", SNAPSHOT_NAME: "{{.SNAPSHOT_NAME}}", SNAPSHOT_DESCRIPTION: "{{.SNAPSHOT_DESCRIPTION}}" }
