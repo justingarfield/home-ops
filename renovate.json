@@ -24,6 +24,13 @@
       "datasourceTemplate": "github-releases"
     },
     {
+      "fileMatch": ["^talos-linux/.+\\.patch$"],
+      "matchStrings": [
+        "image: (?<depName>.*?):(?<currentValue>.*)"
+      ],
+      "datasourceTemplate": "docker"
+    },
+    {
       "fileMatch": ["^Makefile$"],
       "matchStrings": [
         "#\\s?renovate: depName=(?<depName>.*?)\\s?.*?_VERSION=(?<currentValue>.*)"
