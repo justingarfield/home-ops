@@ -18,7 +18,7 @@
     {
       "fileMatch": ["^sidero-metal/.+\\.ya?ml$"],
       "matchStrings": [
-        "#\\s?renovate: depName=(?<depName>.*?)\\s?talosVersion: (?<currentValue>.*)"
+        "#\\s?renovate: depName=(?<depName>.*?)\\s+talosVersion: (?<currentValue>.*)"
       ],
       "datasourceTemplate": "github-releases"
     },
