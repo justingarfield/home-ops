@@ -4,12 +4,6 @@ set -euxo pipefail
 # cat versions.sh | sed -e 's/^/local /' > local_variables.sh
 . /tmp/versions.sh
 
-get_latest_release() {
-  curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
-    grep '"tag_name":' |                                            # Get tag line
-    sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
-}
-
 BINARIES_TMP=/tmp/binaries
 OS=$(uname -s | tr "[:upper:]" "[:lower:]")
 ARCH=$(uname -m)
@@ -151,6 +145,14 @@ get_yq() {
     chmod +x $BINARIES_TMP/yq
 }
 
+get_task() {
+    LINK="https://github.com/go-task/task/releases/download/${TASK_VERSION}/task_${OS}_${ARCH}.tar.gz"
+    wget $LINK -O /tmp/task.tar.gz && \
+    tar -xzf /tmp/task.tar.gz task
+    mv task $BINARIES_TMP && \
+    chmod +x $BINARIES_TMP/task
+}
+
 mkdir -p $BINARIES_TMP
 
 get_age
@@ -167,3 +169,4 @@ get_tetragon
 get_hubble
 get_terraform
 get_yq
+get_task

@@ -4,4 +4,4 @@
 machine:
   install:
     extensions:
-      - image: ghcr.io/siderolabs/intel-ucode:20230613@sha256:4b7f80acbccac2e64a1f78bb11426c76a674ed336c9c40b54fc7e8741bfcbb86
+      - image: ghcr.io/siderolabs/intel-ucode:20230613

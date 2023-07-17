@@ -53,12 +53,14 @@ spec:
   controlPlaneConfig:
     controlplane:
       generateType: controlplane
+      # renovate: depName=siderolabs/talos
       talosVersion: v1.4.6
   infrastructureTemplate:
     apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
     kind: MetalMachineTemplate
     name: hybrid-cp
   replicas: 1
+  # renovate: depName=registry.k8s.io/kube-apiserver
   version: v1.27.3
 ---
 apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
@@ -70,6 +72,7 @@ spec:
   template:
     spec:
       generateType: join
+      # renovate: depName=siderolabs/talos
       talosVersion: v1.4.6
 ---
 apiVersion: cluster.x-k8s.io/v1beta1
@@ -94,6 +97,7 @@ spec:
         apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
         kind: MetalMachineTemplate
         name: hybrid-workers
+      # renovate: depName=registry.k8s.io/kube-apiserver
       version: v1.27.3
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3

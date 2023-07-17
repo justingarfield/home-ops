@@ -1,0 +1,81 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "pre-commit": {
+    "enabled": true
+  },
+  "major": {
+    "dependencyDashboardApproval": true
+  },
+  "flux": {
+    "enabled": false,
+    "fileMatch": ["flux/.+\\.yaml$"]
+  },
+  "regexManagers": [
+    {
+      "fileMatch": ["^docker/.+\\.sh$"],
+      "matchStrings": [
+        "#\\s?renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)\\s.*?_VERSION=(?<currentValue>.*)"
+      ]
+    },
+
+
+
+    {
+      "fileMatch": ["^scripts/.+\\.sh$"],
+      "matchStrings": [
+        "https:\/\/github.com\/(?<depName>.*\/.*?)\/releases\/download\/(?<currentValue>.*)\/.+"
+      ],
+      "datasourceTemplate": "github-releases"
+    },
+
+
+
+    {
+      "fileMatch": ["^sidero-metal/.+\\.ya?ml$"],
+      "matchStrings": [
+        "#\\s?renovate: depName=(?<depName>.*?)\\sversion: (?<currentValue>.*)",
+        "image:\\s?(?<depName>.*?):(?<currentValue>.*)"
+      ],
+      "datasourceTemplate": "docker"
+    },
+    {
+      "fileMatch": ["^sidero-metal/.+\\.ya?ml$"],
+      "matchStrings": [
+        "url: https:\/\/github.com\/(?<depName>.*?)\/releases\/download\/(?<currentValue>.*)\/.+",
+        "#\\s?renovate: depName=(?<depName>.*?)\\s+talosVersion: (?<currentValue>.*)"
+      ],
+      "datasourceTemplate": "github-releases"
+    },
+
+
+
+    {
+      "fileMatch": ["^talos-linux/.+\\.patch$"],
+      "matchStrings": [
+        "image: (?<depName>.*?):(?<currentValue>.*)"
+      ],
+      "datasourceTemplate": "docker"
+    },
+    {
+      "fileMatch": ["^talos-linux/.+\\.patch$"],
+      "matchStrings": [
+        "https:\/\/raw.githubusercontent.com\/(?<depName>.*\/.*?)\/(?<currentValue>.*)\/.+",
+        "https:\/\/github.com\/(?<depName>.*\/.*?)\/releases\/download\/(?<currentValue>.*)\/.+"
+      ],
+      "datasourceTemplate": "github-releases"
+    },
+
+
+
+    {
+      "fileMatch": ["^Makefile$"],
+      "matchStrings": [
+        "#\\s?renovate: depName=(?<depName>.*?)\\s?.*?_VERSION=(?<currentValue>.*)"
+      ],
+      "datasourceTemplate": "github-releases"
+    }
+  ]
+}
