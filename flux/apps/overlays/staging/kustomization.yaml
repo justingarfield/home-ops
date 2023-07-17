@@ -8,3 +8,4 @@ resources:
   - pod-gateway.yaml
   - hajimari.yaml
   - kubernetes-schemas.yaml
+  - booksonic-air.yaml
