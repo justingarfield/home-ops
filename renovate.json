@@ -10,8 +10,7 @@
     {
       "fileMatch": ["^Makefile$"],
       "matchStrings": [
-        "#\\s?renovate: depName=(?<depName>.*?)\\s?.*?_VERSION=(?<currentValue>.*)",
-        ".*?_VERSION=(?<currentValue>.*) # (?<datasource>.*?)/(?<depName>.*?)\\s"
+        "#\\s?renovate: depName=(?<depName>.*?)\\s?.*?_VERSION=(?<currentValue>.*)"
       ],
       "datasourceTemplate": "github-releases"
     }
