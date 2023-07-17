@@ -23,7 +23,7 @@ FLUX_VERSION=v2.0.1
 GITHUB_CLI_VERSION=v2.32.0
 
 # renovate: datasource=github-releases depName=helm/helm
-HELM_VERSION=v3.11.3
+HELM_VERSION=v3.12.2
 
 # renovate: datasource=github-releases depName=cilium/hubble
 HUBBLE_VERSION=v0.12.0
