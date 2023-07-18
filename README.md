@@ -35,12 +35,6 @@ This repository assumes it's being run in an [Ubuntu 22.04](https://ubuntu.com/)
 
 I have moved pretty much everything into [Task](https://taskfile.dev/) at this point. _Note: I'm not 100% sold on using [Task](https://taskfile.dev/) at this point; I've just seen others using it in their projects, and decided to give it a try to see how it goes._
 
-```shell
-make install-task
-
-task
-```
-
 ## Important Notes
 
 VirtualBox on Windows 10/11 with WSL2 is a terrible combination that will lead to insane amounts of CPU stalling, poor memory management, and more. **DO NOT use VirtualBox on Windows 10/11**; use Hyper-V or  VMWare Workstation instead.

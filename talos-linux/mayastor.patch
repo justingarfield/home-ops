@@ -1,4 +1,9 @@
 ---
+
+# This patch file:
+#   * Sets sysctls vm.nr_hugepages to 1024
+#   * Adds an "openebs.io/engine: mayastor" label to nodes
+
 - op: add
   path: /machine/sysctls
   value:

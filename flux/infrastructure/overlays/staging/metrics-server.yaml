@@ -1,0 +1,35 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: infra-metrics-server-ns
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  path: ./flux/infrastructure/base/metrics-server/namespace
+  prune: true
+  retryInterval: 1m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 3m
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: infra-metrics-server-app
+  namespace: flux-system
+spec:
+  interval: 12h
+  path: ./flux/infrastructure/base/metrics-server/app
+  dependsOn:
+    - name: infra-metrics-server-ns
+  prune: true
+  retryInterval: 3m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  timeout: 3m
+  wait: true

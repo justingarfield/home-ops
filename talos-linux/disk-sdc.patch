@@ -5,6 +5,9 @@
 #   * Tells Talos that a node has an additional disk device to format
 #     and partition located at /dev/sdc; mounts it at /var/mnt/sdc.
 
+# Note: I'm no longer using this patch file actively, as I've since
+#       switched from local-path storage to using Piraeus for strorge.
+
 machine:
   disks:
     - device: /dev/sdc

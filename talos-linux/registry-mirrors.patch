@@ -2,7 +2,10 @@
 # yaml-language-server: $schema=https://talos.dev/v1.4/schemas/v1alpha1_config.schema.json
 
 # This patch file:
-#   *
+#   * Points any "docker.io" requests to a local pull-through cache container
+#   * Points any "gcr.io" requests to a local pull-through cache container
+#   * Points any "ghcr.io" requests to a local pull-through cache container
+#   * Points any "registry.k8s.io" requests to a local pull-through cache container
 
 machine:
   registries:

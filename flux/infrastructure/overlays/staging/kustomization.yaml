@@ -19,6 +19,7 @@ resources:
   # - goldilocks.yaml
   - grafana.yaml
   - kube-prometheus-stack.yaml
+  - metrics-server.yaml
 
   # ============ No longer in-use ============
 

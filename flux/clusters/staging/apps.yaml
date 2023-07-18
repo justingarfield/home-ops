@@ -5,7 +5,7 @@ metadata:
   name: apps
   namespace: flux-system
 spec:
-  # suspend: true
+  suspend: true
   interval: 1h
   path: ./flux/apps/overlays/staging
   prune: true
