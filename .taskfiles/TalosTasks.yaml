@@ -80,7 +80,6 @@ tasks:
           --config-patch-worker @{{.TALOS_SRC_DIR}}/kubelet-unsafe-sysctls.patch \
           --config-patch @{{.TALOS_SRC_DIR}}/machine-cert-sans.patch \
           --config-patch @{{.TALOS_SRC_DIR}}/talos-extension-drbd.patch \
-          --config-patch @{{.TALOS_SRC_DIR}}/metrics-server.patch \
           --config-patch @{{.TALOS_SRC_DIR}}/registry-mirrors.patch \
           --config-patch='[{"op": "add", "path": "/machine/certSANs/-", "value": "{{.CLUSTER_LOAD_BALANCER_IP}}" }]' \
           --config-patch @{{.TALOS_SRC_DIR}}/system-disk-encryption.patch \

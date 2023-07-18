@@ -3,11 +3,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: infra-metrics-server-ns
+  name: infra-kubelet-csr-approver-ns
   namespace: flux-system
 spec:
   interval: 1m0s
-  path: ./flux/infrastructure/base/metrics-server/namespace
+  path: ./flux/infrastructure/base/kubelet-csr-approver/namespace
   prune: true
   retryInterval: 1m
   sourceRef:
@@ -19,14 +19,13 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: infra-metrics-server-app
+  name: infra-kubelet-csr-approver-app
   namespace: flux-system
 spec:
   interval: 12h
-  path: ./flux/infrastructure/base/metrics-server/app
+  path: ./flux/infrastructure/base/kubelet-csr-approver/app
   dependsOn:
-    - name: infra-metrics-server-ns
-    - name: infra-kubelet-csr-approver-app
+    - name: infra-kubelet-csr-approver-ns
   prune: true
   retryInterval: 3m
   sourceRef:

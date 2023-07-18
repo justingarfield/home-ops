@@ -2,8 +2,8 @@
 # yaml-language-server: $schema=https://talos.dev/v1.4/schemas/v1alpha1_config.schema.json
 
 # This patch file:
+#   * Adds an additional manifest to Talos to install kubelet-serving-cert-approver
 #   * Adds an additional manifest to Talos to install metrics-server
-#   * Adds an additional manifest to Talos to install metrics-server components
 
 # Note: I'm no longer using this patch file actively, as I've since
 #       started deploying the metrics-server using Flux CD instead.
