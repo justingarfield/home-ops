@@ -26,6 +26,7 @@ spec:
   path: ./flux/infrastructure/base/mayastor/app
   dependsOn:
     - name: infra-mayastor-ns
+    - name: infra-cert-manager-app
   prune: true
   retryInterval: 3m
   sourceRef:

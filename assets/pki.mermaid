@@ -1,0 +1,28 @@
+graph TD
+
+RootCA["Root CA"] --> Azure["Azure Intermediary"]
+RootCA["Root CA"] --> OPNsense["OPNsense Intermediary"]
+RootCA["Root CA"] --> Intermediaries["APIServer Intermediary"]
+RootCA["Root CA"] --> Clients["My Client Cert"]
+
+subgraph Kubernetes
+    subgraph Intermediaries
+        KubernetesCA["APIServer Intermediary"]
+        KubernetesEtcd["etcd Intermediary"]
+        KubernetesFEP["Front-end Proxy Intermediary"]
+    end
+    KubernetesSAKey["SA Private Key"]
+end
+
+subgraph OPNsense
+    OPNsenseIntermediary["OPNsense Intermediary"] --> OPNsense01WebUI["OPNsense01 Web UI"]
+    OPNsenseIntermediary["OPNsense Intermediary"] --> OPNsense02WebUI["OPNsense02 Web UI"]
+end
+
+subgraph Azure
+    AzureIntermediary["Azure Intermediary"] --> TerraformSP["Provisioner SP for Terraform"]
+end
+
+subgraph Clients
+    JustinGarfieldCert["My Client Cert"]
+end

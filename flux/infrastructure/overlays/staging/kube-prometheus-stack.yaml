@@ -26,6 +26,7 @@ spec:
   path: ./flux/infrastructure/base/kube-prometheus-stack/app
   dependsOn:
     - name: infra-kube-prometheus-stack-ns
+    - name: infra-cert-manager-cluster-issuers
   prune: true
   retryInterval: 3m
   sourceRef:

@@ -33,9 +33,7 @@ See each sub-directory for an additional `README.md` that describes that area mo
 
 This repository assumes it's being run in an [Ubuntu 22.04](https://ubuntu.com/) w/ Bash environment _(or similar. I'm running all of this in Ubuntu 22.04 under Windows Subsystem for Linux)_. Your mileage may vary!
 
-I have moved pretty much everything into [Task](https://taskfile.dev/) at this point. The Makefile assumes you have [Go](https://go.dev/) installed, and pretty much only covers installing Task to bootstrap with more-or-less.
-
-_Note: I'm not 100% sold on using [Task](https://taskfile.dev/) at this point; I've just seen others using it in their projects, and decided to give it a try to see how it goes._
+I have moved pretty much everything into [Task](https://taskfile.dev/) at this point. _Note: I'm not 100% sold on using [Task](https://taskfile.dev/) at this point; I've just seen others using it in their projects, and decided to give it a try to see how it goes._
 
 ```shell
 make install-task

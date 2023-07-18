@@ -27,6 +27,7 @@ spec:
   dependsOn:
     - name: infra-goldilocks-ns
     - name: infra-vertical-pod-autoscaler-app
+    - name: infra-cert-manager-cluster-issuers
   prune: true
   retryInterval: 3m
   sourceRef:
