@@ -60,5 +60,5 @@ spec:
   postBuild:
     substituteFrom:
       - kind: ConfigMap
-        name: weave-gitops-substitutions
+        name: common-substitutions
         optional: false
