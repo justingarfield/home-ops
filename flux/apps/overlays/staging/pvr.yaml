@@ -316,7 +316,7 @@ spec:
   interval: 12h
   path: ./flux/apps/base/pvr/flemmarr/app
   dependsOn:
-    - name: apps-pvr-ns
+    - name: apps-pvr-sops
   prune: true
   retryInterval: 3m
   sourceRef:
