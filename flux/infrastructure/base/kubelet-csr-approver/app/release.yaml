@@ -19,3 +19,8 @@ spec:
     providerRegex: ^(k8s-cp.+|k8s-wk.+)$
     providerIpPrefixes:
       - 192.168.60.0/22
+    nodeSelector:
+      node-role.kubernetes.io/control-plane: ""
+    tolerations:
+      - effect: NoSchedule
+        operator: Exists
