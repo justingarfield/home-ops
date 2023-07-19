@@ -16,7 +16,7 @@ sonarr:
     quality_definition:
       type: series
     quality_profiles:
-      - name: WEB-1080p
+      - name: WEB-DL (1080p)
         reset_unmatched_scores: false
     custom_formats:
       # WEB-1080p - Unwanted
