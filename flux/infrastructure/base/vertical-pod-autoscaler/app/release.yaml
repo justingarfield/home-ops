@@ -34,3 +34,8 @@ spec:
       enabled: false
     admissionController:
       enabled: false
+    nodeSelector:
+      node-role.kubernetes.io/control-plane: ""
+    tolerations:
+      - effect: NoSchedule
+        operator: Exists

@@ -16,4 +16,9 @@ spec:
         namespace: metrics-server
       interval: 30m
   # See: https://github.com/kubernetes-sigs/metrics-server/blob/metrics-server-helm-chart-3.10.0/charts/metrics-server/values.yaml
-  values: { }
+  values:
+    nodeSelector:
+      node-role.kubernetes.io/control-plane: ""
+    tolerations:
+      - effect: NoSchedule
+        operator: Exists
