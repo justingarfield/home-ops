@@ -16,7 +16,7 @@ resources:
   - node-feature-discovery.yaml
   # - reloader.yaml # - need to get prometheus stack going first
   - vertical-pod-autoscaler.yaml
-  # - goldilocks.yaml
+  - goldilocks.yaml
   - grafana.yaml
   - kube-prometheus-stack.yaml
   - kubelet-csr-approver.yaml

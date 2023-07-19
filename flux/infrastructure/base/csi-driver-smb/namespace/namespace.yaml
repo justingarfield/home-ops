@@ -7,3 +7,4 @@ metadata:
     # Required for pods to boot since they require
     # touching host-level bits and crossing namespaces.
     pod-security.kubernetes.io/enforce: privileged
+    goldilocks.fairwinds.com/enabled: "true"

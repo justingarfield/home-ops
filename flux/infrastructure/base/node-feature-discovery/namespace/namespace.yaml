@@ -6,3 +6,4 @@ metadata:
   labels:
     # NFD Matt-DaemonSet will not be able to run inside of Talos without this
     pod-security.kubernetes.io/enforce: privileged
+    goldilocks.fairwinds.com/enabled: "true"
