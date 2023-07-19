@@ -8,6 +8,20 @@ sonarr:
     replace_existing_custom_formats: true
     quality_definition:
       type: series
+    quality_profiles:
+      - name: Any
+        reset_unmatched_scores: false
+      - name: HD - 720p/1080p
+        reset_unmatched_scores: false
+      - name: HD-1080p
+        reset_unmatched_scores: false
+      - name: HD-720p
+        reset_unmatched_scores: false
+      - name: SD
+        reset_unmatched_scores: false
+      - name: Ultra-HD
+        reset_unmatched_scores: false
+
 radarr:
   radarr:
     base_url: http://radarr.pvr.svc:7878
@@ -15,3 +29,16 @@ radarr:
     delete_old_custom_formats: true
     quality_definition:
       type: movie
+    quality_profiles:
+      - name: Any
+        reset_unmatched_scores: false
+      - name: HD - 720p/1080p
+        reset_unmatched_scores: false
+      - name: HD-1080p
+        reset_unmatched_scores: false
+      - name: HD-720p
+        reset_unmatched_scores: false
+      - name: SD
+        reset_unmatched_scores: false
+      - name: Ultra-HD
+        reset_unmatched_scores: false
