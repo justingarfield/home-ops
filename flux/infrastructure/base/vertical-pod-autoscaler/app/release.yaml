@@ -24,6 +24,11 @@ spec:
   values:
     recommender:
       enabled: true
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: ""
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
     #   extraArgs:
     #     storage: prometheus
     #     prometheus-address: |-
@@ -34,8 +39,3 @@ spec:
       enabled: false
     admissionController:
       enabled: false
-    nodeSelector:
-      node-role.kubernetes.io/control-plane: ""
-    tolerations:
-      - effect: NoSchedule
-        operator: Exists
