@@ -8,13 +8,13 @@ resources:
   - cert-manager.yaml
   - piraeus.yaml
   - tetragon.yaml
-  # - weave-gitops.yaml
+  - weave-gitops.yaml
   - lldap.yaml
   - external-dns.yaml
   # - authelia.yaml
   - csi-driver-smb.yaml
   - node-feature-discovery.yaml
-  # - reloader.yaml # - need to get prometheus stack going first
+  # - reloader.yaml
   - vertical-pod-autoscaler.yaml
   - goldilocks.yaml
   - grafana.yaml
