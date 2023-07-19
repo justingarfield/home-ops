@@ -41,9 +41,10 @@ spec:
             - path: /
               pathType: Prefix
       tls:
-        - hosts:
+        - secretName: tls-weave-gitops
+          hosts:
             - *host
-          secretName: tls-weave-gitops
+
     metrics:
       enabled: false
     rbac:
