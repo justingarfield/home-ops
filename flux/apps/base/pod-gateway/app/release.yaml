@@ -51,7 +51,7 @@ spec:
           - secretRef:
               name: pod-gateway
         securityContext:
-          # Gluetun Won't run on-top of Talos / Cilium w/o this atm
+          # Gluetun won't run on-top of Talos / Cilium w/o this atm
           privileged: true
       networkPolicy:
         # Using my own Cilium-based Network Policies
