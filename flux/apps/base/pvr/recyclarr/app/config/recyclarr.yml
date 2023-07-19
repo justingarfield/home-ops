@@ -17,7 +17,7 @@ sonarr:
       type: series
     quality_profiles:
       - name: WEB-DL (1080p)
-        reset_unmatched_scores: false
+        reset_unmatched_scores: true
     custom_formats:
       # WEB-1080p - Unwanted
       - trash_ids:
