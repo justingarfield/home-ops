@@ -36,6 +36,7 @@ spec:
         hajimari.io/icon: mdi:sawtooth-wave
         cert-manager.io/cluster-issuer: home-arpa
       hosts:
+        # Need to figure out why I can't use {{.Release.Name}} here (prob chart related)
         - host: &host "weave-gitops-staging.${INTERNAL_DOMAIN}"
           paths:
             - path: /

@@ -29,6 +29,11 @@ spec:
           memory: 64M
         limits:
           memory: 250M
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: ""
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
     dashboard:
       replicaCount: 1
       ingress:
@@ -37,6 +42,7 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: home-arpa
         hosts:
+          # Need to figure out why I can't use {{.Release.Name}} here (prob chart related)
           - host: &host "goldilocks-staging.${INTERNAL_DOMAIN}"
             paths:
               - path: /
@@ -44,6 +50,11 @@ spec:
         tls:
           - hosts:
               - *host
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: ""
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
       resources:
         requests:
           cpu: 10m
