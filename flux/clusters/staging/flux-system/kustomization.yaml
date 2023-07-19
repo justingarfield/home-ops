@@ -1,9 +1,11 @@
+---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - gotk-components.yaml
   - gotk-sync.yaml
 patches:
+  # See: https://fluxcd.io/flux/cheatsheets/bootstrap/
   - patch: |
       apiVersion: apps/v1
       kind: Deployment

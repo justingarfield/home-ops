@@ -159,6 +159,6 @@ New-TalosVM -VMNamePrefix k8s-cp -CPUCount 4 -StartupMemory 8GB -SwitchName Stag
 # New-TalosVM -VMNamePrefix k8s-cp -CPUCount 4 -StartupMemory 8GB -SwitchName StagingCp -TalosISOPath "C:\Users\jgarf\Downloads\talos-amd64-v1.4.6.iso" -NumberOfVMs 1 -VMDestinationBasePath 'C:\Hyper-V\Talos' -VHDSize 20GB -MAC 001337133702
 # New-TalosVM -VMNamePrefix k8s-cp -CPUCount 4 -StartupMemory 8GB -SwitchName StagingCp -TalosISOPath "C:\Users\jgarf\Downloads\talos-amd64-v1.4.6.iso" -NumberOfVMs 1 -VMDestinationBasePath 'C:\Hyper-V\Talos' -VHDSize 20GB -MAC 001337133703
 New-TalosVM -VMNamePrefix k8s-wk -CPUCount 8 -StartupMemory 16GB -SwitchName StagingWk1 -TalosISOPath "C:\Users\jgarf\Downloads\talos-amd64-v1.4.6.iso" -NumberOfVMs 1 -VMDestinationBasePath 'F:\Hyper-V\Talos' -VHDSize 50GB -MAC 001337133704 -StorageVHDSize 20GB
-New-TalosVM -VMNamePrefix k8s-wk -CPUCount 4 -StartupMemory 8GB -SwitchName StagingWk2 -TalosISOPath "C:\Users\jgarf\Downloads\talos-amd64-v1.4.6.iso" -NumberOfVMs 1 -VMDestinationBasePath 'F:\Hyper-V\Talos' -VHDSize 50GB -MAC 001337133705
+# New-TalosVM -VMNamePrefix k8s-wk -CPUCount 4 -StartupMemory 8GB -SwitchName StagingWk2 -TalosISOPath "C:\Users\jgarf\Downloads\talos-amd64-v1.4.6.iso" -NumberOfVMs 1 -VMDestinationBasePath 'F:\Hyper-V\Talos' -VHDSize 50GB -MAC 001337133705
 
 Start-VM -VMName k8s-cp01
