@@ -11,3 +11,5 @@ configMapGenerator:
     namespace: pvr
     files:
       - recyclarr.yml=./config/recyclarr.yml
+generatorOptions:
+  disableNameSuffixHash: true
