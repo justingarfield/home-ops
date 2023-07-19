@@ -16,9 +16,7 @@ patches:
               node-role.kubernetes.io/control-plane: ""
             tolerations:
               - effect: NoSchedule
-                key: role
-                operator: Equal
-                value: flux
+                operator: Exists
     target:
       kind: Deployment
       labelSelector: app.kubernetes.io/part-of=flux
