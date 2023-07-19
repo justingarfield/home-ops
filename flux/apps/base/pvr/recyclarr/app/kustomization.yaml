@@ -8,5 +8,6 @@ resources:
   - release.yaml
 configMapGenerator:
   - name: recyclarr-configmap
+    namespace: pvr
     files:
       - recyclarr.yml=./config/recyclarr.yml
