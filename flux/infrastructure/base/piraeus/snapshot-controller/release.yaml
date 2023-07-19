@@ -28,4 +28,10 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  values: { }
+  # See: https://github.com/piraeusdatastore/helm-charts/tree/snapshot-validation-webhook-1.7.4/charts/snapshot-controller
+  values:
+    nodeSelector:
+      node-role.kubernetes.io/control-plane: ""
+    tolerations:
+      - effect: NoSchedule
+        operator: Exists

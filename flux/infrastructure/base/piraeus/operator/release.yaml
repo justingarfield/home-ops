@@ -24,3 +24,8 @@ spec:
     ignoreFailures: false
   values:
     installCRDs: true
+    nodeSelector:
+      node-role.kubernetes.io/control-plane: ""
+    tolerations:
+      - effect: NoSchedule
+        operator: Exists
