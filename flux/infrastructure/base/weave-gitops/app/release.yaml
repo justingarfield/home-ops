@@ -3,13 +3,13 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &helmReleaseName weave-gitops
+  name: weave-gitops
   namespace: weave-gitops
 spec:
   interval: 30m
   chart:
     spec:
-      chart: *helmReleaseName
+      chart: weave-gitops
       version: 4.0.25
       sourceRef:
         kind: HelmRepository
@@ -36,7 +36,7 @@ spec:
         hajimari.io/icon: mdi:sawtooth-wave
         cert-manager.io/cluster-issuer: home-arpa
       hosts:
-        - host: &host "*helmReleaseName-staging.${INTERNAL_DOMAIN}"
+        - host: &host "weave-gitops-staging.${INTERNAL_DOMAIN}"
           paths:
             - path: /
               pathType: Prefix

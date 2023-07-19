@@ -2,13 +2,13 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &helmReleaseName goldilocks
+  name: goldilocks
   namespace: goldilocks
 spec:
   interval: 15m
   chart:
     spec:
-      chart: *helmReleaseName
+      chart: goldilocks
       version: 6.8.0
       sourceRef:
         kind: HelmRepository
@@ -37,7 +37,7 @@ spec:
         annotations:
           cert-manager.io/cluster-issuer: home-arpa
         hosts:
-          - host: &host "*helmReleaseName-staging.${INTERNAL_DOMAIN}"
+          - host: &host "goldilocks-staging.${INTERNAL_DOMAIN}"
             paths:
               - path: /
                 type: Prefix
