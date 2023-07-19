@@ -6,3 +6,7 @@ resources:
   # - config-pvc.yaml
   - network-policy.yaml
   - release.yaml
+configMapGenerator:
+  - name: recyclarr-configmap
+    files:
+      - recyclarr.yml=./config/recyclarr.yml

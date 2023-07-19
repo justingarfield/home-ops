@@ -15,14 +15,40 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 3
+  maxHistory: 2
   install:
-    createNamespace: false
+    createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
       retries: 3
   uninstall:
     keepHistory: false
+  values:
+    image:
+      repository: ghcr.io/recyclarr/recyclarr
+      tag: 5.1.1
+    env:
+      TZ: America/New_York
+    envFrom:
+      - secretRef:
+          name: api-keys
+    service:
+      main:
+        enabled: false
+    persistence:
+      config-file:
+        enabled: true
+        type: configMap
+        name: recyclarr-configmap
+        subPath: recyclarr.yml
+        mountPath: /config/recyclarr.yml
+        readOnly: true
+    resources:
+      requests:
+        cpu: 10m
+        memory: 50Mi
+      limits:
+        memory: 200Mi
