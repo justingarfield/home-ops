@@ -20,7 +20,7 @@ prowlarr:
         - name: baseUrl
           value: http://sonarr:8989
         - name: apiKey
-          value: 0b03bd0d793946f28ae66c42ac1f6919
+          value: ${sonarr-api-key}
     - name: Radarr
       syncLevel: addOnly
       implementation: Radarr
@@ -31,7 +31,7 @@ prowlarr:
         - name: baseUrl
           value: http://radarr:7878
         - name: apiKey
-          value: f005d986e1de49ddba1a3ef4b5dc5dee
+          value: ${radarr-api-key}
     - name: Lidarr
       syncLevel: addOnly
       implementation: Lidarr
@@ -42,7 +42,7 @@ prowlarr:
         - name: baseUrl
           value: http://lidarr:8686
         - name: apiKey
-          value: 1411ece6492643f8960bbd7ce6337405
+          value: ${lidarr-api-key}
     - name: Readarr
       syncLevel: addOnly
       implementation: Readarr
@@ -53,4 +53,4 @@ prowlarr:
         - name: baseUrl
           value: http://readarr:8787
         - name: apiKey
-          value: 8f44b6f6539b4acc9047554664a6d4c2
+          value: ${readarr-api-key}
