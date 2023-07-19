@@ -311,20 +311,15 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-flemmarr-app
-  namespace: pvr
+  namespace: flux-system
 spec:
   interval: 12h
   path: ./flux/apps/base/pvr/flemmarr/app
   dependsOn:
-    - name: apps-pvr-sops
+    - name: apps-pvr-ns
   prune: true
   retryInterval: 3m
   sourceRef:
     kind: GitRepository
     name: flux-system
   timeout: 3m
-  postBuild:
-    substituteFrom:
-      - kind: Secret
-        name: api-keys
-        optional: false
