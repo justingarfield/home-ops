@@ -39,35 +39,35 @@ radarr:
       extraFileExtensions: srt
       enableMediaInfo: true
   rootFolder:
-    - path: /media/#
-    - path: /media/A
-    - path: /media/B
-    - path: /media/C
-    - path: /media/D
-    - path: /media/E
-    - path: /media/F
-    - path: /media/G
-    - path: /media/H
-    - path: /media/I
-    - path: /media/J
-    - path: /media/K
-    - path: /media/L
-    - path: /media/M
-    - path: /media/N
-    - path: /media/O
-    - path: /media/P
-    - path: /media/Q
-    - path: /media/R
-    - path: /media/S
-    - path: /media/T
-    - path: /media/U
-    - path: /media/V
-    - path: /media/W
-    - path: /media/X
-    - path: /media/Y
-    - path: /media/Z
     - path: /media/Anime-Movies
     - path: /media/Kids-Movies
+    - path: /media/Movies/#
+    - path: /media/Movies/A
+    - path: /media/Movies/B
+    - path: /media/Movies/C
+    - path: /media/Movies/D
+    - path: /media/Movies/E
+    - path: /media/Movies/F
+    - path: /media/Movies/G
+    - path: /media/Movies/H
+    - path: /media/Movies/I
+    - path: /media/Movies/J
+    - path: /media/Movies/K
+    - path: /media/Movies/L
+    - path: /media/Movies/M
+    - path: /media/Movies/N
+    - path: /media/Movies/O
+    - path: /media/Movies/P
+    - path: /media/Movies/Q
+    - path: /media/Movies/R
+    - path: /media/Movies/S
+    - path: /media/Movies/T
+    - path: /media/Movies/U
+    - path: /media/Movies/V
+    - path: /media/Movies/W
+    - path: /media/Movies/X
+    - path: /media/Movies/Y
+    - path: /media/Movies/Z
 sonarr:
   server:
     address: sonarr.pvr.svc
