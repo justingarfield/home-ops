@@ -44,3 +44,25 @@ radarr:
     - path: /media/B
     - path: /media/C
     - path: /media/D
+    - path: /media/E
+    - path: /media/F
+    - path: /media/G
+    - path: /media/H
+    - path: /media/I
+    - path: /media/J
+    - path: /media/K
+    - path: /media/L
+    - path: /media/M
+    - path: /media/N
+    - path: /media/O
+    - path: /media/P
+    - path: /media/Q
+    - path: /media/R
+    - path: /media/S
+    - path: /media/T
+    - path: /media/U
+    - path: /media/V
+    - path: /media/W
+    - path: /media/X
+    - path: /media/Y
+    - path: /media/Z
