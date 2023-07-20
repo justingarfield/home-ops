@@ -2,12 +2,6 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-vars:
-  - name: sonarr-api-key
-    objref:
-      kind: Secret
-      name: api-keys
-      apiVersion: v1
 namespace: pvr
 resources:
   # - network-policies.yaml
@@ -15,7 +9,19 @@ resources:
   - cronjob.yaml
 configMapGenerator:
   - name: flemmarr-configmap
+    behavior: replace
     files:
       - config.yml=./config/config.yml
 generatorOptions:
   disableNameSuffixHash: true
+replacements:
+  - source:
+      name: api-keys
+      kind: Secret
+      fieldPath: stringData.sonarr-api-key
+    targets:
+      - select:
+          kind: ConfigMap
+          name: flemmarr-configmap
+        fieldPaths:
+          - prowlarr.applications[0].fields.apiKey
