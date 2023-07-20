@@ -118,6 +118,8 @@ spec:
   dependsOn:
     - name: apps-pvr-ns
     - name: apps-pvr-sops
+    - name: apps-radarr-app
+    - name: apps-sonarr-app
   prune: true
   retryInterval: 3m
   sourceRef:
@@ -318,6 +320,9 @@ spec:
   dependsOn:
     - name: apps-pvr-ns
     - name: apps-pvr-sops
+    - name: apps-radarr-app
+    - name: apps-sonarr-app
+    - name: apps-prowlarr-app
   prune: true
   retryInterval: 3m
   sourceRef:
