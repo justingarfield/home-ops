@@ -7,21 +7,3 @@ resources:
   # - network-policies.yaml
   # - release.yaml
   - cronjob.yaml
-configMapGenerator:
-  - name: flemmarr-configmap
-    behavior: replace
-    files:
-      - config.yml=./config/config.yml
-generatorOptions:
-  disableNameSuffixHash: true
-replacements:
-  - source:
-      name: api-keys
-      kind: Secret
-      fieldPath: stringData.sonarr-api-key
-    targets:
-      - select:
-          kind: ConfigMap
-          name: flemmarr-configmap
-        fieldPaths:
-          - prowlarr.applications[0].fields.apiKey
