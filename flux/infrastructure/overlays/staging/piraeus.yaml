@@ -64,7 +64,7 @@ spec:
   interval: 12h
   path: ./flux/infrastructure/base/piraeus/snapshot-controller
   dependsOn:
-    - name: infra-piraeus-snapshot-validation-webhook
+    - name: infra-piraeus-ns
   prune: true
   retryInterval: 3m
   sourceRef:
@@ -83,7 +83,7 @@ spec:
   interval: 12h
   path: ./flux/infrastructure/base/piraeus/snapshot-validation-webhook
   dependsOn:
-    - name: infra-piraeus-ns
+    - name: infra-piraeus-snapshot-controller
   prune: true
   retryInterval: 3m
   sourceRef:
