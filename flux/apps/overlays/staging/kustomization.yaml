@@ -4,8 +4,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - theme-park.yaml
-  - pvr.yaml
-  - pod-gateway.yaml
+  # - pvr.yaml
+  # - pod-gateway.yaml
   - hajimari.yaml
   - kubernetes-schemas.yaml
   - booksonic-air.yaml
