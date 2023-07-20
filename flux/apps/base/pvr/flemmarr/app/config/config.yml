@@ -32,15 +32,15 @@ radarr:
       setPermissionsLinux: false
       chmodFolder: '755'
       chownGroup: ''
-      skipFreeSpaceCheckWhenImporting: true
+      skipFreeSpaceCheckWhenImporting: false
       minimumFreeSpaceWhenImporting: 100
       copyUsingHardlinks: false
       importExtraFiles: false
       extraFileExtensions: srt
       enableMediaInfo: true
-    rootFolder:
-      - path: /media/#/
-      - path: /media/A/
-      - path: /media/B/
-      - path: /media/C/
-      - path: /media/D/
+  rootFolder:
+    - path: /media/#/
+    - path: /media/A/
+    - path: /media/B/
+    - path: /media/C/
+    - path: /media/D/
