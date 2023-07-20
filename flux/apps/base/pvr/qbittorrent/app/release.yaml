@@ -58,3 +58,14 @@ spec:
           - hosts:
               - *host
             secretName: tls-qbittorrent
+    persistence:
+      config:
+        enabled: true
+        type: pvc
+        readOnly: false
+        existingClaim: qbittorrent-config-pvc
+      downloads:
+        enabled: true
+        type: pvc
+        readOnly: false
+        existingClaim: qbittorrent-downloads-pvc

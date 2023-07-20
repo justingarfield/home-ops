@@ -28,3 +28,18 @@ spec:
   resources:
     requests:
       storage: 1Ti
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: lidarr-downloads-pvc
+  namespace: pvr
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: lidarr-smb
+  volumeName: lidarr-downloads-pv
+  resources:
+    requests:
+      storage: 1Ti

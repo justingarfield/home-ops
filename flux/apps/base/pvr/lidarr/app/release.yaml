@@ -69,3 +69,8 @@ spec:
         type: pvc
         readOnly: false
         existingClaim: lidarr-media-pvc
+      downloads:
+        enabled: true
+        type: pvc
+        readOnly: false
+        existingClaim: lidarr-downloads-pvc
