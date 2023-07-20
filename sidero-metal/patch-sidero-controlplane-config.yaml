@@ -12,7 +12,7 @@ machine:
     disk: /dev/sda
     image: ghcr.io/siderolabs/installer:v1.4.6
   kubelet:
-    image: ghcr.io/siderolabs/kubelet:v1.27.3
+    image: ghcr.io/siderolabs/kubelet:v1.27.4
 cluster:
   allowSchedulingOnMasters: true
   apiServer:
