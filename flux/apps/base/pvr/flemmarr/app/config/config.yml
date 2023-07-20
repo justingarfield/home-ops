@@ -66,3 +66,20 @@ radarr:
     - path: /media/X
     - path: /media/Y
     - path: /media/Z
+    - path: /media/Anime-Movies
+    - path: /media/Kids-Movies
+sonarr:
+  server:
+    address: sonarr.pvr.svc
+    port: 8989
+  config:
+    host:
+      analyticsEnabled: false
+      instanceName: sonarr
+    ui:
+      theme: dark
+  rootFolder:
+    - path: /media/Anime-TV
+    - path: /media/Kids-Television
+    - path: /media/Television
+    - path: /media/TV-Archives

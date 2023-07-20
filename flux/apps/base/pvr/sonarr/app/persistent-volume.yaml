@@ -58,7 +58,7 @@ spec:
     readOnly: false
     volumeHandle: sonarr-media-pv
     volumeAttributes:
-      source: //nas.home.arpa/Media/Television
+      source: //nas.home.arpa/Media
     nodeStageSecretRef:
       name: smbcreds-sonarr
       namespace: pvr

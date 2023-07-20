@@ -58,7 +58,7 @@ spec:
     readOnly: false
     volumeHandle: radarr-media-pv
     volumeAttributes:
-      source: //nas.home.arpa/Media/Movies
+      source: //nas.home.arpa/Media
     nodeStageSecretRef:
       name: smbcreds-radarr
       namespace: pvr
