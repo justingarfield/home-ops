@@ -4,24 +4,418 @@ metadata:
     name: flemmarr-config
     namespace: pvr
 data:
-    config.yml: ENC[AES256_GCM,data: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,iv:1BZnoMXoBs/I16QXT+bqraO6L5l/D7r7zsvZhvNIga4=,tag:aYel3uLamYdrFggUV+vS5A==,type:str]
-sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age:
-        - recipient: age1ntkvvzktwzhmzq9gcygrtpwxu3k8ghx9p0khk7jqjf5hgxklggvsv6zhvz
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA0cDdFNHp6OEJBTS80S2FG
-            RGo0dHRHWXh2TmMyL01nblN6UWZxNXI0L1NRCjZZaE5XRWdCRlZCK202amVOM1gy
-            dGNHWmZudS8xVWdIaVorTFJEcXR3VTAKLS0tIHh0NlRndHVKa0NKaERtZytobFZM
-            ODlLYjQ4Q1UxcEViR2h3aFNSQU02OTAK5QAkGAli2i1gOC5/PWJWwjBZ2iHXsQLI
-            1my/SWuG8Bx/qzyDD1CDT+OBE9Rsi3qcxmYyATdeSoJOuWnWUWiGvA==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-07-20T19:23:19Z"
-    mac: ENC[AES256_GCM,data:DHcuwudAJFA0NDT0WL9G6Dp+TbAax/GA50fQFnzUzC9OKumYmdZ3ESwKg57vnAUiVjIfEI5WpX0yWLTO0kFH+ASStIxAmU62XsAVEzg4oL1rpnTRg49/rXVlOjKnr0vYEKeTRIDqKYaFi6coWebF/J+b7f8bo7Y0Q+wbvHAGzOg=,iv:eT2PQsEtgY7sTMw4zPamWNYBtwjp3yccR9IH/eIuVy8=,tag:L6J5ZXjxy2l4FRM14viBBg==,type:str]
-    pgp: []
-    encrypted_regex: ^(data|stringData)$
-    version: 3.7.3
+    config.yml: |
+        ---
+        radarr:
+          server:
+            address: radarr.pvr.svc
+            port: 7878
+          config:
+            host:
+              analyticsEnabled: false
+              instanceName: radarr
+            ui:
+              theme: dark
+            naming:
+              renameMovies: true
+              replaceIllegalCharacters: true
+              colonReplacementFormat: delete
+              # https://trash-guides.info/Radarr/Radarr-recommended-naming-scheme/
+              standardMovieFormat: "{Movie CleanTitle} {(Release Year)} {imdb-{ImdbId}} {edition-{Edition Tags}} {[Custom Formats]}{[Quality Full]}{[MediaInfo 3D]}{[MediaInfo VideoDynamicRangeType]}{[Mediainfo AudioCodec}{ Mediainfo AudioChannels}][{Mediainfo VideoCodec}]{-Release Group}"
+              movieFolderFormat: "{Movie CleanTitle} ({Release Year})"
+              includeQuality: false
+              replaceSpaces: false
+            mediamanagement:
+              autoUnmonitorPreviouslyDownloadedMovies: true
+              recycleBin: ''
+              recycleBinCleanupDays: 7
+              downloadPropersAndRepacks: doNotPrefer
+              createEmptyMovieFolders: false
+              deleteEmptyFolders: true
+              fileDate: none
+              rescanAfterRefresh: always
+              autoRenameFolders: false
+              pathsDefaultStatic: false
+              setPermissionsLinux: false
+              chmodFolder: '755'
+              chownGroup: ''
+              skipFreeSpaceCheckWhenImporting: false
+              minimumFreeSpaceWhenImporting: 100
+              copyUsingHardlinks: false
+              importExtraFiles: false
+              extraFileExtensions: srt
+              enableMediaInfo: true
+          rootFolder:
+            - path: /media/Anime-Movies
+            - path: /media/Kids-Movies
+            - path: /media/Movies/#
+            - path: /media/Movies/A
+            - path: /media/Movies/B
+            - path: /media/Movies/C
+            - path: /media/Movies/D
+            - path: /media/Movies/E
+            - path: /media/Movies/F
+            - path: /media/Movies/G
+            - path: /media/Movies/H
+            - path: /media/Movies/I
+            - path: /media/Movies/J
+            - path: /media/Movies/K
+            - path: /media/Movies/L
+            - path: /media/Movies/M
+            - path: /media/Movies/N
+            - path: /media/Movies/O
+            - path: /media/Movies/P
+            - path: /media/Movies/Q
+            - path: /media/Movies/R
+            - path: /media/Movies/S
+            - path: /media/Movies/T
+            - path: /media/Movies/U
+            - path: /media/Movies/V
+            - path: /media/Movies/W
+            - path: /media/Movies/X
+            - path: /media/Movies/Y
+            - path: /media/Movies/Z
+        sonarr:
+          server:
+            address: sonarr.pvr.svc
+            port: 8989
+          config:
+            host:
+              analyticsEnabled: false
+              instanceName: sonarr
+            ui:
+              theme: dark
+          rootFolder:
+            - path: /media/Anime-TV
+            - path: /media/Kids-Television
+            - path: /media/Television
+            - path: /media/TV-Archives
+        prowlarr:
+          server:
+            address: prowlarr.pvr.svc
+            port: 9696
+          config:
+            host:
+              analyticsEnabled: false
+              instanceName: prowlarr
+            ui:
+              theme: dark
+          tag:
+            - label: flaresolverr
+          applications:
+            - name: Sonarr
+              syncLevel: fullSync
+              implementation: Sonarr
+              configContract: SonarrSettings
+              fields:
+                - name: prowlarrUrl
+                  value: http://prowlarr:9696
+                - name: baseUrl
+                  value: http://sonarr:8989
+                - name: apiKey
+                  value: e967c9b999d04facaab8f50880e63954
+            - name: Radarr
+              syncLevel: fullSync
+              implementation: Radarr
+              configContract: RadarrSettings
+              fields:
+                - name: prowlarrUrl
+                  value: http://prowlarr:9696
+                - name: baseUrl
+                  value: http://radarr:7878
+                - name: apiKey
+                  value: e5d02a7acfae4720adbac72713765578
+            - name: Lidarr
+              syncLevel: fullSync
+              implementation: Lidarr
+              configContract: LidarrSettings
+              fields:
+                - name: prowlarrUrl
+                  value: http://prowlarr:9696
+                - name: baseUrl
+                  value: http://lidarr:8686
+                - name: apiKey
+                  value: 3635c79ead5043e688a6986bf893ef9f
+            - name: Readarr
+              syncLevel: fullSync
+              implementation: Readarr
+              configContract: ReadarrSettings
+              fields:
+                - name: prowlarrUrl
+                  value: http://prowlarr:9696
+                - name: baseUrl
+                  value: http://readarr:8787
+                - name: apiKey
+                  value: 3b0f8774df744266bd974df5c325e7e5
+          downloadclient:
+            - name: qBittorrent
+              enable: true
+              protocol: torrent
+              priority: 1
+              supportsCategories: true
+              implementationName: qBittorrent
+              implementation: QBittorrent
+              configContract: QBittorrentSettings
+              infoLink: https://wiki.servarr.com/prowlarr/supported#qbittorrent
+              fields:
+                - name: host
+                  value: qbittorrent.pvr.svc
+                - name: port
+                  value: 8080
+                - name: useSsl
+                  value: false
+                - name: username
+                  value: admin
+                - name: password
+                  value: adminadmin
+                - name: category
+                  value: prowlarr
+                - name: priority
+                  value: 0
+                - name: initialState
+                  value: 0
+          indexerProxy:
+            - name: FlareSolverr
+              onHealthIssue: false
+              supportsOnHealthIssue: false
+              includeHealthWarnings: false
+              implementationName: FlareSolverr
+              implementation: FlareSolverr
+              configContract: FlareSolverrSettings
+              infoLink: https://wiki.servarr.com/prowlarr/supported#flaresolverr
+              fields:
+                - name: host
+                  value: http://flaresolverr:8191/
+                - name: requestTimeout
+                  value: 60
+              tags:
+                - 1
+          indexer:
+            - name: 1337x
+              implementation: Cardigann
+              configContract: CardigannSettings
+              enable: true
+              fields:
+                - name: definitionFile
+                  value: 1337x
+                - name: sort
+                  value: 2
+                - name: type
+                  value: 1
+                - name: downloadlink
+                  value: 0
+                - name: downloadlink2
+                  value: 1
+              tags:
+                - 1
+            - name: BT.etree
+              implementation: Cardigann
+              configContract: CardigannSettings
+              enable: true
+              fields:
+                - name: definitionFile
+                  value: btetree
+                - name: sort
+                  value: 0
+            - name: BTSOW
+              implementation: Cardigann
+              configContract: CardigannSettings
+              enable: true
+              fields:
+                - name: definitionFile
+                  value: btsow
+            - name: Badass Torrents
+              implementation: Cardigann
+              configContract: CardigannSettings
+              enable: true
+              fields:
+                - name: definitionFile
+                  value: badasstorrents
+                - name: sort
+                  value: 2
+                - name: type
+                  value: 1
+                - name: downloadlink
+                  value: 1
+                - name: downloadlink2
+                  value: 0
+            - name: BitSearch
+              implementation: Cardigann
+              configContract: CardigannSettings
+              enable: true
+              fields:
+                - name: definitionFile
+                  value: bitsearch
+                - name: sort
+                  value: 0
+                - name: type
+                  value: 1
+            - name: BullTorrent
+              implementation: Cardigann
+              configContract: CardigannSettings
+              enable: true
+              fields:
+                - name: definitionFile
+                  value: bulltorrent
+                - name: sort
+                  value: 0
+                - name: type
+                  value: 1
+            - name: EXT Torrents
+              implementation: Cardigann
+              configContract: CardigannSettings
+              enable: true
+              fields:
+                - name: definitionFile
+                  value: exttorrents
+                - name: sort
+                  value: 0
+                - name: type
+                  value: 1
+              tags:
+                - 1
+            - name: EZTV
+              implementation: Cardigann
+              configContract: CardigannSettings
+              enable: true
+              fields:
+                - name: definitionFile
+                  value: eztv
+            - name: ExtraTorrent.st
+              implementation: Cardigann
+              configContract: CardigannSettings
+              enable: true
+              fields:
+                - name: definitionFile
+                  value: extratorrent-st
+            - name: GloDLS
+              implementation: Cardigann
+              configContract: CardigannSettings
+              enable: true
+              fields:
+                - name: definitionFile
+                  value: glodls
+                - name: sort
+                  value: 0
+                - name: type
+                  value: 1
+            - name: Internet Archive
+              implementation: Cardigann
+              configContract: CardigannSettings
+              enable: true
+              fields:
+                - name: definitionFile
+                  value: internetarchive
+                - name: titleOnly
+                  value: true
+                - name: noMagnet
+                  value: false
+                - name: sort
+                  value: 2
+                - name: type
+                  value: 1
+            - name: Knaben
+              implementation: Cardigann
+              configContract: CardigannSettings
+              enable: true
+              fields:
+                - name: definitionFile
+                  value: knaben
+                - name: sort
+                  value: 1
+                - name: type
+                  value: 1
+            - name: LimeTorrents
+              implementation: Cardigann
+              configContract: CardigannSettings
+              enable: true
+              fields:
+                - name: definitionFile
+                  value: limetorrents
+                - name: downloadlink
+                  value: 1
+                - name: downloadlink2
+                  value: 0
+                - name: sort
+                  value: 0
+            - name: LimeTorrents clone
+              implementation: Cardigann
+              configContract: CardigannSettings
+              enable: true
+              fields:
+                - name: definitionFile
+                  value: limetorrentsclone
+                - name: downloadlink
+                  value: 1
+                - name: downloadlink2
+                  value: 0
+                - name: sort
+                  value: 0
+            - name: MixtapeTorrent
+              implementation: Cardigann
+              configContract: CardigannSettings
+              enable: true
+              fields:
+                - name: definitionFile
+                  value: mixtapetorrent
+            - name: Solid Torrents
+              implementation: Cardigann
+              configContract: CardigannSettings
+              enable: true
+              fields:
+                - name: definitionFile
+                  value: solidtorrents
+                - name: sort
+                  value: 0
+                - name: type
+                  value: 1
+            - name: The Pirate Bay
+              appProfileId: 1
+              implementation: Cardigann
+              configContract: CardigannSettings
+              enable: true
+              fields:
+                - name: definitionFile
+                  value: thepiratebay
+            - name: Torlock
+              appProfileId: 1
+              implementation: Cardigann
+              configContract: CardigannSettings
+              enable: true
+              fields:
+                - name: definitionFile
+                  value: torlock
+                - name: sort
+                  value: 0
+                - name: type
+                  value: 1
+            - name: Torrent Downloads
+              appProfileId: 1
+              implementation: Cardigann
+              configContract: CardigannSettings
+              enable: true
+              fields:
+                - name: definitionFile
+                  value: torrentdownloads
+                - name: downloadlink
+                  value: 1
+                - name: downloadlink2
+                  value: 0
+            - name: TorrentDownload
+              appProfileId: 1
+              implementation: Cardigann
+              configContract: CardigannSettings
+              enable: true
+              fields:
+                - name: definitionFile
+                  value: torrentdownload
+                - name: sort
+                  value: 1
+            - name: TorrentFunk
+              appProfileId: 1
+              implementation: Cardigann
+              configContract: CardigannSettings
+              enable: true
+              fields:
+                - name: definitionFile
+                  value: torrentfunk
