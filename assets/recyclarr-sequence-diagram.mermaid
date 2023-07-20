@@ -1,0 +1,11 @@
+sequenceDiagram
+    Operator->>+Radarr: Create 'Remux + WEB 1080p' Quality Profile
+    Operator->>+Sonarr: Create 'WEB-DL (1080p)' Quality Profile
+
+    Recyclarr->>+Radarr: Configure 'Remux + WEB 1080p' Quality Profile
+    Recyclarr->>+Sonarr: Configure 'WEB-DL (1080p)' Quality Profile
+
+    Flemmarr->>+Radarr: Configure Settings
+
+    Flemmarr->>+Sonarr: Configure Settings
+    Operator->>+Sonarr: Configure CF Weights

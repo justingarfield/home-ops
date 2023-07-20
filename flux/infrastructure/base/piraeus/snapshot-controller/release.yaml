@@ -28,6 +28,9 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  dependsOn:
+    # See: https://github.com/piraeusdatastore/helm-charts/tree/main/charts/snapshot-controller#usage
+    - name: snapshot-controller-webhook
   # See: https://github.com/piraeusdatastore/helm-charts/tree/snapshot-validation-webhook-1.7.4/charts/snapshot-controller
   values:
     nodeSelector:

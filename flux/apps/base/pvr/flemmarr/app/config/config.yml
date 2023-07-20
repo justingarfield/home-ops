@@ -1,0 +1,101 @@
+---
+radarr:
+  server:
+    address: radarr-staging.home.arpa
+    port: 7878
+  config:
+    host:
+      analyticsEnabled: false
+      instanceName: radarr
+    ui:
+      theme: dark
+    naming:
+      renameMovies: true
+      replaceIllegalCharacters: true
+      colonReplacementFormat: delete
+      # https://trash-guides.info/Radarr/Radarr-recommended-naming-scheme/
+      standardMovieFormat: "{Movie CleanTitle} {(Release Year)} {imdb-{ImdbId}} {edition-{Edition Tags}} {[Custom Formats]}{[Quality Full]}{[MediaInfo 3D]}{[MediaInfo VideoDynamicRangeType]}{[Mediainfo AudioCodec}{ Mediainfo AudioChannels}][{Mediainfo VideoCodec}]{-Release Group}"
+      movieFolderFormat: "{Movie CleanTitle} ({Release Year})"
+      includeQuality: false
+      replaceSpaces: false
+    mediamanagement:
+      autoUnmonitorPreviouslyDownloadedMovies: true
+      recycleBin: ''
+      recycleBinCleanupDays: 7
+      downloadPropersAndRepacks: doNotPrefer
+      createEmptyMovieFolders: false
+      deleteEmptyFolders: true
+      fileDate: none
+      rescanAfterRefresh: always
+      autoRenameFolders: false
+      pathsDefaultStatic: false
+      setPermissionsLinux: false
+      chmodFolder: '755'
+      chownGroup: ''
+      skipFreeSpaceCheckWhenImporting: true
+      minimumFreeSpaceWhenImporting: 100
+      copyUsingHardlinks: false
+      importExtraFiles: false
+      extraFileExtensions: srt
+      enableMediaInfo: true
+    rootfolder:
+      - path: /media/#
+      - path: /media/A
+      - path: /media/B
+      - path: /media/C
+      - path: /media/D
+prowlarr:
+  server:
+    address: prowlarr
+    port: 9696
+  config:
+    host:
+      analyticsEnabled: false
+      instanceName: prowlarr
+    ui:
+      theme: dark
+  applications:
+    - name: Sonarr
+      syncLevel: addOnly
+      implementation: Sonarr
+      configContract: SonarrSettings
+      fields:
+        - name: prowlarrUrl
+          value: http://prowlarr:9696
+        - name: baseUrl
+          value: http://sonarr:8989
+        - name: apiKey
+          value: ${sonarr-api-key}
+    - name: Radarr
+      syncLevel: addOnly
+      implementation: Radarr
+      configContract: RadarrSettings
+      fields:
+        - name: prowlarrUrl
+          value: http://prowlarr:9696
+        - name: baseUrl
+          value: http://radarr:7878
+        - name: apiKey
+          value: ${radarr-api-key}
+    - name: Lidarr
+      syncLevel: addOnly
+      implementation: Lidarr
+      configContract: LidarrSettings
+      fields:
+        - name: prowlarrUrl
+          value: http://prowlarr:9696
+        - name: baseUrl
+          value: http://lidarr:8686
+        - name: apiKey
+          value: ${lidarr-api-key}
+    - name: Readarr
+      syncLevel: addOnly
+      implementation: Readarr
+      configContract: ReadarrSettings
+      fields:
+        - name: prowlarrUrl
+          value: http://prowlarr:9696
+        - name: baseUrl
+          value: http://readarr:8787
+        - name: apiKey
+          value: ${readarr-api-key}

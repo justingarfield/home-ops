@@ -10,6 +10,6 @@ resources:
 configMapGenerator:
   - name: flemmarr-configmap
     files:
-      - config.yml=./config.yaml
+      - config.yml=./config/config.yml
 generatorOptions:
   disableNameSuffixHash: true

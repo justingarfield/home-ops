@@ -69,7 +69,7 @@ radarr:
       type: movie
     quality_profiles:
       - name: Remux + WEB 1080p
-        reset_unmatched_scores: false
+        reset_unmatched_scores: true
     custom_formats:
       # Remux + WEB 1080p - Advanced Audio
       - trash_ids:
