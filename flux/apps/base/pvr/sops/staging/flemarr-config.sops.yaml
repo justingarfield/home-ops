@@ -4,24 +4,191 @@ metadata:
     name: flemmarr-config
     namespace: pvr
 data:
-    config.yml: ENC[AES256_GCM,data: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,iv:I8Z/i9y9M1oARwByO78HQd2i2Ht12YDkJrtNtlX6yw4=,tag:uGcFUTcRDLjWoi3FdXyPmA==,type:str]
-sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age:
-        - recipient: age1ntkvvzktwzhmzq9gcygrtpwxu3k8ghx9p0khk7jqjf5hgxklggvsv6zhvz
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB5b0I4VFl3VFJVMkROOVFY
-            QlVpa1NRaHVsK2FwODVXeG9hRFR1cFM0NEdRCklnc2UxTTltYXZrelpFL0RlNXlu
-            bDJmNktZZG54dlhXL2EzamozNjcza2sKLS0tIHkvc2F4YmdLR2xCcDI1ZjJsMFFV
-            ajQybGdjc014MTZSVm1VQWo1a2ltMkEKGzewjl8h/vYM5iII75DiNQ3kTQYTBDuS
-            qMBMcJR0BkCV0dLzVoW6EO+Te3u3Tfnj02kzxxKFVVqRfz9JglN+kA==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-07-20T16:33:29Z"
-    mac: ENC[AES256_GCM,data:L33dc3Bc7p9cQpsqdGDLQCLzwBhXJkdqsy68j+w7kvJa+77Y/+FTrqcdarZvLkKWRw2SofUGHv6WbNf9GkJmG87TqGzQZ+91cYyH+9p29Xe3+VETWEamBgi4ME9zLl5XWsHtALpbycaCESPU0ce1TsA9tByCkwAPEHE+FxSIKFE=,iv:vgqHeBfMK/1xI6/IWJ+tbIoemV+oG+p6qwYzeSnNCyU=,tag:7IutRYskMXe3+aO+pfOSdA==,type:str]
-    pgp: []
-    encrypted_regex: ^(data|stringData)$
-    version: 3.7.3
+    config.yml: |
+        ---
+        radarr:
+          server:
+            address: radarr.pvr.svc
+            port: 7878
+          config:
+            host:
+              analyticsEnabled: false
+              instanceName: radarr
+            ui:
+              theme: dark
+            naming:
+              renameMovies: true
+              replaceIllegalCharacters: true
+              colonReplacementFormat: delete
+              # https://trash-guides.info/Radarr/Radarr-recommended-naming-scheme/
+              standardMovieFormat: "{Movie CleanTitle} {(Release Year)} {imdb-{ImdbId}} {edition-{Edition Tags}} {[Custom Formats]}{[Quality Full]}{[MediaInfo 3D]}{[MediaInfo VideoDynamicRangeType]}{[Mediainfo AudioCodec}{ Mediainfo AudioChannels}][{Mediainfo VideoCodec}]{-Release Group}"
+              movieFolderFormat: "{Movie CleanTitle} ({Release Year})"
+              includeQuality: false
+              replaceSpaces: false
+            mediamanagement:
+              autoUnmonitorPreviouslyDownloadedMovies: true
+              recycleBin: ''
+              recycleBinCleanupDays: 7
+              downloadPropersAndRepacks: doNotPrefer
+              createEmptyMovieFolders: false
+              deleteEmptyFolders: true
+              fileDate: none
+              rescanAfterRefresh: always
+              autoRenameFolders: false
+              pathsDefaultStatic: false
+              setPermissionsLinux: false
+              chmodFolder: '755'
+              chownGroup: ''
+              skipFreeSpaceCheckWhenImporting: false
+              minimumFreeSpaceWhenImporting: 100
+              copyUsingHardlinks: false
+              importExtraFiles: false
+              extraFileExtensions: srt
+              enableMediaInfo: true
+          rootFolder:
+            - path: /media/Anime-Movies
+            - path: /media/Kids-Movies
+            - path: /media/Movies/#
+            - path: /media/Movies/A
+            - path: /media/Movies/B
+            - path: /media/Movies/C
+            - path: /media/Movies/D
+            - path: /media/Movies/E
+            - path: /media/Movies/F
+            - path: /media/Movies/G
+            - path: /media/Movies/H
+            - path: /media/Movies/I
+            - path: /media/Movies/J
+            - path: /media/Movies/K
+            - path: /media/Movies/L
+            - path: /media/Movies/M
+            - path: /media/Movies/N
+            - path: /media/Movies/O
+            - path: /media/Movies/P
+            - path: /media/Movies/Q
+            - path: /media/Movies/R
+            - path: /media/Movies/S
+            - path: /media/Movies/T
+            - path: /media/Movies/U
+            - path: /media/Movies/V
+            - path: /media/Movies/W
+            - path: /media/Movies/X
+            - path: /media/Movies/Y
+            - path: /media/Movies/Z
+        sonarr:
+          server:
+            address: sonarr.pvr.svc
+            port: 8989
+          config:
+            host:
+              analyticsEnabled: false
+              instanceName: sonarr
+            ui:
+              theme: dark
+          rootFolder:
+            - path: /media/Anime-TV
+            - path: /media/Kids-Television
+            - path: /media/Television
+            - path: /media/TV-Archives
+        prowlarr:
+          server:
+            address: prowlarr.pvr.svc
+            port: 9696
+          config:
+            host:
+              analyticsEnabled: false
+              instanceName: prowlarr
+            ui:
+              theme: dark
+          applications:
+            - name: Sonarr
+              syncLevel: addOnly
+              implementation: Sonarr
+              configContract: SonarrSettings
+              fields:
+                - name: prowlarrUrl
+                  value: http://prowlarr:9696
+                - name: baseUrl
+                  value: http://sonarr:8989
+                - name: apiKey
+                  value: e967c9b999d04facaab8f50880e63954
+            - name: Radarr
+              syncLevel: addOnly
+              implementation: Radarr
+              configContract: RadarrSettings
+              fields:
+                - name: prowlarrUrl
+                  value: http://prowlarr:9696
+                - name: baseUrl
+                  value: http://radarr:7878
+                - name: apiKey
+                  value: e5d02a7acfae4720adbac72713765578
+            - name: Lidarr
+              syncLevel: addOnly
+              implementation: Lidarr
+              configContract: LidarrSettings
+              fields:
+                - name: prowlarrUrl
+                  value: http://prowlarr:9696
+                - name: baseUrl
+                  value: http://lidarr:8686
+                - name: apiKey
+                  value: 3635c79ead5043e688a6986bf893ef9f
+            - name: Readarr
+              syncLevel: addOnly
+              implementation: Readarr
+              configContract: ReadarrSettings
+              fields:
+                - name: prowlarrUrl
+                  value: http://prowlarr:9696
+                - name: baseUrl
+                  value: http://readarr:8787
+                - name: apiKey
+                  value: 3b0f8774df744266bd974df5c325e7e5
+          downloadclient:
+            - name: qBittorrent
+              enable: true
+              protocol: torrent
+              priority: 1
+              supportsCategories: true
+              implementationName: qBittorrent
+              implementation: QBittorrent
+              configContract: QBittorrentSettings
+              infoLink: https://wiki.servarr.com/prowlarr/supported#qbittorrent
+              fields:
+                - name: host
+                  value: qbittorrent.pvr.svc
+                - name: port
+                  value: 8080
+                - name: useSsl
+                  value: false
+                - name: urlBase
+                  value: ""
+                - name: username
+                  value: admin
+                - name: password
+                  value: adminadmin
+                - name: category
+                  value: prowlarr
+                - name: priority
+                  value: 0
+                - name: initialState
+                  value: 0
+          tag:
+            - label: flaresolverr
+          indexerProxy:
+            - name: FlareSolverr
+              onHealthIssue: false
+              supportsOnHealthIssue: false
+              includeHealthWarnings: false
+              implementationName: FlareSolverr
+              implementation: FlareSolverr
+              configContract: FlareSolverrSettings
+              infoLink: https://wiki.servarr.com/prowlarr/supported#flaresolverr
+              fields:
+                - name: host
+                  value: http://flaresolverr:8191/
+                - name: requestTimeout
+                  value: 60
+              tags:
+                - 1
