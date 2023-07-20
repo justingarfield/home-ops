@@ -1,7 +1,7 @@
 ---
 radarr:
   server:
-    address: radarr-staging.home.arpa
+    address: radarr.pvr.svc
     port: 7878
   config:
     host:
