@@ -39,8 +39,8 @@ radarr:
       extraFileExtensions: srt
       enableMediaInfo: true
   rootFolder:
-    - path: /media/#/
-    - path: /media/A/
-    - path: /media/B/
-    - path: /media/C/
-    - path: /media/D/
+    - path: /media/#
+    - path: /media/A
+    - path: /media/B
+    - path: /media/C
+    - path: /media/D
