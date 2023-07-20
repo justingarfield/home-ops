@@ -48,6 +48,8 @@ spec:
   path: ./flux/apps/base/pvr/flaresolverr/app
   dependsOn:
     - name: apps-pvr-ns
+    - name: pod-gateway
+      namespace: pod-gateway
   prune: true
   retryInterval: 3m
   sourceRef:
@@ -68,6 +70,8 @@ spec:
   dependsOn:
     - name: apps-pvr-ns
     - name: infra-cert-manager-app
+    - name: pod-gateway
+      namespace: pod-gateway
   prune: true
   retryInterval: 3m
   sourceRef:
@@ -93,6 +97,8 @@ spec:
   dependsOn:
     - name: apps-pvr-ns
     - name: infra-cert-manager-app
+    - name: pod-gateway
+      namespace: pod-gateway
   prune: true
   retryInterval: 3m
   sourceRef:
@@ -120,6 +126,8 @@ spec:
     - name: apps-pvr-sops
     - name: apps-radarr-app
     - name: apps-sonarr-app
+    - name: pod-gateway
+      namespace: pod-gateway
   prune: true
   retryInterval: 3m
   sourceRef:
@@ -141,6 +149,8 @@ spec:
     - name: apps-pvr-ns
     - name: apps-pvr-sops
     - name: infra-cert-manager-app
+    - name: pod-gateway
+      namespace: pod-gateway
   prune: true
   retryInterval: 3m
   sourceRef:
@@ -171,6 +181,8 @@ spec:
     - name: apps-radarr-uhd-app
     - name: apps-sonarr-app
     - name: apps-sonarr-uhd-app
+    - name: pod-gateway
+      namespace: pod-gateway
   prune: true
   retryInterval: 3m
   sourceRef:
@@ -196,6 +208,8 @@ spec:
     - name: apps-pvr-ns
     - name: apps-pvr-sops
     - name: infra-cert-manager-app
+    - name: pod-gateway
+      namespace: pod-gateway
   prune: true
   retryInterval: 3m
   sourceRef:
@@ -221,6 +235,8 @@ spec:
     - name: apps-pvr-ns
     - name: apps-pvr-sops
     - name: infra-cert-manager-app
+    - name: pod-gateway
+      namespace: pod-gateway
   prune: true
   retryInterval: 3m
   sourceRef:
@@ -246,6 +262,8 @@ spec:
     - name: apps-pvr-ns
     - name: apps-pvr-sops
     - name: infra-cert-manager-app
+    - name: pod-gateway
+      namespace: pod-gateway
   prune: true
   retryInterval: 3m
   sourceRef:
@@ -271,6 +289,8 @@ spec:
     - name: apps-pvr-ns
     - name: apps-pvr-sops
     - name: infra-cert-manager-app
+    - name: pod-gateway
+      namespace: pod-gateway
   prune: true
   retryInterval: 3m
   sourceRef:
@@ -296,6 +316,8 @@ spec:
     - name: apps-pvr-ns
     - name: apps-pvr-sops
     - name: infra-cert-manager-app
+    - name: pod-gateway
+      namespace: pod-gateway
   prune: true
   retryInterval: 3m
   sourceRef:
