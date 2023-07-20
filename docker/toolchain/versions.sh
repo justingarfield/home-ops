@@ -29,10 +29,10 @@ HELM_VERSION=v3.12.2
 HUBBLE_VERSION=v0.12.0
 
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
-KUBEADM_VERSION=v1.27.3
+KUBEADM_VERSION=v1.27.4
 
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
-KUBECTL_VERSION=v1.27.3
+KUBECTL_VERSION=v1.27.4
 
 # renovate: datasource=github-releases depName=mozilla/sops
 SOPS_VERSION=v3.7.3
