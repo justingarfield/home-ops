@@ -83,3 +83,25 @@ sonarr:
     - path: /media/Kids-Television
     - path: /media/Television
     - path: /media/TV-Archives
+prowlarr:
+  server:
+    address: prowlarr.pvr.svc
+    port: 9696
+  config:
+    host:
+      analyticsEnabled: false
+      instanceName: prowlarr
+    ui:
+      theme: dark
+  applications:
+    - name: Sonarr
+      syncLevel: addOnly
+      implementation: Sonarr
+      configContract: SonarrSettings
+      fields:
+        - name: prowlarrUrl
+          value: http://prowlarr:9696
+        - name: baseUrl
+          value: http://sonarr:8989
+        - name: apiKey
+          value: $(sonarr-api-key)

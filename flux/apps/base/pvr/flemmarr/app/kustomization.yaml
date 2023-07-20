@@ -2,6 +2,12 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+vars:
+  - name: sonarr-api-key
+    objref:
+      kind: Secret
+      name: api-keys
+      apiVersion: v1
 namespace: pvr
 resources:
   # - network-policies.yaml
