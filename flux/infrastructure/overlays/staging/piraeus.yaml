@@ -61,6 +61,7 @@ metadata:
   name: infra-piraeus-snapshot-controller
   namespace: flux-system
 spec:
+  suspend: true
   interval: 12h
   path: ./flux/infrastructure/base/piraeus/snapshot-controller
   dependsOn:
@@ -80,6 +81,7 @@ metadata:
   name: infra-piraeus-snapshot-validation-webhook
   namespace: flux-system
 spec:
+  suspend: true
   interval: 12h
   path: ./flux/infrastructure/base/piraeus/snapshot-validation-webhook
   dependsOn:
