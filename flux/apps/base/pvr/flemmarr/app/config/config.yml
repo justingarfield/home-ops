@@ -38,7 +38,7 @@ radarr:
       importExtraFiles: false
       extraFileExtensions: srt
       enableMediaInfo: true
-    rootfolder:
+    rootFolder:
       - path: /media/#
       - path: /media/A
       - path: /media/B
