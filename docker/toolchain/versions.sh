@@ -2,7 +2,7 @@
 AGE_VERSION=v1.1.1
 
 # renovate: datasource=github-releases depName=cilium/cilium-cli
-CILIUM_CLI_VERSION=v0.15.3
+CILIUM_CLI_VERSION=v0.15.4
 
 # renovate: datasource=github-releases depName=cloudflare/cfssl
 CFSSL_TOOLKIT_VERSION=v1.6.4
