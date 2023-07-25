@@ -15,4 +15,4 @@ machine:
 cluster:
   extraManifests:
     - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/v0.7.1/deploy/standalone-install.yaml
-    - https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.6.3/components.yaml
+    - https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.6.4/components.yaml
