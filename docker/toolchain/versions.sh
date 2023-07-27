@@ -44,7 +44,7 @@ TALOSCTL_VERSION=v1.4.7
 TASK_VERSION=v3.28.0
 
 # renovate: datasource=github-releases depName=hashicorp/terraform
-TERRAFORM_VERSION=v1.5.3
+TERRAFORM_VERSION=v1.5.4
 
 # renovate: datasource=github-releases depName=cilium/tetragon
 TETRAGON_VERSION=v0.10.0
