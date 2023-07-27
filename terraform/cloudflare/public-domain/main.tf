@@ -6,12 +6,12 @@ terraform {
     }
   }
 
-  backend "azurerm" {
-    resource_group_name  = "terraform"
-    storage_account_name = "jpg-home-ops-terraform"
-    container_name       = "terraform-state-files"
-    key                  = "azure-public-domain.tfstate"
-  }
+  # backend "azurerm" {
+  #   resource_group_name  = "terraform"
+  #   storage_account_name = "jpg-home-ops-terraform"
+  #   container_name       = "terraform-state-files"
+  #   key                  = "cloudflare-public-domain.tfstate"
+  # }
 }
 
 provider "cloudflare" {
@@ -230,7 +230,7 @@ resource "cloudflare_record" "txt__dmarc" {
   name    = "_dmarc"
   type    = "TXT"
 
-  value   = "v=DMARC1; p=none; rua=mailto:admin@${var.domain_name}; ruf=mailto:admin@${var.domain_name}; fo=1"
+  value  = "v=DMARC1; p=none; rua=mailto:efe26008e25549ff8529eea4f15ae3b9@dmarc-reports.cloudflare.net; fo=1"
   comment = "Microsoft Exchange - DMARC"
   # tags    = toset([
   #   "production",
@@ -253,4 +253,8 @@ resource "cloudflare_record" "txt_domain_apex" {
   #   "microsoft-exchange",
   #   "spf"
   # ])
+}
+
+resource "cloudflare_zone_dnssec" "zone_dnssec" {
+  zone_id = var.cloudflare_zone_id
 }

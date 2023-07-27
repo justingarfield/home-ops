@@ -10,7 +10,7 @@ terraform {
     resource_group_name  = "terraform"
     storage_account_name = "jpg-home-ops-terraform"
     container_name       = "terraform-state-files"
-    key                  = "azure-private-domain.tfstate"
+    key                  = "cloudflare-private-domain.tfstate"
   }
 }
 
