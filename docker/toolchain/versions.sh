@@ -38,7 +38,7 @@ KUBECTL_VERSION=v1.27.4
 SOPS_VERSION=v3.7.3
 
 # renovate: datasource=github-releases depName=siderolabs/talos
-TALOSCTL_VERSION=v1.4.6
+TALOSCTL_VERSION=v1.4.7
 
 # renovate: datasource=github-releases depName=go-task/task
 TASK_VERSION=v3.28.0
