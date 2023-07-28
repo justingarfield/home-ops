@@ -1,25 +1,10 @@
 FROM alpine:3.18.2 as upgraded-alpine
-ARG AZURE_CLI_VERSION=2.50.0
 RUN set -ex \
     && apk update \
     && apk upgrade \
     && apk add --no-cache \
         bash \
-        openssl \
-        python3 \
-        py3-pip
-
-RUN apk add --no-cache --update --virtual=build \
-        gcc \
-        musl-dev \
-        python3-dev \
-        libffi-dev \
-        openssl-dev \
-        cargo \
-        make
-
-RUN pip3 install --no-cache-dir --prefer-binary azure-cli==${AZURE_CLI_VERSION}
-RUN apk del build
+        openssl
 
 FROM upgraded-alpine as release-binary-fetcher
 COPY ./versions.sh /tmp/versions.sh
