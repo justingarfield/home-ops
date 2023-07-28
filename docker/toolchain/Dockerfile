@@ -12,14 +12,17 @@ RUN /tmp/fetch_binaries.sh
 FROM upgraded-alpine
 RUN apk add zsh git
 COPY --from=release-binary-fetcher /tmp/binaries/* /usr/local/bin/
-USER root
-WORKDIR /root
 
-COPY etc/* /etc/
-COPY root/* /root/
-RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
-RUN echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
+RUN addgroup --g 1000 tcuser
+RUN adduser -u 1000 -G tcuser -h /home/tcuser -D tcuser
+USER tcuser
+WORKDIR /
+
+COPY ./etc/* /etc/
+COPY ./home/tcuser/* /home/tcuser/
+RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /home/tcuser/powerlevel10k
 
 LABEL org.opencontainers.image.source="https://github.com/justingarfield/home-ops"
 
+WORKDIR /home/tcuser
 CMD ["zsh"]
