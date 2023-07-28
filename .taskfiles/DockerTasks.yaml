@@ -12,6 +12,11 @@ tasks:
     cmds:
       - docker build --platform linux/amd64 -t {{.IMAGENAME}}:{{.IMAGE_VERSION}} ./docker/toolchain
 
+  run-toolchain:
+    cmds:
+      - task: build-toolchain
+      - docker run -e TERM -e COLORTERM -e LC_ALL=C.UTF-8 -it --rm {{.IMAGENAME}}:{{.IMAGE_VERSION}}
+
   start-pull-through-caches:
     desc: Starts container registry pull-through cache containers using Docker.
     cmds:
