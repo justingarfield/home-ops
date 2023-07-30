@@ -39,13 +39,16 @@ jobs:
           username: ${{github.actor}}
           password: ${{secrets.GITHUB_TOKEN}}
 
-      - name: Build Image
+      - name: Run Buildx
         run: |
           docker buildx build \
-            --platform linux/amd64,linux/arm64/v8 \
-            --output "type=image,push=true" \
-            --file ./Dockerfile \
-            --tag $GITHUB_REPOSITORY:$GITHUB_SHA \
-            --tag $GITHUB_REPOSITORY:latest \
-            --tag ghcr.io/$GITHUB_REPOSITORY:$GITHUB_SHA \
-            --tag ghcr.io/$GITHUB_REPOSITORY:latest .
+            --platform linux/amd64,linux/arm64 \
+            --output "type=image,push=false" \
+            --file ./Dockerfile .
+
+      - name: Run Buildx
+        run: |
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            --output "type=image,push=false" \
+            --file ./Dockerfile .

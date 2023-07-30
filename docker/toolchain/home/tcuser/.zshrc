@@ -32,12 +32,11 @@ source ~/src/romkatv/powerlevel10k/powerlevel10k.zsh-theme
 [[ $commands[kubeadm] ]] && source <(kubeadm completion zsh)
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
 [[ $commands[talosctl] ]] && source <(talosctl completion zsh)
-
-# Terraform
-autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /usr/local/bin/terraform terraform
-
 [[ $commands[tetra] ]] && source <(tetra completion zsh)
 [[ $commands[yq] ]] && source <(yq shell-completion zsh)
+
+# Terraform is special
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/local/bin/terraform terraform
 
 source /home/tcuser/src/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh
