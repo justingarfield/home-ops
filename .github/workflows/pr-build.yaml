@@ -12,9 +12,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./docker/toolchain
+    # defaults:
+    #   run:
+    #     working-directory: ./docker/toolchain
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2.2.0
@@ -38,6 +38,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v4.1.1
         with:
+          context: ./docker/toolchain
           platforms: linux/amd64,linux/arm64
           push: true
           tags: justingarfield/home-ops-toolchain:latest
