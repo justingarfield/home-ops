@@ -29,6 +29,19 @@ As-such, all scripts and configuration files in this repository have been tokeni
 
 See each sub-directory for an additional `README.md` that describes that area more in-depth.
 
+## Containerized Toolchain
+
+```shell
+docker run \
+    -e TERM \
+    -e COLORTERM \
+    -e LC_ALL=C.UTF-8 \
+    -it --rm \
+    -v ./:/home/tcuser/src/justingarfield/home-ops \
+    -v /mnt/f/temp/zsh-tmp:/home/tcuser/.out-folder \
+    justingarfield/home-ops-toolchain:dev
+```
+
 ## Instructions
 
 This repository assumes it's being run in an [Ubuntu 22.04](https://ubuntu.com/) w/ Bash environment _(or similar. I'm running all of this in Ubuntu 22.04 under Windows Subsystem for Linux)_. Your mileage may vary!

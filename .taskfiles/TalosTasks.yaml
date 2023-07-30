@@ -132,3 +132,49 @@ tasks:
       - talosctl bootstrap --nodes k8s-cp01.{{.INTERNAL_DOMAIN}}
       - task: :_core:message
         vars: { MESSAGE: etcd bootstrap process has started }
+
+  etcd-db-snapshot:
+    desc: Take a reguarly scheduled etcd database backup
+    vars:
+      IP_ADDRESS: '{{.IP_ADDRESS}}'
+    cmds:
+      - talosctl -n {{.IP_ADDRESS}} etcd snapshot db.snapshot
+
+  ### Tasks below here are disaster recovery related
+
+  etcd-db-direct-copy:
+    desc: Only use as a last-resort to get a snapshot (aka your cluster is beyond f**ked)
+    vars:
+      IP_ADDRESS: '{{.IP_ADDRESS}}'
+    cmds:
+      - talosctl -n {{.IP_ADDRESS}} cp /var/lib/etcd/member/snap/db .
+
+  get-machine-configuration-raw:
+    desc:
+    vars:
+      IP_ADDRESS: '{{.IP_ADDRESS}}'
+    cmds:
+      - talosctl -n {{.IP_ADDRESS}} get mc v1alpha1 -o yaml | yq eval '.spec' -
+
+  query-machine-etcd-state:
+    desc:
+    vars:
+      IP_ADDRESS: '{{.IP_ADDRESS}}'
+    cmds:
+      - talosctl -n {{.IP_ADDRESS}} etcd members
+      - talosctl -n {{.IP_ADDRESS}} service etcd
+      - talosctl -n {{.IP_ADDRESS}} get machinetype
+
+  wipe-epehmeral-partition:
+    desc:
+    vars:
+      IP_ADDRESS: '{{.IP_ADDRESS}}'
+    cmds:
+      - talosctl -n {{.IP_ADDRESS}} reset --graceful=false --reboot --system-labels-to-wipe=EPHEMERAL
+
+  bootstrap-with-etcd-backup:
+    desc:
+    vars:
+      IP_ADDRESS: '{{.IP_ADDRESS}}'
+    cmds:
+      - talosctl -n {{.IP_ADDRESS}} bootstrap --recover-from=./db.snapshot

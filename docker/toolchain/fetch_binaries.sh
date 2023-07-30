@@ -119,7 +119,9 @@ get_talosctl() {
 
 get_tetragon() {
     LINK="https://github.com/cilium/tetragon/releases/download/${TETRAGON_VERSION}/tetra-${OS}-${ARCH}.tar.gz"
-    wget $LINK -O $BINARIES_TMP/tetra && \
+    wget $LINK -O /tmp/tetra.tar.gz && \
+    tar -xzf /tmp/tetra.tar.gz tetra
+    mv tetra $BINARIES_TMP && \
     chmod +x $BINARIES_TMP/tetra
 }
 

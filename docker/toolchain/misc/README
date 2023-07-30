@@ -1,0 +1,12 @@
+
+
+If you are seeing this file inside of the running container, it means that no volume has been mapped to the local-copy of this GitHub repository.
+
+Please re-run the container with a volume mapped for `/home/tcuser/src/justingarfield/home-ops`
+
+
+------------------
+
+docker run --image ghcr.io/justingarfield/home-ops-toolchain -v ./:/home/tcuser/src/justingarfield/home-ops
+
+------------------
