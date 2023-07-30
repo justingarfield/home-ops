@@ -11,7 +11,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: ${{ github.repository }}-toolchain
 
 jobs:
   build-and-push-image:
@@ -19,9 +19,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-    # defaults:
-    #   run:
-    #     working-directory: ./docker/toolchain
     steps:
       - name: Checkout GitHub Action
         uses: actions/checkout@v3.5.3
