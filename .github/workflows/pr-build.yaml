@@ -16,6 +16,9 @@ jobs:
     #   run:
     #     working-directory: ./docker/toolchain
     steps:
+      - name: Checkout GitHub Action
+        uses: actions/checkout@v3.5.3
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2.2.0
         with:
