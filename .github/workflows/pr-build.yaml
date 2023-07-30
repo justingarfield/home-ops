@@ -16,9 +16,6 @@ jobs:
       run:
         working-directory: ./docker/toolchain
     steps:
-      - name: Checkout GitHub Action
-        uses: actions/checkout@v3.5.3
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2.2.0
         with:
@@ -38,10 +35,9 @@ jobs:
           username: ${{github.actor}}
           password: ${{secrets.GITHUB_TOKEN}}
 
-      - name: Run Buildx
-        run: |
-          docker buildx build \
-            --platform linux/amd64,linux/arm64 \
-            --output "type=image,push=true" \
-            --tag latest \
-            --file ./Dockerfile .
+      - name: Build and push
+        uses: docker/build-push-action@v4.1.1
+        with:
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: justingarfield/home-ops-toolchain:latest
