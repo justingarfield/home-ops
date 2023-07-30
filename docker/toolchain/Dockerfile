@@ -1,12 +1,11 @@
-# syntax=docker/dockerfile:1
 # Alpine image with update and upgrade performed
-FROM --platform=$TARGETPLATFORM alpine:3.18.2 as upgraded-alpine
+FROM alpine:3.18.2 as upgraded-alpine
 RUN set -ex \
     && apk update \
     && apk upgrade
 
 # Used to download and prep tooling binaries
-FROM --platform=$TARGETPLATFORM upgraded-alpine as release-binary-fetcher
+FROM upgraded-alpine as release-binary-fetcher
 RUN set -ex \
     && apk add bash
 COPY ./versions.sh /tmp/versions.sh
@@ -14,7 +13,7 @@ COPY ./fetch_binaries.sh /tmp/fetch_binaries.sh
 RUN /tmp/fetch_binaries.sh
 
 # Used as final image for end-user
-FROM --platform=$TARGETPLATFORM upgraded-alpine
+FROM upgraded-alpine
 RUN set -ex \
     && apk add zsh git
 COPY --from=release-binary-fetcher /tmp/binaries/* /usr/local/bin/
@@ -32,5 +31,5 @@ COPY --chown=1000:1000 ./misc/README /home/tcuser/src/justingarfield/home-ops/
 
 LABEL org.opencontainers.image.source="https://github.com/justingarfield/home-ops"
 
-WORKDIR /home/tcuser
+WORKDIR /home/tcuser/src/justingarfield/home-ops/
 CMD ["zsh"]
