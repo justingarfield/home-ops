@@ -1,5 +1,5 @@
 ---
-name: PR Build
+name: Build and push toolchain image
 
 on:
   pull_request:
@@ -9,9 +9,16 @@ on:
       - docker/toolchain/**
   workflow_dispatch: { }
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
 jobs:
-  build:
+  build-and-push-image:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     # defaults:
     #   run:
     #     working-directory: ./docker/toolchain
@@ -31,17 +38,24 @@ jobs:
       - name: Available platforms
         run: echo ${{ steps.buildx.outputs.platforms }}
 
-      - name: Login to GitHub Container Registry
+      - name: Log in to the Container registry
         uses: docker/login-action@v2.2.0
         with:
-          registry: ghcr.io
-          username: ${{github.actor}}
-          password: ${{secrets.GITHUB_TOKEN}}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4.6.0
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Build and push container image
         uses: docker/build-push-action@v4.1.1
         with:
           context: ./docker/toolchain
-          platforms: linux/amd64,linux/arm64
           push: true
-          tags: justingarfield/home-ops-toolchain:latest
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
