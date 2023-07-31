@@ -12,7 +12,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}-toolchain
-  FQ_IMAGE_NAME: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+  FQ_IMAGE_NAME: $REGISTRY/$IMAGE_NAME
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
