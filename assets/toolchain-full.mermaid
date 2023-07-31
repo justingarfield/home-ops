@@ -1,0 +1,90 @@
+graph LR
+
+subgraph Sources
+    SourceAge["age"]
+    SourceAlpine["Alpine Linux"]
+    SourceCfssl["cfssl"]
+    SourceCilium["cilium"]
+    SourceClusterctl["clusterctl"]
+    SourceCrictl["crictl"]
+    SourceCritest["critest"]
+    SourceFlux["flux"]
+    SourceGit["git"]
+    SourceGithubCli["github cli"]
+    SourceHelm["helm"]
+    SourceHubble["hubble cli"]
+    SourceKubeadm["kubeadm"]
+    SourceKubectl["kubectl"]
+    SourcePowerLevel10k["power-level-10k"]
+    SourceSops["sops"]
+    SourceTalosctl["talosctl"]
+    SourceTask["task"]
+    SourceTerraform["terraform"]
+    SourceTetragon["tetragon cli"]
+    SourceYq["yq"]
+    SourceZSH["zsh"]
+    SourceAutoSuggest["zsh-auto-suggestion"]
+end
+
+SourceAge["age"] --> Dockerfile
+SourceAlpine["Alpine Linux"] --> Dockerfile
+SourceCfssl["cfssl"] --> Dockerfile
+SourceCilium["cilium"] --> Dockerfile
+SourceClusterctl["clusterctl"] --> Dockerfile
+SourceCrictl["crictl"] --> Dockerfile
+SourceCritest["critest"] --> Dockerfile
+SourceFlux["flux"] --> Dockerfile
+SourceGit["git"] --> Dockerfile
+SourceGithubCli["github cli"] --> Dockerfile
+SourceHelm["helm"] --> Dockerfile
+SourceHubble["hubble cli"] --> Dockerfile
+SourceKubeadm["kubeadm"] --> Dockerfile
+SourceKubectl["kubectl"] --> Dockerfile
+SourcePowerLevel10k["power-level-10k"] --> Dockerfile
+SourceSops["sops"] --> Dockerfile
+SourceTalosctl["talosctl"] --> Dockerfile
+SourceTask["task"] --> Dockerfile
+SourceTerraform["terraform"] --> Dockerfile
+SourceTetragon["tetragon cli"] --> Dockerfile
+SourceYq["yq"] --> Dockerfile
+SourceZSH["zsh"] --> Dockerfile
+SourceAutoSuggest["zsh-auto-suggestion"] --> Dockerfile
+
+Dockerfile --> Repository
+
+subgraph GitHub
+    Repository --> Actions
+
+    Actions --> AgentArm64
+    Actions --> AgentAmd64
+    Actions --> AgentOther
+
+    subgraph Agents
+        AgentArm64["ARM64\nBuild Agent"]
+        AgentAmd64["AMD64\nBuild Agent"]
+        AgentOther["...\nBuild Agent"]
+    end
+
+    AgentArm64 --> Arm64Image
+    AgentAmd64 --> Amd64Image
+    AgentOther --> OtherImage
+
+    subgraph Packages
+        ImageManifest["Image Manifest\nARM64\nAMD64\n..."]
+        Arm64Image["ARM64\nImage"] --> ImageManifest
+        Amd64Image["ARM64\nImage"] --> ImageManifest
+        OtherImage["...\nImage"] --> ImageManifest
+    end
+end
+
+ConsumerLinuxLaptop["Linux Laptop"] --> ImageManifest
+ConsumerWindowsPC["Windows PC"] --> ImageManifest
+Consumer["Apple M2 Macbook"] --> ImageManifest
+Consumer["Raspberry Pi"] --> ImageManifest
+
+subgraph Consumers
+    ConsumerLinuxLaptop["Linux Laptop"]
+    ConsumerWindowsPC["Windows PC"]
+    Consumer["Apple M2 Macbook"]
+    Consumer["Raspberry Pi"]
+end

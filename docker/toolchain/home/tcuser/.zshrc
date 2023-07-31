@@ -1,6 +1,9 @@
 HISTSIZE=1000
 SAVEHIST=1000
-HISTFILE=~/.out-folder/.history
+HISTFILE=~/.history
+if [[ -d "~/.out-folder" ]]; then
+  HISTFILE=~/.out-folder/.history
+fi
 
 # Use modern completion system
 autoload -Uz compinit

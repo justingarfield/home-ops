@@ -1,0 +1,31 @@
+flowchart LR
+
+Sources["age\nAlpine Linux\ncfssl\ncilium\nclusterctl\ncrictl\ncritest\nflux\ngit\ngithub cli\nhelm\nhubble cli\nkubeadm\nkubectl\npower-level-10k\nsops\ntalosctl\ntask\nterraform\ntetragon cli\nyq\nzsh\nzsh-auto-suggestion"]
+Sources --> Dockerfile
+
+Dockerfile --> Repository
+
+subgraph GitHub
+    Repository --> Actions["Actions\nWorkflow"]
+
+    Actions --> AgentArm64
+    Actions --> AgentAmd64
+    Actions --> AgentOther
+
+    subgraph Agents
+        AgentArm64["ARM64\nBuild Agent"]
+        AgentAmd64["AMD64\nBuild Agent"]
+        AgentOther["...\nBuild Agent"]
+    end
+
+    AgentArm64 --> Arm64Image
+    AgentAmd64 --> Amd64Image
+    AgentOther --> OtherImage
+
+    subgraph Packages
+        ImageManifest["Image Manifest\nARM64\nAMD64\n..."]
+        Arm64Image["ARM64\nImage"] --> ImageManifest
+        Amd64Image["ARM64\nImage"] --> ImageManifest
+        OtherImage["...\nImage"] --> ImageManifest
+    end
+end
