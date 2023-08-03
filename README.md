@@ -34,9 +34,17 @@ See each sub-directory for an additional `README.md` that describes each area in
 
 Outside of making sure you have VS Code installed locally, this entire repository can be worked on using what I call the "Home Ops Toolchain". This is a multi-architecture (`amd64`/`arm64`) container image that comes pre-installed with all the same versions of tooling, folder mappings, etc. that I used to work on this stack daily.
 
-The main factor behind working this way, is that I reached my breaking point trying to work across an Windows Desktop PC _(amd64)_, M2 MacBook Air (arm64), and a Linux Laptop (amd64)...not to mention trying to keep all the tooling binary versions in-sync across them all. Now I can just simply run the same version of the container image across all of them, and simply map some volumes into the container to work exactly the same across them all.
+The main factor behind working this way, is that I reached my breaking point trying to work across a Windows Desktop PC _(amd64)_, M2 MacBook Air (arm64), and a Linux Laptop (amd64)...not to mention trying to keep all the tooling binary versions in-sync across them all. Now I can just simply run the same version of the container image across all of them, and simply map some volumes into the container to work exactly the same across them all.
 
 For more information on the Hoem Ops Toolchain and its usage, please see: [`docker/toolchain/README.md`](docker/toolchain/README.md)
+
+## Why does this exist?
+
+When you have a few pieces of software to configure / install on your machine, each using different port numbers, and not really interacting/conflicting with each other...things aren't really a big deal, just simply re-install them if you have to wipe your machine and start fresh.
+
+Eventually you get to a point where multiple applications need to work together, share areas of storage, access each other with secrets (e.g. API keys), bind to the same port as other processes, and/or launch in a certain order _(e.g. Database first, API second, UI third)_. Now things are starting to get a bit complex, so we move all of that into Docker Containers and use Docker Compose to make sure things are started in the right order and what-not.
+
+Now think about tacking on Home Automation hubs, Networked Storage, TLS Certificates, DNS records to allow external consumption while on-the-road, multiple nodes to run applications on so you can perform maintenence without giant outages, etc. This is where I finally broke and invested time in learning Kubernetes, Flux, GitOps, and all the other resources included in this repository. I can now work much faster without fear of screwing it all up, even if I had to rebuild it all from scratch! It also allows me to share all of this publicly (thanks SOPS!) with you, and best-of-all, everything is audited along the way in this GitHub repo :)
 
 ## VirtualBox on Windows Notes
 
@@ -50,15 +58,18 @@ If you're a big fan of Windows Subsystem for Linux (WSL) and/or already using Hy
 
 If you don't care about Hyper-V or WSL, and want to use VirtualBox on Windows 10/11, then you need to eliminate all Hyper-V and Virtualization options under Add/Remove Windows Features / Roles and reboot.
 
+Note: One word of caution if you do use VirtualBox. When configuring your attached HDDs, make sure you know what `Use Host I/O Cache` is _really_ doing before you decide to check that box. If you have workloads running that are writing lots of data, you could potentially lose a buttload of data during an unexpected shut-down. It may "go faster" with this option, but there are reasons.
+
 ### My thoughts on Windows + VirtualBox
 
 IMHO, giving up WSL2 + Docker Desktop integration simply isn't worth the trade-offs. If you need to run other virtualized workloads along-side your K8s Cluster on Windows Desktop, use straight-up Hyper-V or VMWare Workstation.
 
-I honestly tried going the VirtualBox route for 3-months during development of this repository, and the issues don't surface at first, but once you start deploying applications and place load on your cluster(s), Virtual Box starts to have tons of CPU stalls and will blow-out your `vmmem` process in Windows.
+I honestly tried going the VirtualBox route for 3-months during development of this repository, and the issues don't surface at first, but once you start deploying applications and place load on your cluster(s), Virtual Box starts to have tons of CPU stalls due to 10s-of-millions of context-switches happening, and will blow-out your `vmmem` process in Windows choking your CPU.
 
 ## Inspired by
 
 * https://github.com/toboshii/home-ops/tree/main/cluster/flux/flux-system
+* https://github.com/siderolabs/talos/blob/main/Dockerfile
 * https://github.com/onedr0p/home-ops
 * https://github.com/bjw-s/home-ops
 * https://k8s-at-home.com/
