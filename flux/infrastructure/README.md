@@ -21,12 +21,17 @@ This should always be deployed / reconciled _before_ `apps` gets referenced; as 
 │ ├─📁 flux-system
 │ │ ├─📁 alerts                # Alerts used to send Flux-related notifications to Discord, Slack, etc.
 │ │ └─📁 providers             # Providers used by Alerts as the "mechanism" to send their notifications
+│ ├─📁 goldilocks              # Helps you identify a starting point for resource requests and limits
+│ ├─📁 grafana                 # Observability and Dashboards
+│ ├─📁 kube-prometheus-stack   # Currently only using bits-and-pieces of this chart
+│ ├─📁 kubelet-csr-approver    # Enables automatic kubelet CSR validation after a series of security checks
 │ ├─📁 lldap                   # Lightweight auth server provides opinionated/simplified LDAP for authentication
+│ ├─📁 metrics-server          # Container resource metrics for Kubernetes
 │ ├─📁 node-feature-discovery  # A Kubernetes add-on for detecting hardware features and system configuration
 │ ├─📁 piraeus                 # (have not tried yet) Cloud native datastore for Kubernetes
 │ ├─📁 reloader                # Controller to watch changes in ConfigMap/Secrets and do rolling upgrades
-│ ├─📁 rook-ceph               # File, Block, and Object Storage Services for your Cloud-Native Environments
 │ ├─📁 tetragon                # eBPF-based Security Observability and Runtime Enforcement
+│ ├─📁 vertical-pod-autoscaler # Used by goldilocks to collect metrics about monitored namespaces
 │ └─📁 weave-gitops            # https://github.com/weaveworks/weave-gitops (easier to just see their overview)
 └─📁 overlays
   ├─📁 production              # Overlay used to deploy infrastructure base in my Production environment
