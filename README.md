@@ -12,6 +12,7 @@ As-such, all scripts and configuration files in this repository have been tokeni
 
 ```sh
 📂 home-ops
+├─📁 .archive        # Old files I keep around for reference purposes
 ├─📁 .ci             # Continuous Integration (CI) tooling configurations
 ├─📁 .github         # GitHub Workflow and template items
 ├─📁 .taskfiles      # This repo uses Taskfiles vs. Makefiles (see https://taskfile.dev)
@@ -24,22 +25,36 @@ As-such, all scripts and configuration files in this repository have been tokeni
 ├─📁 scripts         # Shell scripts used to aid Taskfiles, where Tasks weren't expressive/scriptable enough
 ├─📁 sidero-metal    # Files from a sidero-metal lab I built, waiting on future physical hardware to deploy
 ├─📁 talos-linux     # Patch files used when generating control-plane and worker configurations for Talos Linux
-└─📁 terraform       # Terraform files to provision Azure-backed State Storage and Cloudflare DNS
+└─📁 terraform       # Terraform files to provision Cloudflare DNS and Azure / Oracle cloud accounts
 ```
 
-See each sub-directory for an additional `README.md` that describes that area more in-depth.
+See each sub-directory for an additional `README.md` that describes each area in greater detail.
 
-## Instructions
+## Usage
 
-This repository assumes it's being run in an [Ubuntu 22.04](https://ubuntu.com/) w/ Bash environment _(or similar. I'm running all of this in Ubuntu 22.04 under Windows Subsystem for Linux)_. Your mileage may vary!
+Outside of making sure you have VS Code installed locally, this entire repository can be worked on using what I call the "Home Ops Toolchain". This is a multi-architecture (`amd64`/`arm64`) container image that comes pre-installed with all the same versions of tooling, folder mappings, etc. that I used to work on this stack daily.
 
-I have moved pretty much everything into [Task](https://taskfile.dev/) at this point. _Note: I'm not 100% sold on using [Task](https://taskfile.dev/) at this point; I've just seen others using it in their projects, and decided to give it a try to see how it goes._
+The main factor behind working this way, is that I reached my breaking point trying to work across an Windows Desktop PC _(amd64)_, M2 MacBook Air (arm64), and a Linux Laptop (amd64)...not to mention trying to keep all the tooling binary versions in-sync across them all. Now I can just simply run the same version of the container image across all of them, and simply map some volumes into the container to work exactly the same across them all.
 
-## Important Notes
+For more information on the Hoem Ops Toolchain and its usage, please see: [`docker/toolchain/README.md`](docker/toolchain/README.md)
 
-VirtualBox on Windows 10/11 with WSL2 is a terrible combination that will lead to insane amounts of CPU stalling, poor memory management, and more. **DO NOT use VirtualBox on Windows 10/11**; use Hyper-V or  VMWare Workstation instead.
+## VirtualBox on Windows Notes
 
-You _can_ use VirtualBox if you eliminate all Hyper-V and Virtualization options under Add/Remove Windows Features (or roles or w/e)...but IMHO, giving up WSL2 + Docker Desktop simply isn't worth the trade-offs. If you need to run other virtualized workloads along-side your K8s Cluster on Windows Desktop, use straight-up Hyper-V or VMWare Workstation. You've been warned...You _will_ encounter insane amounts of f'ed up issues the moment you place load on your cluster(s) using Virtual Box.
+You have two options if running Windows 10/11 regarding VirtualBox usage...
+
+### Option 1: Don't use it
+
+If you're a big fan of Windows Subsystem for Linux (WSL) and/or already using Hyper-V for VMs, make sure you don't install VirtualBox; the combo of software will constantly fight each other, lead to insane amounts of CPU stalling, poor memory management, and more.
+
+### Option 2: Disable Hyper-V and WSL
+
+If you don't care about Hyper-V or WSL, and want to use VirtualBox on Windows 10/11, then you need to eliminate all Hyper-V and Virtualization options under Add/Remove Windows Features / Roles and reboot.
+
+### My thoughts on Windows + VirtualBox
+
+IMHO, giving up WSL2 + Docker Desktop integration simply isn't worth the trade-offs. If you need to run other virtualized workloads along-side your K8s Cluster on Windows Desktop, use straight-up Hyper-V or VMWare Workstation.
+
+I honestly tried going the VirtualBox route for 3-months during development of this repository, and the issues don't surface at first, but once you start deploying applications and place load on your cluster(s), Virtual Box starts to have tons of CPU stalls and will blow-out your `vmmem` process in Windows.
 
 ## Inspired by
 
