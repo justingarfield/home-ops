@@ -66,6 +66,9 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           outputs: type=image,name=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }},push=true,push-by-digest=true,name-canonical=true
+          build-args: |
+            GITHUB_USER_EMAIL: "justin@jgarfield.com"
+            GITHUB_USER_NAME: "Justin Garfield"
 
       - name: Export digest
         run: |
