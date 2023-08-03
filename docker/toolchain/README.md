@@ -24,14 +24,14 @@ docker run \
     -e COLORTERM \
     -e LC_ALL=C.UTF-8 \
     -it --rm \
-    -v ./:/home/tcuser/src/justingarfield/home-ops \
-    -v /home/myuser/home-ops-out-folder:/home/tcuser/.out-folder \
-    ghcr.io/justingarfield/home-ops-toolchain:latest
+    -v /home/jgarfield/src/justingarfield/home-ops:/home/tcuser/src/justingarfield/home-ops \
+    -v /mnt/o/home-ops:/home/tcuser/.out-folder \
+    ghcr.io/justingarfield/home-ops-toolchain:main
 ```
 
 Inside of the container is a `/home/tcuser/src/justingarfield/home-ops` folder, which is the default/expected location of a volume representing the local home-ops repository you've already cloned.
 
-**(Optional)** Another folder expected inside of the container is `/home/tcuser/.out-folder`, you'll want to map that to a local folder you wish to store ZSH History in.
+**(Optional)** Another folder expected inside of the container is `/home/tcuser/.out-folder`, you'll want to map that to a local folder you wish to store ZSH History and output files in.
 
 ## A high-level look
 

@@ -43,3 +43,5 @@ autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/local/bin/terraform terraform
 
 source /home/tcuser/src/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+export PATH=~/.local/bin:$PATH

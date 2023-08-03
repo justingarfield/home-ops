@@ -16,6 +16,18 @@ tasks:
     status:
       - test -d "{{.OUTPUT_DIR}}/{{.DIRECTORY}}"
 
+  ensure-directory-exists2:
+    desc: Creates a directory (and any sub-directories) if needed.
+    internal: true
+    vars:
+      DIRECTORY: '{{.DIRECTORY}}'
+    preconditions:
+      - test "{{.DIRECTORY}}"
+    cmds:
+      - mkdir -p "{{.DIRECTORY}}"
+    status:
+      - test -d "{{.DIRECTORY}}"
+
   message:
     desc: Displays a message to the end-user running the Task.
     internal: true
@@ -44,11 +56,11 @@ tasks:
     internal: true
     cmds:
       - echo -e \
-          "\n\n"
+          "\n"
           "██╗  ██╗ ██████╗ ███╗   ███╗███████╗     ██████╗ ██████╗ ███████╗\n"
           "██║  ██║██╔═══██╗████╗ ████║██╔════╝    ██╔═══██╗██╔══██╗██╔════╝\n"
           "███████║██║   ██║██╔████╔██║█████╗█████╗██║   ██║██████╔╝███████╗\n"
           "██╔══██║██║   ██║██║╚██╔╝██║██╔══╝╚════╝██║   ██║██╔═══╝ ╚════██║\n"
           "██║  ██║╚██████╔╝██║ ╚═╝ ██║███████╗    ╚██████╔╝██║     ███████║\n"
           "╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝     ╚═════╝ ╚═╝     ╚══════╝\n"
-          "\n\n"
+          "\n"

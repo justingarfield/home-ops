@@ -13,7 +13,18 @@ RUN /tmp/fetch_binaries.sh
 
 # Used as final image for end-user
 FROM upgraded-alpine
-RUN set -ex && apk add zsh git
+RUN set -ex \
+    && apk add \
+        zsh \
+        git \
+        # Needed for pre-commit (python apps make me feel dead inside)
+        python3 \
+        py3-pip \
+        python3-dev \
+        gcc \
+        musl-dev \
+        bash
+
 COPY --from=release-binary-fetcher /tmp/binaries/* /usr/local/bin/
 COPY ./etc/* /etc/
 
@@ -26,6 +37,14 @@ COPY --chown=1000:1000 ./home/tcuser/* /home/tcuser/
 RUN git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions /home/tcuser/src/zsh-users/zsh-autosuggestions
 RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /home/tcuser/src/romkatv/powerlevel10k
 COPY --chown=1000:1000 ./misc/README /home/tcuser/src/justingarfield/home-ops/
+
+# Pre-configure Git globals
+ARG GITHUB_USER_EMAIL
+ARG GITHUB_USER_NAME
+RUN git config --global user.email $GITHUB_USER_EMAIL && git config --global user.name $GITHUB_USER_NAME
+
+# Pre-configure pre-commit
+RUN pip install pre-commit
 
 LABEL org.opencontainers.image.source="https://github.com/justingarfield/home-ops"
 

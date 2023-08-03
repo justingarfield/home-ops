@@ -9,8 +9,16 @@ vars:
 tasks:
 
   build-toolchain:
+    desc:
+    vars:
+      GITHUB_USER_EMAIL: '{{.GITHUB_USER_EMAIL}}'
+      GITHUB_USER_NAME: '{{.GITHUB_USER_NAME}}'
     cmds:
-      - docker build --platform linux/amd64 -t {{.IMAGENAME}}:{{.IMAGE_VERSION}} ./docker/toolchain
+      - docker build --platform linux/amd64 \
+          -t {{.IMAGENAME}}:{{.IMAGE_VERSION}} \
+          --build-arg GITHUB_USER_EMAIL='{{.GITHUB_USER_EMAIL}}' \
+          --build-arg GITHUB_USER_NAME='{{.GITHUB_USER_NAME}}' \
+          ./docker/toolchain
 
   run-toolchain:
     cmds:
