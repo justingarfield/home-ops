@@ -6,20 +6,8 @@ terraform {
     }
   }
 
-  # backend "http" {
-  #   address = "https://id9oxdiaaper.objectstorage.us-ashburn-1.oci.customer-oci.com/p/PrDmU0daYQ0D5Am_GJA82nwTJaHcBUwcQQ5tRetZDc6pGchzVgij06Buj8XtuiI8/n/id9oxdiaaper/b/home-ops/o/terraform.tfstate"
-  #   update_method = "PUT"
-  # }
-  backend "s3" {
-    bucket   = "terraform-state"
-    key      = "free-account/terraform.tfstate"
-    region   = "us-ashburn-1"
-    endpoint = "https://id9oxdiaaper.compat.objectstorage.us-ashburn-1.oraclecloud.com"
-    shared_credentials_file     = "./terraform-bucket-credentials"
-    skip_region_validation      = true
-    skip_credentials_validation = true
-    skip_metadata_api_check     = true
-    force_path_style            = true
+  backend "http" {
+    update_method = "PUT"
   }
 }
 
