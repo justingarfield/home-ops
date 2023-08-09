@@ -28,7 +28,7 @@ while [ $attempt -le $retries ]; do
 
     if [ $status -ne 0 ]; then
         printf "[home-ops] Node(s) not ready. Waiting ${sleep_time}-seconds before re-trying...\n"
-        /usr/bin/sleep ${sleep_time}s
+        /bin/sleep ${sleep_time}s
     else
         printf "[home-ops] Node(s) now 'Ready'\n"
         exit 0

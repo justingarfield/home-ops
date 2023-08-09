@@ -1,5 +1,7 @@
 # Home Ops
 
+## Overview
+
 This repository contains configurations, resources, and scripts used to build-out my home environment in a GitOps-based manner.
 
 I currently support two environments that I call `staging` and `production`.
@@ -7,6 +9,8 @@ I currently support two environments that I call `staging` and `production`.
 Staging is a virtualized cluster running in Hyper-V on my desktop PC where I can freely destroy, rebuild, test, and provision things before introducing them to my physical "production" cluster in my basement.
 
 As-such, all scripts and configuration files in this repository have been tokenized where possible (or as far as I was willing to take it depending on context and value).
+
+![Home Lab](assets/home-lab.png)
 
 ## Directory layout
 

@@ -51,3 +51,27 @@ resource "oci_budget_alert_rule" "root_compartment_budget_alert_rule" {
     display_name = "80-percent-budget-forecast"
     description = "Alerts when the Budget Forecast hits 80% or higher."
 }
+
+resource "oci_core_vcn" "home_ops" {
+    compartment_id = oci_identity_compartment.home_ops.id
+
+    cidr_block = "10.0.0.0/16"
+    display_name = "Home Ops"
+    dns_label = "homeops"
+}
+
+resource "oci_core_subnet" "home_ops" {
+    cidr_block = "10.0.0.0/24"
+    compartment_id = oci_identity_compartment.home_ops.id
+    vcn_id = oci_core_vcn.home_ops.id
+
+    display_name = "Home Ops Subnet"
+}
+
+resource "oci_core_internet_gateway" "test_internet_gateway" {
+    compartment_id = oci_identity_compartment.home_ops.id
+    vcn_id = oci_core_vcn.home_ops.id
+
+    enabled = true
+    display_name = "Home Ops Internet Gateway"
+}

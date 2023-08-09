@@ -28,7 +28,7 @@ while [ $attempt -le $retries ]; do
 
     if [ $status -ne 0 ]; then
         printf "[home-ops] Node $1 is not queryable. Waiting ${sleep_time}-seconds before re-trying...\n"
-        /usr/bin/sleep ${sleep_time}s
+        /bin/sleep ${sleep_time}s
     else
         printf "[home-ops] Node $1 is now 'NotReady'\n"
         exit 0

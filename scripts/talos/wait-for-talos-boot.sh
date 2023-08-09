@@ -52,7 +52,7 @@ while [ $attempt -le $retries ]; do
 
     if [ $services_with_ok_health -ne $num_services_to_wait_for ] || ! [ $time_status ]; then
         printf "[home-ops] Waiting for required Talos services on node \"$1\"...\n"
-        /usr/bin/sleep ${sleep_time}s
+        /bin/sleep ${sleep_time}s
     else
         printf "[home-ops] Required Talos services on node \"$1\" are now 'Ready'\n"
         exit 0

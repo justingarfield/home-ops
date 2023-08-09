@@ -1,24 +1,16 @@
 # terraform
 
-## Pre-requisites
-
-This area assumes that you've installed the [terraform](https://developer.hashicorp.com/terraform/downloads) binary...
-
-```shell
-task tooling:install-terraform
-```
-
 ## Directory layout
 
 ```sh
 📂 terraform
-├─📁 azure
-│ └─📁 terraform-state    # Provisions Azure-backed State Storage (if using, run before any other Terraform deployments)
+├─📁 azure                # WAS provisioning my Azure resources, but have moved them to Oracle now
 ├─📁 cloudflare
 │ ├─📁 private-domain     # Provisions all of the DNS records required under my private domain
-│ └─📁 public-domain      # Provisions all of the DNS records required under my public domain
+│ ├─📁 public-domain      # Provisions all of the DNS records required under my public domain
+│ └─📁 zero-trust         # Provisions Cloudflare Zero-Trust for my home network resources
 └─📁 oracle
-  └─📁 free-account       # Coming soon!
+  └─📁 free-account       # Provisions a bare-bones Oracle Cloud account, allowing me to store Terraform State files free
 ```
 
 ## Azure
@@ -45,7 +37,9 @@ Note: Being new to Cloudflare recently, the fastest way I found to grab the reco
 
 ## Oracle
 
-Coming soon! I plan to introduce some of the Oracle Cloud Free Account tier resources here, such as ARM-based Compute.
+The Terraform state files are stored in an Oracle Storage backend, so that I can share the state across environments and CI/CD pipelines.
+
+I was originally storing these in Azure Storage, but that was costing me $2/mo vs. FREE with OCI.
 
 ## References
 
