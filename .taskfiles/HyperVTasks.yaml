@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+tasks:
+
+  enable-winrm:
+    desc: Enable WinRM with negotiate authentication support
+    cmds:
+      - powershell.exe ./scripts/hyper-v/winrm-enable.ps1
+
+  enable-winrm-https:
+    desc: Enable WinRM HTTPS communications
+    cmds:
+      - powershell.exe ./scripts/hyper-v/winrm-https.ps1

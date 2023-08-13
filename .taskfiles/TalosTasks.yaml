@@ -9,7 +9,7 @@ vars:
 tasks:
 
   generate-secrets-bundle-from-pki:
-    desc: Generate a secrets bundle for a Talos environment using a pre-generated Single Root Intermediary CA
+    desc: Generate a secrets bundle for a Talos environment using a pre-generated Single Root Intermediary CA directory
     vars:
       K8S_PKI_DIR: '{{.K8S_PKI_DIR}}'
       _BOOTSTRAP_TOKEN:
@@ -41,7 +41,7 @@ tasks:
       - '{{._OUTPUT_FILENAME}}'
 
   generate-talos-configs:
-    desc: Generate Machine Templates for a particular cluster
+    desc: Generate machine configs for a particular cluster
     vars:
       CLUSTER_NAME: '{{.CLUSTER_NAME | default .ENVIRONMENT_NAME | lower}}'
       CONTROL_PLANE_HOSTNAME: '{{.CONTROL_PLANE_HOSTNAME | default "control-plane"}}'
