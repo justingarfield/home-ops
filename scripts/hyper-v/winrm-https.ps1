@@ -14,7 +14,7 @@
 param (
     [Parameter(Position = 0, Mandatory)]
     [string]
-    $SignerCertThumbprint = "E2E742150117BB5809277AD42D7492C79970C754"
+    $WinRmHttpsCertificateThumbprint = "E9D1AE463E3982A18270CAECEAB8AFBA3A4E63D6"
 )
 
 process {
@@ -26,53 +26,14 @@ process {
       return
   }
 
-  $signingCert = Get-ChildItem -Path Cert:\CurrentUser\CA | Where-Object {$_.Thumbprint -eq $SignerCertThumbprint}
+  $winRmHttpsCertificate = Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Thumbprint -eq $winRmHttpsCertificateThumbprint}
   if ($null -eq $signingCert) {
     Write-Error "Unable to find a Certificate with a Thumbprint of $SignerCertThumbprint"
     return
   }
 
-  #Create host certificate using CA
-  $hostName = [System.Net.Dns]::GetHostName()
-  $hostPassword = ConvertTo-SecureString "P@ssw0rd" -asplaintext -force
-  $hostCertificate = Get-ChildItem cert:\LocalMachine\My |?{$_.subject -eq "CN=$hostName"}
-  if (!$hostCertificate){
-    if (Test-Path .\$hostName.cer) {
-      remove-item .\$hostName.cer -force
-    }
-    if (Test-Path .\$hostName.pfx) {
-      remove-item .\$hostName.pfx -force
-    }
-    $dnsNames = @($hostName, "localhost", "127.0.0.1") + [System.Net.Dns]::GetHostByName($env:computerName).AddressList.IpAddressToString
-
-    $params = @{
-      Type = 'Custom'
-      DnsName = $dnsNames
-      Subject = "CN=$hostName"
-      KeyExportPolicy = 'Exportable'
-      CertStoreLocation = 'Cert:\LocalMachine\My'
-      KeyUsageProperty = 'All'
-      KeyUsage = @('KeyEncipherment','DigitalSignature','NonRepudiation')
-      TextExtension = @("2.5.29.37={text}1.3.6.1.5.5.7.3.1,1.3.6.1.5.5.7.3.2")
-      Signer = $signingCert
-      # Provider = 'Microsoft Strong Cryptographic Provider'
-      Provider = 'Microsoft Enhanced RSA and AES Cryptographic Provider'
-      KeySpec = 'KeyExchange'
-      KeyLength = 2048
-      HashAlgorithm = 'SHA256'
-      KeyAlgorithm = 'RSA'
-      NotAfter = (Get-date).AddYears(2)
-    }
-    $hostCertificate = New-SelfSignedCertificate @params
-    Export-Certificate -Cert $hostCertificate -FilePath .\$hostName.cer -Verbose
-    Export-PfxCertificate -Cert $hostCertificate -FilePath .\$hostName.pfx -Password $hostPassword -Verbose
-    Get-ChildItem cert:\LocalMachine\My |?{$_.subject -eq "CN=$hostName"} | remove-item -force
-    Import-PfxCertificate -FilePath .\$hostName.pfx -CertStoreLocation Cert:\LocalMachine\My -password $hostPassword -Exportable -Verbose
-    $hostCertificate = Get-ChildItem cert:\LocalMachine\My |?{$_.subject -eq "CN=$hostName"}
-  }
-  return
   Get-ChildItem wsman:\localhost\Listener\ | Where-Object -Property Keys -eq 'Transport=HTTPS' | Remove-Item -Recurse
-  New-Item -Path WSMan:\localhost\Listener -Transport HTTPS -Address * -CertificateThumbPrint $($hostCertificate.Thumbprint) -Force -Verbose
+  New-Item -Path WSMan:\localhost\Listener -Transport HTTPS -Address * -CertificateThumbPrint $($winRmHttpsCertificate.Thumbprint) -Force -Verbose
 
   Restart-Service WinRM -Verbose
 

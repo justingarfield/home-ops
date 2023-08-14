@@ -46,7 +46,7 @@
                 ],
                 "expiry": "8766h"
             },
-            "win-rm": {
+            "winrm": {
                 "usages": [
                     "digital signature",
                     "key encipherment",

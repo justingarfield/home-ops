@@ -7,8 +7,19 @@ vars:
   PKI_OUT_DIR: '{{.ENV_OUTPUT_DIR}}/pki'
   CFSSL_PROFILES: '{{.PKI_SRC_DIR}}/cfssl-profiles.json'
   CFSSL_TEMPLATES: '{{.PKI_SRC_DIR}}/cfssl-templates'
-  CFSSL_LOG_LEVEL: '{{.CFSSL_LOG_LEVEL | default 1}}' # Set to 1 to see INFO output from cfssl
+  CFSSL_LOG_LEVEL: '{{.CFSSL_LOG_LEVEL | default 2}}' # Set to 1 to see INFO output from cfssl
   _CFSSL_BLANK_TEMPLATE: '{ "key": { "algo": "rsa", "size": 4096 } }'
+  _YQ_TOKENIZATION: | # https://stackoverflow.com/questions/70032588/use-yq-to-substitute-string-in-a-yaml-file
+        (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_COUNTRY_CODE>", "{{.ORGANIZATION_COUNTRY_CODE}}")
+        | (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_STATE_PROVINCE_CODE>", "{{.ORGANIZATION_STATE_PROVINCE_CODE}}")
+        | (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_LOCATION>", "{{.ORGANIZATION_LOCATION}}")
+        | (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_NAME>", "{{.ORGANIZATION_NAME}}")
+        | (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_ADMINISTRATIVE_EMAIL>", "{{.ORGANIZATION_ADMINISTRATIVE_EMAIL}}")
+        | (.. | select(tag == "!!str")) |= sub("<INTERMEDIARY_NAME>", "{{.INTERMEDIARY_NAME}}")
+        | (.. | select(tag == "!!str")) |= sub("<CERT_CN>", "{{.CERT_CN}}")
+        | (.. | select(tag == "!!str")) |= sub("<SERVER_NAME>", "{{.SERVER_NAME}}")
+        | (.. | select(tag == "!!str")) |= sub("<SERVER_IP>", "{{.SERVER_IP}}")
+        | (.. | select(tag == "!!str")) |= sub("<ENVIRONMENT_NAME>", "{{.ENVIRONMENT_NAME}}")
 
 tasks:
 
@@ -25,15 +36,6 @@ tasks:
       INTERMEDIARY_NAME: '{{.INTERMEDIARY_NAME | default " "}}' # Optional
       CERT_CN: '{{.CERT_CN | default " "}}' # Optional
       ENVIRONMENT_NAME: '{{.ENVIRONMENT_NAME | default " "}}' # Optional
-      _YQ_TOKENIZATION: | # https://stackoverflow.com/questions/70032588/use-yq-to-substitute-string-in-a-yaml-file
-        (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_COUNTRY_CODE>", "{{.ORGANIZATION_COUNTRY_CODE}}")
-        | (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_STATE_PROVINCE_CODE>", "{{.ORGANIZATION_STATE_PROVINCE_CODE}}")
-        | (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_LOCATION>", "{{.ORGANIZATION_LOCATION}}")
-        | (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_NAME>", "{{.ORGANIZATION_NAME}}")
-        | (.. | select(tag == "!!str")) |= sub("<ORGANIZATION_ADMINISTRATIVE_EMAIL>", "{{.ORGANIZATION_ADMINISTRATIVE_EMAIL}}")
-        | (.. | select(tag == "!!str")) |= sub("<INTERMEDIARY_NAME>", "{{.INTERMEDIARY_NAME}}")
-        | (.. | select(tag == "!!str")) |= sub("<CERT_CN>", "{{.CERT_CN}}")
-        | (.. | select(tag == "!!str")) |= sub("<ENVIRONMENT_NAME>", "{{.ENVIRONMENT_NAME}}")
     preconditions:
       - sh: test '{{.ORGANIZATION_NAME}}'
         msg: Please provide a valid ORGANIZATION_NAME
@@ -193,38 +195,38 @@ tasks:
   generate-winrm-certificate:
     desc: Generates a Certificate for WinRM HTTPS usage
     vars:
-      SIGNING_KEY_FILENAME: '{{.SIGNING_KEY_FILENAME}}'
+      SIGNING_KEY_FILENAME: '{{.PKI_OUT_DIR}}/{{.SIGNING_KEY_FILENAME}}'
       SERVER_NAME: '{{.SERVER_NAME}}'
       SERVER_IP: '{{.SERVER_IP}}'
       OUTPUT_FILENAME: '{{.PKI_OUT_DIR}}/{{.OUTPUT_FILENAME}}'
     preconditions:
-      - sh: test '{{ .SIGNING_KEY_FILENAME }}'
+      - sh: test '{{.SIGNING_KEY_FILENAME}}'
         msg: Please provide a valid SIGNING_KEY_FILENAME
-      - sh: test '{{ .SERVER_NAME }}'
+      - sh: test '{{.SERVER_NAME}}'
         msg: Please provide a valid SERVER_NAME
-      - sh: test '{{ .SERVER_IP }}'
+      - sh: test '{{.SERVER_IP}}'
         msg: Please provide a valid SERVER_IP
-      - sh: test '{{ .ORGANIZATION_ADMINISTRATIVE_EMAIL }}'
+      - sh: test '{{.ORGANIZATION_ADMINISTRATIVE_EMAIL}}'
         msg: Please provide a valid ORGANIZATION_ADMINISTRATIVE_EMAIL
-      - sh: test '{{ .ORGANIZATION_NAME }}'
+      - sh: test '{{.ORGANIZATION_NAME}}'
         msg: Please provide a valid ORGANIZATION_NAME
-      - sh: test '{{ .ORGANIZATION_LOCATION }}'
+      - sh: test '{{.ORGANIZATION_LOCATION}}'
         msg: Please provide a valid ORGANIZATION_LOCATION
-      - sh: test '{{ .ORGANIZATION_STATE_PROVINCE_CODE }}'
+      - sh: test '{{.ORGANIZATION_STATE_PROVINCE_CODE}}'
         msg: Please provide a valid ORGANIZATION_STATE_PROVINCE_CODE
-      - sh: test '{{ .ORGANIZATION_COUNTRY_CODE }}'
+      - sh: test '{{.ORGANIZATION_COUNTRY_CODE}}'
         msg: Please provide a valid ORGANIZATION_COUNTRY_CODE
     cmds:
       - task: :_core:ensure-directory-exists2
         vars: { DIRECTORY: "{{.OUTPUT_FILENAME | dir}}" }
-      - |
-        yq eval '{{._YQ_TOKENIZATION}}' "{{.CFSSL_TEMPLATES}}/win-rm-csr.json" --output-format=json \
-          | cfssl gencert -loglevel={{.CFSSL_LOG_LEVEL}} -ca "{{.PKI_OUT_DIR}}/{{.SIGNING_KEY_FILENAME}}.pem" -ca-key "{{.PKI_OUT_DIR}}/{{.SIGNING_KEY_FILENAME}}-key.pem" \
-            -config "{{.CFSSL_PROFILES}}" -profile=win-rm - \
-          | cfssljson -bare "{{.OUTPUT_FILENAME}}"
-      - task: :_core:message
-        vars: { MESSAGE: 'WinRM Certificate CSR created........................ {{.OUTPUT_FILENAME}}.csr' }
-      - task: :_core:message
-        vars: { MESSAGE: 'WinRM Certificate Public key created................. {{.OUTPUT_FILENAME}}.pem' }
-      - task: :_core:message
-        vars: { MESSAGE: 'WinRM Certificate Private key created................ {{.OUTPUT_FILENAME}}-key.pem' }
+      - ./scripts/pki/winrm-https.sh \
+          --SIGNING_PUBLIC_KEY_FILENAME "{{.SIGNING_KEY_FILENAME}}.pem" \
+          --SIGNING_PRIVATE_KEY_FILENAME "{{.SIGNING_KEY_FILENAME}}-key.pem" \
+          --OUTPUT_FILENAME "{{.OUTPUT_FILENAME}}" \
+          --SERVER_NAME "{{.SERVER_NAME}}" \
+          --SERVER_IP {{.SERVER_IP}} \
+          --ORGANIZATION_ADMINISTRATIVE_EMAIL {{.ORGANIZATION_ADMINISTRATIVE_EMAIL}} \
+          --ORGANIZATION_NAME "{{.ORGANIZATION_NAME}}" \
+          --ORGANIZATION_LOCATION "{{.ORGANIZATION_LOCATION}}" \
+          --ORGANIZATION_STATE_PROVINCE_CODE "{{.ORGANIZATION_STATE_PROVINCE_CODE}}" \
+          --ORGANIZATION_COUNTRY_CODE "{{.ORGANIZATION_COUNTRY_CODE}}"
