@@ -7,7 +7,7 @@ vars:
   PKI_OUT_DIR: '{{.ENV_OUTPUT_DIR}}/pki'
   CFSSL_PROFILES: '{{.PKI_SRC_DIR}}/cfssl-profiles.json'
   CFSSL_TEMPLATES: '{{.PKI_SRC_DIR}}/cfssl-templates'
-  CFSSL_LOG_LEVEL: '{{.CFSSL_LOG_LEVEL | default 2}}' # Set to 1 to see INFO output from cfssl
+  CFSSL_LOG_LEVEL: '{{.CFSSL_LOG_LEVEL | default 1}}' # Set to 1 to see INFO output from cfssl
   _CFSSL_BLANK_TEMPLATE: '{ "key": { "algo": "rsa", "size": 4096 } }'
 
 tasks:
@@ -189,3 +189,42 @@ tasks:
       - mv {{._KUBERNETES_PKI_DIR}}/front-proxy-ca.pem {{._KUBERNETES_PKI_DIR}}/front-proxy-ca.crt
       - task: :_core:message
         vars: { MESSAGE: Kubernetes PKI folder ready for talosctl consumption\n }
+
+  generate-winrm-certificate:
+    desc: Generates a Certificate for WinRM HTTPS usage
+    vars:
+      SIGNING_KEY_FILENAME: '{{.SIGNING_KEY_FILENAME}}'
+      SERVER_NAME: '{{.SERVER_NAME}}'
+      SERVER_IP: '{{.SERVER_IP}}'
+      OUTPUT_FILENAME: '{{.PKI_OUT_DIR}}/{{.OUTPUT_FILENAME}}'
+    preconditions:
+      - sh: test '{{ .SIGNING_KEY_FILENAME }}'
+        msg: Please provide a valid SIGNING_KEY_FILENAME
+      - sh: test '{{ .SERVER_NAME }}'
+        msg: Please provide a valid SERVER_NAME
+      - sh: test '{{ .SERVER_IP }}'
+        msg: Please provide a valid SERVER_IP
+      - sh: test '{{ .ORGANIZATION_ADMINISTRATIVE_EMAIL }}'
+        msg: Please provide a valid ORGANIZATION_ADMINISTRATIVE_EMAIL
+      - sh: test '{{ .ORGANIZATION_NAME }}'
+        msg: Please provide a valid ORGANIZATION_NAME
+      - sh: test '{{ .ORGANIZATION_LOCATION }}'
+        msg: Please provide a valid ORGANIZATION_LOCATION
+      - sh: test '{{ .ORGANIZATION_STATE_PROVINCE_CODE }}'
+        msg: Please provide a valid ORGANIZATION_STATE_PROVINCE_CODE
+      - sh: test '{{ .ORGANIZATION_COUNTRY_CODE }}'
+        msg: Please provide a valid ORGANIZATION_COUNTRY_CODE
+    cmds:
+      - task: :_core:ensure-directory-exists2
+        vars: { DIRECTORY: "{{.OUTPUT_FILENAME | dir}}" }
+      - |
+        yq eval '{{._YQ_TOKENIZATION}}' "{{.CFSSL_TEMPLATES}}/win-rm-csr.json" --output-format=json \
+          | cfssl gencert -loglevel={{.CFSSL_LOG_LEVEL}} -ca "{{.PKI_OUT_DIR}}/{{.SIGNING_KEY_FILENAME}}.pem" -ca-key "{{.PKI_OUT_DIR}}/{{.SIGNING_KEY_FILENAME}}-key.pem" \
+            -config "{{.CFSSL_PROFILES}}" -profile=win-rm - \
+          | cfssljson -bare "{{.OUTPUT_FILENAME}}"
+      - task: :_core:message
+        vars: { MESSAGE: 'WinRM Certificate CSR created........................ {{.OUTPUT_FILENAME}}.csr' }
+      - task: :_core:message
+        vars: { MESSAGE: 'WinRM Certificate Public key created................. {{.OUTPUT_FILENAME}}.pem' }
+      - task: :_core:message
+        vars: { MESSAGE: 'WinRM Certificate Private key created................ {{.OUTPUT_FILENAME}}-key.pem' }

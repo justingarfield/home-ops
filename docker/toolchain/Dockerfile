@@ -17,6 +17,7 @@ RUN set -ex \
     && apk add \
         zsh \
         git \
+        openssl \
         # Needed for pre-commit (python apps make me feel dead inside)
         python3 \
         py3-pip \

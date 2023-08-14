@@ -13,6 +13,8 @@ param (
 )
 
 process {
+    $ErrorActionPreference = "Stop"
+
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     if (-not ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator))) {
         Write-Error "This script MUST be run as Administrator!"

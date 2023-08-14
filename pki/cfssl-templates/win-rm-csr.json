@@ -1,15 +1,18 @@
 {
-    "CN": "<CLIENT_NAME>@<SITE_NAME>.<CERT_CN>",
+    "CN": "<SERVER_NAME>",
     "key": {
         "algo": "rsa",
         "size": 4096
     },
     "hosts": [
-        ""
+        "<SERVER_NAME>",
+        "<SERVER_IP>",
+        "localhost",
+        "127.0.0.1"
     ],
     "names": [
         {
-            "OU": "<CERT_CN>",
+            "OU": "<SERVER_NAME>",
             "E":  "<ORGANIZATION_ADMINISTRATIVE_EMAIL>",
             "O":  "<ORGANIZATION_NAME>",
             "L":  "<ORGANIZATION_LOCATION>",

@@ -16,9 +16,7 @@ task tooling:install-cfssl-toolkit
 │ ├─📄 kubernetes-intermediate-ca-csr.json   #
 │ ├─📄 root-ca-csr.json                      #
 │ ├─📄 root-client-certificate-csr.json      #
-│ ├─📄 server-certificate-csr.json           #
-│ ├─📄 site-client-certificate-csr.json      #
-│ └─📄 site-intermediate-ca-csr.json         #
+│ └─📄 server-certificate-csr.json           #
 └─📄 cfssl-profiles.json                     # cfssl certificate profiles used when generating certificates
 ```
 
