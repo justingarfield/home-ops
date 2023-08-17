@@ -1,4 +1,10 @@
 #####
+#
+# IMPORTANT: I didn't end up using the Terraform HyperV Provider, as its backing
+#            Python library requires configuring 'WinRM/Config/Service/Auth' to
+#            'Basic' and 'WinRM/Config/Service:AllowUnencrypted' to '$true' which
+#            is a really dumb move in today's security posture.
+#
 # This script is for use on a local Windows Desktop 10+ or Windows Server 2016+ instance.
 #
 # It enables HTTPS communication for WinRM, so that Hyper-V may be provisioned using Terraform.
@@ -9,12 +15,10 @@
 #
 #####
 
-# Note: I still need to do a cleanup pass on this to allow proper usage of Params, etc.
-
 param (
     [Parameter(Position = 0, Mandatory)]
     [string]
-    $WinRmHttpsCertificateThumbprint = "E9D1AE463E3982A18270CAECEAB8AFBA3A4E63D6"
+    $WinRmHttpsCertificateThumbprint = ""
 )
 
 process {
@@ -36,6 +40,11 @@ process {
   New-Item -Path WSMan:\localhost\Listener -Transport HTTPS -Address * -CertificateThumbPrint $($winRmHttpsCertificate.Thumbprint) -Force -Verbose
 
   Restart-Service WinRM -Verbose
+
+  if (Get-NetFirewallRule -Name "WinRMHTTPSIn") {
+    Write-Output "WinRMHTTPSIn firewall rule already exists. Skipping..."
+    return
+  }
 
   New-NetFirewallRule -DisplayName "Windows Remote Management (HTTPS-In)" -Name "WinRMHTTPSIn" -Profile Any -LocalPort 5986 -Protocol TCP -Verbose
 }

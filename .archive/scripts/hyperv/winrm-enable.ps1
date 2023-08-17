@@ -1,13 +1,18 @@
 #####
 #
+# IMPORTANT: I didn't end up using the Terraform HyperV Provider, as its backing
+#            Python library requires configuring 'WinRM/Config/Service/Auth' to
+#            'Basic' and 'WinRM/Config/Service:AllowUnencrypted' to '$true' which
+#            is a really dumb move in today's security posture.
+#
 # This script is for use on a local Windows Desktop 10+ or Windows Server 2016+ instance.
 #
-# It enables WinRM with negotiate authentication supportm, so that Hyper-V may be provisioned using Terraform.
+# It enables WinRM with negotiate authentication support.
 #
 #####
 
 param (
-    [Parameter(Position = 0, Mandatory)]
+    [Parameter(Position = 0)]
     [string]
     $ComputerName = "localhost"
 )
@@ -54,4 +59,20 @@ process {
         Write-Output "WinRM/Config/Service/Auth:Negotiate not set to $true. Configuring..."
         Set-WSManInstance WinRM/Config/Service/Auth -ValueSet @{Negotiate = $true}
     }
+
+    #=== These are required by the python library backing the Terraform HyperV Provider (so I'm not using it)
+
+    # if ((Get-WSManInstance WinRM/Config/Service/Auth).Basic -eq $true) {
+    #     Write-Output "WinRM/Config/Service/Auth:Basic already set to $true. Skipping..."
+    # } else {
+    #     Write-Output "WinRM/Config/Service/Auth:Basic not set to $true. Configuring..."
+    #     Set-WSManInstance WinRM/Config/Service/Auth -ValueSet @{Basic = $true}
+    # }
+
+    # if ((Get-WSManInstance WinRM/Config/Service).AllowUnencrypted -eq $true) {
+    #     Write-Output "WinRM/Config/Service:AllowUnencrypted already set to $true. Skipping..."
+    # } else {
+    #     Write-Output "WinRM/Config/Service:AllowUnencrypted not set to $true. Configuring..."
+    #     Set-WSManInstance WinRM/Config/Service -ValueSet @{AllowUnencrypted = $true}
+    # }
 }

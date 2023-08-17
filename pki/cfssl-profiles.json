@@ -11,7 +11,7 @@
                     "cert sign",
                     "crl sign"
                 ],
-                "expiry": "35064h",
+                "expiry": "17532h",
                 "ca_constraint": {
                     "is_ca": true,
                     "max_path_len": 1
@@ -25,7 +25,7 @@
                     "client auth",
                     "server auth"
                 ],
-                "expiry": "17532h"
+                "expiry": "8766h"
             },
             "server": {
                 "usages": [
@@ -35,7 +35,7 @@
                     "cert sign",
                     "crl sign"
                 ],
-                "expiry": "17532h"
+                "expiry": "8766h"
             },
             "client": {
                 "usages": [

@@ -6,11 +6,13 @@ SIGNING_PUBLIC_KEY_FILENAME=${SIGNING_PUBLIC_KEY_FILENAME:-}
 SIGNING_PRIVATE_KEY_FILENAME=${SIGNING_PRIVATE_KEY_FILENAME:-}
 OUTPUT_FILENAME=${OUTPUT_FILENAME:-}
 
+# See: https://stackoverflow.com/questions/192292/how-best-to-include-other-scripts
 DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
-. "$DIR/_resolve_named_args.sh"
-. "$DIR/_yq_tokenization.sh"
-. "$DIR/_padded_message.sh"
+
+. "$DIR/../_resolve_named_args.sh"
+. "$DIR/../_yq_tokenization.sh"
+. "$DIR/../_padded_message.sh"
 
 yq_tokenize "./pki/cfssl-templates/winrm-https-csr.json" \
     | cfssl gencert -loglevel=$CFSSL_LOG_LEVEL -ca "$SIGNING_PUBLIC_KEY_FILENAME" -ca-key "$SIGNING_PRIVATE_KEY_FILENAME" -config "$CFSSL_PROFILES" -profile=winrm - \

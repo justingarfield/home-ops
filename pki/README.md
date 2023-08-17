@@ -59,6 +59,7 @@ OUTPUT_FILENAME=another-intermediary/another-intermediary task pki:generate-and-
 
 ## References
 
+* https://github.com/cloudflare/cfssl/blob/master/doc/cmd/cfssl.txt
 * https://stackoverflow.com/questions/6616470/certificates-basic-constraints-path-length
 * https://propellered.com/posts/cfssl_setting_up/
 * https://security.stackexchange.com/questions/183681/cfssl-example-certificate-chain-verification-failure

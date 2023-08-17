@@ -1,5 +1,13 @@
 # Home Ops
 
+## !! Important !!
+
+I'm currently re-working a lot of the scripts in this repository to prepare for Talos 1.5 release.
+
+Everything outside of the Flux folder will be "in-play" for a week or two while I hammer out a few items I've been wanting to fix.
+
+Please bear with me and I'll remove this notice once complete.
+
 ## Overview
 
 This repository contains configurations, resources, and scripts used to build-out my home environment in a GitOps-based manner.
