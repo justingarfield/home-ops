@@ -24,20 +24,20 @@ As-such, all scripts and configuration files in this repository have been tokeni
 
 ```sh
 📂 home-ops
-├─📁 .archive        # Old files I keep around for reference purposes
-├─📁 .ci             # Continuous Integration (CI) tooling configurations
-├─📁 .github         # GitHub Workflow and template items
-├─📁 .taskfiles      # This repo uses Taskfiles vs. Makefiles (see https://taskfile.dev)
-├─📁 .vscode         # Recommended extensions and settings for this repo
-├─📁 assets          # Random assets used in repo documentation / charts / graphs
-├─📁 docker          # Docker Compose files used for a local Container Registry and Pull-through-caches
-├─📁 docs            # Folder containing detailed documentation about this repository
-├─📁 flux            # Flux kustomizations used to automatically deploy Kubernetes resources / applications
-├─📁 pki             # Holds Profiles and Templates used with cfssl toolkit to generate self-signed PKI
-├─📁 scripts         # Shell scripts used to aid Taskfiles, some Tasks weren't expressive/scriptable enough
-├─📁 sidero-metal    # Files from a sidero-metal lab I built, waiting on future physical hardware to deploy
-├─📁 talos-linux     # Patch files used when generating control-plane and worker configurations for Talos
-└─📁 terraform       # Terraform files to provision Cloudflare DNS and Azure / Oracle cloud accounts
+├─📁 .archive       # Old files I keep around for reference purposes
+├─📁 .ci            # Continuous Integration (CI) tooling configurations
+├─📁 .github        # GitHub Workflow and template items
+├─📁 .taskfiles     # This repo uses Taskfiles vs. Makefiles (see https://taskfile.dev)
+├─📁 .vscode        # Recommended extensions and settings for this repo
+├─📁 assets         # Random assets used in repo documentation / charts / graphs
+├─📁 docker         # Docker Compose files used for a local Container Registry and Pull-through-caches
+├─📁 docs           # Folder containing detailed documentation about this repository
+├─📁 flux           # Flux kustomizations used to automatically deploy Kubernetes resources / applications
+├─📁 pki            # Holds Profiles and Templates used with cfssl toolkit to generate self-signed PKI
+├─📁 scripts        # Shell scripts used to aid Taskfiles, some Tasks weren't expressive/scriptable enough
+├─📁 sidero-metal   # Files from a sidero-metal lab I built, waiting on future physical hardware to deploy
+├─📁 talos-linux    # Patch files used when generating control-plane and worker configurations for Talos
+└─📁 terraform      # Terraform files to provision Cloudflare DNS and Azure / Oracle cloud accounts
 ```
 
 See each sub-directory for an additional `README.md` that describes each area in greater detail.
