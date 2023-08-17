@@ -1,6 +1,15 @@
 ###
 #
+# PowerShell has turned into a glorious shit-show with the introduction of PowerShell x-platform, DSC 1.1, 2.x, and 3.x
+# spread-across many forums and articles, with many differing solutions depending on system state(s), patch levels, etc.
 #
+# This script will install the prerequisites to use the HyperVDsc module from the DSC Community on a FRESH Windows 11
+# Professional install with Windows Updates applied.
+#
+# Run this script in an elevated instance of "old" PowerShell. HyperV does not support newer PowerShell cmdlets and DSC
+# resources at the time of this writing. Don't even go down that rabbit hole unless you want to rip your hair out.
+#
+# Last tested on a fresh Windows 11 Pro VM on 2023-08-17.
 #
 ###
 
