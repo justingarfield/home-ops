@@ -10,11 +10,12 @@ I may change this down the road if I start to have configuration values that end
 📂 talos-linux
 ├─📄 cilium-opnsense-bgp-peering-policy.patch
 ├─📄 disable-cni-and-kube-proxy.patch
-├─📄 disk-nvme.patch
-├─📄 disk-nvme.patch
-├─📄 disk-sd.patch
-├─📄 disk-sd.patch
-├─📄 disk-sd.patch
+├─📄 disk-nvme0n1.patch
+├─📄 disk-nvme1n1.patch
+├─📄 disk-sdb.patch
+├─📄 disk-sdc.patch
+├─📄 disk-sdd.patch
+├─📄 intel-microcode.patch
 ├─📄 kubelet-unsafe-sysctls.patch
 ├─📄 machine-cert-sans.patch
 ├─📄 registry-mirrors.patch
@@ -56,6 +57,10 @@ Modifies a machine to mount `/dev/nvme0n1` or `/dev/nvme1n1` to a mount-point of
 
 Modifies a machine to mount `/dev/sdb`, `/dev/sdc`, or `/dev/sdd` to a mount-point of `/var/mnt/sdb`, `/var/mnt/sdc`, or `/var/mnt/sdd` respectively.
 
+### intel-microcode
+
+Tells Talos to install the [`intel-ucode` extension](https://github.com/siderolabs/extensions/tree/main/firmware/intel-ucode)
+
 ### kubelet-unsafe-sysctls
 
 Allows certain unsafe sysctls to be used on a cluster node.
@@ -68,7 +73,9 @@ I also add my HA Proxy Static IP address to the ones specified in there; I do th
 
 ### registry-mirrors
 
+Configures pull-through-caches to point to local Docker Desktop instances of Docker Registry Mirrors.
 
+When working through an initial lab setup where you're re-building VMs over-and-over for testing purposes, this reduces your bandwidth usage drastically.
 
 ### system-disk-encryption
 

@@ -2,6 +2,10 @@
 
 This folder contains PowerShell Desired State Configuration (DSC) files to configure a Talos Linux Hyper-V Lab.
 
+**SecureBoot Note**: This will only work with VMs that have SecureBoot disabled. Hyper-V _still_ doesn't allow
+importing your own PK / KEK keys in Hyper-V at the time of this writing. If you want the full Secure Boot
+experience with Talos v1.5.0+ you'll need to use something like QEMU or VMWare Desktop Professional (Paid).
+
 ## Directory layout
 
 ```shell

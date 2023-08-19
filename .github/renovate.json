@@ -27,16 +27,19 @@
     {
       "description": "Group all dependencies from docker/toolchain directory",
       "matchFileNames": ["docker/toolchain/**"],
+      "matchUpdateTypes": ["patch", "minor"],
       "groupName": "toolchain"
     },
     {
       "description": "Group all dependencies from sidero-metal directory",
       "matchFileNames": ["sidero-metal/**"],
+      "matchUpdateTypes": ["patch", "minor"],
       "groupName": "sidero-metal"
     },
     {
       "description": "Group all dependencies from talos-linux directory",
       "matchFileNames": ["talos-linux/**"],
+      "matchUpdateTypes": ["patch", "minor"],
       "groupName": "talos-linux"
     }
   ],
