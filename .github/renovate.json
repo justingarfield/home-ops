@@ -17,14 +17,9 @@
   },
   "packageRules": [
     {
-      "description": "Group all dependencies in the docker/local-registry directory",
-      "matchFileNames": ["docker/local-registry/**"],
-      "groupName": "local-registry dependencies"
-    },
-    {
-      "description": "Group all dependencies in the docker/pull-through-caches directory",
-      "matchFileNames": ["docker/pull-through-caches/**"],
-      "groupName": "pull-through-caches dependencies"
+      "description": "Group all dependencies in the docker/local-registry and docker/pull-through-caches directories",
+      "matchFileNames": ["docker/local-registry/**", "docker/pull-through-caches/**"],
+      "groupName": "local-registry and pull-through-caches dependencies"
     },
     {
       "description": "Group all dependencies from docker/toolchain directory",
