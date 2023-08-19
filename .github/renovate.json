@@ -22,12 +22,12 @@
       "description": "Group all dependencies in the docker/local-registry and docker/pull-through-caches directories",
       "matchFileNames": ["docker/local-registry/**", "docker/pull-through-caches/**"],
       "matchUpdateTypes": ["patch", "minor"],
-      "groupName": "local-registry and pull-through-caches dependencies"
+      "groupName": "docker registry and caches"
     },
     {
       "description": "Group all dependencies from docker/toolchain directory",
       "matchFileNames": ["docker/toolchain/**"],
-      "groupName": "toolchain dependencies"
+      "groupName": "toolchain"
     }
   ],
   "regexManagers": [
