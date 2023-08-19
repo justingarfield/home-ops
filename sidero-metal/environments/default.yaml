@@ -10,6 +10,6 @@ metadata:
   name: default
 spec:
   kernel:
-    url: https://github.com/siderolabs/talos/releases/download/v1.4.7/vmlinuz-amd64
+    url: https://github.com/siderolabs/talos/releases/download/v1.5.0/vmlinuz-amd64
   initrd:
-    url: https://github.com/siderolabs/talos/releases/download/v1.4.7/initramfs-amd64.xz
+    url: https://github.com/siderolabs/talos/releases/download/v1.5.0/initramfs-amd64.xz
