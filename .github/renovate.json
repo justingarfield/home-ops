@@ -10,7 +10,7 @@
     "dependencyDashboardApproval": true
   },
   "flux": {
-    "fileMatch": ["flux/.+\\.yaml$"]
+    "fileMatch": ["./flux/.+\\.yaml$"]
   },
   "packageRules": [
     {
@@ -80,16 +80,6 @@
       "matchStrings": [
         "https:\/\/raw.githubusercontent.com\/(?<depName>.*\/.*?)\/(?<currentValue>.*)\/.+",
         "https:\/\/github.com\/(?<depName>.*\/.*?)\/releases\/download\/(?<currentValue>.*)\/.+"
-      ],
-      "datasourceTemplate": "github-releases"
-    },
-
-
-
-    {
-      "fileMatch": ["^Makefile$"],
-      "matchStrings": [
-        "#\\s?renovate: depName=(?<depName>.*?)\\s?.*?_VERSION=(?<currentValue>.*)"
       ],
       "datasourceTemplate": "github-releases"
     }
