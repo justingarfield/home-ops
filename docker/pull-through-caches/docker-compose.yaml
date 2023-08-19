@@ -4,7 +4,7 @@ services:
   pull-through-cache-gcr.io:
     environment:
       - REGISTRY_PROXY_REMOTEURL=https://gcr.io
-    image: registry:2.8.1
+    image: registry:2.8.2
     ports:
       - 5001:5000
     restart: unless-stopped
@@ -12,7 +12,7 @@ services:
   pull-through-cache-ghcr.io:
     environment:
       - REGISTRY_PROXY_REMOTEURL=https://ghcr.io
-    image: registry:2.8.1
+    image: registry:2.8.2
     ports:
       - 5000:5000
     restart: unless-stopped
@@ -20,7 +20,7 @@ services:
   pull-through-cache-registry-1.docker.io:
     environment:
       - REGISTRY_PROXY_REMOTEURL=https://registry-1.docker.io
-    image: registry:2.8.1
+    image: registry:2.8.2
     ports:
       - 5003:5000
     restart: unless-stopped
@@ -28,7 +28,7 @@ services:
   pull-through-cache-registry.k8s.io:
     environment:
       - REGISTRY_PROXY_REMOTEURL=https://registry.k8s.io
-    image: registry:2.8.1
+    image: registry:2.8.2
     ports:
       - 5002:5000
     restart: unless-stopped
