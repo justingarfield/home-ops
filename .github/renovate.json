@@ -19,7 +19,7 @@
   },
   "packageRules": [
     {
-      "description": "Group all dependencies in the docker/local-registry and docker/pull-through-caches directories",
+      "description": "Group all dependencies from docker/local-registry and docker/pull-through-caches directories",
       "matchFileNames": ["docker/local-registry/**", "docker/pull-through-caches/**"],
       "matchUpdateTypes": ["patch", "minor"],
       "groupName": "docker registry and caches"
@@ -28,6 +28,16 @@
       "description": "Group all dependencies from docker/toolchain directory",
       "matchFileNames": ["docker/toolchain/**"],
       "groupName": "toolchain"
+    },
+    {
+      "description": "Group all dependencies from sidero-metal directory",
+      "matchFileNames": ["sidero-metal/**"],
+      "groupName": "sidero-metal"
+    },
+    {
+      "description": "Group all dependencies from talos-linux directory",
+      "matchFileNames": ["talos-linux/**"],
+      "groupName": "talos-linux"
     }
   ],
   "regexManagers": [
