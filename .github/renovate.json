@@ -10,7 +10,10 @@
     "dependencyDashboardApproval": true
   },
   "flux": {
-    "fileMatch": ["./flux/.+\\.yaml$"]
+    "fileMatch": [
+      "!./archive/**",
+      "flux/.+\\.yaml$"
+    ]
   },
   "packageRules": [
     {
