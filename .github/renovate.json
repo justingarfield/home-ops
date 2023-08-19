@@ -12,6 +12,13 @@
   "flux": {
     "fileMatch": ["flux/.+\\.yaml$"]
   },
+  "packageRules": [
+    {
+      "description": "Group all dependencies from toolchain/versions.sh file",
+      "matchFileNames": ["docker/toolchain/versions.sh"],
+      "groupName": "toolchain dependencies"
+    }
+  ],
   "regexManagers": [
     {
       "fileMatch": ["^docker/.+\\.sh$"],
