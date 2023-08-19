@@ -30,4 +30,4 @@ cluster:
   proxy:
     image: registry.k8s.io/kube-proxy:v1.27.4
   scheduler:
-    image: registry.k8s.io/kube-scheduler:v1.27.4
+    image: registry.k8s.io/kube-scheduler:v1.28.0
