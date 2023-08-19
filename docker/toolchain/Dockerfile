@@ -1,5 +1,5 @@
 # Alpine image with update and upgrade performed
-FROM alpine:3.18.2 as upgraded-alpine
+FROM alpine:3.18.3 as upgraded-alpine
 RUN set -ex \
     && apk update \
     && apk upgrade
