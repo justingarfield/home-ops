@@ -17,8 +17,7 @@
       "fileMatch": ["^docker/.+\\.sh$"],
       "matchStrings": [
         "#\\s?renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)\\s.*?_VERSION=(?<currentValue>.*)"
-      ],
-      "datasourceTemplate": "github-releases"
+      ]
     },
 
 
