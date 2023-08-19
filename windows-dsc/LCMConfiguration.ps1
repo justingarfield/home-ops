@@ -27,4 +27,5 @@ Configuration LCMConfiguration
     }
 }
 
+# Creates corresponding the MOF file
 LCMConfiguration

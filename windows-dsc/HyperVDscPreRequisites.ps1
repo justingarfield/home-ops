@@ -15,8 +15,7 @@
 
 param (
     [Parameter()]
-    [string]
-    [ValidateNotNullorEmpty()]
+    [bool]
     $AddPSGalleryTrust = $true
 )
 
