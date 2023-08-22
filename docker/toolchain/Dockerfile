@@ -15,6 +15,9 @@ RUN /tmp/fetch_binaries.sh
 FROM upgraded-alpine
 RUN set -ex \
     && apk add \
+        docker-cli \
+        docker-cli-buildx \
+        docker-cli-compose \
         zsh \
         git \
         openssl \
@@ -31,7 +34,8 @@ COPY ./etc/* /etc/
 
 # Default user will be 'tcuser', UID/GID 1000 matches WSL / Ubuntu defaults for single user
 RUN addgroup --g 1000 tcuser
-RUN adduser -u 1000 -G tcuser -h /home/tcuser -D tcuser
+RUN addgroup --g 1001 docker
+RUN adduser -u 1000 -G tcuser -G docker -h /home/tcuser -D tcuser
 USER tcuser
 
 COPY --chown=1000:1000 ./home/tcuser/* /home/tcuser/
@@ -42,7 +46,9 @@ COPY --chown=1000:1000 ./misc/README /home/tcuser/src/justingarfield/home-ops/
 # Pre-configure Git globals
 ARG GITHUB_USER_EMAIL
 ARG GITHUB_USER_NAME
-RUN git config --global user.email $GITHUB_USER_EMAIL && git config --global user.name $GITHUB_USER_NAME
+RUN git config --global user.email $GITHUB_USER_EMAIL \
+    && git config --global user.name $GITHUB_USER_NAME \
+    && git config --global init.defaultBranch main
 
 # Pre-configure pre-commit
 RUN pip install pre-commit

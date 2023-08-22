@@ -1,0 +1,44 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+tasks:
+
+  generate-winrm-certificate:
+    desc: Generates a Certificate for WinRM HTTPS usage
+    vars:
+      SIGNING_KEY_FILENAME: '{{.PKI_OUT_DIR}}/{{.SIGNING_KEY_FILENAME}}'
+      SERVER_NAME: '{{.SERVER_NAME}}'
+      SERVER_IP: '{{.SERVER_IP}}'
+      OUTPUT_FILENAME: '{{.PKI_OUT_DIR}}/{{.OUTPUT_FILENAME}}'
+    preconditions:
+      - sh: test '{{.SIGNING_KEY_FILENAME}}'
+        msg: Please provide a valid SIGNING_KEY_FILENAME
+      - sh: test '{{.SERVER_NAME}}'
+        msg: Please provide a valid SERVER_NAME
+      - sh: test '{{.SERVER_IP}}'
+        msg: Please provide a valid SERVER_IP
+      - sh: test '{{.ORGANIZATION_ADMINISTRATIVE_EMAIL}}'
+        msg: Please provide a valid ORGANIZATION_ADMINISTRATIVE_EMAIL
+      - sh: test '{{.ORGANIZATION_NAME}}'
+        msg: Please provide a valid ORGANIZATION_NAME
+      - sh: test '{{.ORGANIZATION_LOCATION}}'
+        msg: Please provide a valid ORGANIZATION_LOCATION
+      - sh: test '{{.ORGANIZATION_STATE_PROVINCE_CODE}}'
+        msg: Please provide a valid ORGANIZATION_STATE_PROVINCE_CODE
+      - sh: test '{{.ORGANIZATION_COUNTRY_CODE}}'
+        msg: Please provide a valid ORGANIZATION_COUNTRY_CODE
+    cmds:
+      - task: :_core:ensure-directory-exists2
+        vars: { DIRECTORY: "{{.OUTPUT_FILENAME | dir}}" }
+      - ./scripts/pki/winrm-https.sh \
+          --SIGNING_PUBLIC_KEY_FILENAME "{{.SIGNING_KEY_FILENAME}}.pem" \
+          --SIGNING_PRIVATE_KEY_FILENAME "{{.SIGNING_KEY_FILENAME}}-key.pem" \
+          --OUTPUT_FILENAME "{{.OUTPUT_FILENAME}}" \
+          --SERVER_NAME "{{.SERVER_NAME}}" \
+          --SERVER_IP {{.SERVER_IP}} \
+          --ORGANIZATION_ADMINISTRATIVE_EMAIL {{.ORGANIZATION_ADMINISTRATIVE_EMAIL}} \
+          --ORGANIZATION_NAME "{{.ORGANIZATION_NAME}}" \
+          --ORGANIZATION_LOCATION "{{.ORGANIZATION_LOCATION}}" \
+          --ORGANIZATION_STATE_PROVINCE_CODE "{{.ORGANIZATION_STATE_PROVINCE_CODE}}" \
+          --ORGANIZATION_COUNTRY_CODE "{{.ORGANIZATION_COUNTRY_CODE}}"

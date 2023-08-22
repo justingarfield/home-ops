@@ -26,12 +26,12 @@ Configuration TalosLinuxCluster
         [Parameter()]
         [string]
         [ValidateNotNullorEmpty()]
-        $TalosLinuxIso = "F:\temp\talos-amd64-v1.4.6.iso",
+        $TalosLinuxIso = "F:\temp\talos-v1.5.0-custom-metal-amd64.iso",
 
         # Because simple things never work in PowerShell DSC modules
         [Parameter()]
         [bool]
-        $AttachIsoFile = $false,
+        $AttachIsoFile = $true,
 
         [Parameter()]
         [HashTable]

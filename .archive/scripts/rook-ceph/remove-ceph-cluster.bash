@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # See: https://www.talos.dev/v1.4/kubernetes-guides/configuration/ceph-with-rook/#cleaning-up
 

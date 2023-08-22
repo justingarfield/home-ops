@@ -61,7 +61,7 @@ spec:
     name: hybrid-cp
   replicas: 1
   # renovate: depName=registry.k8s.io/kube-apiserver
-  version: v1.27.3
+  version: v1.28.0
 ---
 apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
 kind: TalosConfigTemplate
@@ -98,7 +98,7 @@ spec:
         kind: MetalMachineTemplate
         name: hybrid-workers
       # renovate: depName=registry.k8s.io/kube-apiserver
-      version: v1.27.3
+      version: v1.28.0
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
 kind: MetalMachineTemplate

@@ -8,6 +8,7 @@ vars:
 
 tasks:
 
+  ### Secrets Bundle / PKI related
   generate-secrets-bundle-from-pki:
     desc: Generate a secrets bundle for a Talos environment using a pre-generated Single Root Intermediary CA directory
     vars:
@@ -40,6 +41,32 @@ tasks:
     generates:
       - '{{._OUTPUT_FILENAME}}'
 
+  ### Boot Assets related
+  build-custom-iso:
+    desc:
+    cmds:
+      - |
+        docker run --rm -t --privileged -v $PWD/_out:/out ghcr.io/siderolabs/imager:v1.5.0 iso \
+          --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808 \
+          --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.0
+
+  build-custom-metal:
+    desc:
+    cmds:
+      - |
+        docker run --rm -t --privileged -v /dev:/dev -v $PWD/_out:/out ghcr.io/siderolabs/imager:v1.5.0 metal \
+          --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808 \
+          --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.0
+
+  build-custom-installer:
+    desc:
+    cmds:
+      - |
+        docker run --rm -t --privileged -v $PWD/_out:/out ghcr.io/siderolabs/imager:v1.5.0 installer \
+          --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808@sha256:696741417a09e06ccd571bb8a716877742c0537b1d777412234702243b82de7c \
+          --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.0@sha256:8a5b543ef38c27e1055ee68881fca1936455f3e897ec9d4685e86bf82507a562
+
+  ### Machine Config related
   generate-talos-configs:
     desc: Generate machine configs for a particular cluster
     vars:
@@ -68,8 +95,8 @@ tasks:
           --with-secrets {{.SECRETS_BUNDLE_FILENAME}} \
           --additional-sans {{.CONTROL_PLANE_HOSTNAME}},{{.CLUSTER_LOAD_BALANCER_IP}} \
           --install-image ghcr.io/siderolabs/installer:v1.4.6 \
-          --kubernetes-version 1.27.3 \
-          --talos-version v1.4.6 \
+          --kubernetes-version 1.28.0 \
+          --talos-version v1.5.0 \
           --version v1alpha1 \
           --with-cluster-discovery=false \
           --with-docs=false \

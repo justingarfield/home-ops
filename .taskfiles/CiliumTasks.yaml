@@ -7,7 +7,7 @@ vars:
   TALOS_OUT_DIR: '{{.OUTPUT_DIR}}/talos-linux'
 
   # renovate: registryUrl=https://helm.cilium.io/ chart=cilium
-  CILIUM_VERSION: '{{.CILIUM_VERSION | default "v1.14.0-snapshot.3"}}'
+  CILIUM_VERSION: '{{.CILIUM_VERSION | default "v1.14.1"}}'
 tasks:
 
   status-verbose:
