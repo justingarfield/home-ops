@@ -2,6 +2,9 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: '3'
 
+dotenv: [ .env.sops.common, .env.sops.staging ]
+# dotenv: [ .env.sops.common, .env.sops.production ]
+
 vars:
   REPOSITORY_DIR:
     sh: git rev-parse --show-toplevel
@@ -30,26 +33,20 @@ includes:
   kubectl: .taskfiles/Kubectl.yaml
   misc: .taskfiles/MiscTasks.yaml
   # openssl: .taskfiles/OpenSslTasks.yaml
-  pki: .taskfiles/PKITasks.yaml
+  pki: .taskfiles/PkiTasks.yaml
   precommit:
     taskfile: .taskfiles/PreCommitTasks.yaml
     aliases: [ pc ]
   # sidero: .taskfiles/SideroTasks.yaml
-  sops: .taskfiles/SOPSTasks.yaml
+  sops: .taskfiles/SopsTasks.yaml
   talos: .taskfiles/TalosTasks.yaml
   terraform:
     taskfile: .taskfiles/TerraformTasks.yaml
     aliases: [ tf ]
   tetragon: .taskfiles/TetragonTasks.yaml
-  # tooling: .taskfiles/ToolingTasks.yaml
-  virtualbox:
-    taskfile: .taskfiles/VirtualBoxTasks.yaml
-    aliases: [ vbox ]
+  tooling: .taskfiles/ToolingTasks.yaml
 
 silent: false
-
-dotenv: [ .env.sops.staging, .env.sops.common ]
-# dotenv: [ .env.sops.production, .env.sops.common ]
 
 tasks:
 
@@ -57,74 +54,70 @@ tasks:
     silent: true
     cmds: [ task -l ]
 
-  generate-base-pki:
-    desc: Generates all of the base PKI files from scratch.
-    vars:
-      ORGANIZATION_NAME: '{{ .ORGANIZATION_NAME | default "Shiny Things Inc." }}'
-      CERT_EMAIL: '{{ .CERT_EMAIL | default "admin@shiny-things.tld" }}'
-      CERT_LOCATION: '{{ .CERT_LOCATION | default "San Francisco" }}'
-      CERT_STATE: '{{ .CERT_STATE | default "CA" }}'
-      CERT_COUNTRY: '{{ .CERT_COUNTRY | default "US" }}'
-    preconditions:
-      - test '{{ .ORGANIZATION_NAME }}'
-      - test '{{ .CERT_EMAIL }}'
-      - test '{{ .CERT_LOCATION }}'
-      - test '{{ .CERT_STATE }}'
-      - test '{{ .CERT_COUNTRY }}'
+  generate-pki:
+    desc: Example that generates all of the PKI files from scratch
     cmds:
-      # Root CA
+      - task: _core:display-banner
+      - task: _core:message
+        vars: { MESSAGE: 'Generating PKI from scratch for: {{.ENVIRONMENT_NAME}}' }
+      - task: _core:message
+        vars: { MESSAGE: 'Outputting to folder: {{.ENV_OUTPUT_DIR}}\n------------------------------------------------------' }
+
+      ### Root CA (should be stored OFFLINE somewhere safe...like in a...safe)
+      #
+      # Note: You will probably need the public-portion of this to create a bundle later for cert-chain trust reasons
+      # Note: You may need to adjust the Root CA "pathlen" value if you attempt to go deeper than two-levels of Intermediaries
       - task: pki:generate-root-ca
-        vars: { ORGANIZATION_NAME: "{{ .ORGANIZATION_NAME }}", CERT_EMAIL: "{{ .CERT_EMAIL }}", CERT_LOCATION: "{{ .CERT_LOCATION }}", CERT_STATE: "{{ .CERT_STATE }}", CERT_COUNTRY: "{{ .CERT_COUNTRY }}" }
+        vars: { OUTPUT_FILENAME: my_staging_root-ca }
 
-      # Sites
-      - task: pki:generate-and-sign-site-intermediate-ca
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: azure }
-      - task: pki:generate-and-sign-site-intermediate-ca
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: boston }
-      - task: pki:generate-and-sign-site-intermediate-ca
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: colo }
-      - task: pki:generate-and-sign-site-intermediate-ca
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: sacramento }
-
-      # Site-level Functions
-      - task: pki:generate-and-sign-site-function-intermediate-ca
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: azure, FUNCTION: infrastructure }
-
-      - task: pki:generate-and-sign-site-function-intermediate-ca
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: boston, FUNCTION: infrastructure }
-
-      - task: pki:generate-and-sign-site-function-intermediate-ca
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: colo, FUNCTION: infrastructure }
-      - task: pki:generate-and-sign-site-function-intermediate-ca
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: colo, FUNCTION: vendor-equipment }
-
-      - task: pki:generate-and-sign-site-function-intermediate-ca
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: sacramento, FUNCTION: infrastructure }
-      - task: pki:generate-and-sign-site-function-intermediate-ca
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: sacramento, FUNCTION: vendor-equipment }
-
-      # Site-level Kubernetes Clusters
-      - task: pki:generate-and-sign-kubernetes-single-root-cas
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: colo, CLUSTER_NAME: test }
-      - task: pki:generate-and-sign-kubernetes-single-root-cas
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: colo, CLUSTER_NAME: staging }
-      - task: pki:generate-and-sign-kubernetes-single-root-cas
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: colo, CLUSTER_NAME: production }
-
-      # Firewall Web UI
-      - task: pki:generate-server-certificate
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: boston, FUNCTION: infrastructure, SERVER_NAME: firewall01, SERVER_IP: 192.168.21.2 }
-      - task: pki:generate-server-certificate
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: boston, FUNCTION: infrastructure, SERVER_NAME: firewall02, SERVER_IP: 192.168.21.3 }
-      - task: pki:generate-server-certificate
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: sacramento, FUNCTION: infrastructure, SERVER_NAME: firewall01, SERVER_IP: 192.168.22.2 }
-      - task: pki:generate-server-certificate
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", SITE_NAME: sacramento, FUNCTION: infrastructure, SERVER_NAME: firewall02, SERVER_IP: 192.168.22.3 }
-
-      # "Global" Client Cert
-      - task: pki:generate-root-client-certificate
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", CLIENT_NAME: global.admin }
+      ### Azure related
+      - task: pki:generate-intermediate-ca
+        vars: { OUTPUT_FILENAME: azure/azure_intermediate-ca, INTERMEDIARY_NAME: Azure }
+      - task: pki:sign-intermediate-ca
+        vars: { SIGNING_KEY_FILENAME: my_staging_root-ca, INTERMEDIATE_CA_FILENAME: azure/azure_intermediate-ca }
 
       # Azure Tenant Provisioner SP for Terraform
-      - task: pki:generate-site-client-certificate
-        vars: { CERT_DOMAIN: "{{ .CERT_DOMAIN }}", CLIENT_NAME: tenant.provisioner, SITE_NAME: azure }
+      - task: pki:generate-client-certificate
+        vars: { SIGNING_KEY_FILENAME: azure/azure_intermediate-ca, CERT_CN: terraform.provisioner, OUTPUT_FILENAME: azure/terraform.provisioner }
+
+      ### Kubernetes required Intermediary CAs and Certs
+      #
+      # See: https://kubernetes.io/docs/setup/best-practices/certificates/
+      - task: pki:generate-intermediate-ca
+        vars: { OUTPUT_FILENAME: kubernetes/kubernetes-intermediate, INTERMEDIARY_NAME: Kubernetes }
+      - task: pki:sign-intermediate-ca
+        vars: { SIGNING_KEY_FILENAME: my_staging_root-ca, INTERMEDIATE_CA_FILENAME: kubernetes/kubernetes-intermediate }
+
+      - task: pki:generate-kubernetes-intermediate-ca
+        vars: { OUTPUT_FILENAME: kubernetes/ca, CERT_CN: kubernetes-ca, SIGNING_KEY_FILENAME: kubernetes/kubernetes-intermediate }
+      - task: pki:sign-intermediate-ca
+        vars: { SIGNING_KEY_FILENAME: kubernetes/kubernetes-intermediate, INTERMEDIATE_CA_FILENAME: kubernetes/ca }
+
+      - task: pki:generate-kubernetes-intermediate-ca
+        vars: { OUTPUT_FILENAME: kubernetes/etcd/ca, CERT_CN: etcd-ca, SIGNING_KEY_FILENAME: kubernetes/kubernetes-intermediate }
+      - task: pki:sign-intermediate-ca
+        vars: { SIGNING_KEY_FILENAME: kubernetes/kubernetes-intermediate, INTERMEDIATE_CA_FILENAME: kubernetes/etcd/ca }
+
+      - task: pki:generate-kubernetes-intermediate-ca
+        vars: { OUTPUT_FILENAME: kubernetes/front-proxy-ca, CERT_CN: kubernetes-front-proxy-ca, SIGNING_KEY_FILENAME: kubernetes/kubernetes-intermediate }
+      - task: pki:sign-intermediate-ca
+        vars: { SIGNING_KEY_FILENAME: kubernetes/kubernetes-intermediate, INTERMEDIATE_CA_FILENAME: kubernetes/front-proxy-ca }
+
+      - task: pki:generate-k8s-service-account-key
+        vars: { OUTPUT_FILENAME: kubernetes/sa }
+
+      - task: pki:prepare-k8s-directory
+
+      ### OPNSense related
+      - task: pki:generate-intermediate-ca
+        vars: { OUTPUT_FILENAME: opnsense/opnsense-intermediate, INTERMEDIARY_NAME: OPNsense }
+      - task: pki:sign-intermediate-ca
+        vars: { SIGNING_KEY_FILENAME: my_staging_root-ca, INTERMEDIATE_CA_FILENAME: opnsense/opnsense-intermediate }
+
+      - task: pki:generate-server-certificate
+        vars: { SIGNING_KEY_FILENAME: opnsense/opnsense-intermediate, CERT_CN: opnsense01.home.arpa, SERVER_NAME: opnsense01, SERVER_IP: 192.168.1.2, OUTPUT_FILENAME: opnsense/opnsense01.home.arpa }
+      - task: pki:generate-server-certificate
+        vars: { SIGNING_KEY_FILENAME: opnsense/opnsense-intermediate, CERT_CN: opnsense02.home.arpa, SERVER_NAME: opnsense02, SERVER_IP: 192.168.1.3, OUTPUT_FILENAME: opnsense/opnsense02.home.arpa }
+
+      - task: pki:generate-client-certificate
+        vars: { SIGNING_KEY_FILENAME: my_staging_root-ca, CERT_CN: my_client_certificate, OUTPUT_FILENAME: clients/my_client_certificate }
