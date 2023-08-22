@@ -1,5 +1,5 @@
 {
-    "CN": "<ORGANIZATION_NAME> - <INTERMEDIARY_NAME> Intermediate Certificate Authority",
+    "CN": "<ORGANIZATION_NAME> - <ENVIRONMENT_NAME> - <INTERMEDIARY_NAME> Intermediate CA",
     "key": {
         "algo": "rsa",
         "size": 4096

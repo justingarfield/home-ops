@@ -9,7 +9,7 @@
     ],
     "names": [
         {
-            "OU": "<ORGANIZATION_NAME> - <ENVIRONMENT_NAME> Cluster Intermediate Certificate Authority",
+            "OU": "<ORGANIZATION_NAME> - <ENVIRONMENT_NAME> Kubernetes Intermediate CA",
             "E":  "<ORGANIZATION_ADMINISTRATIVE_EMAIL>",
             "O":  "<ORGANIZATION_NAME>",
             "L":  "<ORGANIZATION_LOCATION>",

@@ -35,7 +35,6 @@ As-such, all scripts and configuration files in this repository have been tokeni
 ├─📁 flux           # Flux kustomizations used to automatically deploy Kubernetes resources / applications
 ├─📁 pki            # Holds Profiles and Templates used with cfssl toolkit to generate self-signed PKI
 ├─📁 scripts        # Shell scripts used to aid Taskfiles, some Tasks weren't expressive/scriptable enough
-├─📁 sidero-metal   # Files from a sidero-metal lab I built, waiting on future physical hardware to deploy
 ├─📁 talos-linux    # Patch files used when generating control-plane and worker configurations for Talos
 ├─📁 terraform      # Terraform files to provision Cloudflare DNS and Azure / Oracle cloud accounts
 └─📁 windows-dsc    # PowerShell DSC related scripts to provision a local Hyper-V Talos Lab
