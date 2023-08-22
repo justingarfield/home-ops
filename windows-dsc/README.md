@@ -10,9 +10,9 @@ experience with Talos v1.5.0+ you'll need to use something like QEMU or VMWare D
 
 ```shell
 📂 windows-dsc
-├─📁 HyperVDscPreRequisites.ps1   # Provisions the prerequisites required to use the HyperVDsc module
-├─📁 LCMConfiguration.ps1         # Optional file to configure the Local Configuration Manager (LCM)
-└─📁 TalosLinuxCluster.ps1        # Provisions a local Hyper-V Talos lab / staging environment
+├─📄 HyperVDscPreRequisites.ps1   # Provisions the prerequisites required to use the HyperVDsc module
+├─📄 LCMConfiguration.ps1         # Optional file to configure the Local Configuration Manager (LCM)
+└─📄 TalosLinuxCluster.ps1        # Provisions a local Hyper-V Talos lab / staging environment
 ```
 
 ## StartingMacPrefix

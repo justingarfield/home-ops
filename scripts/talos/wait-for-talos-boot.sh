@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 ### Overview
 # This script waits until talosctl can see the machined and udevd services

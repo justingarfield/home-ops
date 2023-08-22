@@ -13,9 +13,10 @@ task tooling:install-cfssl-toolkit
 ```sh
 📂 pki
 ├─📁 cfssl-templates                         # Tokenized JSON template files used to create cfssl certificates
+│ ├─📄 client-certificate-csr.json           #
+│ ├─📄 default-intermediate-ca-csr.json      #
 │ ├─📄 kubernetes-intermediate-ca-csr.json   #
 │ ├─📄 root-ca-csr.json                      #
-│ ├─📄 root-client-certificate-csr.json      #
 │ └─📄 server-certificate-csr.json           #
 └─📄 cfssl-profiles.json                     # cfssl certificate profiles used when generating certificates
 ```

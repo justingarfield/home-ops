@@ -45,15 +45,6 @@
                     "email protection"
                 ],
                 "expiry": "8766h"
-            },
-            "winrm": {
-                "usages": [
-                    "digital signature",
-                    "key encipherment",
-                    "client auth",
-                    "server auth"
-                ],
-                "expiry": "8766h"
             }
         }
     }

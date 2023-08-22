@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 # See: https://cert-manager.io/docs/configuration/acme/dns01/azuredns/#service-principal
 #      https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/azure.md#service-principal

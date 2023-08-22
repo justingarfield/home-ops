@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 ### Overview
 # This script waits until one-or-more Kubernetes node(s) return(s) a

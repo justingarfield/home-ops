@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 ### Overview
 # This script waits until the dmesg logs on a particular talos node return

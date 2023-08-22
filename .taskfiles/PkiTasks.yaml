@@ -163,17 +163,17 @@ tasks:
     cmds:
       - task: :_core:ensure-directory-exists2
         vars: { DIRECTORY: "{{.OUTPUT_FILENAME | dir}}" }
-      - |
-        yq eval '{{._YQ_TOKENIZATION}}' "{{.CFSSL_TEMPLATES}}/client-certificate-csr.json" --output-format=json \
-          | cfssl gencert -loglevel={{.CFSSL_LOG_LEVEL}} -ca "{{.PKI_OUT_DIR}}/{{.SIGNING_KEY_FILENAME}}.pem" -ca-key "{{.PKI_OUT_DIR}}/{{.SIGNING_KEY_FILENAME}}-key.pem" \
-            -config "{{.CFSSL_PROFILES}}" -profile=client - \
-          | cfssljson -bare "{{.OUTPUT_FILENAME}}"
-      - task: :_core:message
-        vars: { MESSAGE: 'Client Certificate CSR created....................... {{.OUTPUT_FILENAME}}.csr' }
-      - task: :_core:message
-        vars: { MESSAGE: 'Client Certificate Public key created................ {{.OUTPUT_FILENAME}}.pem' }
-      - task: :_core:message
-        vars: { MESSAGE: 'Client Certificate Private key created............... {{.OUTPUT_FILENAME}}-key.pem' }
+      - ./scripts/pki/winrm-https.sh \
+          --SIGNING_PUBLIC_KEY_FILENAME "{{.SIGNING_KEY_FILENAME}}.pem" \
+          --SIGNING_PRIVATE_KEY_FILENAME "{{.SIGNING_KEY_FILENAME}}-key.pem" \
+          --OUTPUT_FILENAME "{{.OUTPUT_FILENAME}}" \
+          --SERVER_NAME "{{.SERVER_NAME}}" \
+          --SERVER_IP {{.SERVER_IP}} \
+          --ORGANIZATION_ADMINISTRATIVE_EMAIL {{.ORGANIZATION_ADMINISTRATIVE_EMAIL}} \
+          --ORGANIZATION_NAME "{{.ORGANIZATION_NAME}}" \
+          --ORGANIZATION_LOCATION "{{.ORGANIZATION_LOCATION}}" \
+          --ORGANIZATION_STATE_PROVINCE_CODE "{{.ORGANIZATION_STATE_PROVINCE_CODE}}" \
+          --ORGANIZATION_COUNTRY_CODE "{{.ORGANIZATION_COUNTRY_CODE}}"
 
   prepare-k8s-directory:
     desc: Moves cfssl-generated key files to the proper naming that Kubernetes expects in its PKI folders

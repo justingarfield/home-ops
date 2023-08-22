@@ -1,6 +1,6 @@
 ---
 ###
-# This is a patch file use with `talosctl gen config ...`
+# This is a patch file for use with `talosctl gen config ...`
 #
 # * Allow scheduling on master (for single-node control plane)
 # * Disable the cloud-based discovery service and go back to k8s/etcd

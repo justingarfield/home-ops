@@ -1,0 +1,18 @@
+{
+    "signing": {
+        "default": {
+            "expiry": "8766h"
+        },
+        "profiles": {
+            "winrm": {
+                "usages": [
+                    "digital signature",
+                    "key encipherment",
+                    "client auth",
+                    "server auth"
+                ],
+                "expiry": "8766h"
+            }
+        }
+    }
+}

@@ -1,6 +1,19 @@
 #!/usr/bin/env bash
 
-KUBERNETES_PKI_DIR=${KUBERNETES_PKI_DIR:-./_out/staging/pki/kubernetes}
+### Overview
+#
+
+### Usage
+# This script expects to be passed the directory containing the cfssl-generated PKI files for Kubernetes
+#
+# e.g: ./scripts/pki/prepare-k8s-directory.bash ./_out/staging/pki/kubernetes
+
+### Available arguments
+
+# Directory containing the cfssl-generated PKI files for Kubernetes
+KUBERNETES_PKI_DIR="${KUBERNETES_PKI_DIR:?argument not defined or empty}"
+
+#################################################
 
 # See: https://stackoverflow.com/questions/192292/how-best-to-include-other-scripts
 DIR="${BASH_SOURCE%/*}"

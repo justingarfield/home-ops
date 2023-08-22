@@ -1,5 +1,25 @@
 # Home Ops -> Sidero Metal
 
+## !! Notice !!
+
+This folder is quite old at this point. I last tested Sidero Metal back when it was @ v0.4,
+so chances are that the files in this folder will need updating to function with the latest version.
+
+I left these files here for reference to anyone else looking for some ideas on how to layout a folder/file
+structure to build their own environment(s) using Sidero Metal.
+
+## Directory layout
+
+```sh
+📂 sidero-metal
+├─📁 clusters                               #
+├─📁 environments                           #
+├─📁 serverclasses                          #
+├─📁 servers                                #
+├─📁 sidero-controller-manager              #
+└─📄 patch-sidero-controlplane-config.yaml  #
+```
+
 ## Clusters
 
 | Filename | Function | Description |
