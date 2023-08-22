@@ -6,7 +6,7 @@
 ### Usage
 # This script expects to be passed the directory containing the cfssl-generated PKI files for Kubernetes
 #
-# e.g: ./scripts/pki/prepare-k8s-directory.bash ./_out/staging/pki/kubernetes
+# e.g: KUBERNETES_PKI_DIR=$HOME/.out-folder/staging/pki/kubernetes ./scripts/pki/prepare-k8s-directory.bash
 
 ### Available arguments
 
@@ -66,14 +66,13 @@ renameCertificates() {
 
         pathAndCertFileName="$KUBERNETES_PKI_DIR/$certificateFileName"
 
-        if [ $pathAndCertFileName == *-key.pem ] && [ ! -f ${pathAndCertFileName/-key.pem/.key} ]; then
-
-            mv $pathAndCertFileName ${pathAndCertFileName/-key.pem/.key}
+        if [[ "$pathAndCertFileName" == *-key.pem ]] && [ ! -f ${pathAndCertFileName/-key.pem/.key} ]; then
+            mv "$pathAndCertFileName" ${pathAndCertFileName/-key.pem/.key}
             continue
         fi
 
-        if [ $pathAndCertFileName == *.pem ] && [ ! -f ${pathAndCertFileName/.pem/.crt} ]; then
-            mv $pathAndCertFileName ${pathAndCertFileName/.pem/.crt}
+        if [[ "$pathAndCertFileName" == *.pem ]] && [ ! -f ${pathAndCertFileName/.pem/.crt} ]; then
+            mv "$pathAndCertFileName" ${pathAndCertFileName/.pem/.crt}
             continue
         fi
 

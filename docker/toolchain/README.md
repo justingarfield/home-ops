@@ -26,12 +26,15 @@ docker run \
     -it --rm \
     -v /home/jgarfield/src/justingarfield/home-ops:/home/tcuser/src/justingarfield/home-ops \
     -v /mnt/o/home-ops:/home/tcuser/.out-folder \
+    -v /var/run/docker.sock:/var/run/docker.sock \
     ghcr.io/justingarfield/home-ops-toolchain:main
 ```
 
 Inside of the container is a `/home/tcuser/src/justingarfield/home-ops` folder, which is the default/expected location of a volume representing the local home-ops repository you've already cloned.
 
 **(Optional)** Another folder expected inside of the container is `/home/tcuser/.out-folder`, you'll want to map that to a local folder you wish to store ZSH History and output files in.
+
+**(Optional)** Another folder you can mount is `/var/run/docker.sock`, you'll need this if you plan on using `docker`, `docker buildx`, etc. inside the container.
 
 ## A high-level look
 

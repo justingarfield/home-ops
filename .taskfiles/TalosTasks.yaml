@@ -4,7 +4,7 @@ version: '3'
 
 vars:
   TALOS_SRC_DIR: '{{.REPOSITORY_DIR}}/talos-linux'
-  TALOS_OUT_DIR: '{{.OUTPUT_DIR}}/talos-linux'
+  TALOS_OUT_DIR: '{{.ENV_OUTPUT_DIR}}/talos-linux'
 
 tasks:
 
@@ -28,11 +28,11 @@ tasks:
       - sh: test -d {{.K8S_PKI_DIR}}
         msg: Please provide a valid K8S_PKI_DIR ({{.K8S_PKI_DIR}} does not exist)
     cmds:
-      - task: :_core:ensure-directory-exists
+      - task: :_core:ensure-directory-exists2
         vars: { DIRECTORY: '{{._OUTPUT_FILENAME | dir}}' }
       - task: :_core:message
         vars: { MESSAGE: Generating secrets-bundle.yaml file... }
-      - talosctl gen secrets --from-kubernetes-pki "{{.K8S_PKI_DIR}}" --kubernetes-bootstrap-token {{._BOOTSTRAP_TOKEN}} --output-file "{{._OUTPUT_FILENAME}}" >/dev/null 2>&1
+      - talosctl gen secrets --from-kubernetes-pki "{{.K8S_PKI_DIR}}" --kubernetes-bootstrap-token {{._BOOTSTRAP_TOKEN}} --output-file "{{._OUTPUT_FILENAME}}"
       - task: :_core:message
         vars: { MESSAGE: secrets-bundle.yaml file generated }
     sources:
@@ -86,7 +86,7 @@ tasks:
       - test -f '{{.SECRETS_BUNDLE_FILENAME}}'
       - test {{.CLUSTER_LOAD_BALANCER_IP}}
     cmds:
-      - task: :_core:ensure-directory-exists
+      - task: :_core:ensure-directory-exists2
         vars: { DIRECTORY: '{{.TALOS_OUT_DIR}}' }
       - task: :_core:message
         vars: { MESSAGE: Generating machine-config related files... }
@@ -106,7 +106,6 @@ tasks:
           --config-patch-control-plane @{{.TALOS_SRC_DIR}}/disable-cni-and-kube-proxy.patch \
           --config-patch-worker @{{.TALOS_SRC_DIR}}/kubelet-unsafe-sysctls.patch \
           --config-patch @{{.TALOS_SRC_DIR}}/machine-cert-sans.patch \
-          --config-patch @{{.TALOS_SRC_DIR}}/talos-extension-drbd.patch \
           --config-patch @{{.TALOS_SRC_DIR}}/registry-mirrors.patch \
           --config-patch='[{"op": "add", "path": "/machine/certSANs/-", "value": "{{.CLUSTER_LOAD_BALANCER_IP}}" }]' \
           --config-patch @{{.TALOS_SRC_DIR}}/system-disk-encryption.patch \

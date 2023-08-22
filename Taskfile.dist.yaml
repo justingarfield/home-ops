@@ -121,3 +121,9 @@ tasks:
 
       - task: pki:generate-client-certificate
         vars: { SIGNING_KEY_FILENAME: my_staging_root-ca, CERT_CN: my_client_certificate, OUTPUT_FILENAME: clients/my_client_certificate }
+
+  talos-prepare-configs:
+    cmds:
+      - task: talos:generate-secrets-bundle-from-pki
+        vars: { K8S_PKI_DIR: '{{.ENV_OUTPUT_DIR}}/pki/kubernetes' }
+      - task: talos:generate-talos-configs
