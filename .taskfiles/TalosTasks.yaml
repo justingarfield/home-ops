@@ -32,7 +32,7 @@ tasks:
         vars: { DIRECTORY: '{{._OUTPUT_FILENAME | dir}}' }
       - task: :_core:message
         vars: { MESSAGE: Generating secrets-bundle.yaml file... }
-      - talosctl gen secrets --from-kubernetes-pki "{{.K8S_PKI_DIR}}" --kubernetes-bootstrap-token {{._BOOTSTRAP_TOKEN}} --output-file "{{._OUTPUT_FILENAME}}"
+      - talosctl gen secrets --from-kubernetes-pki "{{.K8S_PKI_DIR}}" --kubernetes-bootstrap-token {{._BOOTSTRAP_TOKEN}} --output-file "{{._OUTPUT_FILENAME}}" >/dev/null 2>&1
       - task: :_core:message
         vars: { MESSAGE: secrets-bundle.yaml file generated }
     sources:
@@ -43,7 +43,7 @@ tasks:
 
   ### Boot Assets related
   build-custom-iso:
-    desc:
+    desc: Builds Talos ISO Boot Asset w/ Intel ucode and DRBD extensions
     cmds:
       - |
         docker run --rm -t --privileged -v $PWD/_out:/out ghcr.io/siderolabs/imager:v1.5.0 iso \
@@ -51,7 +51,7 @@ tasks:
           --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.0
 
   build-custom-metal:
-    desc:
+    desc: Builds Talos Metal Boot Asset w/ Intel ucode and DRBD extensions
     cmds:
       - |
         docker run --rm -t --privileged -v /dev:/dev -v $PWD/_out:/out ghcr.io/siderolabs/imager:v1.5.0 metal \
@@ -59,7 +59,7 @@ tasks:
           --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.0
 
   build-custom-installer:
-    desc:
+    desc: Builds Talos Installer Boot Asset w/ Intel ucode and DRBD extensions
     cmds:
       - |
         docker run --rm -t --privileged -v $PWD/_out:/out ghcr.io/siderolabs/imager:v1.5.0 installer \
@@ -159,6 +159,7 @@ tasks:
       - task: :_core:message
         vars: { MESSAGE: etcd bootstrap process has started }
 
+  ### Maintenance related
   etcd-db-snapshot:
     desc: Take a reguarly scheduled etcd database backup
     vars:
@@ -167,7 +168,6 @@ tasks:
       - talosctl -n {{.IP_ADDRESS}} etcd snapshot db.snapshot
 
   ### Tasks below here are disaster recovery related
-
   etcd-db-direct-copy:
     desc: Only use as a last-resort to get a snapshot (aka your cluster is beyond f**ked)
     vars:
