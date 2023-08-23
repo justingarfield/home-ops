@@ -72,7 +72,6 @@ tasks:
     vars:
       CLUSTER_NAME: '{{.CLUSTER_NAME | default .ENVIRONMENT_NAME | lower}}'
       CONTROL_PLANE_HOSTNAME: '{{.CONTROL_PLANE_HOSTNAME | default "control-plane"}}'
-      INTERNAL_DOMAIN: '{{.INTERNAL_DOMAIN | default "home.arpa"}}'
       CLUSTER_API_SERVER_PORT: '{{.CLUSTER_API_SERVER_PORT | default "6443"}}'
       SECRETS_BUNDLE_FILENAME: '{{.TALOS_OUT_DIR}}/secrets-bundle.yaml'
       CLUSTER_LOAD_BALANCER_IP: '{{.CLUSTER_LOAD_BALANCER_IP}}'
@@ -93,21 +92,19 @@ tasks:
       - |
         talosctl gen config {{.CLUSTER_NAME}} https://{{.CONTROL_PLANE_HOSTNAME}}.{{.INTERNAL_DOMAIN}}:{{.CLUSTER_API_SERVER_PORT}} \
           --with-secrets {{.SECRETS_BUNDLE_FILENAME}} \
-          --additional-sans {{.CONTROL_PLANE_HOSTNAME}},{{.CLUSTER_LOAD_BALANCER_IP}} \
-          --install-image ghcr.io/siderolabs/installer:v1.4.6 \
+          --additional-sans {{.CLUSTER_LOAD_BALANCER_IP}} \
+          --install-image ghcr.io/siderolabs/installer:v1.5.0 \
           --kubernetes-version 1.28.0 \
           --talos-version v1.5.0 \
           --version v1alpha1 \
           --with-cluster-discovery=false \
           --with-docs=false \
           --with-examples=false \
-          --config-patch='[{"op": "remove", "path": "/machine/certSANs"}]' \
           --config-patch-control-plane @{{.TALOS_SRC_DIR}}/cilium-opnsense-bgp-peering-policy.patch \
           --config-patch-control-plane @{{.TALOS_SRC_DIR}}/disable-cni-and-kube-proxy.patch \
           --config-patch-worker @{{.TALOS_SRC_DIR}}/kubelet-unsafe-sysctls.patch \
           --config-patch @{{.TALOS_SRC_DIR}}/machine-cert-sans.patch \
           --config-patch @{{.TALOS_SRC_DIR}}/registry-mirrors.patch \
-          --config-patch='[{"op": "add", "path": "/machine/certSANs/-", "value": "{{.CLUSTER_LOAD_BALANCER_IP}}" }]' \
           --config-patch @{{.TALOS_SRC_DIR}}/system-disk-encryption.patch \
           --config-patch='[{"op": "replace", "path": "/machine/systemDiskEncryption/ephemeral/keys", "value": [{ "static": { "passphrase": "{{.EPHEMERAL_PASSPHRASE}}" }, "slot": 0 }] }]' \
           --output {{.TALOS_OUT_DIR}}

@@ -1,28 +1,40 @@
+## OPNsense Settings
+
+### Unbound DNS
+
+/usr/local/etc/unbound.opnsense.d/custom-config.conf
+```
+cache-max-negative-ttl: 1
+```
+
+* https://forum.opnsense.org/index.php?topic=23929.msg116959#msg116959
+
+#### Overrides
+
+| Hostname | Domain    | Type | Value | Description |
+|-|-|-|-|-|
+| k8s-cp01        | home.arpa         | A    | 192.168.x.x | Kubernetes Production Cluster - Control Plane Node 01               |
+| k8s-cp02        | home.arpa         | A    | 192.168.x.x | Kubernetes Production Cluster - Control Plane Node 02               |
+| k8s-cp03        | home.arpa         | A    | 192.168.x.x | Kubernetes Production Cluster - Control Plane Node 03               |
+| k8s-wk01        | home.arpa         | A    | 192.168.x.x | Kubernetes Production Cluster - Data Plane Node 01                  |
+| k8s-wk02        | home.arpa         | A    | 192.168.x.x | Kubernetes Production Cluster - Data Plane Node 02                  |
+| talos-endpoints | home.arpa         | A    | 192.168.x.x | Kubernetes Production Cluster - Load balanced Talos Endpoints       |
+| control-plane   | home.arpa         | A    | 192.168.x.x | Kubernetes Production Cluster - Load balanced Kubernetes API Server |
+| k8s-cp01        | staging.home.arpa | A    | 192.168.x.x | Kubernetes Staging Cluster - Control Plane Node 01                  |
+| k8s-cp02        | staging.home.arpa | A    | 192.168.x.x | Kubernetes Staging Cluster - Control Plane Node 02                  |
+| k8s-cp03        | staging.home.arpa | A    | 192.168.x.x | Kubernetes Staging Cluster - Control Plane Node 03                  |
+| k8s-wk01        | staging.home.arpa | A    | 192.168.x.x | Kubernetes Staging Cluster - Data Plane Node 01                     |
+| k8s-wk02        | staging.home.arpa | A    | 192.168.x.x | Kubernetes Staging Cluster - Data Plane Node 02                     |
+| talos-endpoints | staging.home.arpa | A    | 192.168.x.x | Kubernetes Staging Cluster - Load balanced Talos Endpoints          |
+| control-plane   | staging.home.arpa | A    | 192.168.x.x | Kubernetes Staging Cluster - Load balanced Kubernetes API Server    |
 
 ## Observations
-
-### Versions being used
-
-| Product | Version |
-|-|-|
-| `raspberrypi/rpi-eeprom` | [`2023-01-11-vl805-000138c0`](https://github.com/raspberrypi/rpi-eeprom/releases/download/v2023.01.11-138c0/rpi-boot-eeprom-recovery-2023-01-11-vl805-000138c0-network.zip) |
-| `pftf/RPi4` | [`v1.3.4`](https://github.com/pftf/RPi4/releases/download/v1.34/RPi4_UEFI_Firmware_v1.34.zip) |
-| `talos` | [`v1.3.6`](https://github.com/siderolabs/talos/releases/download/v1.3.6/metal-rpi_generic-arm64.img.xz) |
-| `talos bootstrap` | `v0.5.6` |
-| `talos controlplane` | `v0.4.11` |
-| `clusterapi` | `v1.3.5` |
-| `talos installer` | `v1.3.6`
-| `sidero infrastructure` | `v0.5.8` |
-| `kubernetes` | `v1.26.3` |
-| `clusterctl` | `v1.3.5` |
-| `talosctl` | `v1.3.6` |
-| `kubectl` | `v1.26.3` |
 
 ### Hang-ups
 
 #### Custom RPI_EFI.fd per-serial
 
-If I use the method of a custom `RPI_EFI.fd` per-serial, I end up getting stuck on the same screen as Michael
+If I use the method of a custom `RPI_EFI.fd` per-serial number, I end up getting stuck on the same screen as Michael
 
 #### start4.elf not found
 

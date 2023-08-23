@@ -5,10 +5,6 @@
 #   * Adds additional certificate SANs that represent my
 #     HA Proxy endpoint used for communications via talosctl.
 
-# Note: I also add my HA Proxy Static IP address to the list
-#       below, later-on when calling "talosctl gen config ...".
-
 machine:
   certSANs:
     - talos-endpoints.staging.home.arpa
-    - talos-endpoints
