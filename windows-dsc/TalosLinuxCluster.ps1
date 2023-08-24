@@ -26,12 +26,12 @@ Configuration TalosLinuxCluster
         [Parameter()]
         [string]
         [ValidateNotNullorEmpty()]
-        $TalosLinuxIso = "F:\temp\talos-v1.5.0-custom-metal-amd64.iso",
+        $TalosLinuxIso = "F:\temp\talos-v1.5.1-custom-metal-amd64.iso",
 
         # Because simple things never work in PowerShell DSC modules
         [Parameter()]
         [bool]
-        $AttachIsoFile = $true,
+        $AttachIsoFile = $false,
 
         [Parameter()]
         [HashTable]
@@ -113,7 +113,7 @@ Configuration TalosLinuxCluster
                 Name             = "$vmName-SystemDisk.vhdx"
                 Path             = $controlPlaneNodes.VirtualHardDiskPath
                 # ParentPath     = Not using Checkpoints or Differencing Disks since this is a repeatable IaC Lab
-                MaximumSizeBytes = $controlPlaneNodes.SystemDiskSizeInGB * 1048576
+                MaximumSizeBytes = $controlPlaneNodes.SystemDiskSizeInGB * 1073741824
                 Generation       = "vhdx"
                 Ensure           = "Present"
                 Type             = "Dynamic"
@@ -130,8 +130,8 @@ Configuration TalosLinuxCluster
                 Path                        = $controlPlaneNodes.VirtualMachinePath
                 Generation                  = 2
                 StartupMemory               = $controlPlaneNodes.MemorySizeInMB * 1048576
-                MinimumMemory               = 512 * 1048576
-                MaximumMemory               = 1048576 * 1048576
+                MinimumMemory               = $controlPlaneNodes.MemorySizeInMB * 1048576
+                MaximumMemory               = $controlPlaneNodes.MemorySizeInMB * 1048576
                 MACAddress                  = $macAddress
                 ProcessorCount              = $controlPlaneNodes.Cores
                 # WaitForIP                 =
@@ -170,7 +170,7 @@ Configuration TalosLinuxCluster
                 Name             = "$vmName-SystemDisk.vhdx"
                 Path             = $dataPlaneNodes.VirtualHardDiskPath
                 # ParentPath     = Not using Checkpoints or Differencing Disks since this is a repeatable IaC Lab
-                MaximumSizeBytes = $dataPlaneNodes.SystemDiskSizeInGB * 1048576
+                MaximumSizeBytes = $dataPlaneNodes.SystemDiskSizeInGB * 1073741824
                 Generation       = "vhdx"
                 Ensure           = "Present"
                 Type             = "Dynamic"
@@ -187,8 +187,8 @@ Configuration TalosLinuxCluster
                 Path                        = $dataPlaneNodes.VirtualMachinePath
                 Generation                  = 2
                 StartupMemory               = $dataPlaneNodes.MemorySizeInMB * 1048576
-                MinimumMemory               = 512 * 1048576
-                MaximumMemory               = 1048576 * 1048576
+                MinimumMemory               = $dataPlaneNodes.MemorySizeInMB * 1048576
+                MaximumMemory               = $dataPlaneNodes.MemorySizeInMB * 1048576
                 MACAddress                  = $macAddress
                 ProcessorCount              = $dataPlaneNodes.Cores
                 # WaitForIP                 =

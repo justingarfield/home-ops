@@ -32,7 +32,12 @@ tasks:
         vars: { DIRECTORY: '{{._OUTPUT_FILENAME | dir}}' }
       - task: :_core:message
         vars: { MESSAGE: Generating secrets-bundle.yaml file... }
-      - talosctl gen secrets --from-kubernetes-pki "{{.K8S_PKI_DIR}}" --kubernetes-bootstrap-token {{._BOOTSTRAP_TOKEN}} --output-file "{{._OUTPUT_FILENAME}}" >/dev/null 2>&1
+      - |
+        talosctl gen secrets \
+          --talos-version v1.5.1 \
+          --from-kubernetes-pki "{{.K8S_PKI_DIR}}" \
+          --kubernetes-bootstrap-token {{._BOOTSTRAP_TOKEN}} \
+          --output-file "{{._OUTPUT_FILENAME}}" >/dev/null 2>&1
       - task: :_core:message
         vars: { MESSAGE: secrets-bundle.yaml file generated }
     sources:
@@ -46,25 +51,25 @@ tasks:
     desc: Builds Talos ISO Boot Asset w/ Intel ucode and DRBD extensions
     cmds:
       - |
-        docker run --rm -t --privileged -v $PWD/_out:/out ghcr.io/siderolabs/imager:v1.5.0 iso \
+        docker run --rm -t --privileged -v $PWD/_out:/out ghcr.io/siderolabs/imager:v1.5.1 iso \
           --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808 \
-          --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.0
+          --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1
 
   build-custom-metal:
     desc: Builds Talos Metal Boot Asset w/ Intel ucode and DRBD extensions
     cmds:
       - |
-        docker run --rm -t --privileged -v /dev:/dev -v $PWD/_out:/out ghcr.io/siderolabs/imager:v1.5.0 metal \
+        docker run --rm -t --privileged -v /dev:/dev -v $PWD/_out:/out ghcr.io/siderolabs/imager:v1.5.1 metal \
           --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808 \
-          --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.0
+          --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1
 
   build-custom-installer:
     desc: Builds Talos Installer Boot Asset w/ Intel ucode and DRBD extensions
     cmds:
       - |
-        docker run --rm -t --privileged -v $PWD/_out:/out ghcr.io/siderolabs/imager:v1.5.0 installer \
+        docker run --rm -t --privileged -v $PWD/_out:/out ghcr.io/siderolabs/imager:v1.5.1 installer \
           --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808@sha256:696741417a09e06ccd571bb8a716877742c0537b1d777412234702243b82de7c \
-          --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.0@sha256:8a5b543ef38c27e1055ee68881fca1936455f3e897ec9d4685e86bf82507a562
+          --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1@sha256:8a5b543ef38c27e1055ee68881fca1936455f3e897ec9d4685e86bf82507a562
 
   ### Machine Config related
   generate-talos-configs:
@@ -93,9 +98,9 @@ tasks:
         talosctl gen config {{.CLUSTER_NAME}} https://{{.CONTROL_PLANE_HOSTNAME}}.{{.INTERNAL_DOMAIN}}:{{.CLUSTER_API_SERVER_PORT}} \
           --with-secrets {{.SECRETS_BUNDLE_FILENAME}} \
           --additional-sans {{.CLUSTER_LOAD_BALANCER_IP}} \
-          --install-image ghcr.io/siderolabs/installer:v1.5.0 \
+          --install-image ghcr.io/siderolabs/installer:v1.5.1 \
           --kubernetes-version 1.28.0 \
-          --talos-version v1.5.0 \
+          --talos-version v1.5.1 \
           --version v1alpha1 \
           --with-cluster-discovery=false \
           --with-docs=false \

@@ -8,7 +8,7 @@ CILIUM_CLI_VERSION=v0.15.6
 CFSSL_TOOLKIT_VERSION=v1.6.4
 
 # renovate: datasource=github-releases depName=kubernetes-sigs/cluster-api
-CLUSTERCTL_VERSION=v1.5.0
+CLUSTERCTL_VERSION=v1.5.1
 
 # renovate: datasource=github-releases depName=kubernetes-sigs/cri-tools
 CRICTL_VERSION=v1.28.0
@@ -38,7 +38,7 @@ KUBECTL_VERSION=v1.28.0
 SOPS_VERSION=v3.7.3
 
 # renovate: datasource=github-releases depName=siderolabs/talos
-TALOSCTL_VERSION=v1.5.0
+TALOSCTL_VERSION=v1.5.1
 
 # renovate: datasource=github-releases depName=go-task/task
 TASK_VERSION=v3.28.0
