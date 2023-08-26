@@ -38,7 +38,7 @@ On a Windows 11 Professional machine, with Windows Updates applied, run the foll
 
 # Adjust $controlPlaneNodes and $dataPlaneNodes params to your liking
 # Make sure that the StartingMacPrefix won't screw with your existing environment
-# Set $AttachIsoFile to $true when VMs are created and ready for Talos installer ISO
+# Set $AttachIsoFile to $true when VMs are created and ready for Talos installer ISO and re-run this
 . .\TalosLinuxCluster.ps1
 ```
 

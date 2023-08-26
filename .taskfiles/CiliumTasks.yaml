@@ -6,8 +6,6 @@ vars:
   TALOS_DIR: '{{.REPOSITORY_DIR}}/talos-linux'
   TALOS_OUT_DIR: '{{.OUTPUT_DIR}}/talos-linux'
 
-  # renovate: registryUrl=https://helm.cilium.io/ chart=cilium
-  CILIUM_VERSION: '{{.CILIUM_VERSION | default "v1.14.1"}}'
 tasks:
 
   status-verbose:
@@ -24,7 +22,6 @@ tasks:
     internal: false
     desc: Installs the Cilium CNI for a particular cluster
     vars:
-      INTERNAL_DOMAIN: '{{.INTERNAL_DOMAIN | default "home.arpa"}}'
       CLUSTER_API_SERVER_PORT: '{{.CLUSTER_API_SERVER_PORT | default "6443"}}'
       OUTPUT_FILENAME: '{{.OUTPUT_FILENAME}}'
     cmds:
@@ -58,6 +55,7 @@ tasks:
             --set tunnelPort=6669 \
             --set=bpf.autoMount.enabled=false \
             > "{{.OUTPUT_FILENAME}}"
+
       - task: :_core:message
         vars: { MESSAGE: "Cilium manifest file was output to {{.OUTPUT_FILENAME}}" }
 

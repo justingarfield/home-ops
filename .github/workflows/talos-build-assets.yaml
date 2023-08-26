@@ -1,0 +1,19 @@
+---
+name: Build and push Talos build assets
+
+on:
+  workflow_dispatch: { }
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{github.repository}}-toolchain
+
+jobs:
+  build-and-push-iso:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/siderolabs/imager:v1.5.1
+      options: --rm --privileged
+    steps:
+      - name: Check for dockerenv file
+        run: iso

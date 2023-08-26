@@ -2,11 +2,8 @@
 
 ## Pre-requisites
 
-This area assumes that you've installed the [cfssl toolkit](https://github.com/cloudflare/cfssl) binaries...
-
-```shell
-task tooling:install-cfssl-toolkit
-```
+* [cfssl toolkit](https://github.com/cloudflare/cfssl)
+* [yq](https://github.com/mikefarah/yq)
 
 ## Directory layout
 
@@ -14,7 +11,7 @@ task tooling:install-cfssl-toolkit
 📂 pki
 ├─📁 cfssl-templates                         # Tokenized JSON template files used to create cfssl certificates
 │ ├─📄 client-certificate-csr.json           #
-│ ├─📄 default-intermediate-ca-csr.json      #
+│ ├─📄 generic-intermediate-ca-csr.json      #
 │ ├─📄 kubernetes-intermediate-ca-csr.json   #
 │ ├─📄 root-ca-csr.json                      #
 │ └─📄 server-certificate-csr.json           #
@@ -23,7 +20,7 @@ task tooling:install-cfssl-toolkit
 
 ## cfssl-templates folder
 
-The files located under this folder have tokens that will get replaced when running the corresponding tasks associated with them.
+The files located under this folder have tokens that will get replaced when running the corresponding tasks/scripts associated with them.
 
 This allows creation of multiple certificates, without repeating a majority of the JSON involved, increasing consistency and reducing room for error.
 
@@ -34,12 +31,11 @@ This allows creation of multiple certificates, without repeating a majority of t
 | `ORGANIZATION_LOCATION`             | Used for the Organization's City/Town            | All templates |
 | `ORGANIZATION_NAME`                 | Used for the Organization's Legal Name           | All templates |
 | `ORGANIZATION_ADMINISTRATIVE_EMAIL` | Used for the Organization's Administrative Email | All templates |
-| `CERT_CN`                           |  |  |
-| `SITE_NAME`                         |  |  |
-| `SERVER_NAME`                       |  |  |
-| `SERVER_IP`                         |  |  |
-| `USER_NAME`                         |  |  |
-| `CLUSTER_NAME`                      |  |  |
+| `ENVIRONMENT_NAME`                  | Used to help differentiate environments          | All templates |
+| `INTERMEDIARY_NAME`                 | Used by Intermediate CAs for naming              | `generic-intermediate-ca-csr` |
+| `CERT_CN`                           | Used where an explicit CN is required            | `client-certificate-csr`, `kubernetes-intermediate-ca-csr`, `server-certificate-csr` |
+| `SERVER_NAME`                       | Used for additional cert SAN                     | `server-certificate-csr` |
+| `SERVER_IP`                         | Used for additional cert SAN                     | `server-certificate-csr` |
 
 ## PKI Build-out
 

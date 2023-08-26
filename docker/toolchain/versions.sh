@@ -8,7 +8,7 @@ CILIUM_CLI_VERSION=v0.15.6
 CFSSL_TOOLKIT_VERSION=v1.6.4
 
 # renovate: datasource=github-releases depName=kubernetes-sigs/cluster-api
-CLUSTERCTL_VERSION=v1.5.1
+CLUSTERCTL_VERSION=v1.5.0
 
 # renovate: datasource=github-releases depName=kubernetes-sigs/cri-tools
 CRICTL_VERSION=v1.28.0

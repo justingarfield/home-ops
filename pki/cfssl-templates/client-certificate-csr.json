@@ -9,7 +9,7 @@
     ],
     "names": [
         {
-            "OU": "<CERT_CN>",
+            "OU": "<CERT_CN> - <ENVIRONMENT_NAME>",
             "E":  "<ORGANIZATION_ADMINISTRATIVE_EMAIL>",
             "O":  "<ORGANIZATION_NAME>",
             "L":  "<ORGANIZATION_LOCATION>",
