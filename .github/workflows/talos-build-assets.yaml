@@ -4,6 +4,9 @@ name: Build and push Talos build assets
 on:
   workflow_dispatch: { }
 
+env:
+  REGISTRY: ghcr.io
+
 jobs:
   build-and-push-iso:
     runs-on: ubuntu-latest
@@ -11,8 +14,8 @@ jobs:
       fail-fast: true
       matrix:
         image-kind:
-          - iso
-          - metal
+          # - iso
+          # - metal
           - installer
     container:
       image: ghcr.io/siderolabs/imager:v1.5.1
@@ -26,3 +29,15 @@ jobs:
           /bin/imager ${{ matrix.image-kind }} \
             --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808@sha256:f08b0d4d7f745419ddc9c79220788243940fb1a1a61638065fa4d137b9dcead2 \
             --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1@sha256:70cf04c14847c21b40024c82c88623337514b70f6946913a4273b61432c78cf2
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2.2.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: imjasonh/setup-crane@v0.1
+      - name: Crane and stuff
+        run: |
+          crane push /out/metal-amd64-installer.tar ${{ env.REGISTRY }}/${{ github.repository }}-talos-${{ matrix.image-kind }}
