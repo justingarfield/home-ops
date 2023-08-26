@@ -21,7 +21,6 @@ jobs:
       image: ghcr.io/siderolabs/imager:v1.5.1
       options: --rm --privileged
       volumes:
-        - /out:/out
         - /dev:/dev
     steps:
       - name: Build ${{ matrix.image-kind }} w/ Intel UCode and DRBD
@@ -29,6 +28,13 @@ jobs:
           /bin/imager ${{ matrix.image-kind }} \
             --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808@sha256:f08b0d4d7f745419ddc9c79220788243940fb1a1a61638065fa4d137b9dcead2 \
             --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1@sha256:70cf04c14847c21b40024c82c88623337514b70f6946913a4273b61432c78cf2
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: talos-build-assets
+          path: /out/*
+          if-no-files-found: error
+          retention-days: 1
 
   push-images:
     runs-on: ubuntu-latest
@@ -45,6 +51,11 @@ jobs:
           # - metal
           - installer
     steps:
+      - name: Download build asset images
+        uses: actions/download-artifact@v3
+        with:
+          name: talos-build-assets
+          path: /out
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v2.9.1
