@@ -11,7 +11,7 @@ jobs:
   build-and-push-iso:
     runs-on: ubuntu-latest
     container:
-      image: ${{env.TALOS_IMAGER}}
+      image: ${{ env.TALOS_IMAGER }}
       options: --rm --privileged
       volumes:
         - $PWD/_out:/out
@@ -19,5 +19,33 @@ jobs:
       - name: Build ISO w/ Intel UCode and DRBD
         run: |
           /bin/imager iso \
+            --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808 \
+            --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1
+
+  build-and-push-metal:
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ env.TALOS_IMAGER }}
+      options: --rm --privileged
+      volumes:
+        - $PWD/_out:/out
+    steps:
+      - name: Build ISO w/ Intel UCode and DRBD
+        run: |
+          /bin/imager metal \
+            --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808 \
+            --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1
+
+  build-and-push-installer:
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ env.TALOS_IMAGER }}
+      options: --rm --privileged
+      volumes:
+        - $PWD/_out:/out
+    steps:
+      - name: Build ISO w/ Intel UCode and DRBD
+        run: |
+          /bin/imager installer \
             --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808 \
             --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1
