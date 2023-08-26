@@ -8,7 +8,7 @@ jobs:
   build-and-push-iso:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/siderolabs/imager:v1.5.1@sha256:ae1de86b57c8458554164e384b032587764388eb26adfc7729c677694778fbb1
+      image: ghcr.io/siderolabs/imager:v1.5.1@sha256:3e7f11e0116cc4eae834dbc998d18408eca198ea49856a331aa19362b3d60456
       options: --rm --privileged
       volumes:
         - /out:/out
@@ -22,7 +22,7 @@ jobs:
   build-and-push-metal:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/siderolabs/imager:v1.5.1@sha256:ae1de86b57c8458554164e384b032587764388eb26adfc7729c677694778fbb1
+      image: ghcr.io/siderolabs/imager:v1.5.1@sha256:3e7f11e0116cc4eae834dbc998d18408eca198ea49856a331aa19362b3d60456
       options: --rm --privileged
       volumes:
         - /out:/out
@@ -37,7 +37,7 @@ jobs:
   build-and-push-installer:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/siderolabs/imager:v1.5.1@sha256:ae1de86b57c8458554164e384b032587764388eb26adfc7729c677694778fbb1
+      image: ghcr.io/siderolabs/imager:v1.5.1@sha256:3e7f11e0116cc4eae834dbc998d18408eca198ea49856a331aa19362b3d60456
       options: --rm --privileged
       volumes:
         - /out:/out
