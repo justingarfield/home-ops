@@ -62,7 +62,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: imjasonh/setup-crane@v0.1
+      - uses: imjasonh/setup-crane@v0.3
       - name: Crane push installer
         run: |
           crane push /tmp/talos-build-assets/metal-amd64-installer.tar ${{ env.REGISTRY }}/talos-installer
