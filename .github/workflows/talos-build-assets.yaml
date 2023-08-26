@@ -1,8 +1,9 @@
 ---
 ###
-# A quick and dirty way to push custom Talos Linux build assets.
+# A quick and dirty way to push custom Talos Linux build assets to your own GitHub repository.
 #
-# Note: This can most likely be optimized using caching and other mechanisms.
+# Note: This can most likely be optimized using caching and other mechanisms. I'm just more focused
+#       on getting Talos v1.5.1 running right now and will look at this some more later-on.
 ###
 name: Build and push Talos build assets
 

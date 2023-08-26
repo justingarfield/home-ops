@@ -24,7 +24,7 @@ status=0
 while [ $attempt -le $retries ]; do
     # This call will throw the following error until it can properly query the node after boot...
     #   error getting dmesg: rpc error: code = Unavailable desc = connection error: desc = "transport: authentication handshake failed: EOF"
-    talosctl dmesg --nodes $1 --follow --tail 2>/dev/null | grep -qe "etcd is waiting to join the cluster"
+    talosctl dmesg --nodes $1 --follow --tail --talosconfig $2 2>/dev/null | grep -qe "etcd is waiting to join the cluster"
 
     status=$?
 

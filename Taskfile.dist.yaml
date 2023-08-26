@@ -127,3 +127,28 @@ tasks:
       - task: talos:generate-secrets-bundle-from-pki
         vars: { K8S_PKI_DIR: '{{.ENV_OUTPUT_DIR}}/pki/kubernetes' }
       - task: talos:generate-talos-configs
+
+  config-hyperv-cluster:
+    desc: Configures a set of pre-existing Hyper-V VMs
+    cmds:
+      - task: _core:display-banner
+      - task: _core:message
+        vars: { MESSAGE: Configuring Hyper-V based Talos Kubernetes cluster... }
+
+      - task: _core:imporant-message
+        vars: { MESSAGE: Please turn-on and boot the Control Plane nodes }
+
+      # This can probably be parallelized with jobs or something since the nodes are always
+      # going to start-up in a staggered fashion depending on how the hypervisor is feeling
+      - task: talos:apply-machine-template
+        vars: { NODE_NAME: k8s-cp01, NODE_TYPE: controlplane }
+      - task: talos:apply-machine-template
+        vars: { NODE_NAME: k8s-cp02, NODE_TYPE: controlplane }
+      - task: talos:apply-machine-template
+        vars: { NODE_NAME: k8s-cp03, NODE_TYPE: controlplane }
+
+      - task: talos:bootstrap-etcd
+        vars: { NODE_NAME: k8s-cp01 }
+
+      - task: talos:get-kubeconfig
+        vars: { NODE_NAME: k8s-cp01 }

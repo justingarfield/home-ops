@@ -25,6 +25,8 @@ services_to_wait_for="machined|udevd"
 num_services_to_wait_for=$(printf "$services_to_wait_for" | tr -s '|' ' ' | wc -w)
 
 while [ $attempt -le $retries ]; do
+
+    # Check that machined and udevd are 'healthy'
     services_response=$(talosctl get services.v1alpha1.talos.dev --nodes $1 --insecure 2>&1)
     if [ $? -ne 0 ]; then
         # This call will throw the following error until the required services are up and listening...
@@ -38,6 +40,7 @@ while [ $attempt -le $retries ]; do
         services_with_ok_health=$(printf "${services_response}" | tail -n +2 | grep -E $services_to_wait_for | wc -l)
     fi
 
+    # Check that TimeStatus is 'synced'
     time_status_response=$(talosctl get timestatuses.v1alpha1.talos.dev --nodes $1 --insecure --output yaml 2>&1)
     if [ $? -ne 0 ]; then
         # Bail on non-timeout errors

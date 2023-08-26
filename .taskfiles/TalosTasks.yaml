@@ -47,36 +47,40 @@ tasks:
       - '{{._OUTPUT_FILENAME}}'
 
   ### Boot Assets related
+  #
+  # See also: .github/workflows/talos-build-assets.yaml
+
   build-custom-iso:
-    desc: Builds Talos ISO Boot Asset w/ Intel ucode and DRBD extensions
+    desc: Builds Talos ISO boot asset w/ Intel ucode and DRBD extensions
     cmds:
       - |
-        docker run --rm -t --privileged -v $PWD/_out:/out ghcr.io/siderolabs/imager:v1.5.1 iso \
-          --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808 \
-          --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1
+        docker run --rm -t --privileged -v {{.TALOS_OUT_DIR}}:/out ghcr.io/siderolabs/imager:v1.5.1 iso \
+          --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808@sha256:f08b0d4d7f745419ddc9c79220788243940fb1a1a61638065fa4d137b9dcead2 \
+          --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1@sha256:70cf04c14847c21b40024c82c88623337514b70f6946913a4273b61432c78cf2
 
   build-custom-metal:
-    desc: Builds Talos Metal Boot Asset w/ Intel ucode and DRBD extensions
+    desc: Builds Talos Metal boot asset w/ Intel ucode and DRBD extensions
     cmds:
       - |
-        docker run --rm -t --privileged -v /dev:/dev -v $PWD/_out:/out ghcr.io/siderolabs/imager:v1.5.1 metal \
-          --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808 \
-          --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1
+        docker run --rm -t --privileged -v /dev:/dev -v {{.TALOS_OUT_DIR}}:/out ghcr.io/siderolabs/imager:v1.5.1 metal \
+          --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808@sha256:f08b0d4d7f745419ddc9c79220788243940fb1a1a61638065fa4d137b9dcead2 \
+          --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1@sha256:70cf04c14847c21b40024c82c88623337514b70f6946913a4273b61432c78cf2
 
   build-custom-installer:
-    desc: Builds Talos Installer Boot Asset w/ Intel ucode and DRBD extensions
+    desc: Builds Talos Installer boot asset w/ Intel ucode and DRBD extensions
     cmds:
       - |
-        docker run --rm -t --privileged -v $PWD/_out:/out ghcr.io/siderolabs/imager:v1.5.1 installer \
-          --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808@sha256:696741417a09e06ccd571bb8a716877742c0537b1d777412234702243b82de7c \
-          --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1@sha256:8a5b543ef38c27e1055ee68881fca1936455f3e897ec9d4685e86bf82507a562
+        docker run --rm -t --privileged -v {{.TALOS_OUT_DIR}}:/out ghcr.io/siderolabs/imager:v1.5.1 installer \
+          --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808@sha256:f08b0d4d7f745419ddc9c79220788243940fb1a1a61638065fa4d137b9dcead2 \
+          --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1@sha256:70cf04c14847c21b40024c82c88623337514b70f6946913a4273b61432c78cf2
 
   ### Machine Config related
-  generate-talos-configs:
+  generate-machine-configs:
     desc: Generate machine configs for a particular cluster
     vars:
       CLUSTER_NAME: '{{.CLUSTER_NAME | default .ENVIRONMENT_NAME | lower}}'
       CONTROL_PLANE_HOSTNAME: '{{.CONTROL_PLANE_HOSTNAME | default "control-plane"}}'
+      TALOS_ENDPOINTS_HOSTNAME: '{{.TALOS_ENDPOINTS_HOSTNAME | default "talos-endpoints"}}'
       CLUSTER_API_SERVER_PORT: '{{.CLUSTER_API_SERVER_PORT | default "6443"}}'
       SECRETS_BUNDLE_FILENAME: '{{.TALOS_OUT_DIR}}/secrets-bundle.yaml'
       CLUSTER_LOAD_BALANCER_IP: '{{.CLUSTER_LOAD_BALANCER_IP}}'
@@ -98,7 +102,7 @@ tasks:
         talosctl gen config {{.CLUSTER_NAME}} https://{{.CONTROL_PLANE_HOSTNAME}}.{{.INTERNAL_DOMAIN}}:{{.CLUSTER_API_SERVER_PORT}} \
           --with-secrets {{.SECRETS_BUNDLE_FILENAME}} \
           --additional-sans {{.CLUSTER_LOAD_BALANCER_IP}} \
-          --install-image ghcr.io/siderolabs/installer:v1.5.1 \
+          --install-image ghcr.io/justingarfield/home-ops/talos-metal-amd64-installer:v1.5.1@sha256:21f0d47b7103b7394f009465ed087fa8d370595b7b71fc4cd25469ec7fffba43 \
           --kubernetes-version 1.28.0 \
           --talos-version v1.5.1 \
           --version v1alpha1 \
@@ -110,30 +114,22 @@ tasks:
           --config-patch-worker @{{.TALOS_SRC_DIR}}/kubelet-unsafe-sysctls.patch \
           --config-patch @{{.TALOS_SRC_DIR}}/machine-cert-sans.patch \
           --config-patch @{{.TALOS_SRC_DIR}}/registry-mirrors.patch \
+          --config-patch @{{.TALOS_SRC_DIR}}/talos-extension-drbd.patch \
           --config-patch @{{.TALOS_SRC_DIR}}/system-disk-encryption.patch \
           --config-patch='[{"op": "replace", "path": "/machine/systemDiskEncryption/ephemeral/keys", "value": [{ "static": { "passphrase": "{{.EPHEMERAL_PASSPHRASE}}" }, "slot": 0 }] }]' \
           --output {{.TALOS_OUT_DIR}}
+      - talosctl config endpoint {{.TALOS_ENDPOINTS_HOSTNAME}}.{{.INTERNAL_DOMAIN}} --talosconfig "{{.TALOS_OUT_DIR}}/talosconfig"
+      - task: :_core:message
+        vars: { MESSAGE: 'Updated {{.TALOS_OUT_DIR}}/talosconfig endpoints to {{.TALOS_ENDPOINTS_HOSTNAME}}.{{.INTERNAL_DOMAIN}}' }
       - task: :_core:message
         vars: { MESSAGE: machine-config related files generated }
-
-  merge-config-files:
-    desc: Sets up the talos and kubectl configuration files
-    cmds:
-      - task: :_core:message
-        vars: { MESSAGE: Merging in talosconfig and setting endpoints... }
-      - talosctl config merge "{{.TALOS_OUT_DIR}}/talosconfig" >/dev/null 2>&1
-      - talosctl config endpoints talos-endpoints.{{.INTERNAL_DOMAIN}}
-      - task: :_core:message
-        vars: { MESSAGE: talosconfig and endpoints updated }
 
   apply-machine-template:
     internal: true
     desc: Apply a machine-template to a particular cluster node
     vars:
-      CLUSTER_NAME: "{{.CLUSTER_NAME}}"
       NODE_NAME: "{{.NODE_NAME}}"
       NODE_TYPE: "{{.NODE_TYPE}}"
-      CLUSTER_DIR: "{{.TALOS_SRC_DIR}}/{{.CLUSTER_NAME}}-cluster"
     preconditions:
       - sh: which talosctl
         msg: The 'talosctl' binary is required on the path to run this task'
@@ -143,23 +139,37 @@ tasks:
         vars: { MESSAGE: "Applying Talos machine-template to {{.NODE_TYPE}} node {{.NODE_NAME}}" }
       - talosctl apply-config --insecure --nodes {{.NODE_NAME}}.{{.INTERNAL_DOMAIN}} --file {{.TALOS_OUT_DIR}}/{{.NODE_TYPE}}.yaml
       - task: :_core:message
-        vars: { MESSAGE: "Applied Talos machine-template to {{.NODE_TYPE}} node {{.NODE_NAME}}" }
+        vars: { MESSAGE: "Successfully applied Talos machine-template to {{.NODE_TYPE}} node {{.NODE_NAME}}" }
 
   bootstrap-etcd:
     internal: false
     desc: Bootstraps etcd on a particular cluster's '-cp01' node
     vars:
-      CLUSTER_NAME: "{{.CLUSTER_NAME}}"
+      NODE_NAME: "{{.NODE_NAME}}"
     preconditions:
+      - sh: test {{.NODE_NAME}}
+        msg: Please provide a valid NODE_NAME
       - sh: which talosctl
         msg: The 'talosctl' binary is required on the path to run this task'
     cmds:
-      - ./scripts/talos/wait-for-etcd-ready.sh k8s-cp01.{{.INTERNAL_DOMAIN}}
+      - ./scripts/talos/wait-for-etcd-ready.sh {{.NODE_NAME}}.{{.INTERNAL_DOMAIN}} "{{.TALOS_OUT_DIR}}/talosconfig"
       - task: :_core:message
         vars: { MESSAGE: Issuing etcd bootstrap command... }
-      - talosctl bootstrap --nodes k8s-cp01.{{.INTERNAL_DOMAIN}}
+      - talosctl bootstrap --nodes {{.NODE_NAME}}.{{.INTERNAL_DOMAIN}} --talosconfig "{{.TALOS_OUT_DIR}}/talosconfig"
       - task: :_core:message
         vars: { MESSAGE: etcd bootstrap process has started }
+
+  get-kubeconfig:
+    desc: Retrieves the Talos cluster's administrative kubeconfig file for use with kubectl
+    vars:
+      NODE_NAME: "{{.NODE_NAME}}"
+    preconditions:
+      - sh: test {{.NODE_NAME}}
+        msg: Please provide a valid NODE_NAME
+    cmds:
+      - talosctl kubeconfig "{{.TALOS_OUT_DIR}}/kubeconfig" --nodes {{.NODE_NAME}}.staging.home.arpa --talosconfig "{{.TALOS_OUT_DIR}}/talosconfig"
+      - task: :_core:message
+        vars: { MESSAGE: 'Retrieved and wrote kubeconfig file to {{.TALOS_OUT_DIR}}/kubeconfig' }
 
   ### Maintenance related
   etcd-db-snapshot:
