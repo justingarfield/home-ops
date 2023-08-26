@@ -16,4 +16,4 @@ jobs:
       options: --rm --privileged
     steps:
       - name: Check for dockerenv file
-        run: iso
+        run: /bin/imager
