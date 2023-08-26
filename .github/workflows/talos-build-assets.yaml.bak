@@ -77,6 +77,12 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: imjasonh/setup-crane@v0.1
-      - name: Crane and stuff
+      - name: Crane ${{ matrix.image-kind }} Push
+        if: ${{ matrix.image-kind == 'iso' }}
         run: |
-          crane push /tmp/talos-build-assets/metal-amd64-installer.tar ${{ env.REGISTRY }}/${{ github.repository }}-talos-${{ matrix.image-kind }}
+          crane push /tmp/talos-build-assets/metal-amd64.iso ${{ env.REGISTRY }}/talos-${{ matrix.image-kind }}
+
+      - name: Crane ${{ matrix.image-kind }} Push
+        if: ${{ matrix.image-kind == 'metal' }}
+        run: |
+          crane push /tmp/talos-build-assets/metal-amd64-installer.tar ${{ env.REGISTRY }}/talos-${{ matrix.image-kind }}
