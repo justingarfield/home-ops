@@ -65,4 +65,4 @@ jobs:
       - uses: imjasonh/setup-crane@v0.1
       - name: Crane push installer
         run: |
-          crane push /tmp/talos-build-assets/metal-amd64-installer.tar ${{ env.REGISTRY }}/${{ github.repository }}/talos-v1.5.1-metal-amd64-installer
+          crane push /tmp/talos-build-assets/metal-amd64-installer.tar ${{ env.REGISTRY }}/${{ github.repository }}/talos-metal-amd64-installer:v1.5.1
