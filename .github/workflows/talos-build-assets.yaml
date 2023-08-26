@@ -15,5 +15,5 @@ jobs:
       image: ghcr.io/siderolabs/imager:v1.5.1
       options: --rm --privileged
     steps:
-      - name: Check for dockerenv file
-        run: /bin/imager
+      - name: Build ISO
+        run: /bin/imager iso
