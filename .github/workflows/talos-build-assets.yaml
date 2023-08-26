@@ -5,15 +5,19 @@ on:
   workflow_dispatch: { }
 
 env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{github.repository}}-toolchain
+  TALOS_IMAGER: ghcr.io/siderolabs/imager:v1.5.1
 
 jobs:
   build-and-push-iso:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/siderolabs/imager:v1.5.1
+      image: ${{env.TALOS_IMAGER}}
       options: --rm --privileged
+      volumes:
+        - $PWD/_out:/out
     steps:
-      - name: Build ISO
-        run: /bin/imager iso
+      - name: Build ISO w/ Intel UCode and DRBD
+        run: |
+          /bin/imager iso \
+            --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808 \
+            --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1
