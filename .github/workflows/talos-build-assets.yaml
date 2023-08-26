@@ -8,7 +8,7 @@ jobs:
   build-and-push-iso:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/siderolabs/imager:v1.5.1
+      image: ghcr.io/siderolabs/imager:v1.5.1@sha256:ae1de86b57c8458554164e384b032587764388eb26adfc7729c677694778fbb1
       options: --rm --privileged
       volumes:
         - /out:/out
@@ -16,27 +16,28 @@ jobs:
       - name: Build ISO w/ Intel UCode and DRBD
         run: |
           /bin/imager iso \
-            --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808 \
-            --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1
+            --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808@sha256:f08b0d4d7f745419ddc9c79220788243940fb1a1a61638065fa4d137b9dcead2 \
+            --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1@sha256:70cf04c14847c21b40024c82c88623337514b70f6946913a4273b61432c78cf2
 
   build-and-push-metal:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/siderolabs/imager:v1.5.1
+      image: ghcr.io/siderolabs/imager:v1.5.1@sha256:ae1de86b57c8458554164e384b032587764388eb26adfc7729c677694778fbb1
       options: --rm --privileged
       volumes:
         - /out:/out
+        - /dev:/dev
     steps:
       - name: Build ISO w/ Intel UCode and DRBD
         run: |
           /bin/imager metal \
-            --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808 \
-            --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1
+            --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808@sha256:f08b0d4d7f745419ddc9c79220788243940fb1a1a61638065fa4d137b9dcead2 \
+            --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1@sha256:70cf04c14847c21b40024c82c88623337514b70f6946913a4273b61432c78cf2
 
   build-and-push-installer:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/siderolabs/imager:v1.5.1
+      image: ghcr.io/siderolabs/imager:v1.5.1@sha256:ae1de86b57c8458554164e384b032587764388eb26adfc7729c677694778fbb1
       options: --rm --privileged
       volumes:
         - /out:/out
@@ -44,5 +45,5 @@ jobs:
       - name: Build ISO w/ Intel UCode and DRBD
         run: |
           /bin/imager installer \
-            --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808 \
-            --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1
+            --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808@sha256:f08b0d4d7f745419ddc9c79220788243940fb1a1a61638065fa4d137b9dcead2 \
+            --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1@sha256:70cf04c14847c21b40024c82c88623337514b70f6946913a4273b61432c78cf2
