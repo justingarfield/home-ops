@@ -11,7 +11,7 @@ jobs:
       image: ghcr.io/siderolabs/imager:v1.5.1
       options: --rm --privileged
       volumes:
-        - $PWD/_out:/out
+        - /out:/out
     steps:
       - name: Build ISO w/ Intel UCode and DRBD
         run: |
@@ -25,7 +25,7 @@ jobs:
       image: ghcr.io/siderolabs/imager:v1.5.1
       options: --rm --privileged
       volumes:
-        - $PWD/_out:/out
+        - /out:/out
     steps:
       - name: Build ISO w/ Intel UCode and DRBD
         run: |
@@ -39,7 +39,7 @@ jobs:
       image: ghcr.io/siderolabs/imager:v1.5.1
       options: --rm --privileged
       volumes:
-        - $PWD/_out:/out
+        - /out:/out
     steps:
       - name: Build ISO w/ Intel UCode and DRBD
         run: |
