@@ -11,7 +11,7 @@ jobs:
   build-and-push-iso:
     runs-on: ubuntu-latest
     container:
-      image: ${{ env.TALOS_IMAGER }}
+      image: $TALOS_IMAGER
       options: --rm --privileged
       volumes:
         - $PWD/_out:/out
@@ -25,7 +25,7 @@ jobs:
   build-and-push-metal:
     runs-on: ubuntu-latest
     container:
-      image: ${{ env.TALOS_IMAGER }}
+      image: $TALOS_IMAGER
       options: --rm --privileged
       volumes:
         - $PWD/_out:/out
@@ -39,7 +39,7 @@ jobs:
   build-and-push-installer:
     runs-on: ubuntu-latest
     container:
-      image: ${{ env.TALOS_IMAGER }}
+      image: $TALOS_IMAGER
       options: --rm --privileged
       volumes:
         - $PWD/_out:/out
