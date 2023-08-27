@@ -19,9 +19,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform:
-          - linux/amd64
-          - linux/arm64
+        arch:
+          - amd64
+          - arm64
     container:
       image: ghcr.io/siderolabs/imager:v1.5.1
       options: --privileged
@@ -29,7 +29,7 @@ jobs:
       - name: Build installer w/ Intel UCode and DRBD
         run: |
           /bin/imager installer \
-            --arch ${{ matrix.platform }} \
+            --arch ${{ matrix.arch }} \
             --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808@sha256:f08b0d4d7f745419ddc9c79220788243940fb1a1a61638065fa4d137b9dcead2 \
             --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1@sha256:70cf04c14847c21b40024c82c88623337514b70f6946913a4273b61432c78cf2
 
@@ -46,9 +46,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform:
-          - linux/amd64
-          - linux/arm64
+        arch:
+          - amd64
+          - arm64
     needs:
       - build-images
     permissions:
@@ -79,4 +79,4 @@ jobs:
       - uses: imjasonh/setup-crane@v0.1
       - name: Crane push installer
         run: |
-          crane push /tmp/talos-build-assets/metal-${{ matrix.platform }}-installer.tar ${{ env.REGISTRY }}/${{ github.repository }}/talos-metal-${{ matrix.platform }}-installer:v1.5.1
+          crane push /tmp/talos-build-assets/metal-${{ matrix.arch }}-installer.tar ${{ env.REGISTRY }}/${{ github.repository }}/talos-metal-${{ matrix.arch }}-installer:v1.5.1
