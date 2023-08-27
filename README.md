@@ -16,7 +16,7 @@ I currently support two environments that I call `staging` and `production`.
 
 Staging is a virtualized cluster running in Hyper-V on my desktop PC where I can freely destroy, rebuild, test, and provision things before introducing them to my physical "production" cluster in my basement.
 
-As-such, all scripts and configuration files in this repository have been tokenized where possible (or as far as I was willing to take it depending on context and value).
+As-such, all scripts and configuration files in this repository have been tokenized where possible _(or as far as I was willing to take it depending on context and value)_.
 
 ![Home Lab](assets/home-lab.png)
 
@@ -57,36 +57,6 @@ When you have a few pieces of software to configure / install on your machine, e
 Eventually you get to a point where multiple applications need to work together, share areas of storage, access each other with secrets (e.g. API keys), bind to the same port as other processes, and/or launch in a certain order _(e.g. Database first, API second, UI third)_. Now things are starting to get a bit complex, so we move all of that into Docker Containers and use Docker Compose to make sure things are started in the right order and what-not.
 
 Now think about tacking on Home Automation hubs, Networked Storage, TLS Certificates, DNS records to allow external consumption while on-the-road, multiple nodes to run applications on so you can perform maintenence without giant outages, etc. This is where I finally broke and invested time in learning Kubernetes, Flux, GitOps, and all the other resources included in this repository. I can now work much faster without fear of screwing it all up, even if I had to rebuild it all from scratch! It also allows me to share all of this publicly (thanks SOPS!) with you, and best-of-all, everything is audited along the way in this GitHub repo :)
-
-## Virtualization
-
-I currently run my 'staging' environment on Hyper-V VMs. The machine on which they run has an abundance of RAM, but limited CPU _(as its also my gaming machine at this point in-time)_.
-
-I would not recommend running a 3-node CP / 2-node DP on anything less than an 8-core CPU and 64GB RAM. Even then, do not expect to run things like `rook-ceph` or solutions that require massive amounts of resources in-general _(e.g. giant-ass databases)_.
-
-Remember, each VM is going to be requiring time-slices from your cores, and if too many requests are in-play, you can expect CPU stalls, timeouts, etc. which will Michael Bay Explode your cluster and/or cause Pods to start rescheduling like crazy and never coming back up.
-
-For an actual 24/7 'Production' cluster, you're going to want much beefier hardware, and this type of setup should only be used to test your configurations and what-not.
-
-### VirtualBox on Windows Notes
-
-You have two options if running Windows 10/11 regarding VirtualBox usage...
-
-#### Option 1: Don't use it
-
-If you're a big fan of Windows Subsystem for Linux (WSL) and/or already using Hyper-V for VMs, make sure you don't install VirtualBox; the combo of software will constantly fight each other, lead to insane amounts of CPU stalling, poor memory management, and more.
-
-#### Option 2: Disable Hyper-V and WSL
-
-If you don't care about Hyper-V or WSL, and want to use VirtualBox on Windows 10/11, then you need to eliminate all Hyper-V and Virtualization options under Add/Remove Windows Features / Roles and reboot.
-
-Note: One word of caution if you do use VirtualBox. When configuring your attached HDDs, make sure you know what `Use Host I/O Cache` is _really_ doing before you decide to check that box. If you have workloads running that are writing lots of data, you could potentially lose a buttload of data during an unexpected shut-down. It may "go faster" with this option, but there are reasons.
-
-#### My thoughts on Windows + VirtualBox
-
-IMHO, giving up WSL2 + Docker Desktop integration simply isn't worth the trade-offs. If you need to run other virtualized workloads along-side your K8s Cluster on Windows Desktop, use straight-up Hyper-V or VMWare Workstation.
-
-I honestly tried going the VirtualBox route for 3-months during development of this repository, and the issues don't surface at first, but once you start deploying applications and place load on your cluster(s), Virtual Box starts to have tons of CPU stalls due to 10s-of-millions of context-switches happening, and will blow-out your `vmmem` process in Windows choking your CPU.
 
 ## Inspired by
 

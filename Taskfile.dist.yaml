@@ -133,7 +133,7 @@ tasks:
         vars: { ARCH: arm64 }
       - task: cilium:prepare-helm-manifest
 
-  # Note: There are no tasks for dealing with Windows DSC provisioning prior to running this task.
+  # Note: There are no tasks here dealing with Windows DSC provisioning prior to running this task.
   #       You must run the Windows DSC scripts in an elevated (OLD) PowerShell or PowerShell ISE session.
   config-hyperv-cluster:
     desc: Configures a set of pre-existing Hyper-V VMs
