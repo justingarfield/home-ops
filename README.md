@@ -18,8 +18,6 @@ Staging is a virtualized cluster running in Hyper-V on my desktop PC where I can
 
 As-such, all scripts and configuration files in this repository have been tokenized where possible _(or as far as I was willing to take it depending on context and value)_.
 
-![Home Lab](assets/home-lab.png)
-
 ## Directory layout
 
 ```sh
@@ -41,6 +39,10 @@ As-such, all scripts and configuration files in this repository have been tokeni
 ```
 
 See each sub-directory for an additional `README.md` that describes each area in greater detail.
+
+## Pretty picture
+
+![Home Lab](assets/home-lab.png)
 
 ## Usage
 
