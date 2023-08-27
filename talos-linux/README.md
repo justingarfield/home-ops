@@ -10,15 +10,11 @@ I may change this down the road if I start to have configuration values that end
 📂 talos-linux
 ├─📄 cilium-opnsense-bgp-peering-policy.patch
 ├─📄 disable-cni-and-kube-proxy.patch
-├─📄 disk-nvme0n1.patch
-├─📄 disk-nvme1n1.patch
-├─📄 disk-sdb.patch
-├─📄 disk-sdc.patch
-├─📄 disk-sdd.patch
 ├─📄 kubelet-unsafe-sysctls.patch
 ├─📄 machine-cert-sans.patch
 ├─📄 registry-mirrors.patch
-└─📄 system-disk-encryption.patch
+├─📄 system-disk-encryption.patch
+└─📄 talos-extension-drbd.patch
 ```
 
 ## Using the patches

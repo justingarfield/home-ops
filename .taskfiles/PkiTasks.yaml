@@ -14,17 +14,17 @@ tasks:
       OUTPUT_FILENAME: '{{.PKI_OUT_DIR}}/{{.OUTPUT_FILENAME}}'
     preconditions:
       - sh: test '{{.ORGANIZATION_NAME}}'
-        msg: Please provide a valid ORGANIZATION_NAME
+        msg: Please provide a valid ORGANIZATION_NAME in a .env file
       - sh: test '{{.ENVIRONMENT_NAME}}'
-        msg: Please provide a valid ENVIRONMENT_NAME
+        msg: Please provide a valid ENVIRONMENT_NAME in a .env file
       - sh: test '{{.ORGANIZATION_ADMINISTRATIVE_EMAIL}}'
-        msg: Please provide a valid ORGANIZATION_ADMINISTRATIVE_EMAIL
+        msg: Please provide a valid ORGANIZATION_ADMINISTRATIVE_EMAIL in a .env file
       - sh: test '{{.ORGANIZATION_LOCATION}}'
-        msg: Please provide a valid ORGANIZATION_LOCATION
+        msg: Please provide a valid ORGANIZATION_LOCATION in a .env file
       - sh: test '{{.ORGANIZATION_STATE_PROVINCE_CODE}}'
-        msg: Please provide a valid ORGANIZATION_STATE_PROVINCE_CODE
+        msg: Please provide a valid ORGANIZATION_STATE_PROVINCE_CODE in a .env file
       - sh: test '{{.ORGANIZATION_COUNTRY_CODE}}'
-        msg: Please provide a valid ORGANIZATION_COUNTRY_CODE
+        msg: Please provide a valid ORGANIZATION_COUNTRY_CODE in a .env file
     cmds:
       - task: :_core:ensure-directory-exists2
         vars: { DIRECTORY: '{{.OUTPUT_FILENAME | dir}}' }

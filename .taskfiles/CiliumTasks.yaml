@@ -8,28 +8,14 @@ vars:
 
 tasks:
 
-  status-verbose:
-    desc: Uses the cilium binary in the DS for a verbose status
-    cmds:
-      - kubectl exec ds/cilium -n kube-system -- cilium status verbose
+  ##### Provisioning related tasks
 
-  get-endpoint-list:
-    desc: Uses the cilium binary in the DS to query the endpoints list
-    cmds:
-      - kubectl -n kube-system exec ds/cilium -- cilium endpoint list
-
-  install-via-helm:
+  prepare-helm-manifest:
     internal: false
-    desc: Installs the Cilium CNI for a particular cluster
+    desc: Prepares a Cilium CNI Helm manifest
     vars:
       CLUSTER_API_SERVER_PORT: '{{.CLUSTER_API_SERVER_PORT | default "6443"}}'
-      NODE_NAME: "{{.NODE_NAME}}"
-    preconditions:
-      - sh: test {{.NODE_NAME}}
-        msg: Please provide a valid NODE_NAME
     cmds:
-      - ./scripts/kubernetes/wait-for-node-notready.sh k8s-cp01 "{{.TALOS_OUT_DIR}}/kubeconfig"
-
       - task: :_core:message
         vars: { MESSAGE: Ensuring Cilium Helm repository has been added... }
       - helm repo add cilium https://helm.cilium.io/ 1>/dev/null
@@ -66,12 +52,37 @@ tasks:
       - task: :_core:message
         vars: { MESSAGE: "Cilium manifest file was output to {{.TALOS_OUT_DIR}}/cilium.yaml" }
 
+  apply-helm-manifest:
+    desc: Applies the Cilium CNI Helm manifest to a particular Control Plane node
+    vars:
+      NODE_NAME: "{{.NODE_NAME}}"
+    preconditions:
+      - sh: test {{.NODE_NAME}}
+        msg: Please provide a valid NODE_NAME
+    cmds:
+      - ./scripts/kubernetes/wait-for-node-notready.sh k8s-cp01 "{{.TALOS_OUT_DIR}}/kubeconfig"
+
       - task: :_core:message
         vars: { MESSAGE: Applying Cilium manifest to cluster... }
       - kubectl apply -f "{{.TALOS_OUT_DIR}}/cilium.yaml" --kubeconfig "{{.TALOS_OUT_DIR}}/kubeconfig" 1>/dev/null
+
       - task: :_core:message
         vars: { MESSAGE: Cilium manifest applied to cluster }
 
       - ./scripts/kubernetes/wait-for-node-ready.sh {{.NODE_NAME}} "{{.TALOS_OUT_DIR}}/kubeconfig"
+
       - task: :_core:message
         vars: { MESSAGE: 'Cilium CNI should now be running on {{.NODE_NAME}}' }
+
+
+  ##### Maintenance/Ops related tasks
+
+  status-verbose:
+    desc: Uses the cilium binary in the DS for a verbose status
+    cmds:
+      - kubectl exec ds/cilium -n kube-system -- cilium status verbose
+
+  get-endpoint-list:
+    desc: Uses the cilium binary in the DS to query the endpoints list
+    cmds:
+      - kubectl -n kube-system exec ds/cilium -- cilium endpoint list
