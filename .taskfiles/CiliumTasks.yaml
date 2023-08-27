@@ -3,8 +3,8 @@
 version: '3'
 
 vars:
-  TALOS_DIR: '{{.REPOSITORY_DIR}}/talos-linux'
-  TALOS_OUT_DIR: '{{.OUTPUT_DIR}}/talos-linux'
+  TALOS_OUT_DIR: '{{.ENV_OUTPUT_DIR}}/talos-linux'
+  CILIUM_OUT_DIR: '{{.ENV_OUTPUT_DIR}}/cilium'
 
 tasks:
 
@@ -23,12 +23,19 @@ tasks:
     desc: Installs the Cilium CNI for a particular cluster
     vars:
       CLUSTER_API_SERVER_PORT: '{{.CLUSTER_API_SERVER_PORT | default "6443"}}'
-      OUTPUT_FILENAME: '{{.OUTPUT_FILENAME}}'
+      NODE_NAME: "{{.NODE_NAME}}"
+    preconditions:
+      - sh: test {{.NODE_NAME}}
+        msg: Please provide a valid NODE_NAME
     cmds:
-      - ./scripts/kubernetes/wait-for-node-notready.sh k8s-cp01
+      - ./scripts/kubernetes/wait-for-node-notready.sh k8s-cp01 "{{.TALOS_OUT_DIR}}/kubeconfig"
 
       - task: :_core:message
-        vars: { MESSAGE: Updating Helm repositories to get any updated Cilium chart information... }
+        vars: { MESSAGE: Ensuring Cilium Helm repository has been added... }
+      - helm repo add cilium https://helm.cilium.io/ 1>/dev/null
+
+      - task: :_core:message
+        vars: { MESSAGE: Ensuring Cilium Helm repository is updated... }
       - helm repo update 1>/dev/null
 
       - task: :_core:message
@@ -54,17 +61,17 @@ tasks:
             --set hubble.ui.enabled=true \
             --set tunnelPort=6669 \
             --set=bpf.autoMount.enabled=false \
-            > "{{.OUTPUT_FILENAME}}"
+            > "{{.TALOS_OUT_DIR}}/cilium.yaml"
 
       - task: :_core:message
-        vars: { MESSAGE: "Cilium manifest file was output to {{.OUTPUT_FILENAME}}" }
+        vars: { MESSAGE: "Cilium manifest file was output to {{.TALOS_OUT_DIR}}/cilium.yaml" }
 
       - task: :_core:message
         vars: { MESSAGE: Applying Cilium manifest to cluster... }
-      - kubectl apply -f "{{.OUTPUT_FILENAME}}" 1>/dev/null
+      - kubectl apply -f "{{.TALOS_OUT_DIR}}/cilium.yaml" --kubeconfig "{{.TALOS_OUT_DIR}}/kubeconfig" 1>/dev/null
       - task: :_core:message
         vars: { MESSAGE: Cilium manifest applied to cluster }
 
-      - ./scripts/kubernetes/wait-for-node-ready.sh k8s-cp01
+      - ./scripts/kubernetes/wait-for-node-ready.sh {{.NODE_NAME}} "{{.TALOS_OUT_DIR}}/kubeconfig"
       - task: :_core:message
-        vars: { MESSAGE: Cilium CNI should now be running on k8s-cp01 }
+        vars: { MESSAGE: 'Cilium CNI should now be running on {{.NODE_NAME}}' }

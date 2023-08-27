@@ -7,7 +7,6 @@
 ### Usage
 # This script expects to be passed one-or-more hostnames of any Kubernetes node
 # e.g: ./scripts/kubernetes/wait-for-node-ready.sh k8s-cp01
-# e.g. ./scripts/kubernetes/wait-for-node-ready.sh k8s-cp02 k8s-cp03 k8s-wk01 k8s-wk02
 
 ### Configurable bits
 # Number of seconds to sleep for each retry
@@ -22,7 +21,7 @@ attempt=1
 status=0
 
 while [ $attempt -le $retries ]; do
-    kubectl wait --for=condition=Ready nodes "$@" 1>/dev/null 2>&-
+    kubectl wait --for=condition=Ready nodes/$1 --kubeconfig $2
 
     status=$?
 

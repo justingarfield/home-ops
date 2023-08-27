@@ -115,9 +115,9 @@ tasks:
         vars: { SIGNING_KEY_FILENAME: my_staging_root-ca, INTERMEDIATE_CA_FILENAME: opnsense/opnsense-intermediate }
 
       - task: pki:generate-server-certificate
-        vars: { SIGNING_KEY_FILENAME: opnsense/opnsense-intermediate, CERT_CN: opnsense01.home.arpa, SERVER_NAME: opnsense01, SERVER_IP: 192.168.1.2, OUTPUT_FILENAME: opnsense/opnsense01.home.arpa }
+        vars: { SIGNING_KEY_FILENAME: opnsense/opnsense-intermediate, CERT_CN: opnsense01.home.arpa, SERVER_NAME: opnsense01, SERVER_IP: '{{.OPNSENSE01_MANAGEMENT_IP}}', OUTPUT_FILENAME: opnsense/opnsense01.home.arpa }
       - task: pki:generate-server-certificate
-        vars: { SIGNING_KEY_FILENAME: opnsense/opnsense-intermediate, CERT_CN: opnsense02.home.arpa, SERVER_NAME: opnsense02, SERVER_IP: 192.168.1.3, OUTPUT_FILENAME: opnsense/opnsense02.home.arpa }
+        vars: { SIGNING_KEY_FILENAME: opnsense/opnsense-intermediate, CERT_CN: opnsense02.home.arpa, SERVER_NAME: opnsense02, SERVER_IP: '{{.OPNSENSE02_MANAGEMENT_IP}}', OUTPUT_FILENAME: opnsense/opnsense02.home.arpa }
 
       - task: pki:generate-client-certificate
         vars: { SIGNING_KEY_FILENAME: my_staging_root-ca, CERT_CN: my_client_certificate, OUTPUT_FILENAME: clients/my_client_certificate }

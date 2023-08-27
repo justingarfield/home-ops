@@ -22,7 +22,7 @@ attempt=1
 status=0
 
 while [ $attempt -le $retries ]; do
-    kubectl wait --for=condition=Ready=false nodes/$1 1>&- 2>&-
+    kubectl wait --for=condition=Ready=false nodes/$1 --kubeconfig $2 1>&- 2>&-
 
     status=$?
 
