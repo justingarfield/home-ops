@@ -46,8 +46,11 @@ tasks:
             --set hubble.relay.enabled=true \
             --set hubble.ui.enabled=true \
             --set tunnelPort=6669 \
-            --set=bpf.autoMount.enabled=false \
             > "{{.TALOS_OUT_DIR}}/cilium.yaml"
+
+      # Is this needed?
+      # Let's wait to test and find out when there's coffee!
+      #     --set=bpf.autoMount.enabled=false \
 
       - task: :_core:message
         vars: { MESSAGE: "Cilium manifest file was output to {{.TALOS_OUT_DIR}}/cilium.yaml" }

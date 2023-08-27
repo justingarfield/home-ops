@@ -46,34 +46,6 @@ tasks:
     generates:
       - '{{._OUTPUT_FILENAME}}'
 
-  ### Boot Assets related
-  #
-  # See also: .github/workflows/talos-build-assets.yaml
-
-  build-custom-iso:
-    desc: Builds Talos ISO boot asset w/ Intel ucode and DRBD extensions
-    cmds:
-      - |
-        docker run --rm -t --privileged -v {{.TALOS_OUT_DIR}}:/out ghcr.io/siderolabs/imager:v1.5.1 iso \
-          --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808@sha256:f08b0d4d7f745419ddc9c79220788243940fb1a1a61638065fa4d137b9dcead2 \
-          --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1@sha256:70cf04c14847c21b40024c82c88623337514b70f6946913a4273b61432c78cf2
-
-  build-custom-metal:
-    desc: Builds Talos Metal boot asset w/ Intel ucode and DRBD extensions
-    cmds:
-      - |
-        docker run --rm -t --privileged -v /dev:/dev -v {{.TALOS_OUT_DIR}}:/out ghcr.io/siderolabs/imager:v1.5.1 metal \
-          --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808@sha256:f08b0d4d7f745419ddc9c79220788243940fb1a1a61638065fa4d137b9dcead2 \
-          --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1@sha256:70cf04c14847c21b40024c82c88623337514b70f6946913a4273b61432c78cf2
-
-  build-custom-installer:
-    desc: Builds Talos Installer boot asset w/ Intel ucode and DRBD extensions
-    cmds:
-      - |
-        docker run --rm -t --privileged -v {{.TALOS_OUT_DIR}}:/out ghcr.io/siderolabs/imager:v1.5.1 installer \
-          --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808@sha256:f08b0d4d7f745419ddc9c79220788243940fb1a1a61638065fa4d137b9dcead2 \
-          --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1@sha256:70cf04c14847c21b40024c82c88623337514b70f6946913a4273b61432c78cf2
-
   ### Machine Config related
   generate-machine-configs:
     desc: Generate machine configs for a particular cluster
@@ -84,6 +56,7 @@ tasks:
       CLUSTER_API_SERVER_PORT: '{{.CLUSTER_API_SERVER_PORT | default "6443"}}'
       SECRETS_BUNDLE_FILENAME: '{{.TALOS_OUT_DIR}}/secrets-bundle.yaml'
       CLUSTER_LOAD_BALANCER_IP: '{{.CLUSTER_LOAD_BALANCER_IP}}'
+      ARCH: '{{.ARCH | default "amd64"}}'
     preconditions:
       - sh: which talosctl
         msg: The 'talosctl' binary is required on the path to run this task'
@@ -102,9 +75,9 @@ tasks:
         talosctl gen config {{.CLUSTER_NAME}} https://{{.CONTROL_PLANE_HOSTNAME}}.{{.INTERNAL_DOMAIN}}:{{.CLUSTER_API_SERVER_PORT}} \
           --with-secrets {{.SECRETS_BUNDLE_FILENAME}} \
           --additional-sans {{.CLUSTER_LOAD_BALANCER_IP}} \
-          --install-image ghcr.io/justingarfield/home-ops/talos-metal-amd64-installer:v1.5.1@sha256:21f0d47b7103b7394f009465ed087fa8d370595b7b71fc4cd25469ec7fffba43 \
+          --install-image ghcr.io/justingarfield/home-ops/talos-metal-{{.ARCH}}-installer:{{.TALOS_VERSION}} \
           --kubernetes-version 1.28.0 \
-          --talos-version v1.5.1 \
+          --talos-version {{.TALOS_VERSION}} \
           --version v1alpha1 \
           --with-cluster-discovery=false \
           --with-docs=false \
@@ -171,13 +144,41 @@ tasks:
       - task: :_core:message
         vars: { MESSAGE: 'Retrieved and wrote kubeconfig file to {{.TALOS_OUT_DIR}}/kubeconfig' }
 
-  ### Maintenance related
+  ### Maintenance/Ops related
   etcd-db-snapshot:
     desc: Take a reguarly scheduled etcd database backup
     vars:
       IP_ADDRESS: '{{.IP_ADDRESS}}'
     cmds:
       - talosctl -n {{.IP_ADDRESS}} etcd snapshot db.snapshot
+
+  ### Boot Assets related
+  #
+  # See also: .github/workflows/talos-build-assets.yaml
+
+  build-custom-iso:
+    desc: Builds Talos ISO boot asset w/ Intel ucode and DRBD extensions
+    cmds:
+      - |
+        docker run --rm -t --privileged -v {{.TALOS_OUT_DIR}}:/out ghcr.io/siderolabs/imager:v1.5.1 iso \
+          --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808@sha256:f08b0d4d7f745419ddc9c79220788243940fb1a1a61638065fa4d137b9dcead2 \
+          --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1@sha256:70cf04c14847c21b40024c82c88623337514b70f6946913a4273b61432c78cf2
+
+  build-custom-metal:
+    desc: Builds Talos Metal boot asset w/ Intel ucode and DRBD extensions
+    cmds:
+      - |
+        docker run --rm -t --privileged -v /dev:/dev -v {{.TALOS_OUT_DIR}}:/out ghcr.io/siderolabs/imager:v1.5.1 metal \
+          --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808@sha256:f08b0d4d7f745419ddc9c79220788243940fb1a1a61638065fa4d137b9dcead2 \
+          --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1@sha256:70cf04c14847c21b40024c82c88623337514b70f6946913a4273b61432c78cf2
+
+  build-custom-installer:
+    desc: Builds Talos Installer boot asset w/ Intel ucode and DRBD extensions
+    cmds:
+      - |
+        docker run --rm -t --privileged -v {{.TALOS_OUT_DIR}}:/out ghcr.io/siderolabs/imager:v1.5.1 installer \
+          --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808@sha256:f08b0d4d7f745419ddc9c79220788243940fb1a1a61638065fa4d137b9dcead2 \
+          --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1@sha256:70cf04c14847c21b40024c82c88623337514b70f6946913a4273b61432c78cf2
 
   ### Tasks below here are disaster recovery related
   etcd-db-direct-copy:

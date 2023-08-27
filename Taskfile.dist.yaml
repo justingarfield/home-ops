@@ -15,6 +15,7 @@ vars:
   OUTPUT_DIR: '{{ ._NORMALIZED_OUTPUT_ENV_DIR }}'
   REPOSITORY_REMOTE_ORIGIN_NAME:
     sh: basename -s .git `git config --get remote.origin.url`
+  PRIMARY_NODE_HOSTNAME: k8s-cp01
 
 includes:
   _core: .taskfiles/_Core.yaml
@@ -46,7 +47,7 @@ includes:
   tetragon: .taskfiles/TetragonTasks.yaml
   tooling: .taskfiles/ToolingTasks.yaml
 
-silent: false
+silent: true
 
 tasks:
 
@@ -54,7 +55,7 @@ tasks:
     silent: true
     cmds: [ task -l ]
 
-  generate-pki:
+  prepare-environment-pki:
     desc: Example that generates all of the PKI files from scratch
     cmds:
       - task: _core:display-banner
@@ -122,12 +123,18 @@ tasks:
       - task: pki:generate-client-certificate
         vars: { SIGNING_KEY_FILENAME: my_staging_root-ca, CERT_CN: my_client_certificate, OUTPUT_FILENAME: clients/my_client_certificate }
 
-  talos-prepare-configs:
+  prepare-environment-configs:
     cmds:
       - task: talos:generate-secrets-bundle-from-pki
         vars: { K8S_PKI_DIR: '{{.ENV_OUTPUT_DIR}}/pki/kubernetes' }
-      - task: talos:generate-talos-configs
+      - task: talos:generate-machine-configs
+        vars: { ARCH: amd64 }
+      - task: talos:generate-machine-configs
+        vars: { ARCH: arm64 }
+      - task: cilium:prepare-helm-manifest
 
+  # Note: There are no tasks for dealing with Windows DSC provisioning prior to running this task.
+  #       You must run the Windows DSC scripts in an elevated (OLD) PowerShell or PowerShell ISE session.
   config-hyperv-cluster:
     desc: Configures a set of pre-existing Hyper-V VMs
     cmds:
@@ -141,14 +148,35 @@ tasks:
       # This can probably be parallelized with jobs or something since the nodes are always
       # going to start-up in a staggered fashion depending on how the hypervisor is feeling
       - task: talos:apply-machine-template
-        vars: { NODE_NAME: k8s-cp01, NODE_TYPE: controlplane }
+        vars: { NODE_NAME: '{{.PRIMARY_NODE_HOSTNAME}}', NODE_TYPE: controlplane }
       - task: talos:apply-machine-template
         vars: { NODE_NAME: k8s-cp02, NODE_TYPE: controlplane }
       - task: talos:apply-machine-template
         vars: { NODE_NAME: k8s-cp03, NODE_TYPE: controlplane }
 
       - task: talos:bootstrap-etcd
-        vars: { NODE_NAME: k8s-cp01 }
+        vars: { NODE_NAME: '{{.PRIMARY_NODE_HOSTNAME}}' }
 
       - task: talos:get-kubeconfig
-        vars: { NODE_NAME: k8s-cp01 }
+        vars: { NODE_NAME: '{{.PRIMARY_NODE_HOSTNAME}}' }
+
+      - task: cilium:apply-helm-manifest
+        vars: { NODE_NAME: '{{.PRIMARY_NODE_HOSTNAME}}' }
+
+      - task: _core:imporant-message
+        vars: { MESSAGE: Please turn-on and boot the Data Plane nodes }
+
+      - task: talos:apply-machine-template
+        vars: { NODE_NAME: k8s-wk01, NODE_TYPE: worker }
+      - task: talos:apply-machine-template
+        vars: { NODE_NAME: k8s-wk02, NODE_TYPE: worker }
+
+      - task: _core:message
+        vars: { MESSAGE: Verifying worker nodes are in 'Ready' status... }
+      - ./scripts/kubernetes/wait-for-node-ready.sh k8s-wk01
+      - ./scripts/kubernetes/wait-for-node-ready.sh k8s-wk02
+
+      - task: _core:message
+        vars: { MESSAGE: Labeling worker node(s) with 'node-role.kubernetes.io/worker'... }
+      - kubectl label nodes k8s-wk01 node-role.kubernetes.io/worker=
+      - kubectl label nodes k8s-wk02 node-role.kubernetes.io/worker=
