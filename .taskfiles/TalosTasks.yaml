@@ -25,8 +25,6 @@ tasks:
         msg: Issues using kubeadm to generate a bootstrap token _BOOTSTRAP_TOKEN
       - sh: test '{{.K8S_PKI_DIR}}'
         msg: Please provide a valid K8S_PKI_DIR
-      - sh: test -d {{.K8S_PKI_DIR}}
-        msg: Please provide a valid K8S_PKI_DIR ({{.K8S_PKI_DIR}} does not exist)
     cmds:
       - task: :_core:ensure-directory-exists2
         vars: { DIRECTORY: '{{._OUTPUT_FILENAME | dir}}' }
@@ -52,7 +50,6 @@ tasks:
     vars:
       CLUSTER_NAME: '{{.CLUSTER_NAME | default .ENVIRONMENT_NAME | lower}}'
       CONTROL_PLANE_HOSTNAME: '{{.CONTROL_PLANE_HOSTNAME | default "control-plane"}}'
-      TALOS_ENDPOINTS_HOSTNAME: '{{.TALOS_ENDPOINTS_HOSTNAME | default "talos-endpoints"}}'
       CLUSTER_API_SERVER_PORT: '{{.CLUSTER_API_SERVER_PORT | default "6443"}}'
       SECRETS_BUNDLE_FILENAME: '{{.TALOS_OUT_DIR}}/secrets-bundle.yaml'
       CLUSTER_LOAD_BALANCER_IP: '{{.CLUSTER_LOAD_BALANCER_IP}}'
@@ -73,6 +70,7 @@ tasks:
         vars: { MESSAGE: Generating machine-config related files... }
       - |
         talosctl gen config {{.CLUSTER_NAME}} https://{{.CONTROL_PLANE_HOSTNAME}}.{{.INTERNAL_DOMAIN}}:{{.CLUSTER_API_SERVER_PORT}} \
+          --force \
           --with-secrets {{.SECRETS_BUNDLE_FILENAME}} \
           --additional-sans {{.CLUSTER_LOAD_BALANCER_IP}} \
           --install-image ghcr.io/justingarfield/home-ops/talos-metal-{{.ARCH}}-installer:{{.TALOS_VERSION}} \
@@ -91,11 +89,19 @@ tasks:
           --config-patch @{{.TALOS_SRC_DIR}}/system-disk-encryption.patch \
           --config-patch='[{"op": "replace", "path": "/machine/systemDiskEncryption/ephemeral/keys", "value": [{ "static": { "passphrase": "{{.EPHEMERAL_PASSPHRASE}}" }, "slot": 0 }] }]' \
           --output {{.TALOS_OUT_DIR}}
-      - talosctl config endpoint {{.TALOS_ENDPOINTS_HOSTNAME}}.{{.INTERNAL_DOMAIN}} --talosconfig "{{.TALOS_OUT_DIR}}/talosconfig"
-      - task: :_core:message
-        vars: { MESSAGE: 'Updated {{.TALOS_OUT_DIR}}/talosconfig endpoints to {{.TALOS_ENDPOINTS_HOSTNAME}}.{{.INTERNAL_DOMAIN}}' }
+      - mv "{{.TALOS_OUT_DIR}}/controlplane.yaml" "{{.TALOS_OUT_DIR}}/controlplane-{{.ARCH}}.yaml"
+      - mv "{{.TALOS_OUT_DIR}}/worker.yaml" "{{.TALOS_OUT_DIR}}/worker-{{.ARCH}}.yaml"
       - task: :_core:message
         vars: { MESSAGE: machine-config related files generated }
+
+  update-talosconfig-endpoints:
+    desc: Updates a talosconfig file to have a non-loopback (127.0.0.1) IP address endpoint
+    vars:
+      TALOS_ENDPOINTS_HOSTNAME: '{{.TALOS_ENDPOINTS_HOSTNAME | default "talos-endpoints"}}'
+    cmds:
+      - talosctl config endpoint {{.TALOS_ENDPOINTS_HOSTNAME}}.{{.INTERNAL_DOMAIN}} --talosconfig "{{.TALOS_OUT_DIR}}/talosconfig"
+      - task: :_core:message
+        vars: { MESSAGE: 'Updated talosconfig endpoints to {{.TALOS_ENDPOINTS_HOSTNAME}}.{{.INTERNAL_DOMAIN}}' }
 
   apply-machine-template:
     internal: true
@@ -103,14 +109,21 @@ tasks:
     vars:
       NODE_NAME: "{{.NODE_NAME}}"
       NODE_TYPE: "{{.NODE_TYPE}}"
+      ARCH: "{{.ARCH}}"
     preconditions:
+      - sh: test {{.NODE_NAME}}
+        msg: Please provide a valid NODE_NAME
+      - sh: test {{.NODE_TYPE}}
+        msg: Please provide a valid NODE_TYPE
+      - sh: test {{.ARCH}}
+        msg: Please provide a valid ARCH
       - sh: which talosctl
         msg: The 'talosctl' binary is required on the path to run this task'
     cmds:
       - ./scripts/talos/wait-for-talos-boot.sh {{.NODE_NAME}}.{{.INTERNAL_DOMAIN}}
       - task: :_core:message
         vars: { MESSAGE: "Applying Talos machine-template to {{.NODE_TYPE}} node {{.NODE_NAME}}" }
-      - talosctl apply-config --insecure --nodes {{.NODE_NAME}}.{{.INTERNAL_DOMAIN}} --file {{.TALOS_OUT_DIR}}/{{.NODE_TYPE}}.yaml
+      - talosctl apply-config --insecure --nodes {{.NODE_NAME}}.{{.INTERNAL_DOMAIN}} --file {{.TALOS_OUT_DIR}}/{{.NODE_TYPE}}-{{.ARCH}}.yaml
       - task: :_core:message
         vars: { MESSAGE: "Successfully applied Talos machine-template to {{.NODE_TYPE}} node {{.NODE_NAME}}" }
 
