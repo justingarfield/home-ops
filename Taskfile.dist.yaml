@@ -142,7 +142,7 @@ tasks:
       - task: _core:message
         vars: { MESSAGE: Configuring Hyper-V based Talos Kubernetes cluster... }
 
-      - task: _core:imporant-message
+      - task: _core:important-message
         vars: { MESSAGE: Please turn-on and boot the Control Plane nodes }
 
       # This can probably be parallelized with jobs or something since the nodes are always
@@ -163,7 +163,7 @@ tasks:
       - task: cilium:apply-helm-manifest
         vars: { NODE_NAME: '{{.PRIMARY_NODE_HOSTNAME}}' }
 
-      - task: _core:imporant-message
+      - task: _core:important-message
         vars: { MESSAGE: Please turn-on and boot the Data Plane nodes }
 
       - task: talos:apply-machine-template

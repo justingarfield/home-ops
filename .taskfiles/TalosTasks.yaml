@@ -88,7 +88,7 @@ tasks:
           --config-patch @{{.TALOS_SRC_DIR}}/talos-extension-drbd.patch \
           --config-patch @{{.TALOS_SRC_DIR}}/system-disk-encryption.patch \
           --config-patch='[{"op": "replace", "path": "/machine/systemDiskEncryption/ephemeral/keys", "value": [{ "static": { "passphrase": "{{.EPHEMERAL_PASSPHRASE}}" }, "slot": 0 }] }]' \
-          --output {{.TALOS_OUT_DIR}}
+          --output {{.TALOS_OUT_DIR}} >/dev/null 2>&1
       - mv "{{.TALOS_OUT_DIR}}/controlplane.yaml" "{{.TALOS_OUT_DIR}}/controlplane-{{.ARCH}}.yaml"
       - mv "{{.TALOS_OUT_DIR}}/worker.yaml" "{{.TALOS_OUT_DIR}}/worker-{{.ARCH}}.yaml"
       - task: :_core:message

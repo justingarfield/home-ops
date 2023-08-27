@@ -36,7 +36,7 @@ tasks:
     cmds:
       - printf '[home-ops] {{.MESSAGE}}\n'
 
-  imporant-message:
+  important-message:
     desc: Displays an 'important' message to the end-user running the Task.
     internal: true
     vars:
@@ -44,11 +44,11 @@ tasks:
     cmds:
       - task: message
       - task: message
-        vars: { MESSAGE: ------------------------------------------------------------------------------------ }
+        vars: { MESSAGE: --------------------------------------------------------------------------------------------------------- }
       - task: message
         vars: { MESSAGE: "*** {{.MESSAGE}} ***" }
       - task: message
-        vars: { MESSAGE: ------------------------------------------------------------------------------------ }
+        vars: { MESSAGE: --------------------------------------------------------------------------------------------------------- }
       - task: message
 
   display-banner:

@@ -33,11 +33,11 @@ certificateFileNames=(
 )
 
 checkCertificatesExist() {
-    paddedMessage "Checking that all required certificates exist..."
+    paddedMessage "Checking that all required Kubernetes certificates exist" "Proceeding..."
 
     needToBail=false
     if [ ! -d "$KUBERNETES_PKI_DIR" ]; then
-        paddedMessage "Provided PKI directory does not exist" "$KUBERNETES_PKI_DIR"
+        paddedMessage "Provided Kubernetes PKI directory does not exist" "$KUBERNETES_PKI_DIR"
         exit 1
     fi
 
@@ -52,15 +52,15 @@ checkCertificatesExist() {
     done
 
     if [ $needToBail = true ]; then
-        paddedMessage "Required certificate files were not found. Please check messages above."
+        paddedMessage "Required Kubernetes certificate files were not found. Please check messages above."
         exit 1
     fi
 
-    paddedMessage "Found all required certificate files, proceeding..."
+    paddedMessage "Checking that all required Kubernetes certificates exist" "Done."
 }
 
 renameCertificates() {
-    paddedMessage "Renaming certificates to prep for talosctl consumption..."
+    paddedMessage "Renaming Kubernetes certificates to prep for talosctl consumption" "Proceeding..."
 
     for certificateFileName in ${certificateFileNames[@]}; do
 
@@ -78,7 +78,7 @@ renameCertificates() {
 
     done
 
-    paddedMessage "Kubernetes PKI folder ready for talosctl consumption"
+    paddedMessage "Renaming Kubernetes certificates to prep for talosctl consumption" "Done."
 }
 
 checkCertificatesExist
