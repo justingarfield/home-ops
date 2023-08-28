@@ -76,7 +76,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: imjasonh/setup-crane@v0.1
+      - uses: imjasonh/setup-crane@v0.3
       - name: Crane push installer
         run: |
           crane push /tmp/talos-build-assets/metal-${{ matrix.arch }}-installer.tar ${{ env.REGISTRY }}/${{ github.repository }}/talos-metal-${{ matrix.arch }}-installer:v1.5.1
