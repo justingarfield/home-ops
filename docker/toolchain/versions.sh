@@ -17,10 +17,10 @@ CRICTL_VERSION=v1.28.0
 CRITEST_VERSION=v1.28.0
 
 # renovate: datasource=github-releases depName=fluxcd/flux2
-FLUX_VERSION=v2.0.1
+FLUX_VERSION=v2.1.0
 
 # renovate: datasource=github-releases depName=cli/cli
-GITHUB_CLI_VERSION=v2.32.1
+GITHUB_CLI_VERSION=v2.33.0
 
 # renovate: datasource=github-releases depName=helm/helm
 HELM_VERSION=v3.12.3
@@ -29,10 +29,10 @@ HELM_VERSION=v3.12.3
 HUBBLE_VERSION=v0.12.0
 
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
-KUBEADM_VERSION=v1.28.0
+KUBEADM_VERSION=v1.28.1
 
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
-KUBECTL_VERSION=v1.28.0
+KUBECTL_VERSION=v1.28.1
 
 # renovate: datasource=github-releases depName=mozilla/sops
 SOPS_VERSION=v3.7.3
@@ -41,10 +41,10 @@ SOPS_VERSION=v3.7.3
 TALOSCTL_VERSION=v1.5.1
 
 # renovate: datasource=github-releases depName=go-task/task
-TASK_VERSION=v3.28.0
+TASK_VERSION=v3.29.1
 
 # renovate: datasource=github-releases depName=hashicorp/terraform
-TERRAFORM_VERSION=v1.5.5
+TERRAFORM_VERSION=v1.5.6
 
 # renovate: datasource=github-releases depName=cilium/tetragon
 TETRAGON_VERSION=v0.10.0
