@@ -45,10 +45,6 @@ Tells Talos not to provision its default CNI (flannel) into the cluster; as well
 
 Allows certain unsafe sysctls to be used on a cluster node.
 
-### machine-cert-sans
-
-Adds additional certificate SANs that represent my HA Proxy endpoint used for communications via `talosctl`.
-
 ### registry-mirrors
 
 Configures pull-through-caches to point to local Docker Desktop instances of Docker Registry Mirrors.

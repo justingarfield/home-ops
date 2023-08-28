@@ -10,6 +10,11 @@ if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 . "$DIR/../_yq_tokenization.sh"
 . "$DIR/../_padded_message.sh"
 
+DIRNAME=$(dirname $OUTPUT_FILENAME)
+if [ ! -d $DIRNAME ]; then
+    mkdir -p $DIRNAME
+fi
+
 # YQ Replacement Tokens
 ENVIRONMENT_NAME="${ENVIRONMENT_NAME:-Unknown}"
 INTERMEDIARY_NAME="${INTERMEDIARY_NAME:-Unknown}"
@@ -21,8 +26,9 @@ ORGANIZATION_COUNTRY_CODE="${ORGANIZATION_COUNTRY_CODE:-Unknown}"
 
 yq_tokenize "./pki/cfssl-templates/generic-intermediate-ca-csr.json" --output-format=json \
     | cfssl gencert -initca=true -loglevel=$CFSSL_LOG_LEVEL - \
-    | cfssljson -bare "$OUTPUT_FILENAME"
+    | cfssljson -bare "$OUTPUT_DIR/$OUTPUT_FILENAME"
 
-paddedMessage "Intermediate Certificate Authority CSR created" "$OUTPUT_FILENAME.csr"
-paddedMessage "Intermediate Certificate Authority Public key created" "$OUTPUT_FILENAME.pem"
-paddedMessage "Intermediate Certificate Authority Private key created" "$OUTPUT_FILENAME-key.pem"
+BASENAME=$(basename $OUTPUT_FILENAME)
+paddedMessage "Intermediate Certificate Authority CSR created" "$BASENAME.csr"
+paddedMessage "Intermediate Certificate Authority Public key created" "$BASENAME.pem"
+paddedMessage "Intermediate Certificate Authority Private key created" "$BASENAME-key.pem"

@@ -13,10 +13,16 @@ if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 . "$DIR/../_yq_tokenization.sh"
 . "$DIR/../_padded_message.sh"
 
+DIRNAME=$(dirname $OUTPUT_FILENAME)
+if [ ! -d $DIRNAME ]; then
+    mkdir -p $DIRNAME
+fi
+
 yq_tokenize "./pki/cfssl-templates/server-certificate-csr.json" --output-format=json \
     | cfssl gencert -loglevel=$CFSSL_LOG_LEVEL -ca "$SIGNING_PUBLIC_KEY_FILENAME" -ca-key "$SIGNING_PRIVATE_KEY_FILENAME" -config "$CFSSL_PROFILES" -profile=server - \
     | cfssljson -bare "$OUTPUT_FILENAME"
 
-paddedMessage "Server Certificate CSR created" "$OUTPUT_FILENAME.csr"
-paddedMessage "Server Certificate Public key created" "$OUTPUT_FILENAME.pem"
-paddedMessage "Server Certificate Private key created" "$OUTPUT_FILENAME-key.pem"
+BASENAME=$(basename $OUTPUT_FILENAME)
+paddedMessage "Server Certificate CSR created" "$BASENAME.csr"
+paddedMessage "Server Certificate Public key created" "$BASENAME.pem"
+paddedMessage "Server Certificate Private key created" "$BASENAME-key.pem"

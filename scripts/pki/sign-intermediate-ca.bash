@@ -16,4 +16,5 @@ cfssl sign -loglevel=$CFSSL_LOG_LEVEL -ca "$SIGNING_PUBLIC_KEY_FILENAME" -ca-key
     -config "$CFSSL_PROFILES" -profile intermediate-ca "$INTERMEDIATE_CA_FILENAME.csr" \
     | cfssljson -bare "$INTERMEDIATE_CA_FILENAME"
 
-paddedMessage "Intermediate Certificate Authority signed" "$INTERMEDIATE_CA_FILENAME.csr"
+BASENAME=$(basename $INTERMEDIATE_CA_FILENAME)
+paddedMessage "Intermediate Certificate Authority signed" "$BASENAME.csr"

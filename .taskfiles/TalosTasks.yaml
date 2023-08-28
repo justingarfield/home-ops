@@ -54,6 +54,7 @@ tasks:
       SECRETS_BUNDLE_FILENAME: '{{.TALOS_OUT_DIR}}/secrets-bundle.yaml'
       CLUSTER_LOAD_BALANCER_IP: '{{.CLUSTER_LOAD_BALANCER_IP}}'
       ARCH: '{{.ARCH | default "amd64"}}'
+      TALOS_ENDPOINTS_HOSTNAME: '{{.TALOS_ENDPOINTS_HOSTNAME | default "talos-endpoints"}}'
     preconditions:
       - sh: which talosctl
         msg: The 'talosctl' binary is required on the path to run this task'
@@ -82,8 +83,8 @@ tasks:
           --with-examples=false \
           --config-patch-control-plane @{{.TALOS_SRC_DIR}}/cilium-opnsense-bgp-peering-policy.patch \
           --config-patch-control-plane @{{.TALOS_SRC_DIR}}/disable-cni-and-kube-proxy.patch \
+          --config-patch-control-plane='[{"op": "add", "path": "/machine/certSANs/-", "value": "{{.TALOS_ENDPOINTS_HOSTNAME}}.{{.INTERNAL_DOMAIN}}" }]' \
           --config-patch-worker @{{.TALOS_SRC_DIR}}/kubelet-unsafe-sysctls.patch \
-          --config-patch @{{.TALOS_SRC_DIR}}/machine-cert-sans.patch \
           --config-patch @{{.TALOS_SRC_DIR}}/registry-mirrors.patch \
           --config-patch @{{.TALOS_SRC_DIR}}/talos-extension-drbd.patch \
           --config-patch @{{.TALOS_SRC_DIR}}/system-disk-encryption.patch \
@@ -104,7 +105,6 @@ tasks:
         vars: { MESSAGE: 'Updated talosconfig endpoints to {{.TALOS_ENDPOINTS_HOSTNAME}}.{{.INTERNAL_DOMAIN}}' }
 
   apply-machine-template:
-    internal: true
     desc: Apply a machine-template to a particular cluster node
     vars:
       NODE_NAME: "{{.NODE_NAME}}"
@@ -128,7 +128,6 @@ tasks:
         vars: { MESSAGE: "Successfully applied Talos machine-template to {{.NODE_TYPE}} node {{.NODE_NAME}}" }
 
   bootstrap-etcd:
-    internal: false
     desc: Bootstraps etcd on a particular cluster's '-cp01' node
     vars:
       NODE_NAME: "{{.NODE_NAME}}"

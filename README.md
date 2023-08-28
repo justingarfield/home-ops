@@ -62,8 +62,8 @@ Now think about tacking on Home Automation hubs, Networked Storage, TLS Certific
 
 ## Inspired by
 
-* https://github.com/toboshii/home-ops/tree/main/cluster/flux/flux-system
-* https://github.com/siderolabs/talos/blob/main/Dockerfile
 * https://github.com/onedr0p/home-ops
 * https://github.com/bjw-s/home-ops
+* https://github.com/JJGadgets/Biohazard
+* https://github.com/toboshii/home-ops
 * https://k8s-at-home.com/

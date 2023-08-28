@@ -10,6 +10,11 @@ if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 . "$DIR/../_yq_tokenization.sh"
 . "$DIR/../_padded_message.sh"
 
+DIRNAME=$(dirname $OUTPUT_FILENAME)
+if [ ! -d $DIRNAME ]; then
+    mkdir -p $DIRNAME
+fi
+
 # YQ Replacement Tokens
 ENVIRONMENT_NAME="${ENVIRONMENT_NAME:-Unknown}"
 CERT_CN="${CERT_CN:-Unknown}"
@@ -23,6 +28,7 @@ yq_tokenize "./pki/cfssl-templates/kubernetes-intermediate-ca-csr.json" --output
     | cfssl gencert -initca=true -loglevel=$CFSSL_LOG_LEVEL - \
     | cfssljson -bare "$OUTPUT_FILENAME"
 
-paddedMessage "K8s Intermediate Certificate Authority CSR created" "$OUTPUT_FILENAME.csr"
-paddedMessage "K8s Intermediate Certificate Authority Public key created" "$OUTPUT_FILENAME.pem"
-paddedMessage "K8s Intermediate Certificate Authority Private key created" "$OUTPUT_FILENAME-key.pem"
+BASENAME=$(basename $OUTPUT_FILENAME)
+paddedMessage "K8s Intermediate Certificate Authority CSR created" "$BASENAME.csr"
+paddedMessage "K8s Intermediate Certificate Authority Public key created" "$BASENAME.pem"
+paddedMessage "K8s Intermediate Certificate Authority Private key created" "$BASENAME-key.pem"

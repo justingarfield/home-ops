@@ -164,7 +164,7 @@ tasks:
         SIGNING_PUBLIC_KEY_FILENAME="{{.SIGNING_KEY_FILENAME}}.pem" \
         SIGNING_PRIVATE_KEY_FILENAME="{{.SIGNING_KEY_FILENAME}}-key.pem" \
         OUTPUT_FILENAME="{{.OUTPUT_FILENAME}}" \
-        ./scripts/pki/generate-client-certificate.bash \
+        ./scripts/pki/generate-server-certificate.bash \
           --CERT_CN "{{.CERT_CN}}" \
           --SERVER_NAME {{.SERVER_NAME}} \
           --SERVER_IP {{.SERVER_IP}} \
