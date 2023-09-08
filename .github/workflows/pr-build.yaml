@@ -3,6 +3,7 @@ name: Build and push toolchain image
 
 # See: https://docs.docker.com/build/ci/github-actions/
 
+# yamllint disable-line rule:truthy
 on:
   pull_request:
     branches:

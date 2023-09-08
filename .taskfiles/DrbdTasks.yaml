@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+vars:
+  TALOS_OUT_DIR: '{{.ENV_OUTPUT_DIR}}/talos-linux'
+
+tasks:
+
+  validate-modules:
+    desc: Reads out the module status and usermode_helper param to make sure DRBD is loaded properly
+    vars:
+      NODE_NAME: "{{.NODE_NAME}}"
+    preconditions:
+      - sh: test {{.NODE_NAME}}
+        msg: Please provide a valid NODE_NAME
+      - sh: which talosctl
+        msg: The 'talosctl' binary is required on the path to run this task'
+    cmds:
+      - talosctl read /proc/modules --nodes {{.NODE_NAME}}.{{.INTERNAL_DOMAIN}} --talosconfig "{{.TALOS_OUT_DIR}}/talosconfig"
+      - talosctl read /sys/module/drbd/parameters/usermode_helper --nodes {{.NODE_NAME}}.{{.INTERNAL_DOMAIN}} --talosconfig "{{.TALOS_OUT_DIR}}/talosconfig"

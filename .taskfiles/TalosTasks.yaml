@@ -152,7 +152,7 @@ tasks:
       - sh: test {{.NODE_NAME}}
         msg: Please provide a valid NODE_NAME
     cmds:
-      - talosctl kubeconfig "{{.TALOS_OUT_DIR}}/kubeconfig" --nodes {{.NODE_NAME}}.staging.home.arpa --talosconfig "{{.TALOS_OUT_DIR}}/talosconfig"
+      - talosctl kubeconfig "{{.TALOS_OUT_DIR}}/kubeconfig" --nodes {{.NODE_NAME}}.{{.INTERNAL_DOMAIN}} --talosconfig "{{.TALOS_OUT_DIR}}/talosconfig"
       - task: :_core:message
         vars: { MESSAGE: 'Retrieved and wrote kubeconfig file to {{.TALOS_OUT_DIR}}/kubeconfig' }
 
@@ -190,6 +190,15 @@ tasks:
       - |
         docker run --rm -t --privileged -v {{.TALOS_OUT_DIR}}:/out ghcr.io/siderolabs/imager:v1.5.1 installer \
           --system-extension-image ghcr.io/siderolabs/intel-ucode:20230808@sha256:f08b0d4d7f745419ddc9c79220788243940fb1a1a61638065fa4d137b9dcead2 \
+          --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1@sha256:70cf04c14847c21b40024c82c88623337514b70f6946913a4273b61432c78cf2
+
+  build-metal-rpi-generic:
+    desc: Builds Talos Metal for SBC RPI Generic boot asset w/ DRBD extensions
+    cmds:
+      - |
+        docker run --rm -t --privileged -v /dev:/dev -v {{.TALOS_OUT_DIR}}:/out ghcr.io/siderolabs/imager:v1.5.1 metal \
+          --arch arm64 \
+          --board=rpi_generic \
           --system-extension-image ghcr.io/siderolabs/drbd:9.2.4-v1.5.1@sha256:70cf04c14847c21b40024c82c88623337514b70f6946913a4273b61432c78cf2
 
   ### Tasks below here are disaster recovery related
