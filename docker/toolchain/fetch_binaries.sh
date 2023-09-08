@@ -178,6 +178,19 @@ get_kubeadm() {
     chmod +x $BINARIES_TMP/kubeadm
 }
 
+get_gocontainerregistry() {
+    # because there are no effing standards for release filenames...
+    if [ "$ARCH" = "amd64" ]; then
+        LINK="https://github.com/google/go-containerregistry/releases/download/${GO_CONTAINER_REGISTRY_VERSION}/go-containerregistry_${OS}_x86_64.tar.gz"
+    else
+        LINK="https://github.com/google/go-containerregistry/releases/download/${GO_CONTAINER_REGISTRY_VERSION}/go-containerregistry_${OS}_${ARCH}.tar.gz"
+    fi
+    wget $LINK -O /tmp/go-containerregistry.tar.gz && \
+    tar -xzf /tmp/go-containerregistry.tar.gz crane
+    mv crane $BINARIES_TMP && \
+    chmod +x $BINARIES_TMP/crane
+}
+
 mkdir -p $BINARIES_TMP
 
 get_age
@@ -198,3 +211,4 @@ get_task
 get_crictl
 get_critest
 get_kubeadm
+get_gocontainerregistry

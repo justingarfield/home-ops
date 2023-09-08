@@ -22,6 +22,9 @@ FLUX_VERSION=v2.1.0
 # renovate: datasource=github-releases depName=cli/cli
 GITHUB_CLI_VERSION=v2.34.0
 
+# renovate: datasource=github-releases depName=google/go-containerregistry
+GO_CONTAINER_REGISTRY_VERSION=v0.16.1
+
 # renovate: datasource=github-releases depName=helm/helm
 HELM_VERSION=v3.12.3
 
