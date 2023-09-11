@@ -58,7 +58,7 @@ jobs:
 
       - name: Build and push container image
         id: build
-        uses: docker/build-push-action@v4.2.0
+        uses: docker/build-push-action@v4.2.1
         with:
           context: ./docker/toolchain
           platforms: ${{ matrix.platform }}
