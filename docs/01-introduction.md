@@ -10,13 +10,47 @@ Eventually you get to a point where multiple applications need to work together,
 
 Now think about tacking on Home Automation hubs, Networked Storage, TLS Certificates, DNS records to allow external consumption while on-the-road, multiple nodes to run applications on so you can perform maintenence without giant outages, etc. This is where I finally broke and invested time in learning Kubernetes, Flux, GitOps, and all the other resources included in this repository. I can now work much faster without fear of screwing it all up, even if I had to rebuild it all from scratch! It also allows me to share all of this publicly (thanks SOPS!) with you, and best-of-all, everything is audited along the way in this GitHub repo :)
 
-## Usage
+## Directory Layouts
 
-Outside of making sure you have VS Code installed locally, this entire repository can be worked on using what I call the "Home Ops Toolchain". This is a multi-architecture (`amd64`/`arm64`) container image that comes pre-installed with all the same versions of tooling, folder mappings, etc. that I used to work on this stack daily.
+Each directory in the root of the repository has its own README.md to help break-down what the folders / files in each do.
 
-The main factor behind working this way, is that I reached my breaking point trying to work across a Windows Desktop PC _(amd64)_, M2 MacBook Air _(arm64)_, and a Linux Laptop _(amd64)_...not to mention trying to keep all the tooling binary versions in-sync across them all. Now I can just simply run the same version of the container image across all of them, and simply map some volumes into the container to work exactly the same across them all.
+If you're already familiar with building out Kubernetes clusters, infrastructure as code (IaC), etc. that's probably the easiest place to start if you're just looking to see how I implemented a particular piece of the overall puzzle.
 
-For more information on the Home Ops Toolchain and its usage, please see: [`docker/toolchain/README.md`](docker/toolchain/README.md)
+# Environments
+
+My home-ops environments will most likely look different than what you're used to seeing in a pristine Azure/AWS environment. I'm not a millionaire, so I can't afford to have 20+ servers all matching perfectly with storage arrays backing them all.
+
+My home-ops clusters are considered heterogeneous as they mix amd64 and ARM arechitectures; as well as using differing hardware between some nodes (mainly worker nodes).
+
+## Development
+
+I don't currently have a development environment for my home-ops build-out, as there's just no way I can handle running the vast amount of resources required to test everything properly.
+
+## Staging
+
+My staging environment consists of Hyper-V VMs using Hyper-V Network Switches that bind to physical NICs and sit on a VLAN of their own.
+
+This environment has mimic'ed firewall rules, HA Proxy and BGP configurations to allow _real_ testing of the environment before changes proceed to physical Production hardware.
+
+Using this environment allows me to make as many mistakes as needed before actually pushing to Production; reducing the amount of headaches and downtime.
+
+| VM Name | vCPU | Memory (in GB) | Description |
+|-|-|-|-|
+| k8s-cp01 | 4 | 8  | Using to mimic a physical Raspberry Pi 4 Model B |
+| k8s-cp02 | 4 | 8  | Using to mimic a physical Raspberry Pi 4 Model B |
+| k8s-cp03 | 4 | 8  | Using to mimic a physical Raspberry Pi 4 Model B |
+| k8s-wk01 | 8 | 24 | Using to mimic a custom amd64 worker |
+| k8s-wk02 | 4 | 8  | Using to mimic a physical Raspberry Pi 4 Model B |
+
+## Production
+
+| VM Name | vCPU | Memory (in GB) | Description |
+|-|-|-|-|
+| k8s-cp01 | 4 | 8  | Raspberry Pi 4 Model B |
+| k8s-cp02 | 4 | 8  | Raspberry Pi 4 Model B |
+| k8s-cp03 | 4 | 8  | Raspberry Pi 4 Model B |
+| k8s-wk01 | 36 | 128 | Custom amd64 worker |
+| k8s-wk02 | 4 | 8  | Raspberry Pi 4 Model B |
 
 ## Assumptions / Limitations
 

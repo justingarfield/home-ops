@@ -1,3 +1,23 @@
+
+## PKI
+
+This guide follows the [Single Root CA](https://kubernetes.io/docs/setup/best-practices/certificates/#single-root-ca) method, and provides K8s with Intermediate CAs, so that it can handle generating the rest of the certificates from there. This _will_ require the private keys of the Intermediate CAs be copied to the K8s nodes. If you require 100% no private keys on the K8s nodes, you'll need to kick-it-up-a-notch and follow the [All Certificates](https://kubernetes.io/docs/setup/best-practices/certificates/#all-certificates) method
+
+
+```bash
+sudo mkdir /etc/kubernetes
+sudo mkdir /etc/kubernetes/pki
+sudo mkdir /etc/kubernetes/pki/etcd
+
+sudo mv /home/microk8s/k8s-base-intermediate-ca.crt /etc/kubernetes/pki/ca.crt
+sudo mv /home/microk8s/k8s-base-intermediate-ca.key /etc/kubernetes/pki/ca.key
+sudo mv /home/microk8s/k8s-etcd-intermediate-ca.crt /etc/kubernetes/pki/etcd/ca.crt
+sudo mv /home/microk8s/k8s-etcd-intermediate-ca.key /etc/kubernetes/pki/etcd/ca.key
+sudo mv /home/microk8s/k8s-front-proxy-intermediate-ca.crt /etc/kubernetes/pki/front-proxy-ca.crt
+sudo mv /home/microk8s/k8s-front-proxy-intermediate-ca.key /etc/kubernetes/pki/front-proxy-ca.key
+```
+
+
 # Setting up PKI for your home
 This document assumes you'll be using the CloudFlare `cfssl` tools written in Go. (*Fun fact*: The [LetsEncrypt](https://letsencrypt.org/) servers literally use the cfssl tools on their back-end to handle CSRs and CRLs) All commands and work done throughout this document were originally performed using [Ubuntu on Windows Subsystem for Linux (WSL)](https://ubuntu.com/wsl), but should work on any modern version of Linux.
 
