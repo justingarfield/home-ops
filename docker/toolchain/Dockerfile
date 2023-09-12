@@ -1,3 +1,7 @@
+# syntax=docker/dockerfile:1
+ARG BUILDKIT_SBOM_SCAN_CONTEXT=true
+ARG BUILDKIT_SBOM_SCAN_STAGE=upgraded-alpine,release-binary-fetcher,final
+
 # Alpine image with update and upgrade performed
 FROM alpine:3.18.3 as upgraded-alpine
 RUN set -ex \
@@ -12,7 +16,7 @@ COPY ./fetch_binaries.sh /tmp/fetch_binaries.sh
 RUN /tmp/fetch_binaries.sh
 
 # Used as final image for end-user
-FROM upgraded-alpine
+FROM upgraded-alpine as final
 RUN set -ex \
     && apk add \
         docker-cli \

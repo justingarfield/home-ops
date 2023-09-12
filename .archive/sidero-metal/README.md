@@ -53,3 +53,25 @@ structure to build their own environment(s) using Sidero Metal.
 | Filename | Description |
 |-|-|
 | `patch-tftp-raspberrypi4b-uefi.yaml` | Adds an initContainer to the `sidero-controller-manager/manager`<br />which will copy custom files into the `/tftp/` folder that gets served by sidero. |
+
+## Additional Notes / Observations
+
+**Note: These notes may no longer apply, and as many things have changed since I first worked with Sidero Metal over a year ago.**
+
+### Custom RPI_EFI.fd per-serial
+
+If I use the method of a custom `RPI_EFI.fd` per-serial number, I end up getting stuck on the rainbox color boot screen.
+
+### start4.elf not found
+
+If I allow a fresh Pi to perform 3 full reboot cycles with the Sidero Agent, the 3rd (and any further) EEPROM TFTP boot causes seven rapid green LED flashes on the Pi 4, which indicates it couldn't locate a valid `start4.elf` to boot into (aka "kernel not found").
+
+If I restart the `sidero-controller-manager`, I can then get the sidero agent to boot twice again, and repeat the same on the 3rd and subsequent boots.
+
+The sidero-controller-manager logs seem to always have the following in them when this happens:
+```
+2023/03/30 11:11:05 sending block 1: code=0, error: Early terminate
+2023/03/30 11:11:05 sending block 1: code=0, error: Early terminate
+2023/03/30 11:11:05 sending block 1: code=0, error: Early terminate
+2023/03/30 11:11:39 Channel timeout: 192.168.68.2:33403
+```
