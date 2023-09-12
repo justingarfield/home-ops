@@ -2,7 +2,17 @@
 
 My home lab has a _lot_ of moving parts, and would be near-impossible to describe in a few paragraphs, so I've broken it all up into a multi-section guide within this repository, so that you can dive-in and focus on the parts you find interesting or helpful.
 
-## Why does this repository exist?
+## Table of Contents
+
+* [Why does this repository exist?](#why)
+* [Directory Layouts](#wsl)
+* [Environments](#environments)
+  * [Development](#environments-development)
+  * [Staging](#environments-staging)
+  * [Production](#environments-production)
+* [Assumptions / Limitations](#assumptions-and-limitations)
+
+## <a id="why"></a>Why does this repository exist?
 
 When you have a few pieces of software to configure / install on your machine, each using different port numbers, and not really interacting/conflicting with each other...things aren't really a big deal, just simply re-install them if you have to wipe your machine and start fresh.
 
@@ -10,23 +20,23 @@ Eventually you get to a point where multiple applications need to work together,
 
 Now think about tacking on Home Automation hubs, Networked Storage, TLS Certificates, DNS records to allow external consumption while on-the-road, multiple nodes to run applications on so you can perform maintenence without giant outages, etc. This is where I finally broke and invested time in learning Kubernetes, Flux, GitOps, and all the other resources included in this repository. I can now work much faster without fear of screwing it all up, even if I had to rebuild it all from scratch! It also allows me to share all of this publicly (thanks SOPS!) with you, and best-of-all, everything is audited along the way in this GitHub repo :)
 
-## Directory Layouts
+## <a id="directory-layouts"></a>Directory Layouts
 
 Each directory in the root of the repository has its own README.md to help break-down what the folders / files in each do.
 
 If you're already familiar with building out Kubernetes clusters, infrastructure as code (IaC), etc. that's probably the easiest place to start if you're just looking to see how I implemented a particular piece of the overall puzzle.
 
-# Environments
+## <a id="environments"></a>Environments
 
 My home-ops environments will most likely look different than what you're used to seeing in a pristine Azure/AWS environment. I'm not a millionaire, so I can't afford to have 20+ servers all matching perfectly with storage arrays backing them all.
 
 My home-ops clusters are considered heterogeneous as they mix amd64 and ARM arechitectures; as well as using differing hardware between some nodes (mainly worker nodes).
 
-## Development
+### <a id="environments-development"></a>Development
 
 I don't currently have a development environment for my home-ops build-out, as there's just no way I can handle running the vast amount of resources required to test everything properly.
 
-## Staging
+### <a id="environments-staging"></a>Staging
 
 My staging environment consists of Hyper-V VMs using Hyper-V Network Switches that bind to physical NICs and sit on a VLAN of their own.
 
@@ -42,7 +52,7 @@ Using this environment allows me to make as many mistakes as needed before actua
 | k8s-wk01 | 8 | 24 | Using to mimic a custom amd64 worker |
 | k8s-wk02 | 4 | 8  | Using to mimic a physical Raspberry Pi 4 Model B |
 
-## Production
+### <a id="environments-production"></a>Production
 
 | VM Name | vCPU | Memory (in GB) | Description |
 |-|-|-|-|
@@ -52,7 +62,7 @@ Using this environment allows me to make as many mistakes as needed before actua
 | k8s-wk01 | 36 | 128 | Custom amd64 worker |
 | k8s-wk02 | 4 | 8  | Raspberry Pi 4 Model B |
 
-## Assumptions / Limitations
+## <a id="assumptions-and-limitations"></a>Assumptions / Limitations
 
 * I don't currently have a large budget to buy new hardware, so I'm using what I have available
 * This is not a "template" like some of the other repositories out there, this is public for others to derive ideas and solutions from. Feel free to copy things out of here, but don't expect it all to work verbatim

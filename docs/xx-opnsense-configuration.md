@@ -4,6 +4,10 @@ I currently have two OPNsense firewalls running in a highly available (HA) setup
 
 I still have the problem of only a single router / cable modem connection at the moment, but those rarely ever need patches / down time anyway.
 
+## Table of Contents
+
+* [TBD](#)
+
 ## System -> Access -> Users
 
 * Create personal account

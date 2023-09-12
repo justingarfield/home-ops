@@ -8,21 +8,33 @@ Remember, each VM is going to be requiring time-slices from your cores, and if t
 
 For an actual 24/7 'Production' cluster, you're going to want much beefier hardware, and this type of setup should only be used to test your configurations and what-not.
 
-## VirtualBox on Windows Notes
+## Table of Contents
+
+* [Hyper-V on Windows 11 Professional](#hyper-v)
+* [VirtualBox on Windows 10/11](#virtual-box)
+  * [Option 1: Don't use it](#virtual-box-option-1)
+  * [Option 2: Disable Hyper-V and WSL](#virtual-box-option-2)
+  * [My thoughts on Windows + VirtualBox](#virtual-box-thoughts)
+
+## <a id="hyper-v"></a>Hyper-V on Windows 11 Professional
+
+Write some stuffs here...
+
+## <a id="virtual-box"></a>VirtualBox on Windows 10/11
 
 You have two options if running Windows 10/11 regarding VirtualBox usage...
 
-### Option 1: Don't use it
+### <a id="virtual-box-option-1"></a>Option 1: Don't use it
 
 If you're a big fan of Windows Subsystem for Linux (WSL) and/or already using Hyper-V for VMs, make sure you don't install VirtualBox; the combo of software will constantly fight each other, lead to insane amounts of CPU stalling, poor memory management, and more.
 
-### Option 2: Disable Hyper-V and WSL
+### <a id="virtual-box-option-2"></a>Option 2: Disable Hyper-V and WSL
 
 If you don't care about Hyper-V or WSL, and want to use VirtualBox on Windows 10/11, then you need to eliminate all Hyper-V and Virtualization options under Add/Remove Windows Features / Roles and reboot.
 
 Note: One word of caution if you do use VirtualBox. When configuring your attached HDDs, make sure you know what `Use Host I/O Cache` is _really_ doing before you decide to check that box. If you have workloads running that are writing lots of data, you could potentially lose a buttload of data during an unexpected shut-down. It may _go faster_ with this option, but there are reasons.
 
-### My thoughts on Windows + VirtualBox
+### <a id="virtual-box-thoughts"></a>My thoughts on Windows + VirtualBox
 
 IMHO, giving up WSL2 + Docker Desktop integration simply isn't worth the trade-offs. If you need to run other virtualized workloads along-side your K8s Cluster on Windows Desktop, use straight-up Hyper-V or VMWare Workstation.
 

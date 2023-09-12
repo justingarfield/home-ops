@@ -1,5 +1,9 @@
 # OPNsense Firewall Connectivity
 
+## Table of Contents
+
+* [TBD](#)
+
 ## Physical Connectivity
 
 ```mermaid
