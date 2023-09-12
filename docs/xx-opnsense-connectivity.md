@@ -61,6 +61,8 @@ flowchart LR
 
 ## Layer-2 Connectivity
 
+**WIP: Had to call it quits before finishing this one so far**
+
 ```mermaid
 %%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
 
