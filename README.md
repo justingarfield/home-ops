@@ -18,6 +18,10 @@ Staging is a virtualized cluster running in Hyper-V on my desktop PC where I can
 
 As-such, all scripts and configuration files in this repository have been tokenized where possible _(or as far as I was willing to take it depending on context and value)_.
 
+## Documentation
+
+For detailed information regarding my environments and everything in this repository, see the [Table of Contents](docs/00-table-of-contents.md) located in the docs folder.
+
 ## Directory layout
 
 ```sh
