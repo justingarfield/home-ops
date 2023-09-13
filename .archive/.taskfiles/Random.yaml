@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+# See: https://stackoverflow.com/questions/13732826/convert-pem-to-crt-and-key
+
+tasks:
+  pki:
+    cmds:
+      ### Azure related
+      - task: pki:generate-intermediate-ca
+        vars: { OUTPUT_FILENAME: azure/azure_intermediate-ca, INTERMEDIARY_NAME: Azure }
+      - task: pki:sign-intermediate-ca
+        vars: { SIGNING_KEY_FILENAME: justin-garfield_staging_root-ca, INTERMEDIATE_CA_FILENAME: azure/azure_intermediate-ca }
+
+      # Azure Tenant Provisioner SP for Terraform
+      - task: pki:generate-client-certificate
+        vars: { SIGNING_KEY_FILENAME: azure/azure_intermediate-ca, CERT_CN: terraform.provisioner, OUTPUT_FILENAME: azure/terraform.provisioner }

@@ -5,13 +5,18 @@ version: '3'
 vars:
   PKI_SRC_DIR: '{{.REPOSITORY_DIR}}/pki'
   PKI_OUT_DIR: '{{.ENV_OUTPUT_DIR}}/pki'
+  PKI_ROOT_OUTPUT_DIR: '{{.ROOT_OUTPUT_DIR}}/pki'
+
+###########
+### YEAHHHH....This file needs a refactoring...go with it for now...LOL
+###########
 
 tasks:
 
   generate-root-ca:
     desc: Generates a new Root Certificate Authority (CA) with cfssl using a pre-defined JSON template
     vars:
-      OUTPUT_FILENAME: '{{.PKI_OUT_DIR}}/{{.OUTPUT_FILENAME}}'
+      OUTPUT_FILENAME: '{{.PKI_ROOT_OUTPUT_DIR}}/{{.OUTPUT_FILENAME}}'
     preconditions:
       - sh: test '{{.ORGANIZATION_NAME}}'
         msg: Please provide a valid ORGANIZATION_NAME in a .env file
@@ -26,12 +31,12 @@ tasks:
       - sh: test '{{.ORGANIZATION_COUNTRY_CODE}}'
         msg: Please provide a valid ORGANIZATION_COUNTRY_CODE in a .env file
     cmds:
+      - echo {{.OUTPUT_FILENAME | dir}}
       - task: :_core:ensure-directory-exists2
         vars: { DIRECTORY: '{{.OUTPUT_FILENAME | dir}}' }
       - |
         OUTPUT_FILENAME="{{.OUTPUT_FILENAME}}" \
         ./scripts/pki/generate-root-ca.bash \
-          --ENVIRONMENT_NAME "{{.ENVIRONMENT_NAME}}" \
           --ORGANIZATION_ADMINISTRATIVE_EMAIL {{.ORGANIZATION_ADMINISTRATIVE_EMAIL}} \
           --ORGANIZATION_NAME "{{.ORGANIZATION_NAME}}" \
           --ORGANIZATION_LOCATION "{{.ORGANIZATION_LOCATION}}" \
@@ -40,6 +45,36 @@ tasks:
 
   generate-intermediate-ca:
     desc: Generates a new Intermediate Certificate Authority (CA) using an existing Root CA with cfssl and a pre-defined JSON template
+    vars:
+      OUTPUT_FILENAME: '{{.PKI_ROOT_OUTPUT_DIR}}/{{.OUTPUT_FILENAME}}'
+    preconditions:
+      - sh: test '{{.ORGANIZATION_NAME}}'
+        msg: Please provide a valid ORGANIZATION_NAME
+      - sh: test '{{.INTERMEDIARY_NAME}}'
+        msg: Please provide a valid INTERMEDIARY_NAME
+      - sh: test '{{.ORGANIZATION_ADMINISTRATIVE_EMAIL}}'
+        msg: Please provide a valid ORGANIZATION_ADMINISTRATIVE_EMAIL
+      - sh: test '{{.ORGANIZATION_LOCATION}}'
+        msg: Please provide a valid ORGANIZATION_LOCATION
+      - sh: test '{{.ORGANIZATION_STATE_PROVINCE_CODE}}'
+        msg: Please provide a valid ORGANIZATION_STATE_PROVINCE_CODE
+      - sh: test '{{.ORGANIZATION_COUNTRY_CODE}}'
+        msg: Please provide a valid ORGANIZATION_COUNTRY_CODE
+    cmds:
+      - task: :_core:ensure-directory-exists2
+        vars: { DIRECTORY: '{{.OUTPUT_FILENAME | dir}}' }
+      - |
+        OUTPUT_FILENAME="{{.OUTPUT_FILENAME}}" \
+        ./scripts/pki/generate-generic-intermediate-ca.bash \
+          --INTERMEDIARY_NAME "{{.INTERMEDIARY_NAME}}" \
+          --ORGANIZATION_ADMINISTRATIVE_EMAIL {{.ORGANIZATION_ADMINISTRATIVE_EMAIL}} \
+          --ORGANIZATION_NAME "{{.ORGANIZATION_NAME}}" \
+          --ORGANIZATION_LOCATION "{{.ORGANIZATION_LOCATION}}" \
+          --ORGANIZATION_STATE_PROVINCE_CODE "{{.ORGANIZATION_STATE_PROVINCE_CODE}}" \
+          --ORGANIZATION_COUNTRY_CODE "{{.ORGANIZATION_COUNTRY_CODE}}"
+
+  generate-environment-specific-intermediate-ca:
+    desc: Generates a new Environment-specific Intermediate Certificate Authority (CA) using an existing Root CA with cfssl and a pre-defined JSON template
     vars:
       OUTPUT_FILENAME: '{{.PKI_OUT_DIR}}/{{.OUTPUT_FILENAME}}'
     preconditions:
@@ -62,7 +97,7 @@ tasks:
         vars: { DIRECTORY: '{{.OUTPUT_FILENAME | dir}}' }
       - |
         OUTPUT_FILENAME="{{.OUTPUT_FILENAME}}" \
-        ./scripts/pki/generate-generic-intermediate-ca.bash \
+        ./scripts/pki/generate-environment-intermediate-ca.bash \
           --ENVIRONMENT_NAME "{{.ENVIRONMENT_NAME}}" \
           --INTERMEDIARY_NAME "{{.INTERMEDIARY_NAME}}" \
           --ORGANIZATION_ADMINISTRATIVE_EMAIL {{.ORGANIZATION_ADMINISTRATIVE_EMAIL}} \
@@ -107,6 +142,30 @@ tasks:
   sign-intermediate-ca:
     desc: Signs an Intermediate Certificate Authority (CA) using cfssl and an existing parent CA
     vars:
+      SIGNING_KEY_FILENAME: '{{.PKI_ROOT_OUTPUT_DIR}}/{{.SIGNING_KEY_FILENAME}}'
+      INTERMEDIATE_CA_FILENAME: '{{.PKI_ROOT_OUTPUT_DIR}}/{{.INTERMEDIATE_CA_FILENAME}}'
+    cmds:
+      - |
+        SIGNING_PUBLIC_KEY_FILENAME="{{.SIGNING_KEY_FILENAME}}.pem" \
+        SIGNING_PRIVATE_KEY_FILENAME="{{.SIGNING_KEY_FILENAME}}-key.pem" \
+        INTERMEDIATE_CA_FILENAME="{{.INTERMEDIATE_CA_FILENAME}}" \
+        ./scripts/pki/sign-intermediate-ca.bash
+
+  sign-environment-specific-intermediate-ca:
+    desc: Signs an Intermediate Certificate Authority (CA) using cfssl and an existing parent CA
+    vars:
+      SIGNING_KEY_FILENAME: '{{.PKI_ROOT_OUTPUT_DIR}}/{{.SIGNING_KEY_FILENAME}}'
+      INTERMEDIATE_CA_FILENAME: '{{.PKI_OUT_DIR}}/{{.INTERMEDIATE_CA_FILENAME}}'
+    cmds:
+      - |
+        SIGNING_PUBLIC_KEY_FILENAME="{{.SIGNING_KEY_FILENAME}}.pem" \
+        SIGNING_PRIVATE_KEY_FILENAME="{{.SIGNING_KEY_FILENAME}}-key.pem" \
+        INTERMEDIATE_CA_FILENAME="{{.INTERMEDIATE_CA_FILENAME}}" \
+        ./scripts/pki/sign-intermediate-ca.bash
+
+  sign-kubernetes-intermediate-ca:
+    desc: Signs an Intermediate Certificate Authority (CA) using cfssl and an existing parent CA
+    vars:
       SIGNING_KEY_FILENAME: '{{.PKI_OUT_DIR}}/{{.SIGNING_KEY_FILENAME}}'
       INTERMEDIATE_CA_FILENAME: '{{.PKI_OUT_DIR}}/{{.INTERMEDIATE_CA_FILENAME}}'
     cmds:
@@ -133,11 +192,11 @@ tasks:
   generate-server-certificate:
     desc: Generates a Server Certificate.
     vars:
-      SIGNING_KEY_FILENAME: '{{.PKI_OUT_DIR}}/{{.SIGNING_KEY_FILENAME}}'
+      SIGNING_KEY_FILENAME: '{{.PKI_ROOT_OUTPUT_DIR}}/{{.SIGNING_KEY_FILENAME}}'
       CERT_CN: '{{.CERT_CN}}'
       SERVER_NAME: '{{.SERVER_NAME}}'
       SERVER_IP: '{{.SERVER_IP}}'
-      OUTPUT_FILENAME: '{{.PKI_OUT_DIR}}/{{.OUTPUT_FILENAME}}'
+      OUTPUT_FILENAME: '{{.PKI_ROOT_OUTPUT_DIR}}/{{.OUTPUT_FILENAME}}'
     preconditions:
       - sh: test '{{.SIGNING_KEY_FILENAME}}'
         msg: Please provide a valid SIGNING_KEY_FILENAME
@@ -177,9 +236,9 @@ tasks:
   generate-client-certificate:
     desc: Generates a Client Certificate at the PKI Root (Global)
     vars:
-      SIGNING_KEY_FILENAME: '{{.PKI_OUT_DIR}}/{{.SIGNING_KEY_FILENAME}}'
+      SIGNING_KEY_FILENAME: '{{.PKI_ROOT_OUTPUT_DIR}}/{{.SIGNING_KEY_FILENAME}}'
       CERT_CN: '{{.CERT_CN}}'
-      OUTPUT_FILENAME: '{{.PKI_OUT_DIR}}/{{.OUTPUT_FILENAME}}'
+      OUTPUT_FILENAME: '{{.PKI_ROOT_OUTPUT_DIR}}/{{.OUTPUT_FILENAME}}'
     preconditions:
       - sh: test '{{.SIGNING_KEY_FILENAME}}'
         msg: Please provide a valid SIGNING_KEY_FILENAME

@@ -1,5 +1,5 @@
 {
-    "CN": "<ORGANIZATION_NAME> - <ENVIRONMENT_NAME> - Root CA",
+    "CN": "<ORGANIZATION_NAME> - Root CA",
     "key": {
         "algo": "rsa",
         "size": 4096
@@ -9,7 +9,7 @@
     ],
     "ca": {
         "expiry": "87660h",
-        "pathlen": 2
+        "pathlen": 3
     },
     "names": [
         {
