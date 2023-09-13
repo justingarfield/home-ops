@@ -18,9 +18,15 @@ if [ ! -d $DIRNAME ]; then
     mkdir -p $DIRNAME
 fi
 
-yq_tokenize "./pki/cfssl-templates/server-certificate-csr.json" --output-format=json \
-    | cfssl gencert -loglevel=$CFSSL_LOG_LEVEL -ca "$SIGNING_PUBLIC_KEY_FILENAME" -ca-key "$SIGNING_PRIVATE_KEY_FILENAME" -config "$CFSSL_PROFILES" -profile=server - \
-    | cfssljson -bare "$OUTPUT_FILENAME"
+TOKENIZED_JSON=$(yq_tokenize "./pki/cfssl-templates/server-certificate-csr.json" --output-format=json)
+
+if [ $EXTRA_SAN ]; then
+    TOKENIZED_JSON=$(echo $TOKENIZED_JSON | yq ".hosts += \"$EXTRA_SAN\"")
+fi
+
+echo $TOKENIZED_JSON \
+  | cfssl gencert -loglevel=$CFSSL_LOG_LEVEL -ca "$SIGNING_PUBLIC_KEY_FILENAME" -ca-key "$SIGNING_PRIVATE_KEY_FILENAME" -config "$CFSSL_PROFILES" -profile=server - \
+  | cfssljson -bare "$OUTPUT_FILENAME"
 
 BASENAME=$(basename $OUTPUT_FILENAME)
 paddedMessage "Server Certificate CSR created" "$BASENAME.csr"

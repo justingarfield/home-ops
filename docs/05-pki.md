@@ -2,6 +2,12 @@
 
 This repository uses the CloudFlare `cfssl` tools written in Go. (*Fun fact*: The [LetsEncrypt](https://letsencrypt.org/) servers literally use the cfssl tools on their back-end to handle CSRs and CRLs).
 
+I currently have my certificates split-up into two major categories named **Environment Agnostic** and **Environment Specific**.
+
+Environment _Agnostic_ certificates handle common/shared things, as well as the Root CA. This separation also helps on devices like my OPNsense firewalls, where there isn't a concept of an "environment"...they're "just part of my core infrastructure" that helps to prepare / prop-up the eventual environments.
+
+Environment _Specific_ certificates handle anything that lives within the boundaries of my Staging or Production environments _(mainly just Kubernetes-related resources at the moment)_.
+
 ## Table of Contents
 
 * [Determine how you're going to handle your Root CA (important, seriously read this!!!)](#root-ca-handling)

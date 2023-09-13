@@ -231,7 +231,8 @@ tasks:
           --ORGANIZATION_NAME "{{.ORGANIZATION_NAME}}" \
           --ORGANIZATION_LOCATION "{{.ORGANIZATION_LOCATION}}" \
           --ORGANIZATION_STATE_PROVINCE_CODE "{{.ORGANIZATION_STATE_PROVINCE_CODE}}" \
-          --ORGANIZATION_COUNTRY_CODE "{{.ORGANIZATION_COUNTRY_CODE}}"
+          --ORGANIZATION_COUNTRY_CODE "{{.ORGANIZATION_COUNTRY_CODE}}" \
+          --EXTRA_SAN "{{.EXTRA_SAN}}"
 
   generate-client-certificate:
     desc: Generates a Client Certificate at the PKI Root (Global)
