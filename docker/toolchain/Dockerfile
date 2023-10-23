@@ -3,7 +3,7 @@ ARG BUILDKIT_SBOM_SCAN_CONTEXT=true
 ARG BUILDKIT_SBOM_SCAN_STAGE=upgraded-alpine,release-binary-fetcher,final
 
 # Alpine image with update and upgrade performed
-FROM alpine:3.18.3 as upgraded-alpine
+FROM alpine:3.18.4 as upgraded-alpine
 RUN set -ex \
     && apk update \
     && apk upgrade
