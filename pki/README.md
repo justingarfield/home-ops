@@ -9,43 +9,40 @@
 
 ```sh
 📂 pki
-├─📁 cfssl-templates                         # Tokenized JSON template files used to create cfssl certificates
-│ ├─📄 client-certificate-csr.json           #
-│ ├─📄 generic-intermediate-ca-csr.json      #
-│ ├─📄 kubernetes-intermediate-ca-csr.json   #
-│ ├─📄 root-ca-csr.json                      #
-│ └─📄 server-certificate-csr.json           #
-└─📄 cfssl-profiles.json                     # cfssl certificate profiles used when generating certificates
+├─📄 cfssl-profiles.json   # cfssl certificate profiles used when generating certificates
+└─📄 pki.yaml              # Template that gets run through yq to generate cfssl CSRs
 ```
 
-## cfssl-templates folder
+## cfssl-profiles.json
 
-The files located under this folder have tokens that will get replaced when running the corresponding tasks/scripts associated with them.
+
+
+## pki.yaml
 
 This allows creation of multiple certificates, without repeating a majority of the JSON involved, increasing consistency and reducing room for error.
 
-| Token | Purpose | Used In |
-|-|-|-|
-| `ORGANIZATION_COUNTRY_CODE`         | Used for the Organization's Country              | All templates |
-| `ORGANIZATION_STATE_PROVINCE_CODE`  | Used for the Organization's State/Province       | All templates |
-| `ORGANIZATION_LOCATION`             | Used for the Organization's City/Town            | All templates |
-| `ORGANIZATION_NAME`                 | Used for the Organization's Legal Name           | All templates |
-| `ORGANIZATION_ADMINISTRATIVE_EMAIL` | Used for the Organization's Administrative Email | All templates |
-| `ENVIRONMENT_NAME`                  | Used to help differentiate environments          | All templates |
-| `INTERMEDIARY_NAME`                 | Used by Intermediate CAs for naming              | `generic-intermediate-ca-csr` |
-| `CERT_CN`                           | Used where an explicit CN is required            | `client-certificate-csr`, `kubernetes-intermediate-ca-csr`, `server-certificate-csr` |
-| `SERVER_NAME`                       | Used for additional cert SAN                     | `server-certificate-csr` |
-| `SERVER_IP`                         | Used for additional cert SAN                     | `server-certificate-csr` |
+| Token | Purpose |
+|-|-|
+| `ORGANIZATION_COUNTRY_CODE`         | Used for the Organization's Country              |
+| `ORGANIZATION_STATE_PROVINCE_CODE`  | Used for the Organization's State/Province       |
+| `ORGANIZATION_LOCATION`             | Used for the Organization's City/Town            |
+| `ORGANIZATION_NAME`                 | Used for the Organization's Legal Name           |
+| `ORGANIZATION_ADMINISTRATIVE_EMAIL` | Used for the Organization's Administrative Email |
+| `ENVIRONMENT_NAME`                  | Used to help differentiate environments          |
+| `INTERMEDIARY_NAME`                 | Used by Intermediate CAs for naming              |
+| `CERT_CN`                           | Used where an explicit CN is required            |
+| `SERVER_NAME`                       | Used for additional cert SAN                     |
+| `SERVER_IP`                         | Used for additional cert SAN                     |
 
 ## PKI Build-out
 
-Assuming you have already filled-in all of the environmental variables in a `.env.whatever` file...
-
 ```shell
-task pki:generate-ca
-
-OUTPUT_FILENAME=some-intermediary/some-intermediary task pki:generate-and-sign-intermediate-ca
-OUTPUT_FILENAME=another-intermediary/another-intermediary task pki:generate-and-sign-intermediate-ca
+ORGANIZATION_NAME="Some Company" \
+ORGANIZATION_ADMINISTRATIVE_EMAIL="admin@some.tld" \
+ORGANIZATION_LOCATION="Centralia" \
+ORGANIZATION_STATE_PROVINCE_CODE="Pennsylvania" \
+ORGANIZATION_COUNTRY_CODE="US" \
+    yq '.[] | explode(.) | (.. | select(tag == "!!str")) |= envsubst' -s '.cn + ".csr"' -o json < pki.yaml
 ```
 
 ## Troubleshooting

@@ -1,0 +1,53 @@
+---
+root-ca:
+  cn: Home Ops Root CA
+  key: &key
+    algo: rsa
+    size: 4096
+  ca:
+    expiry: 87660h
+    pathlen: 3
+  names: &names
+    E: ${ORGANIZATION_ADMINISTRATIVE_EMAIL}
+    O: ${ORGANIZATION_NAME}
+    L: ${ORGANIZATION_LOCATION}
+    ST: ${ORGANIZATION_STATE_PROVINCE_CODE}
+    C: ${ORGANIZATION_COUNTRY_CODE}
+
+intermediate-ca-infrastructure:
+  cn: Home Ops Infrastructure Intermediate CA
+  key: *key
+  names: *names
+
+intermediate-ca-clients:
+  cn: Home Ops Clients Intermediate CA
+  key: *key
+  names: *names
+
+server-opnsense01:
+  cn: opnsense01.home.arpa
+  key: *key
+  names: *names
+  hosts:
+    - opnsense01.home.arpa
+    - opnsense01
+    - 192.168.1.2
+
+server-opnsense02:
+  cn: opnsense02.home.arpa
+  key: *key
+  names: *names
+  hosts:
+    - opnsense02.home.arpa
+    - opnsense02
+    - 192.168.1.3
+
+server-synology:
+  cn: nas.home.arpa
+  key: *key
+  names: *names
+  hosts:
+    - nas.home.arpa
+    - nas
+    - 192.168.1.57
+    - nas-mgmt.home.arpa
