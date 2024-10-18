@@ -3,30 +3,9 @@
 {
     "name": "Ubuntu",
     // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-    "image": "mcr.microsoft.com/devcontainers/base:jammy",
+    "image": "mcr.microsoft.com/devcontainers/base:noble",
     "features": {
-        "ghcr.io/devcontainers/features/aws-cli:1": {},
-        "ghcr.io/devcontainers/features/azure-cli:1": {},
-        "ghcr.io/devcontainers/features/git-lfs:1": {},
-        "ghcr.io/devcontainers/features/github-cli:1": {},
-        "ghcr.io/devcontainers/features/go:1": {},
-        "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
-        "ghcr.io/devcontainers/features/powershell:1": {},
-        "ghcr.io/devcontainers/features/terraform:1": {},
-        "ghcr.io/devcontainers-contrib/features/age:1": {},
-        "ghcr.io/devcontainers-contrib/features/age-keygen:1": {},
-        "ghcr.io/devcontainers-contrib/features/argo-cd:1": {},
-        "ghcr.io/devcontainers-contrib/features/argo-workflows:1": {},
-        "ghcr.io/devcontainers-contrib/features/cosign:1": {},
-        "ghcr.io/devcontainers-contrib/features/k6:1": {},
-        "ghcr.io/devcontainers-contrib/features/nmap-apt-get:1": {},
-        "ghcr.io/devcontainers-contrib/features/pre-commit:2": {},
-        "ghcr.io/devcontainers-contrib/features/prettier:1": {},
-        "ghcr.io/devcontainers-contrib/features/prometheus:1": {},
-        "ghcr.io/devcontainers-contrib/features/sops:1": {},
-        "ghcr.io/eitsupi/devcontainer-features/go-task:1": {},
-        "ghcr.io/eitsupi/devcontainer-features/jq-likes:2": {},
-        "ghcr.io/rio/features/k9s:1": {}
+        
     }
 
     // Features to add to the dev container. More info: https://containers.dev/features.
