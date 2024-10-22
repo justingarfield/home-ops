@@ -1,18 +1,29 @@
 # DefineR6 Configuration
 
+## Docker Desktop Data SSD
+
+1. In Windows Disk Management (`diskmgmt.msc`), format Docker Desktop Data Volume w/ NTFS (set to `D:` if possible)
+2. In Windows Disk Management (`diskmgmt.msc`), format Gaming Data Volume w/ NTFS (set to `F:` if possible)
+3. In Windows Disk Management (`diskmgmt.msc`), set WSL Data Disk SSD to "Offline"
+
 ## BitLocker
 
-1. Make sure System volume is BitLocker Encrypted
-2. Make sure Data volume is BitLocker Encrypted
+1. Make sure OS drive is BitLocker Encrypted _(assumes TPM v2.0 is present)_
+* `Enable-BitLocker -MountPoint "C:" -EncryptionMethod XtsAes256 -TpmProtector -UsedSpaceOnly`
+* `Restart-Computer`
+* `Add-BitLockerKeyProtector -MountPoint "C:" -RecoveryKeyProtector -RecoveryKeyPath "D:\"`
+2. Make sure Data volumes are BitLocker Encrypted
+* `Enable-BitLocker -MountPoint "D:" -EncryptionMethod XtsAes256 -UsedSpaceOnly -PasswordProtector`
+* `Enable-BitLockerAutoUnlock -MountPoint "D:"`
+* `Enable-BitLocker -MountPoint "F:" -EncryptionMethod XtsAes256 -UsedSpaceOnly -PasswordProtector`
+* `Enable-BitLockerAutoUnlock -MountPoint "F:"`
 
 ## WSL
 
-1. Install Windows Subsystem for Linux (WSL) using Ubuntu 24.04 (Noble) distribution
-2. Setup username/password, run `sudo apt-get update -y && sudo apt-get upgrade -y`
-
-## Docker Desktop Data SSD
-
-1. In Windows Disk Management, format Docker Desktop Data Volume w/ NTFS (set to `D:` if possible)
+1. Install Windows Subsystem for Linux (WSL) and Ubuntu 24.04 (Noble) distribution
+2. Setup username/password
+3. Update WSL Ubuntu Distro by running: `sudo apt-get update -y && sudo apt-get upgrade -y`
+4. Install **cryptsetup**: `sudo apt-get install cryptsetup`
 
 ## Docker Desktop
 
@@ -24,15 +35,14 @@
 
 ## Mounting a dedicated WSL Data SSD
 
-1. Open Windows Disk Management and set WSL Data Disk SSD to "Offline"
-5. Run `sudo apt-get install cryptsetup`
-6. In an Elevated PowerShell Terminal: `GET-CimInstance -query "SELECT * from Win32_DiskDrive"` - find the WSL Data Disk SSD
-7. `wsl --mount <drive from prior command> --bare` (e.g. `wsl --mount \\.\PHYSICALDRIVE1 --bare`)
-8. `sudo fdisk -l` to find WSL Data Disk SSD on WSL side (e.g. `/dev/sde`)
-9. `sudo cryptsetup luksFormat <drive from prior command>` (e.g. `sudo cryptsetup luksFormat /dev/sde`)
-10. `sudo cryptsetup open /dev/sdc wsl-data-ssd` (`ls /dev/mapper` to verify)
-11. `sudo mkfs.ext4 /dev/mapper/wsl-data-ssd`
-12. `sudo blkid -o list`
+1. In an Elevated PowerShell Terminal: `GET-CimInstance -query "SELECT * from Win32_DiskDrive"` - find the WSL Data Disk SSD
+2. `wsl --mount <drive from prior command> --bare` (e.g. `wsl --mount \\.\PHYSICALDRIVE1 --bare`)
+3. `sudo fdisk -l` to find WSL Data Disk SSD on WSL side (e.g. `/dev/sde`)
+4. `sudo cryptsetup luksFormat <drive from prior command>` (e.g. `sudo cryptsetup luksFormat /dev/sde`)
+5. `sudo cryptsetup open /dev/sdc wsl-data-ssd` (`ls /dev/mapper` to verify)
+6. `sudo mkfs.ext4 /dev/mapper/wsl-data-ssd`
+7. `sudo blkid -o list`
+
 13.
 ```bash
 sudo mkdir /mnt/wsl-data-ssd
