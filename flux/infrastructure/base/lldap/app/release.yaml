@@ -31,7 +31,7 @@ spec:
       replicas: 1
     image:
       repository: ghcr.io/lldap/lldap
-      tag: latest-alpine@sha256:a6a8215f8bb286ae9ce6e4f6ef303a543094a954d0091da9a62aee2b391ed023
+      tag: latest-alpine@sha256:81d8db15f3b6561ec24df022cf0bfd8cf762be7760122cef4ea882788b51bd7e
     env:
       TZ: ${TIMEZONE}
       LLDAP_HTTP_URL: https://{{.Release.Name}}-staging.${INTERNAL_DOMAIN}
